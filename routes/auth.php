@@ -8,14 +8,15 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\authController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::middleware('guest')->group(function () {
-    // Route::get('loginnew',fn() => (Inertia::render('auth/loginPage')))->name('login.new');
 
-    // Route::get('regiternew',fn() => (Inertia::render('auth/RegiterPage')))->name('regiter.new');
+    Route::get('auth/{provider}/login',[authController::class,'loginOauth'])->name('oauth.login');
 
+    Route::get('auth/{provider}/callback',[authController::class,'callbackOauth'])->name('oauth.callback');
 
     Route::get('register', [RegisteredUserController::class, 'create'])
         ->name('register');
