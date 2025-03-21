@@ -27,7 +27,7 @@ export default function registerPage() {
 
     const handleSubmit = () => {
         const validation = RegisterValidation.safeParse(data);
-        if (validation) {
+        if (!validation.success) {
             setError('name', validation.error?.format().name?._errors[0] as string);
             setError('email', validation.error?.format().email?._errors[0] as string);
             setError('password', validation.error?.format().password?._errors[0] as string);
@@ -41,7 +41,7 @@ export default function registerPage() {
             }
             return;
         }
-        // post(route('register'))
+        post(route('register'))
     };
     return (
         <AuthLayout head="Register">
@@ -52,7 +52,7 @@ export default function registerPage() {
             <div className="flex flex-col gap-y-2">
                 <Input
                     type="text"
-                    className="h-12 rounded-xl border-[#666FD5] placeholder:font-black placeholder:text-[#3B387E] focus-visible:ring-[#666FD5]"
+                    className="h-12 rounded-xl border-[#666FD5] font-medium text-[#3B387E] placeholder:font-black placeholder:text-[#3B387E] focus-visible:ring-[#666FD5]"
                     placeholder="Name"
                     value={data.name}
                     onChange={(e) => setData('name', e.target.value)}
@@ -62,7 +62,7 @@ export default function registerPage() {
             <div className="flex flex-col gap-y-2">
                 <Input
                     type="email"
-                    className="h-12 rounded-xl border-[#666FD5] placeholder:font-black placeholder:text-[#3B387E] focus-visible:ring-[#666FD5]"
+                    className="h-12 rounded-xl border-[#666FD5] font-medium text-[#3B387E] placeholder:font-black placeholder:text-[#3B387E] focus-visible:ring-[#666FD5]"
                     placeholder="Email"
                     value={data.email}
                     onChange={(e) => setData('email', e.target.value)}
@@ -72,7 +72,7 @@ export default function registerPage() {
             <div className="flex flex-col gap-y-2">
                 <Input
                     type="password"
-                    className="h-12 rounded-xl border-[#666FD5] placeholder:font-black placeholder:text-[#3B387E] focus-visible:ring-[#666FD5]"
+                    className="h-12 rounded-xl border-[#666FD5] font-medium text-[#3B387E] placeholder:font-black placeholder:text-[#3B387E] focus-visible:ring-[#666FD5]"
                     placeholder="Password"
                     onChange={(e) => setData('password', e.target.value)}
                     value={data.password}
@@ -82,7 +82,7 @@ export default function registerPage() {
             <div className="flex flex-col gap-y-2">
                 <Input
                     type="password"
-                    className="h-12 rounded-xl border-[#666FD5] placeholder:font-black placeholder:text-[#3B387E] focus-visible:ring-[#666FD5]"
+                    className="h-12 rounded-xl border-[#666FD5] font-medium text-[#3B387E] placeholder:font-black placeholder:text-[#3B387E] focus-visible:ring-[#666FD5]"
                     placeholder="Confirm Password"
                     onChange={(e) => setData('password_confirmation', e.target.value)}
                     value={data.password_confirmation}
@@ -97,7 +97,7 @@ export default function registerPage() {
             </Button>
             <div className="flex flex-row items-center gap-x-1">
                 <HeadingSmall title="Already registered?" className="text-sm font-extralight text-[#3B387E]" />
-                <a href={route('login.new')} className="text-md mb-0.5 font-semibold text-[#3B387E]">
+                <a href={route('login')} className="text-md mb-0.5 font-semibold text-[#3B387E]">
                     Sign Up
                 </a>
             </div>

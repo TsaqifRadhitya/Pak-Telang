@@ -12,9 +12,9 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::middleware('guest')->group(function () {
-    Route::get('loginnew',fn() => (Inertia::render('auth/loginPage')))->name('login.new');
+    // Route::get('loginnew',fn() => (Inertia::render('auth/loginPage')))->name('login.new');
 
-    Route::get('regiternew',fn() => (Inertia::render('auth/RegiterPage')))->name('regiter.new');
+    // Route::get('regiternew',fn() => (Inertia::render('auth/RegiterPage')))->name('regiter.new');
 
 
     Route::get('register', [RegisteredUserController::class, 'create'])

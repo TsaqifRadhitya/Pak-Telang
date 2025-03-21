@@ -20,15 +20,15 @@ const loginSchema = z.object({
 });
 
 export default function loginPage() {
-    const { post, data, errors, setData, setError } = useForm<LoginForm>();
+    const { post, data, errors, setData, setError, reset } = useForm<LoginForm>();
     const handleSubmit = () => {
         const result = loginSchema.safeParse(data);
-        if (result) {
+        if (!result.success) {
             setError('email', result.error?.format().email?._errors[0] as string);
             setError('password', result.error?.format().password?._errors[0] as string);
             return;
         }
-        // post(route('login'));
+        post(route('login'), { onFinish: () => reset('password') });
     };
     return (
         <AuthLayout head="Login">
@@ -39,16 +39,16 @@ export default function loginPage() {
             <div className="flex flex-col gap-y-2">
                 <Input
                     type="email"
-                    className="h-12 rounded-xl border-[#666FD5] placeholder:font-black placeholder:text-[#3B387E] focus-visible:ring-[#666FD5]"
+                    className="h-12 rounded-xl border-[#666FD5] font-medium text-[#3B387E] placeholder:font-black placeholder:text-[#3B387E] focus-visible:ring-[#666FD5]"
                     placeholder="Email"
                     onChange={(e) => setData('email', e.target.value)}
                 />
-                <InputError message={errors.email === 'Required' ? 'Harap Mengisi Email' : errors.email } />
+                <InputError message={errors.email === 'Required' ? 'Harap Mengisi Email' : errors.email} />
             </div>
             <div>
                 <Input
                     type="password"
-                    className="h-12 rounded-xl border-[#666FD5] placeholder:font-black placeholder:text-[#3B387E] focus-visible:ring-[#666FD5]"
+                    className="h-12 rounded-xl border-[#666FD5] font-medium text-[#3B387E] placeholder:font-black placeholder:text-[#3B387E] focus-visible:ring-[#666FD5]"
                     placeholder="Password"
                     onChange={(e) => setData('password', e.target.value)}
                 />
@@ -59,7 +59,7 @@ export default function loginPage() {
             </Button>
             <div className="flex flex-row items-center gap-x-1">
                 <HeadingSmall title="Dont have an account ?" className="text-sm font-extralight text-[#3B387E]" />
-                <a href={route('regiter.new')} className="text-md mb-0.5 font-semibold text-[#3B387E]">
+                <a href={route('register')} className="text-md mb-0.5 font-semibold text-[#3B387E]">
                     Register
                 </a>
             </div>
