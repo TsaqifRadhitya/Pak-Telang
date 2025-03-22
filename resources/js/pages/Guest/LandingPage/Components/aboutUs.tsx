@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { router } from '@inertiajs/react';
 import { LucideArrowRight } from 'lucide-react';
+import { motion } from 'motion/react'
 
 export default function about() {
     return (
@@ -24,7 +25,7 @@ export default function about() {
                     </Button>
                 </article>
                 <div className="relative">
-                    <img src="Asset\Image\bungaTelangAboutUs.png" alt="" className="flex-1/4 rounded-3xl" />
+                    <motion.img initial = {{scale: 0.8, opacity : 0.5,rotate : 120 }} whileInView = {{scale : 1, opacity : 1,rotate : 0 ,transition : {duration : 0.5}}} src="Asset\Image\bungaTelangAboutUs.png" alt="" className="flex-1/4 rounded-3xl" />
                     <img src="Asset\Particle\particleAboutUs2.svg" alt="" className="absolute bottom-0 right-0 translate-x-1/2 translate-y-1/3" />
                 </div>
             </div>

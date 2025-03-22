@@ -26,8 +26,8 @@ export default function testimoni() {
                         Pesan Sekarang <LucideArrowRight color="#EBEFFF" />
                     </Button>
                     <div className="absolute top-0 flex h-full w-full translate-x-7/10 gap-x-9 py-20">
-                        {Array.from({ length: 2 }).map(() => (
-                            <div className="flex flex-1/2 flex-col gap-y-5 rounded-lg bg-[#5961BE] p-10">
+                        {Array.from({ length: 2 }).map((i,index) => (
+                            <div key={index} className="flex flex-1/2 flex-col gap-y-5 rounded-lg bg-[#5961BE] p-10">
                                 <div className="relative flex-1/2">
                                     <div className="absolute top-0 h-full w-1/4 -translate-x-2/3 -translate-y-1/3 rounded-lg bg-transparent px-8 pt-16 pb-24 text-center">
                                         <div className="relative flex h-10 w-10 flex-col items-center justify-center rounded-full bg-[#AFB3FF] font-bold text-white">
