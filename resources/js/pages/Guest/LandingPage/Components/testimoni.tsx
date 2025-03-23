@@ -1,13 +1,18 @@
 import { Button } from '@/components/ui/button';
 import { router } from '@inertiajs/react';
 import { LucideArrowRight } from 'lucide-react';
+import { motion } from 'motion/react';
 
 export default function testimoni() {
     return (
         <div className="relative h-screen overflow-hidden bg-pink-400">
-            <img src="Asset\Background Image\Testimoni.png" alt="" className="z-0 w-full" />
+            <img src="Asset\Background Image\Testimoni.png" alt="" className="z-0 aspect-video h-full object-center w-full"/>
             <main className="absolute top-0 z-20 h-full w-full">
-                <div className="absolute top-1/2 left-1/12 flex h-2/3 w-3/7 -translate-y-1/2 flex-col gap-y-10 rounded-4xl bg-[#AFB3FF] p-20 text-xl font-semibold text-[#3B387E]">
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    whileInView={{ opacity: 1, scale: 1, transition: { duration: 0.5 } }}
+                    className="absolute top-1/2 left-1/12 flex h-2/3 w-3/7 origin-left -translate-y-1/2 flex-col gap-y-10 rounded-4xl bg-[#AFB3FF] p-20 text-xl font-semibold text-[#3B387E]"
+                >
                     <div className="absolute top-0 h-full w-1/4 -translate-x-1/3 -translate-y-1/4 rounded-lg bg-transparent px-8 pt-16 pb-24 text-center">
                         <div className="relative flex h-40 w-40 flex-col items-center justify-center rounded-full bg-[#5961BE] font-bold text-white">
                             <h1 className="absolute top-1/2 -translate-y-1/3 text-[10rem]">“</h1>
@@ -26,8 +31,13 @@ export default function testimoni() {
                         Pesan Sekarang <LucideArrowRight color="#EBEFFF" />
                     </Button>
                     <div className="absolute top-0 flex h-full w-full translate-x-7/10 gap-x-9 py-20">
-                        {Array.from({ length: 2 }).map((i,index) => (
-                            <div key={index} className="flex flex-1/2 flex-col gap-y-5 rounded-lg bg-[#5961BE] p-10">
+                        {Array.from({ length: 2 }).map((i, index) => (
+                            <motion.div
+                                initial={{ x: -300 + index * -300, opacity: 0 }}
+                                whileInView={{ x: 0, opacity: 1, transition: { duration: 0.3 + index * 0.6, delay: 0.3 * index } }}
+                                key={index}
+                                className="flex flex-1/2 flex-col gap-y-5 rounded-lg bg-[#5961BE] p-10"
+                            >
                                 <div className="relative flex-1/2">
                                     <div className="absolute top-0 h-full w-1/4 -translate-x-2/3 -translate-y-1/3 rounded-lg bg-transparent px-8 pt-16 pb-24 text-center">
                                         <div className="relative flex h-10 w-10 flex-col items-center justify-center rounded-full bg-[#AFB3FF] font-bold text-white">
@@ -43,10 +53,10 @@ export default function testimoni() {
                                     </p>
                                     <h1>Apipa</h1>
                                 </div>
-                            </div>
+                            </motion.div>
                         ))}
                     </div>
-                </div>
+                </motion.div>
             </main>
         </div>
     );

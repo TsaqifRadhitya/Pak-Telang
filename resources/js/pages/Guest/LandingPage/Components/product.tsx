@@ -1,27 +1,35 @@
 import { Button } from '@/components/ui/button';
+import { motion } from 'motion/react';
 import Heading from '../../../../components/heading';
 import HeadingSmall from '../../../../components/heading-small';
-import { motion } from 'motion/react'
 export default function product() {
     return (
-        <div className="min-h-screen md:h-screen space-y-5 bg-[#EBEFFF] px-32 py-20">
+        <div className="min-h-screen space-y-10 bg-[#EBEFFF] px-5 py-20 lg:px-32 xl:h-screen">
             <Heading title="Produk Kami" disableMb className="text-4xl font-black text-[#3B387E]" />
-            <HeadingSmall title="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod. " className='text-[#3B387E] font-black'/>
-            <div className="relative md:flex h-4/5 gap-x-20 px-5">
+            <HeadingSmall title="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod. " className="font-black text-[#3B387E]" />
+            <div className="relative mx-auto flex w-full max-w-9xl flex-col gap-y-10 px-4 lg:grid lg:grid-cols-2 xl:grid-cols-3 lg:gap-10 xl:gap-20">
                 {Array.from({ length: 3 }).map((i, index) => (
-                    <motion.div initial = {{ scale : 0.9, opacity : 0 }} style={{ transformOrigin: "bottom" }} whileInView={{opacity : 1, scale : 1,transition : {duration : 0.4} }} key={index} className="relative h-full flex-1/3 rounded-2xl bg-[#EBEFFF] shadow-xl">
-                        <div className="h-2/5 w-full rounded-t-xl bg-[#9A9FFF]"></div>
-                        <div className="absolute top-0 left-1/2 mx-auto h-1/2 w-5/7 -translate-x-1/2 rounded-b-full bg-linear-180 from-[#9A9FFF] to-[#5961BE]"></div>
-                        <div className="mt-20 w-fit rounded-r-full bg-[#5961BE] px-10 py-2 shadow-md">
-                            <h1 className="w-fit pr-4 text-xl font-medium text-white">Teh Telang</h1>
+                    <motion.div
+                        initial={{ scale: 0.5, opacity: 0 }}
+                        whileInView={{ opacity: 1, scale: 1, transition: { duration: 1, delay: index * 0.3 } }}
+                        viewport={{ amount : 0.2 }}
+                        key={index}
+                        className="relative mx-auto flex w-full origin-bottom flex-col rounded-2xl bg-[#EBEFFF] pb-5 shadow-xl 2xl:pb-10"
+                    >
+                        <div className="h-44 w-full rounded-t-xl bg-[#9A9FFF] 2xl:h-64"></div>
+                        <div className="absolute top-0 left-1/2 mx-auto h-52 w-5/6 -translate-x-1/2 rounded-b-full bg-gradient-to-b from-[#9A9FFF] to-[#5961BE] 2xl:h-1/2 2xl:w-4/5"></div>
+                        <div className="mt-12 w-3/5 rounded-r-full bg-[#5961BE] px-6 py-2 shadow-md 2xl:mt-20 2xl:w-2/5">
+                            <h1 className="w-fit pr-4 text-md md:text-xl 2xl:text-xl font-medium text-white">Teh Telang</h1>
                         </div>
-                        <p className='px-10 py-10 text-xl text-[#5961BE] font-medium'>
+                        <p className="px-6 py-6 font-medium text-[#5961BE] 2xl:px-10 2xl:py-10 text-sm 2xl:text-xl">
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod. Lorem ipsum dolor sit amet, consectetur
                             adipiscing elit, sed do eiusmod.
                         </p>
-                        <div className='w-full mt-auto px-10 flex items-center justify-between'>
-                            <h1 className='text-[#5961BE] font-bold text-2xl'>Rp2.500,00</h1>
-                            <Button className='bg-transparent ring-[#5961BE] ring-2 rounded-full text-[#5961BE] cursor-pointer hover:bg-[#5961BE] hover:text-white'>Beli Sekarang</Button>
+                        <div className="mt-auto flex w-full items-center justify-between px-6 2xl:px-10">
+                            <h1 className="text-md md:text-xl 2xl:text-2xl font-bold text-[#5961BE]">Rp2.500,00</h1>
+                            <Button className="cursor-pointer rounded-full bg-transparent text-[#5961BE] ring-2 ring-[#5961BE] hover:bg-[#5961BE] hover:text-white">
+                                Beli Sekarang
+                            </Button>
                         </div>
                     </motion.div>
                 ))}
