@@ -1,7 +1,11 @@
 <?php
 
+use App\Http\Controllers\ProductController;
+use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+
+Route::get('product',[ProductController::class,'index']);
 
 Route::get('/', function () {
     return Inertia::render('Guest/LandingPage/landingPage');
@@ -27,3 +31,4 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 require __DIR__ . '/settings.php';
 require __DIR__ . '/auth.php';
+require __DIR__.'/Admin.php';
