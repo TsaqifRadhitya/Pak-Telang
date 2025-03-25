@@ -23,7 +23,8 @@ class Product extends Seeder
                     'https://res.cloudinary.com/dk0z4ums3/image/upload/v1719881088/attached_image/teh-telang-inilah-7-manfaatnya-untuk-kesehatan-tubuh-0-alodokter.jpg'
                 ]),
                 'productPrice' => 2500,
-                'productType' => 'siap pakai'
+                'productType' => 'siap pakai',
+                'productDescription' => fake()->paragraph()
             ]);
         }
     }

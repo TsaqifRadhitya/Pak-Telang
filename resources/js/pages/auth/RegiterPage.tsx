@@ -3,7 +3,7 @@ import HeadingSmall from '@/components/heading-small';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import AuthLayout from '@/layouts/auth/auth';
-import { useForm } from '@inertiajs/react';
+import { router, useForm } from '@inertiajs/react';
 import z from 'zod';
 import InputError from '../../components/input-error';
 
@@ -107,11 +107,10 @@ export default function registerPage() {
                 <div className="h-0.5 flex-1/2 bg-black"></div>
             </div>
             <div className="relative flex h-12 flex-row justify-between gap-x-5 text-sm">
-                <Button className="h-full w-1/2 rounded-2xl border-1 border-[#666FD5] bg-transparent font-extralight text-[#3B387E] hover:cursor-pointer hover:bg-[#4e55a1]">
+                <Button
+                onClick={() => router.get(route('oauth.login'))}
+                className="h-full w-full rounded-2xl border-1 border-[#666FD5] bg-transparent font-extralight text-[#3B387E] hover:cursor-pointer hover:bg-[#4e55a1]">
                     login with <span className="font-black">google</span>
-                </Button>
-                <Button className="h-full w-1/2 rounded-2xl border-1 border-[#666FD5] bg-transparent text-[#3B387E] hover:cursor-pointer hover:bg-[#4e55a1]">
-                    login with <span className="font-black">Facebook</span>
                 </Button>
             </div>
         </AuthLayout>

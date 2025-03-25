@@ -22,7 +22,8 @@ class ProductController extends Controller
             'productName' => ['required', 'string'],
             'productPrice' => ['required', 'numeric', 'min:1'],
             'productType' => ['required', 'string', Rule::in(['setengah jadi', 'siap pakai'])],
-            'productPhoto' => ['array', 'required', 'min:1']
+            'productPhoto' => ['array', 'required', 'min:1'],
+            'productDescription' => ['string','required']
         ]);
 
         $result['productPhoto'] = json_encode($result['productPhoto']);
@@ -45,7 +46,8 @@ class ProductController extends Controller
             'productName' => ['required', 'string'],
             'productPrice' => ['required', 'numeric', 'min:1'],
             'productType' => ['required', 'string', Rule::in(['setengah jadi', 'siap pakai'])],
-            'productPhoto' => ['array', 'required', 'min:1']
+            'productPhoto' => ['array', 'required', 'min:1'],
+            'productDescription' => ['string','required']
         ]);
 
         $result['productPhoto'] = json_encode($result['productPhoto']);

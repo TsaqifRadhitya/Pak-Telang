@@ -4,7 +4,8 @@ import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import AuthLayout from '@/layouts/auth/auth';
-import { router, useForm } from '@inertiajs/react';
+import { router, useForm, usePage } from '@inertiajs/react';
+import { useEffect } from 'react';
 import { z } from 'zod';
 
 type LoginForm = {
@@ -20,6 +21,14 @@ const loginSchema = z.object({
 });
 
 export default function loginPage() {
+    const page = usePage().props;
+
+    console.log(page.errors);
+
+    useEffect(() => {
+        if(page.errors.email)setError('email', page.errors.email[0]);
+    }, []);
+
     const { post, data, errors, setData, setError, reset } = useForm<LoginForm>();
     const handleSubmit = () => {
         const result = loginSchema.safeParse(data);
@@ -70,16 +79,10 @@ export default function loginPage() {
             </div>
             <div className="relative flex h-12 flex-row justify-between gap-x-5 text-sm">
                 <Button
-                    onClick={() => router.get(route('oauth.login', { provider: 'google' }))}
-                    className="h-full w-1/2 rounded-2xl border-1 border-[#666FD5] bg-transparent font-extralight text-[#3B387E] hover:cursor-pointer hover:bg-[#4e55a1]"
+                    onClick={() => router.get(route('oauth.login'))}
+                    className="h-full w-full rounded-2xl border-1 border-[#666FD5] bg-transparent font-extralight text-[#3B387E] hover:cursor-pointer hover:bg-[#4e55a1]"
                 >
                     login with <span className="font-black">google</span>
-                </Button>
-                <Button
-                    onClick={() => router.get(route('oauth.login', { provider: 'facebook' }))}
-                    className="h-full w-1/2 rounded-2xl border-1 border-[#666FD5] bg-transparent text-[#3B387E] hover:cursor-pointer hover:bg-[#4e55a1]"
-                >
-                    login with <span className="font-black">Facebook</span>
                 </Button>
             </div>
         </AuthLayout>

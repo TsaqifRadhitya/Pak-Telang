@@ -14,9 +14,9 @@ use Inertia\Inertia;
 
 Route::middleware('guest')->group(function () {
 
-    Route::get('auth/{provider}/login',[authController::class,'loginOauth'])->name('oauth.login');
+    Route::get('oauth/login',[authController::class,'loginOauth'])->name('oauth.login');
 
-    Route::get('auth/{provider}/callback',[authController::class,'callbackOauth'])->name('oauth.callback');
+    Route::get('oauth/callback',[authController::class,'callbackOauth'])->name('oauth.callback');
 
     Route::get('register', [RegisteredUserController::class, 'create'])
         ->name('register');
