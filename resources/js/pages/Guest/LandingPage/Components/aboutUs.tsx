@@ -9,7 +9,7 @@ export default function About() {
     console.log(lg);
     return (
         <div className="relative min-h-screen overflow-hidden bg-[#EBEFFF] p-6 md:p-20 md:px-32">
-            <div className="absolute top-1/2 left-1/2 flex w-full -translate-1/2 flex-col p-6 gap-y-10 md:gap-y-20 md:p-20 md:px-32 lg:gap-y-32">
+            <div className="z-30 absolute top-1/2 left-1/2 flex w-full -translate-1/2 flex-col p-6 gap-y-10 md:gap-y-20 md:p-20 md:px-32 lg:gap-y-32">
                 <h1 className="text-center text-4xl font-extrabold text-[#3B387E] md:text-5xl xl:text-6xl">About Us</h1>
                 <div className="flex flex-col-reverse items-center gap-10 md:gap-x-20 lg:flex-row xl:items-start">
                     <article className="w-full space-y-14 py-5 font-bold text-[#3B387E] md:flex-2/3 md:text-3xl">
