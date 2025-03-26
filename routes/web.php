@@ -5,8 +5,6 @@ use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('product',[ProductController::class,'index']);
-
 Route::get('/', function () {
     return Inertia::render('Guest/LandingPage/landingPage');
 })->name('home');

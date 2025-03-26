@@ -23,18 +23,18 @@ export default function testimoni() {
                     </div>
                 </div>
                 <h1 className="text-center text-3xl font-black lg:text-left lg:text-4xl xl:text-5xl">Testimoni</h1>
-                <p className="w-full text-sm md:w-2/3 lg:text-md">
+                <p className="w-full text-sm xl:w-2/3 lg:text-md">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod. Lorem ipsum dolor sit amet, consectetur adipiscing elit,
                     sed do eiusmod.
                 </p>
-                <p className="w-full text-sm md:w-2/3 lg:text-md">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.</p>
+                <p className="w-full text-sm xl:w-2/3 lg:text-md">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.</p>
                 <Button
                     onClick={() => router.get(route('produk'))}
-                    className="cursor-pointer bg-[#5961BE] text-[#EBEFFF] hover:bg-[#5961BE] lg:w-1/2 xl:w-1/3"
+                    className="cursor-pointer bg-[#5961BE] text-[#EBEFFF] hover:bg-[#5961BE] lg:w-1/2 xl:w-1/3 lg:mx-auto xl:mx-0"
                 >
                     Pesan Sekarang <LucideArrowRight color="#EBEFFF" />
                 </Button>
-                <div className="absolute left-0 hidden h-full w-full translate-y-1/2 gap-x-9 py-20 lg:top-0 xl:flex lg:translate-x-7/10 lg:translate-y-0">
+                <div className="absolute left-0 hidden h-full w-full translate-y-1/2 gap-x-9 py-20 lg:top-0 xl:flex lg:translate-x-7/10 lg:translate-y-0 xl:h-[110%] xl:top-1/2 xl:-translate-y-1/2">
                     {Array.from({ length: 2 }).map((i, index) => (
                         <motion.div
                             initial={{ x: -300 + index * -300, opacity: 0 }}
