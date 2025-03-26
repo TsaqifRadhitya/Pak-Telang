@@ -6,8 +6,8 @@ import HeadingSmall from '../../../../components/heading-small';
 export default function product() {
     return (
         <div className="flex min-h-screen flex-col gap-y-10 bg-[#EBEFFF] p-5 lg:px-32 lg:py-20 xl:h-screen">
-            <Heading title="Produk Kami" disableMb className="text-4xl font-black text-[#3B387E]" />
-            <HeadingSmall title="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod. " className="font-black text-[#3B387E]" />
+            <Heading title="Produk Kami" disableMb className="text-4xl font-bold text-[#3B387E]" />
+            <HeadingSmall title="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod. " className="font-semibold text-[#3B387E]" />
             <div className="max-w-9xl relative mx-auto flex w-full flex-col gap-y-10 px-4 md:grid md:grid-cols-2 md:gap-5 lg:gap-10 xl:grid xl:h-full xl:grid-cols-3 xl:gap-20 xl:px-0">
                 {Array.from({ length: 3 }).map((i, index) => (
                     <motion.div

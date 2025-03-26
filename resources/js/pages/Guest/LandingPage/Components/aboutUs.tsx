@@ -8,19 +8,22 @@ export default function About() {
     const { sm, md, lg, xl, xxl } = currentMediaQuerry();
     console.log(lg);
     return (
-        <div className="relative min-h-screen overflow-hidden bg-[#EBEFFF] p-6 md:p-20 md:px-32">
-            <div className="z-30 absolute top-1/2 left-1/2 flex w-full -translate-1/2 flex-col p-6 gap-y-10 md:gap-y-20 md:p-20 md:px-32 lg:gap-y-32">
-                <h1 className="text-center text-4xl font-extrabold text-[#3B387E] md:text-5xl xl:text-6xl">About Us</h1>
+        <div className="object-center relative min-h-screen overflow-hidden bg-[#EBEFFF] p-6">
+            <div className=" z-30 flex w-full flex-col gap-y-10 p-6 md:gap-y-20 md:p-20 md:px-32 lg:gap-y-20">
+                <h1 className="text-center text-4xl font-bold text-[#3B387E] md:text-5xl xl:text-6xl">About Us</h1>
                 <div className="flex flex-col-reverse items-center gap-10 md:gap-x-20 lg:flex-row xl:items-start">
-                    <article className="w-full space-y-14 py-5 font-bold text-[#3B387E] md:flex-2/3 md:text-3xl">
-                        <p className="text-[1rem] xl:text-3xl">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod. Lorem ipsum dolor sit amet, consectetur
-                            adipiscing elit, sed do eiusmod. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.
+                    <article className="w-full space-y-14 xl:space-y-10 py-5 font-bold text-[#3B387E] md:flex-2/3 md:text-3xl">
+                        <p className="text-[1rem] xl:text-xl">
+                            Pak Telang hadir untuk membawa kebaikan alam yang baik untuk tubuhmu. Dengan bahan-bahan alami seperti bunga telang yang
+                            kaya antioksidan dan daun mint yang menyegarkan, Setiap botolnya bukan sekadar pelepas dahaga, tetapi juga menjadi
+                            relaksasi yang menyehatkan.
                         </p>
-                        <p className="text-[1rem] xl:text-3xl">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod. Lorem ipsum dolor sit amet, consectetur
-                            adipiscing elit
+                        <p className="text-[1rem] xl:text-xl">
+                            Kami percaya bahwa minuman bukan hanya sekadar menyegarkan, melainkan harus menjadi bagian dari gaya hidup sehat. Tanpa
+                            pewarna buatan, tanpa pengawet, hanya kebaikan asli dari alam. Rasakan harmoni rasa dan manfaat dalam setiap tegukan
+                            bersama Pak Telang!
                         </p>
+                        <p className="text-[1rem] xl:text-xl">Siap untuk menjadi lebih sehat?</p>
                         <motion.div
                             initial={{ y: 30, opacity: 0 }}
                             whileInView={{ y: 0, opacity: 1, transition: { duration: 0.5 } }}
@@ -34,7 +37,7 @@ export default function About() {
                             </Button>
                         </motion.div>
                     </article>
-                    <div className="relative w-full max-w-2/5 md:w-2/5 xl:w-1/4">
+                    <div className="relative w-full max-w-2/5 md:w-2/5 xl:w-2/5">
                         <motion.img
                             initial={{ scale: 0.8, opacity: 0, rotate: -60 }}
                             whileInView={{ scale: 1, opacity: 1, rotate: 0, transition: { duration: 0.5 } }}

@@ -14,9 +14,9 @@ export default function LandingPageLayout({ children, page }: { children: React.
         <div className="relative min-h-screen w-full">
             <Head title={page} />
             <nav className="hidden lg:fixed top-0 z-50 lg:flex w-full flex-row items-center justify-between px-10 py-5">
-                <h1 className="text-2xl font-black text-[#3b387e]">Pak Telang</h1>
+                <h1 className="text-2xl font-semibold text-[#3b387e]">Pak Telang</h1>
                 <div className="hidden gap-x-16 md:flex">
-                    <ul className="flex gap-x-20 font-semibold text-[#3b387e]">
+                    <ul className="flex gap-x-20 font-medium text-[#3b387e] translate-y-1/5">
                         <li className="">
                             <a href={route('home')} className={page === 'Home' ? 'underline decoration-4 underline-offset-8' : ''}>
                                 Home
@@ -44,13 +44,13 @@ export default function LandingPageLayout({ children, page }: { children: React.
                                 {' '}
                                 <Button
                                     onClick={() => router.get(route('login'))}
-                                    className="min-h-10 min-w-28 cursor-pointer bg-transparent font-black text-[#5961BE] ring-1 ring-[#5961BE] hover:bg-transparent"
+                                    className="min-h-10 min-w-28 cursor-pointer bg-transparent font-bold text-[#5961BE] ring-1 ring-[#5961BE] hover:bg-transparent"
                                 >
                                     Login
                                 </Button>
                                 <Button
                                     onClick={() => router.get(route('register'))}
-                                    className="min-h-10 min-w-28 cursor-pointer bg-[#5961BE] font-black hover:bg-[#5961BE] text-white"
+                                    className="min-h-10 min-w-28 cursor-pointer bg-[#5961BE] font-bold hover:bg-[#5961BE] text-white"
                                 >
                                     Register
                                 </Button>
@@ -60,7 +60,7 @@ export default function LandingPageLayout({ children, page }: { children: React.
                             <>
                                 <Button
                                     onClick={() => router.get(route('dashboard'))}
-                                    className="min-h-10 min-w-28 cursor-pointer bg-transparent font-black text-[#5961BE] ring-1 ring-[#5961BE] hover:bg-transparent"
+                                    className="min-h-10 min-w-28 cursor-pointer bg-transparent font-bold text-[#5961BE] ring-1 ring-[#5961BE] hover:bg-transparent"
                                 >
                                     Go To Dashboard
                                 </Button>
@@ -70,7 +70,7 @@ export default function LandingPageLayout({ children, page }: { children: React.
                 </div>
             </nav>
             <nav className="lg:hidden fixed top-0 z-50 flex flex-row w-full items-center justify-between bg-white px-6 py-4 shadow-sm md:px-10">
-                <h1 className="text-2xl font-black text-[#3b387e]">Pak Telang</h1>
+                <h1 className="text-2xl font-bold text-[#3b387e]">Pak Telang</h1>
 
                 {/* Mobile Menu Button */}
                 <button className="lg:hidden ml-auto cursor-pointer" onClick={() => setIsMenuOpen(!isMenuOpen)}>
@@ -81,7 +81,7 @@ export default function LandingPageLayout({ children, page }: { children: React.
                 <div
                     className={`absolute top-16 left-0 origin-top bg-white p-6 shadow-md transition-all w-full ${isMenuOpen ? 'scale-y-100' : 'scale-y-0'}`}
                 >
-                    <ul className="flex flex-col gap-y-4 text-lg font-semibold text-[#3b387e]">
+                    <ul className="flex flex-col gap-y-4 text-lg font-medium text-[#3b387e]">
                         <li>
                             <a href={route('home')} className={page === 'Home' ? 'underline decoration-4 underline-offset-8' : ''}>
                                 Home
@@ -108,13 +108,13 @@ export default function LandingPageLayout({ children, page }: { children: React.
                             <>
                                 <Button
                                     onClick={() => router.get(route('login'))}
-                                    className="min-h-10 min-w-28 cursor-pointer bg-transparent font-black text-[#5961BE] ring-1 ring-[#5961BE] hover:bg-transparent"
+                                    className="min-h-10 min-w-28 cursor-pointer bg-transparent font-bold text-[#5961BE] ring-1 ring-[#5961BE] hover:bg-transparent"
                                 >
                                     Login
                                 </Button>
                                 <Button
                                     onClick={() => router.get(route('register'))}
-                                    className="min-h-10 min-w-28 cursor-pointer bg-[#5961BE] font-black hover:bg-[#5961BE] text-white"
+                                    className="min-h-10 min-w-28 cursor-pointer bg-[#5961BE] font-bold hover:bg-[#5961BE] text-white"
                                 >
                                     Register
                                 </Button>
@@ -123,7 +123,7 @@ export default function LandingPageLayout({ children, page }: { children: React.
                         {auth.user && (
                             <Button
                                 onClick={() => router.get(route('dashboard'))}
-                                className="min-h-10 min-w-28 cursor-pointer bg-transparent font-black text-[#5961BE] ring-1 ring-[#5961BE] hover:bg-transparent"
+                                className="min-h-10 min-w-28 cursor-pointer bg-transparent font-bold text-[#5961BE] ring-1 ring-[#5961BE] hover:bg-transparent"
                             >
                                 Go To Dashboard
                             </Button>

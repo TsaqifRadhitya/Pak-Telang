@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\productDetail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class ProductController extends Controller
@@ -23,7 +25,7 @@ class ProductController extends Controller
             'productPrice' => ['required', 'numeric', 'min:1'],
             'productType' => ['required', 'string', Rule::in(['setengah jadi', 'siap pakai'])],
             'productPhoto' => ['array', 'required', 'min:1'],
-            'productDescription' => ['string','required']
+            'productDescription' => ['string', 'required']
         ]);
 
         $result['productPhoto'] = json_encode($result['productPhoto']);
@@ -47,7 +49,7 @@ class ProductController extends Controller
             'productPrice' => ['required', 'numeric', 'min:1'],
             'productType' => ['required', 'string', Rule::in(['setengah jadi', 'siap pakai'])],
             'productPhoto' => ['array', 'required', 'min:1'],
-            'productDescription' => ['string','required']
+            'productDescription' => ['string', 'required']
         ]);
 
         $result['productPhoto'] = json_encode($result['productPhoto']);
@@ -64,5 +66,28 @@ class ProductController extends Controller
     {
         $data = Product::whereId($product)->first();
         $data->productPhoto = json_decode($data->productPhoto);
+    }
+
+    public function updateStock(Request $request, $id)
+    {
+        $request->validate(['stock' => ['required', 'numeric']]);
+        productDetail::updateOrInsert(
+            ['userId' => Auth::user()->id, 'productId' => $id],
+            ['stock' => $request->input('stock')]
+        );
+    }
+
+    public function showStock()
+    {
+        $user = Auth::user();
+        $productStock = productDetail::whereUserid($user->id)->get();
+        if ($user->role === 'Pak Telang') {
+        } else {
+        }
+    }
+
+    public function disableProduct($id)
+    {
+        productDetail::whereProductid($id)->update(['disable' => true]);
     }
 }

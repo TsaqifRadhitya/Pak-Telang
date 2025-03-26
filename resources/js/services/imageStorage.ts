@@ -4,19 +4,23 @@ export class supabaseImage extends supabaseService {
 
     private basePath: string;
 
-    constructor(user: string) {
+    constructor(user: string, type: 'Image' | 'Video' | 'Mou') {
         super()
-        this.basePath = `Image/${user}/`
+        this.basePath = `${type}/${user}/`
     }
 
-    public async uploadImage(params: FileList) {
+    public async upload(params: FileList) {
         const promise = Object.values(params).map(async (item) => {
             await this.supabaseConnection.storage.from('paktelang').upload(`${this.basePath}${item.name}`, item, { contentType: item.type })
         })
         return Promise.all(promise)
     }
 
-    public async deleteImage(params: string | string[]) {
+    public async update(path: string, resource: File) {
+        return await this.supabaseConnection.storage.from('paktelang').update(path, resource)
+    }
+
+    public async delete(params: string | string[]) {
         if (typeof params === 'string') {
             await this.supabaseConnection.storage.from('paktelang').remove([`${this.basePath}${params}`])
         } else if (Array.isArray(params)) {

@@ -4,7 +4,7 @@ import { LucideArrowRight } from 'lucide-react';
 
 export default function Welcome() {
     return (
-        <div className="relative flex h-screen items-center justify-center overflow-hidden bg-[#EBEFFF] px-6 md:px-12">
+        <div className="relative flex h-screen items-center justify-center bg-[#EBEFFF] px-6 md:px-12">
             <div className="relative z-40 mx-auto flex max-w-5xl flex-col items-center gap-x-10 gap-y-10 text-center md:flex-row md:text-left">
                 {/* Gambar */}
                 <motion.img
@@ -20,9 +20,16 @@ export default function Welcome() {
                     <motion.h1
                         initial={{ y: -50, opacity: 0 }}
                         whileInView={{ y: 0, opacity: 1, transition: { duration: 0.5 } }}
-                        className="text-2xl font-extrabold text-[#3B387E] md:text-5xl"
+                        className="text-2xl font-bold text-[#3B387E] md:text-5xl"
                     >
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit
+                        Rasakan Kebaikan Pak Telang
+                    </motion.h1>
+                    <motion.h1
+                        initial={{ x: -50, opacity: 0 }}
+                        whileInView={{ x: 0, opacity: 1, transition: { duration: 0.5 } }}
+                        className="text-lg font-semibold text-[#3B387E] md:text-2xl"
+                    >
+                        Pilihan minuman berkualitas untuk hari-harimu lebih sehat
                     </motion.h1>
                     <motion.div initial={{ y: 50, opacity: 0 }} whileInView={{ y: 0, opacity: 1, transition: { duration: 0.5 } }}>
                         <Button className="flex w-full cursor-pointer items-center justify-center gap-2 bg-[#5961BE] text-[#EBEFFF] hover:bg-[#5961BE] lg:w-1/3">

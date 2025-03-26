@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import AuthLayout from '@/layouts/auth/auth';
 import { router, useForm, usePage } from '@inertiajs/react';
+import { Mail,Lock } from 'lucide-react';
 import { useEffect } from 'react';
 import { z } from 'zod';
 
@@ -26,7 +27,7 @@ export default function loginPage() {
     console.log(page.errors);
 
     useEffect(() => {
-        if(page.errors.email)setError('email', page.errors.email[0]);
+        if (page.errors.email) setError('email', page.errors.email[0]);
     }, []);
 
     const { post, data, errors, setData, setError, reset } = useForm<LoginForm>();
@@ -42,25 +43,31 @@ export default function loginPage() {
     return (
         <AuthLayout head="Login">
             <div className="flex flex-col gap-y-3">
-                <Heading title="Welcome Back!" className="text-center text-4xl font-[1000] text-[#3B387E]" disableMb={true} />
+                <Heading title="Welcome Back!" className="text-center text-4xl font-bold text-[#3B387E]" disableMb={true} />
                 <HeadingSmall title="Silahkan melakukan login" className="text-center text-sm font-extralight text-[#3B387E]" />
             </div>
             <div className="flex flex-col gap-y-2">
-                <Input
-                    type="email"
-                    className="h-12 rounded-xl border-[#666FD5] font-medium text-[#3B387E] placeholder:font-black placeholder:text-[#3B387E] focus-visible:ring-[#666FD5]"
-                    placeholder="Email"
-                    onChange={(e) => setData('email', e.target.value)}
-                />
+                <div className="flex items-center rounded-xl border-[1.5px] border-[#5961BE] pl-5">
+                    <Mail color="#3B387E" size={30} strokeWidth={1.5} />
+                    <Input
+                        type="email"
+                        className="h-12 rounded-xl border-0 pl-2 font-medium text-[#3B387E] ring-0 placeholder:font-medium placeholder:text-[#3B387E] focus-visible:ring-0"
+                        placeholder="Email"
+                        onChange={(e) => setData('email', e.target.value)}
+                    />
+                </div>
                 <InputError message={errors.email === 'Required' ? 'Harap Mengisi Email' : errors.email} />
             </div>
             <div>
-                <Input
-                    type="password"
-                    className="h-12 rounded-xl border-[#666FD5] font-medium text-[#3B387E] placeholder:font-black placeholder:text-[#3B387E] focus-visible:ring-[#666FD5]"
-                    placeholder="Password"
-                    onChange={(e) => setData('password', e.target.value)}
-                />
+                <div className="flex items-center rounded-xl border-[1.5px] border-[#5961BE] pl-5">
+                    <Lock color="#3B387E" size={30} strokeWidth={1.5} />
+                    <Input
+                        type="password"
+                        className="h-12 rounded-xl border-0 pl-2 font-medium text-[#3B387E] ring-0 placeholder:font-medium placeholder:text-[#3B387E] focus-visible:ring-0"
+                        placeholder="Password"
+                        onChange={(e) => setData('password', e.target.value)}
+                    />
+                </div>
                 <InputError message={errors.password === 'Required' ? 'Harap Mengisi Password' : errors.password} />
             </div>
             <Button className="h-12 rounded-2xl bg-[#666FD5] text-xl hover:cursor-pointer hover:bg-[#4e55a1]" onClick={handleSubmit}>
@@ -82,7 +89,10 @@ export default function loginPage() {
                     onClick={() => router.get(route('oauth.login'))}
                     className="h-full w-full rounded-2xl border-1 border-[#666FD5] bg-transparent font-extralight text-[#3B387E] hover:cursor-pointer hover:bg-[#4e55a1]"
                 >
-                    <span><img className='w-8' src="Asset\Icon\Google.png" alt="" /></span>login with <span className="font-black">google</span>
+                    <span>
+                        <img className="w-8" src="Asset\Icon\Google.png" alt="" />
+                    </span>
+                    login with <span className="font-bold">Google</span>
                 </Button>
             </div>
         </AuthLayout>

@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import AuthLayout from '@/layouts/auth/auth';
 import { router, useForm } from '@inertiajs/react';
+import { Lock, Mail, UserIcon } from 'lucide-react';
 import z from 'zod';
 import InputError from '../../components/input-error';
 
@@ -46,47 +47,55 @@ export default function registerPage() {
     return (
         <AuthLayout head="Register">
             <div className="flex flex-col gap-y-3">
-                <Heading title="Hii there, Welcome!" className="text-center text-4xl font-[1000] text-[#3B387E]" disableMb={true} />
+                <Heading title="Hii there, Welcome!" className="text-center text-4xl font-bold text-[#3B387E]" disableMb={true} />
                 <HeadingSmall title="Please fill out form to register" className="text-center text-sm font-extralight text-[#3B387E]" />
             </div>
             <div className="flex flex-col gap-y-2">
-                <Input
-                    type="text"
-                    className="h-12 rounded-xl border-[#666FD5] font-medium text-[#3B387E] placeholder:font-black placeholder:text-[#3B387E] focus-visible:ring-[#666FD5]"
-                    placeholder="Name"
-                    value={data.name}
-                    onChange={(e) => setData('name', e.target.value)}
-                />
+                <div className="flex items-center rounded-xl border-[1.5px] border-[#5961BE] pl-4">
+                    <UserIcon color="#3B387E" size={30} strokeWidth={1.5} />
+                    <Input
+                        type="text"
+                        className="h-12 rounded-xl border-0 pl-2 font-medium text-[#3B387E] ring-0 placeholder:font-medium placeholder:text-[#3B387E] focus-visible:ring-0"
+                        placeholder="Name"
+                        onChange={(e) => setData('name', e.target.value)}
+                    />
+                </div>
                 <InputError message={errors.name === 'Required' ? 'Harap Mengisi Nama' : errors.name} />
             </div>
             <div className="flex flex-col gap-y-2">
-                <Input
-                    type="email"
-                    className="h-12 rounded-xl border-[#666FD5] font-medium text-[#3B387E] placeholder:font-black placeholder:text-[#3B387E] focus-visible:ring-[#666FD5]"
-                    placeholder="Email"
-                    value={data.email}
-                    onChange={(e) => setData('email', e.target.value)}
-                />
+                <div className="flex items-center rounded-xl border-[1.5px] border-[#5961BE] pl-4">
+                    <Mail color="#3B387E" size={30} strokeWidth={1.5} />
+                    <Input
+                        type="email"
+                        className="h-12 rounded-xl border-0 pl-2 font-medium text-[#3B387E] ring-0 placeholder:font-medium placeholder:text-[#3B387E] focus-visible:ring-0"
+                        placeholder="Email"
+                        onChange={(e) => setData('email', e.target.value)}
+                    />
+                </div>
                 <InputError message={errors.email === 'Required' ? 'Harap Mengisi Email' : errors.email} />
             </div>
             <div className="flex flex-col gap-y-2">
-                <Input
-                    type="password"
-                    className="h-12 rounded-xl border-[#666FD5] font-medium text-[#3B387E] placeholder:font-black placeholder:text-[#3B387E] focus-visible:ring-[#666FD5]"
-                    placeholder="Password"
-                    onChange={(e) => setData('password', e.target.value)}
-                    value={data.password}
-                />
+                <div className="flex items-center rounded-xl border-[1.5px] border-[#5961BE] pl-4">
+                    <Lock color="#3B387E" size={30} strokeWidth={1.5} />
+                    <Input
+                        type="password"
+                        className="h-12 rounded-xl border-0 pl-2 font-medium text-[#3B387E] ring-0 placeholder:font-medium placeholder:text-[#3B387E] focus-visible:ring-0"
+                        placeholder="Password"
+                        onChange={(e) => setData('password', e.target.value)}
+                    />
+                </div>
                 <InputError message={errors.password === 'Required' ? 'Harap Mengisi Password' : errors.password} />
             </div>
             <div className="flex flex-col gap-y-2">
-                <Input
-                    type="password"
-                    className="h-12 rounded-xl border-[#666FD5] font-medium text-[#3B387E] placeholder:font-black placeholder:text-[#3B387E] focus-visible:ring-[#666FD5]"
-                    placeholder="Confirm Password"
-                    onChange={(e) => setData('password_confirmation', e.target.value)}
-                    value={data.password_confirmation}
-                />
+                <div className="flex items-center rounded-xl border-[1.5px] border-[#5961BE] pl-4">
+                    <Lock color="#3B387E" size={30} strokeWidth={1.5} />
+                    <Input
+                        type="password"
+                        className="h-12 rounded-xl border-0 pl-2 font-medium text-[#3B387E] ring-0 placeholder:font-medium placeholder:text-[#3B387E] focus-visible:ring-0"
+                        placeholder="Confirm Password"
+                        onChange={(e) => setData('password_confirmation', e.target.value)}
+                    />
+                </div>
                 <InputError
                     message={errors.password_confirmation === 'Required' ? 'Harap Mengisi Konfirmasi Password' : errors.password_confirmation}
                 />

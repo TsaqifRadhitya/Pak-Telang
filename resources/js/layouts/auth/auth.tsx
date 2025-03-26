@@ -12,8 +12,8 @@ export default function AuthLayout({children,head,className} : {children : React
             </main>
             <aside className="relative hidden md:flex-3/5 xl:flex-2/5 2xl:flex-1/3 bg-[#666FD5] xl:block">
                 <div className="absolute top-1/2 flex min-h-5/7 w-5/6 -translate-x-1/6 -translate-y-1/2 flex-row rounded-[4rem] bg-[#AFB3FF] p-15">
-                    <h1 className="text-5xl font-extralight text-white">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing <br /> elit, sed <br /> do <br /> eiusmod
+                    <h1 className="text-5xl text-white">
+                        Masuk dan temukan kesegaran dalam <br/>setiap tegukan!
                     </h1>
                     <img
                         src="Asset\Image\bungaTelang.png"
