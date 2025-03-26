@@ -50,7 +50,7 @@ export default function LandingPageLayout({ children, page }: { children: React.
                                 </Button>
                                 <Button
                                     onClick={() => router.get(route('register'))}
-                                    className="min-h-10 min-w-28 cursor-pointer bg-[#5961BE] font-black hover:bg-[#5961BE]"
+                                    className="min-h-10 min-w-28 cursor-pointer bg-[#5961BE] font-black hover:bg-[#5961BE] text-white"
                                 >
                                     Register
                                 </Button>
@@ -114,7 +114,7 @@ export default function LandingPageLayout({ children, page }: { children: React.
                                 </Button>
                                 <Button
                                     onClick={() => router.get(route('register'))}
-                                    className="min-h-10 min-w-28 cursor-pointer bg-[#5961BE] font-black hover:bg-[#5961BE] text-transparent"
+                                    className="min-h-10 min-w-28 cursor-pointer bg-[#5961BE] font-black hover:bg-[#5961BE] text-white"
                                 >
                                     Register
                                 </Button>

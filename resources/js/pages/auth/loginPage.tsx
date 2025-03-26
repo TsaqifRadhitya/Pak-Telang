@@ -82,7 +82,7 @@ export default function loginPage() {
                     onClick={() => router.get(route('oauth.login'))}
                     className="h-full w-full rounded-2xl border-1 border-[#666FD5] bg-transparent font-extralight text-[#3B387E] hover:cursor-pointer hover:bg-[#4e55a1]"
                 >
-                    login with <span className="font-black">google</span>
+                    <span><img className='w-8' src="Asset\Icon\Google.png" alt="" /></span>login with <span className="font-black">google</span>
                 </Button>
             </div>
         </AuthLayout>

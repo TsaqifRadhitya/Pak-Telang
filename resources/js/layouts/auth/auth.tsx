@@ -1,11 +1,12 @@
 import { Head } from "@inertiajs/react";
+import { cn } from "@/lib/utils";
 
-export default function AuthLayout({children,head} : {children : React.ReactNode,head : string}) {
+export default function AuthLayout({children,head,className} : {children : React.ReactNode,head : string,className? : string}) {
     return (
-        <div className="flex min-h-screen w-full flex-row overflow-x-hidden">
+        <div className={cn("flex min-h-screen w-full flex-row overflow-x-hidden",className)}>
             <Head title={head} />
-            <main className="relative flex-1 bg-[#EBEFFF] md:flex-2/3">
-                <div className="absolute top-1/2 left-1/2 flex h-fit w-full px-10 md:px-0 -translate-1/2 flex-col gap-y-6 md:w-1/2 xl:w-2/5 lg:w-2/5">
+            <main className="flex-1 bg-[#EBEFFF] md:flex-2/3 content-center">
+                <div className="mx-auto flex h-fit w-full p-10 md:p-0 flex-col gap-y-6 md:w-1/2 xl:w-2/5 lg:w-2/5">
                     {children}
                 </div>
             </main>

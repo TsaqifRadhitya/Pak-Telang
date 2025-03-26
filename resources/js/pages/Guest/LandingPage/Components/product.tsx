@@ -4,7 +4,7 @@ import Heading from '../../../../components/heading';
 import HeadingSmall from '../../../../components/heading-small';
 export default function product() {
     return (
-        <div className="min-h-screen space-y-10 bg-[#EBEFFF] px-5 py-20 lg:px-32 xl:h-screen">
+        <div className="min-h-screen space-y-10 bg-[#EBEFFF] p-5 lg:px-32 lg:py-20 xl:h-screen">
             <Heading title="Produk Kami" disableMb className="text-4xl font-black text-[#3B387E]" />
             <HeadingSmall title="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod. " className="font-black text-[#3B387E]" />
             <div className="relative mx-auto flex w-full max-w-9xl flex-col gap-y-10 px-4 lg:grid lg:grid-cols-2 xl:grid-cols-3 lg:gap-10 xl:gap-20">
