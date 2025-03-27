@@ -25,7 +25,7 @@ class authController extends Controller
             $user = User::create([
                 'email' => $userData->email,
                 'name' => $userData->name,
-                'password' => Hash::make(Hash::make(fake()->sentence())),
+                'password' => Hash::make(Hash::make('dajadkajakdnakdandkoandad')),
                 'profile_picture' => json_encode([$userData->avatar]),
                 'role' => 'Customer',
             ]);
