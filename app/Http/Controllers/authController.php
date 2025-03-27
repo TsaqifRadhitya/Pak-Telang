@@ -25,10 +25,11 @@ class authController extends Controller
             $user = User::create([
                 'email' => $userData->email,
                 'name' => $userData->name,
-                'password' => Hash::make(Str::random(32)),
+                'password' => Hash::make(Hash::make(fake()->sentence())),
                 'profile_picture' => json_encode([$userData->avatar]),
                 'role' => 'Customer',
             ]);
+            dd($user);
         }
         Auth::login($user, true);
 
