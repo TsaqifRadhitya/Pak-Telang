@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -21,14 +22,17 @@ class authController extends Controller
         $userData = Socialite::driver('google')->stateless()->user();
         $user = User::whereEmail($userData->email)->first();
         if ($user === null) {
-            $user = User::create([
-                'email' => $userData->email,
-                'name' => $userData->name,
-                'password' => Hash::make(fake()->sentence()),
-                'profile_picture' => json_encode([$userData->avatar]),
-                'role' => 'Customer',
-            ]);
-            dd($user);
+            try {
+                $user = User::create([
+                    'email' => $userData->email,
+                    'name' => $userData->name,
+                    'password' => Hash::make(fake()->sentence()),
+                    'profile_picture' => json_encode([$userData->avatar]),
+                    'role' => 'Customer',
+                ]);
+            } catch (Exception $e) {
+                dd($e);
+            };
             // return redirect(route('login'))->withErrors('Akun tidak tersedia', 'email');
         }
         Auth::login($user, true);
