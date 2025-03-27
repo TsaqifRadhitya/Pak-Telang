@@ -22,7 +22,6 @@ class authController extends Controller
         $userData = Socialite::driver('google')->stateless()->user();
         $user = User::whereEmail($userData->email)->first();
         if ($user === null) {
-            dd($user, $userData);
             $user = User::create([
                 'email' => $userData->email,
                 'name' => $userData->name,
@@ -30,7 +29,6 @@ class authController extends Controller
                 'profile_picture' => json_encode([$userData->avatar]),
                 'role' => 'Customer',
             ]);
-            // return redirect(route('login'))->withErrors('Akun tidak tersedia', 'email');
         }
         Auth::login($user, true);
 
