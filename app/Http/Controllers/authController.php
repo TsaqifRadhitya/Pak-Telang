@@ -30,7 +30,7 @@ class authController extends Controller
                     'profile_picture' => json_encode([$userData->avatar]),
                     'role' => 'Customer',
                 ]);
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 dd($e);
             };
             // return redirect(route('login'))->withErrors('Akun tidak tersedia', 'email');
