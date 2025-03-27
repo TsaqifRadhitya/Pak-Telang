@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -29,7 +28,6 @@ class authController extends Controller
                 'profile_picture' => json_encode([$userData->avatar]),
                 'role' => 'Customer',
             ]);
-            dd($user);
         }
         Auth::login($user, true);
 
