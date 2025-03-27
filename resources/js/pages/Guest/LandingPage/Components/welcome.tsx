@@ -10,7 +10,7 @@ export default function Welcome() {
                 <motion.img
                     src="Asset/Image/bungaTelangWelcome.png"
                     alt=""
-                    className="w-1/2 max-w-xs md:max-w-md lg:max-w-lg"
+                    className="w-1/4 max-w-xs md:max-w-md lg:max-w-lg"
                     initial={{ scale: 0.5 }}
                     whileInView={{ scale: 1, transition: { duration: 0.5, ease: 'easeInOut' } }}
                 />

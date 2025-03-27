@@ -41,7 +41,7 @@ export default function loginPage() {
         post(route('login'), { onFinish: () => reset('password') });
     };
     return (
-        <AuthLayout head="Login">
+        <AuthLayout head="Login" type='login'>
             <div className="flex flex-col gap-y-3">
                 <Heading title="Welcome Back!" className="text-center text-4xl font-bold text-[#3B387E]" disableMb={true} />
                 <HeadingSmall title="Silahkan melakukan login" className="text-center text-sm font-extralight text-[#3B387E]" />

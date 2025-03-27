@@ -45,7 +45,7 @@ export default function registerPage() {
         post(route('register'));
     };
     return (
-        <AuthLayout head="Register">
+        <AuthLayout head="Register" type='register'>
             <div className="flex flex-col gap-y-3">
                 <Heading title="Hii there, Welcome!" className="text-center text-4xl font-bold text-[#3B387E]" disableMb={true} />
                 <HeadingSmall title="Please fill out form to register" className="text-center text-sm font-extralight text-[#3B387E]" />

@@ -1,12 +1,15 @@
 <?php
 
 use App\Http\Controllers\ProductController;
+use App\Models\kontent;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    return Inertia::render('Guest/LandingPage/landingPage');
+    $product = Product::all();
+    $kontent = kontent::all();
+    return Inertia::render('Guest/LandingPage/landingPage',compact('product','kontent'));
 })->name('home');
 
 Route::get('konten', function () {
