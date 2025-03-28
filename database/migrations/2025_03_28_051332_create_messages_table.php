@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_details', function (Blueprint $table) {
+        Schema::create('messages', function (Blueprint $table) {
             $table->ulid('id')->primary();
-            $table->integer('stock');
-            $table->boolean('disable')->default(false);
-            $table->foreignUlid('productId')->constrained('products')->onDelete('cascade');
-            $table->foreignUuid('userId')->constrained('users')->onDelete('cascade');
             $table->timestamps();
+            $table->string('message');
+            $table->boolean('isReaded')->default(false);
+            $table->foreignUuid('from')->constrained('users')->onDelete('cascade');
+            $table->foreignUuid('to')->constrained('users')->onDelete('cascade');
         });
     }
 
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_details');
+        Schema::dropIfExists('messages');
     }
 };

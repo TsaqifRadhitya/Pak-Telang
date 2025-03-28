@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\messageController;
 use App\Http\Controllers\ProductController;
 use App\Models\kontent;
 use App\Models\Product;
@@ -11,6 +12,7 @@ Route::get('/', function () {
     $kontent = kontent::all();
     return Inertia::render('Guest/LandingPage/landingPage',compact('product','kontent'));
 })->name('home');
+
 
 Route::get('konten', function () {
     return Inertia::render('Guest/Konten/Konten');
@@ -25,6 +27,9 @@ Route::get('donasi', function () {
 })->name('donasi');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/chat',[messageController::class,'allPerson'])->name('chat.index');
+    Route::get('/chat/{id}',[messageController::class,'getChatRoom'])->name('chat.create');
+    Route::post('/chat/{id}',[messageController::class,'pustChat'])->name('chat.store');
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
