@@ -19,21 +19,39 @@ interface Props extends SharedData {
     target: User;
 }
 
+const chatService = new chatServices();
+
 export default function ChatRoom() {
     const { messages, auth, target } = usePage<Props>().props;
     const [roomchatMessages, setMessages] = useState<messageType[]>(messages);
     const [inputMessage, setInputMessage] = useState<string>('');
     const messagesEndRef = useRef<HTMLDivElement>(null);
+    const [onetime, setOnetime] = useState<Boolean>(false);
+    const [signal, setSignal] = useState<Boolean>(false);
+    const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [roomchatMessages]);
 
     useEffect(() => {
-        const chatService = new chatServices();
-        document.getElementById('app')?.removeAttribute('data-page');
-        chatService.activeRoomChat(auth.user.id, target.id, handleNewChat);
-    }, []);
+        if (!onetime) {
+            chatService.activeRoomChat(auth.user.id, target.id, handleNewChat, handelSignal);
+            setOnetime(true);
+        }
+    }, [auth.user.id, target.id]);
+
+    // useEffect(() => {
+    //     chatService.sendSignal(auth.user.id.toString(), 'typing');
+    // }, [inputMessage]);
+
+    const handelSignal = (type: 'typing' | 'leave') => {
+        if (type === 'typing') {
+            setSignal(true);
+        } else {
+            setSignal(false);
+        }
+    };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -43,13 +61,13 @@ export default function ChatRoom() {
                 to: target.id.toString(),
                 from: auth.user.id.toString(),
             };
+            setInputMessage('');
+            inputRef.current?.blur()
             router.post(
                 route('chat.store', { id: target.id }),
                 { message: inputMessage },
                 {
-                    onSuccess: () => {
-                        setInputMessage(''); // Clear input after sending
-                    },
+
                     async: true,
                 },
             );
@@ -62,7 +80,7 @@ export default function ChatRoom() {
     };
 
     return (
-        <div className="objec flex h-screen flex-col bg-[url('https://ybcvbaxalqwrvgemxdzc.supabase.co/storage/v1/object/public/paktelang/Image/WhatsApp%20Image%202025-03-19%20at%2020.10.22_3898d1db.jpg')] bg-cover">
+        <div className="flex h-screen flex-col bg-[url('https://ybcvbaxalqwrvgemxdzc.supabase.co/storage/v1/object/public/paktelang/Image/WhatsApp%20Image%202025-03-19%20at%2020.10.22_3898d1db.jpg')] bg-cover">
             {/* Header */}
             <Card className="rounded-t-none border-b border-gray-200 bg-white p-4">
                 <h1 className="text-xl font-semibold text-black">{target.name}</h1>
@@ -82,23 +100,29 @@ export default function ChatRoom() {
             </div>
 
             {/* Input area */}
-            <Card className="border-t border-gray-200 bg-white p-4">
-                <CardContent className="flex gap-x-2.5">
-                    <Input
-                        type="text"
-                        placeholder="Type here"
-                        value={inputMessage}
-                        onChange={(e) => setInputMessage(e.target.value)}
-                        className="flex-1 text-black"
-                        onKeyDown={(e) => {
-                            if (e.key === 'Enter') handleSubmit(e);
-                        }}
-                    />
-                    <Button onClick={handleSubmit} className="bg-green-500 text-white">
-                        Send
-                    </Button>
-                </CardContent>
-            </Card>
+            <div>
+                {signal && <h1>{`${target.name} is typing...`}</h1>}
+                <Card className="border-t border-gray-200 bg-white p-4">
+                    <CardContent className="flex gap-x-2.5">
+                        <Input
+                            ref={inputRef}
+                            type="text"
+                            placeholder="Type here"
+                            value={inputMessage}
+                            onChange={(e) => setInputMessage(e.target.value)}
+                            className="flex-1 text-black"
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') handleSubmit(e);
+                            }}
+                            onFocus={() => chatService.sendSignal(auth.user.id.toString(), 'typing')}
+                            onBlur={() => chatService.sendSignal(auth.user.id.toString(), 'leave')}
+                        />
+                        <Button onClick={handleSubmit} className="bg-green-500 text-white">
+                            Send
+                        </Button>
+                    </CardContent>
+                </Card>
+            </div>
         </div>
     );
 }
