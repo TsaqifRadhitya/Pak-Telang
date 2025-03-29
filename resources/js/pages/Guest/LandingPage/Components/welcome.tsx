@@ -1,7 +1,6 @@
 import { Button } from '@/components/ui/button';
-import { motion,useScroll,useMotionValueEvent } from 'framer-motion';
-import { LucideArrowRight } from 'lucide-react'
-import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { LucideArrowRight } from 'lucide-react';
 
 export default function Welcome() {
     return (

@@ -29,7 +29,7 @@ export default function testimoni() {
                     className="cursor-pointer bg-[#5961BE] text-[#EBEFFF] hover:bg-[#4e55a1] lg:mx-auto lg:w-1/2 xl:mx-0 xl:w-1/3"
                 >
                     Pesan Sekarang <LucideArrowRight color="#EBEFFF" />
-            </Button>
+                </Button>
                 <div className="absolute left-0 hidden h-full w-full translate-y-1/2 gap-x-9 py-20 lg:top-0 lg:translate-x-7/10 lg:translate-y-0 xl:top-1/2 xl:flex xl:h-[110%] xl:-translate-y-1/2">
                     {Array.from({ length: 2 }).map((i, index) => (
                         <motion.div
