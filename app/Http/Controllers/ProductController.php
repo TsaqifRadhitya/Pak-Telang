@@ -7,15 +7,25 @@ use App\Models\productDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use Inertia\Inertia;
 
 class ProductController extends Controller
 {
     public function index()
     {
-        $data = Product::whereisdeleted(false)->get()->map(function ($item) {
-            $item->productPhoto = json_decode($item->productPhoto);
-            return $item;
-        });
+
+        if(Auth::user()->role === 'Mitra'){
+            $products = Product::whereisdeleted(false)->whereProducttype('siap pakai')->get()->map(function ($item) {
+                $item->productPhoto = json_decode($item->productPhoto);
+                return $item;
+            });
+        }else{
+            $products = Product::whereisdeleted(false)->get()->map(function ($item) {
+                $item->productPhoto = json_decode($item->productPhoto);
+                return $item;
+            });
+            return Inertia::render('Pak Telang/Produk/produk',compact('products'));
+        }
     }
 
     public function store(Request $request)

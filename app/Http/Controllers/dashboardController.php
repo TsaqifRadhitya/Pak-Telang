@@ -18,4 +18,8 @@ class dashboardController extends Controller
             return redirect(route('admin.dashboard'));
         }
     }
+
+    public function adminDashboard(){
+        return Inertia::render('Pak Telang/Dashboard/dashboard');
+    }
 }

@@ -2,11 +2,12 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Copyright } from 'lucide-react';
 import HeadingSmall from '../../../../components/heading-small';
+import Heading from '../../../../components/heading';
 
 export default function contact() {
     return (
         <div className="hidden h-screen flex-col gap-y-4 bg-[#EBEFFF] p-20 lg:flex">
-            <Card className="h-fit w-full rounded-4xl border-0 bg-[#AFB3FF] px-5 py-7">
+            <Card className="h-fit w-full rounded-3xl border-0 bg-white px-5 py-7">
                 <CardContent>
                     <div className="flex items-center justify-between">
                         <div className="flex flex-col gap-y-2">
@@ -27,9 +28,17 @@ export default function contact() {
                 </CardContent>
             </Card>
             <div className="flex h-full gap-x-4">
-                <Card className="flex-1/4 rounded-4xl border-0 bg-[#AFB3FF]"></Card>
-                <Card className="flex-1/4 rounded-4xl border-0 bg-[#AFB3FF]"></Card>
-                <Card className="flex-1/2 rounded-4xl border-0 bg-[#AFB3FF]"></Card>
+                <Card className="flex-1/4 rounded-3xl border-0 bg-white p-10 text-[#3B387E]">
+                    <Heading title='Social Media' className='text-[#3B387E]' disableMb/>
+                    <p>Jangan lupa ikuti sosial media kami untuk update harian kami.</p>
+                    <ul>
+                        <li>paktelang</li>
+                        <li>paktelang</li>
+                        <li>paktelang</li>
+                    </ul>
+                </Card>
+                <Card className="flex-1/4 rounded-3xl border-0 bg-white"></Card>
+                <Card className="flex-1/2 rounded-3xl border-0 bg-white"></Card>
             </div>
         </div>
     );
