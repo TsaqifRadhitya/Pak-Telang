@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\dashboardController;
 use App\Http\Controllers\messageController;
 use App\Http\Controllers\ProductController;
 use App\Models\kontent;
@@ -30,9 +31,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/chat',[messageController::class,'allPerson'])->name('chat.index');
     Route::get('/chat/{id}',[messageController::class,'getChatRoom'])->name('chat.create');
     Route::post('/chat/{id}',[messageController::class,'pustChat'])->name('chat.store');
-    Route::get('dashboard', function () {
-        return Inertia::render('dashboard');
-    })->name('dashboard');
+    Route::get('dashboard', [dashboardController::class,'index'])->name('dashboard');
 });
 
 require __DIR__ . '/settings.php';

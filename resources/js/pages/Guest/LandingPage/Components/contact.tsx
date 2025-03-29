@@ -22,7 +22,7 @@ export default function contact() {
                                 Copyright 2025
                             </p>
                         </div>
-                        <Button className="min-h-full scale-125 rounded-xl bg-[#5961BE] font-medium text-white">Register Now</Button>
+                        <Button className="min-h-full scale-125 rounded-xl bg-[#5961BE] cursor-pointer hover:bg-[#4e55a1] font-medium text-white">Register Now</Button>
                     </div>
                 </CardContent>
             </Card>

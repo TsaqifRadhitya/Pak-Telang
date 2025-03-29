@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
-import { motion } from 'framer-motion';
-import { LucideArrowRight } from 'lucide-react';
+import { motion,useScroll,useMotionValueEvent } from 'framer-motion';
+import { LucideArrowRight } from 'lucide-react'
+import { useState } from 'react';
 
 export default function Welcome() {
     return (
@@ -14,7 +15,6 @@ export default function Welcome() {
                     initial={{ scale: 0.5 }}
                     whileInView={{ scale: 1, transition: { duration: 0.5, ease: 'easeInOut' } }}
                 />
-
                 {/* Teks dan Tombol */}
                 <div className="flex flex-col gap-y-5">
                     <motion.h1
@@ -32,7 +32,7 @@ export default function Welcome() {
                         Pilihan minuman berkualitas untuk hari-harimu lebih sehat
                     </motion.h1>
                     <motion.div initial={{ y: 50, opacity: 0 }} whileInView={{ y: 0, opacity: 1, transition: { duration: 0.5 } }}>
-                        <Button className="flex w-full cursor-pointer items-center justify-center gap-2 bg-[#5961BE] text-[#EBEFFF] hover:bg-[#5961BE] lg:w-1/3">
+                        <Button className="flex w-full cursor-pointer items-center justify-center gap-2 bg-[#5961BE] text-[#EBEFFF] hover:bg-[#4e55a1] lg:w-1/3">
                             Get Started <LucideArrowRight color="#EBEFFF" />
                         </Button>
                     </motion.div>

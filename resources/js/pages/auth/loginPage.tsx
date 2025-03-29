@@ -3,7 +3,7 @@ import HeadingSmall from '@/components/heading-small';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import AuthLayout from '@/layouts/auth/auth';
+import AuthLayout from '@/layouts/authPageLayout';
 import { router, useForm, usePage } from '@inertiajs/react';
 import { Mail,Lock } from 'lucide-react';
 import { useEffect } from 'react';
@@ -70,7 +70,7 @@ export default function loginPage() {
                 </div>
                 <InputError message={errors.password === 'Required' ? 'Harap Mengisi Password' : errors.password} />
             </div>
-            <Button className="h-12 rounded-2xl bg-[#666FD5] text-xl hover:cursor-pointer hover:bg-[#4e55a1]" onClick={handleSubmit}>
+            <Button className="h-12 rounded-2xl text-white bg-[#666FD5] text-xl hover:cursor-pointer hover:bg-[#4e55a1]" onClick={handleSubmit}>
                 Login
             </Button>
             <div className="flex flex-row items-center gap-x-1">

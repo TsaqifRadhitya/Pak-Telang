@@ -30,7 +30,7 @@ export default function About() {
                         >
                             <Button
                                 onClick={() => router.get(route('produk'))}
-                                className="w-full cursor-pointer bg-[#5961BE] text-[#EBEFFF] hover:bg-[#5961BE] sm:w-1/2 lg:w-1/3"
+                                className="w-full cursor-pointer bg-[#5961BE] text-[#EBEFFF] hover:bg-[#4e55a1] sm:w-1/2 lg:w-1/3"
                             >
                                 Pesan Sekarang <LucideArrowRight color="#EBEFFF" />
                             </Button>

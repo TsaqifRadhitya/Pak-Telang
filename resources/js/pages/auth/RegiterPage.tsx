@@ -2,7 +2,7 @@ import Heading from '@/components/heading';
 import HeadingSmall from '@/components/heading-small';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import AuthLayout from '@/layouts/auth/auth';
+import AuthLayout from '@/layouts/authPageLayout';
 import { router, useForm } from '@inertiajs/react';
 import { Lock, Mail, UserIcon } from 'lucide-react';
 import z from 'zod';
@@ -101,7 +101,7 @@ export default function registerPage() {
                 />
             </div>
 
-            <Button className="h-12 rounded-2xl bg-[#666FD5] text-xl hover:cursor-pointer hover:bg-[#4e55a1]" onClick={handleSubmit}>
+            <Button className="text-white h-12 rounded-2xl bg-[#666FD5] text-xl hover:cursor-pointer hover:bg-[#4e55a1]" onClick={handleSubmit}>
                 Register
             </Button>
             <div className="flex flex-row items-center gap-x-1">
