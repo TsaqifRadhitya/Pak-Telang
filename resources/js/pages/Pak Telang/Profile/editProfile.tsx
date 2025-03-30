@@ -9,6 +9,7 @@ import { router, useForm, usePage } from '@inertiajs/react';
 import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import z from 'zod';
+import { address } from '../../../types/address';
 interface Province {
     id: string;
     name: string;
@@ -44,15 +45,15 @@ const profileEditValidation = z.object({
     postalCode: z.string({ message: 'Harap mengisi kode pos' }).regex(/^\d{5}$/, 'Harap mengisi kode pos dengan benar'),
 });
 
+interface props extends SharedData {
+    address: address;
+}
+
 export default function EditProfileAdminPage() {
-    const { auth } = usePage<SharedData>().props;
+    const { auth, address } = usePage<props>().props;
     const { data, setData, errors, setError, post } = useForm({
         ...auth.user,
-        address: '',
-        province: '',
-        cityName: '',
-        districtName: '',
-        postalCode: '',
+        ...address,
     });
 
     const [addressApi, setAddressApi] = useState<AddressApiType>({
@@ -80,9 +81,8 @@ export default function EditProfileAdminPage() {
                     .then((res) => setAddressApi((prev) => ({ ...prev, cities: res.data, districts: [] })))
                     .catch(console.error);
             }
-            setData('cityName', '');
         }
-    }, [data.province]);
+    }, [data.province, addressApi.provinces]);
 
     useEffect(() => {
         if (data.cityName) {
@@ -93,9 +93,8 @@ export default function EditProfileAdminPage() {
                     .then((res) => setAddressApi((prev) => ({ ...prev, districts: res.data })))
                     .catch(console.error);
             }
-            setData('districtName', '');
         }
-    }, [data.cityName]);
+    }, [data.cityName, addressApi.cities]);
 
     const handleChangeImage = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files?.[0]) {
@@ -135,7 +134,11 @@ export default function EditProfileAdminPage() {
                 </div>
                 <div className="flex flex-col gap-10 p-5 lg:flex-row lg:gap-20 lg:p-10">
                     <div className="flex flex-col items-center gap-3">
-                        <img src={data.profile_picture || '/default-avatar.png'} alt="Profile" className="aspect-square w-36 rounded-full shadow object-cover object-center" />
+                        <img
+                            src={data.profile_picture || '/default-avatar.png'}
+                            alt="Profile"
+                            className="aspect-square w-36 rounded-full object-cover object-center shadow"
+                        />
                         <Button
                             onClick={() => inputFile.current?.click()}
                             className="cursor-pointer border-2 border-[#5961BE] text-[#3B387E] hover:bg-[#5961BE] hover:text-white"
@@ -237,8 +240,10 @@ export default function EditProfileAdminPage() {
                             {errors.postalCode && <InputError message={errors.postalCode} />}
                         </div>
                         <div className="flex justify-end gap-4 lg:col-span-2">
-                            <Button className="w-32 border text-[#5961BE]">Batal</Button>
-                            <Button onClick={handleSubmit} className="w-32 bg-[#5961BE] text-white">
+                            <Button
+                            onClick={() => router.get(route('admin.profile'))}
+                             className="w-32 border text-[#5961BE] border-[#5961BE] hover:bg-[#5961BE] hover:text-white cursor-pointer">Batal</Button>
+                            <Button onClick={handleSubmit} className="w-32 bg-[#5961BE] text-white hover:bg-[#454b93] cursor-pointer">
                                 Simpan
                             </Button>
                         </div>

@@ -2,9 +2,13 @@ import { Button } from '@/components/ui/button';
 import AdminPageLayout from '@/layouts/adminPageLayout';
 import { SharedData } from '@/types';
 import { router, usePage } from '@inertiajs/react';
+import { address } from '../../../types/address';
+interface props extends SharedData {
+    address? : address
+}
 
 export default function profileAdminPage() {
-    const { auth } = usePage<SharedData>().props;
+    const { auth,address } = usePage<props>().props;
     return (
         <AdminPageLayout page="Profile">
             <main className="w-full h-full rounded-t-lg border-[1px] border-b-0 border-[#AFB3FF] bg-[#FFFFFF] shadow-lg">
@@ -40,7 +44,7 @@ export default function profileAdminPage() {
                         <p>
                             No. Hp : {auth.user.phonenumber}
                         </p>
-                        <p>Alamat : </p>
+                        <p>Alamat : {address?.address} {address?.districtName}, {address?.cityName}, {address?.province} {address?.postalCode}</p>
                     </article>
                 </div>
             </main>

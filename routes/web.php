@@ -20,7 +20,8 @@ Route::get('konten', function () {
 })->name('konten');
 
 Route::get('produk', function () {
-    return Inertia::render('Guest/Produk/Produk');
+    $product = Product::all();
+    return Inertia::render('Guest/Produk/Produk',compact('product'));
 })->name('produk');
 
 Route::get('donasi', function () {

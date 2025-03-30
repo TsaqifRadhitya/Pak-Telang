@@ -1,9 +1,12 @@
-import LandingPageLayout from "@/layouts/landingPageLayout";
+import LandingPageLayout from '@/layouts/landingPageLayout';
+import Contact from '../LandingPage/Components/contact';
+import Product from '../LandingPage/Components/product';
 
-export default function produkPage(){
-    return(
+export default function produkPage() {
+    return (
         <LandingPageLayout page="Produk">
-            <h1 className="absolute top-1/2 left-1/2 -translate-1/2">Produk</h1>
+            <Product/>
+            <Contact />
         </LandingPageLayout>
-    )
+    );
 }

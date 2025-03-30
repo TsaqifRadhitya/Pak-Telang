@@ -10,7 +10,6 @@ import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Transition } from '@headlessui/react';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
-import {usePoll} from '@inertiajs/react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
