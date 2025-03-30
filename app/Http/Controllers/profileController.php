@@ -19,7 +19,7 @@ class profileController extends Controller
         if ($role === 'Customer') {
         }
         $addres = Address::with('district')->where('default', '=', true)->where('userId', '=', Auth::user()->id)->first();
-        $address = $this->getFullAdress($addres->id);
+        $address = $addres ? $this->getFullAdress($addres?->id) : null;
         if ($role === 'Pak Telang') {
             return Inertia::render('Pak Telang/Profile/profile', compact('address'));
         } else {
@@ -32,7 +32,7 @@ class profileController extends Controller
         if ($role === 'Customer') {
         }
         $addres = Address::with('district')->where('default', '=', true)->where('userId', '=', Auth::user()->id)->first();
-        $address = $this->getFullAdress($addres->id);
+        $address = $addres ? $this->getFullAdress($addres?->id) : null;
         if ($role === 'Pak Telang') {
             return Inertia::render('Pak Telang/Profile/editProfile', compact('address'));
         } else {

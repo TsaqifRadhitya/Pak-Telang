@@ -44,7 +44,7 @@ export default function profileAdminPage() {
                         <p>
                             No. Hp : {auth.user.phonenumber}
                         </p>
-                        <p>Alamat : {address?.address} {address?.districtName}, {address?.cityName}, {address?.province} {address?.postalCode}</p>
+                        <p>Alamat : {address && `${address?.address} ${address?.districtName}, ${address?.cityName}, ${address?.province} ${address?.postalCode}`}</p>
                     </article>
                 </div>
             </main>
