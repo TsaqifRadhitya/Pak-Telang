@@ -9,11 +9,18 @@ export class supabaseImage extends supabaseService {
         this.basePath = `${type}/${user}/`
     }
 
-    public async upload(params: FileList) {
+    public async uploadBatch(params: FileList) {
         const promise = Object.values(params).map(async (item) => {
             await this.supabaseConnection.storage.from('paktelang').upload(`${this.basePath}${item.name}`, item, { contentType: item.type })
         })
         return Promise.all(promise)
+    }
+
+    public async upsertProfile(params: File) {
+
+        const result = await this.supabaseConnection.storage.from('paktelang').update(`${this.basePath}profile`, params, { contentType: params.type, upsert: true })
+        const url = await this.getUrl(result.data!.path)
+        return url
     }
 
     public async update(path: string, resource: File) {
@@ -30,9 +37,9 @@ export class supabaseImage extends supabaseService {
 
     public async getUrl(params: string | string[]) {
         if (typeof params === 'string') {
-            return await this.supabaseConnection.storage.from('paktelang').getPublicUrl(`${this.basePath}${params}`)
+            return await this.supabaseConnection.storage.from('paktelang').getPublicUrl(params).data.publicUrl
         } else if (Array.isArray(params)) {
-            return params.map(async (path) => await this.supabaseConnection.storage.from('paktelang').getPublicUrl(`${this.basePath}${path}`))
+            return params.map(async (path) => this.supabaseConnection.storage.from('paktelang').getPublicUrl(path))
         }
     }
 }

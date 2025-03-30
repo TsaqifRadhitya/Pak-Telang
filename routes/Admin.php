@@ -15,6 +15,7 @@ Route::middleware(['auth', adminMidleware::class])->group(function () {
         Route::prefix('profile')->group(function () {
             Route::get('/', [profileController::class, 'index'])->name('admin.profile');
             Route::get('/edit', [profileController::class, 'edit'])->name('admin.profile.edit');
+            Route::post('/edit', [profileController::class, 'update'])->name('admin.profile.update');
         });
         Route::resource('product', ProductController::class)->names('admin.product');
         Route::get('/stock', 'ProductController@showStock')->name('admin.stock.index');

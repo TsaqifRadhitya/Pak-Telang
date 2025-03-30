@@ -34,11 +34,11 @@ export interface User {
     id: string;
     name: string;
     email: string;
-    avatar?: string;
+    avatar: string;
     email_verified_at: string | null;
-    phonenumber?:string;
-    gender? : 'Laki-Laki' | 'Perempuan'
-    birthday?:Date
+    phonenumber:string;
+    gender : 'Laki-Laki' | 'Perempuan'
+    birthday:string
     profile_picture : string;
     created_at: string;
     updated_at: string; // This allows for additional properties...

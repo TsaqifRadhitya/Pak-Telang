@@ -13,7 +13,6 @@ export default function LandingPageLayout({ children, page }: { children: React.
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const {scrollYProgress} = useScroll()
     const [scroll,setScroll] = useState<Boolean>(false)
-    console.log(scroll)
     useMotionValueEvent(scrollYProgress,'change',(latestValue)=> {
         if(latestValue){
             setScroll(true)
@@ -71,7 +70,7 @@ export default function LandingPageLayout({ children, page }: { children: React.
                             <>
                                 <Button
                                     onClick={() => router.get(route('dashboard'))}
-                                    className="min-h-10 min-w-28 cursor-pointer bg-transparent font-bold text-[#5961BE] ring-1 ring-[#5961BE] hover:bg-transparent"
+                                    className="min-h-10 min-w-28 cursor-pointer bg-[#5961BE] text-white font-medium hover:bg-[#4e55a1]"
                                 >
                                     Go To Dashboard
                                 </Button>
@@ -134,7 +133,7 @@ export default function LandingPageLayout({ children, page }: { children: React.
                         {auth.user && (
                             <Button
                                 onClick={() => router.get(route('dashboard'))}
-                                className="min-h-10 min-w-28 cursor-pointer bg-transparent font-bold text-[#5961BE] ring-1 ring-[#5961BE] hover:bg-transparent"
+                                className="min-h-10 min-w-28 cursor-pointer bg-[#5961BE] text-white font-medium hover:bg-[#4e55a1]"
                             >
                                 Go To Dashboard
                             </Button>

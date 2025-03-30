@@ -1,61 +1,247 @@
+import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AdminPageLayout from '@/layouts/adminPageLayout';
+import { supabaseImage } from '@/services/imageStorage';
 import { SharedData } from '@/types';
-import { useForm, usePage } from '@inertiajs/react';
-
-interface profileForm {
+import { router, useForm, usePage } from '@inertiajs/react';
+import axios from 'axios';
+import { useEffect, useRef, useState } from 'react';
+import z from 'zod';
+interface Province {
+    id: string;
     name: string;
-    email: string;
-    phonenumber: string;
-    gender: 'Laki-Laki' | 'Perempuan';
-    birthday: Date;
-    profile_picture: string;
-    alamat: string;
-    Kecamatan: string;
-    Provinsi: string;
 }
 
-export default function editProfileAdminPage() {
+interface City {
+    id: string;
+    name: string;
+    province_id: string;
+}
+
+interface District {
+    id: string;
+    name: string;
+    regency_id: string;
+}
+
+interface AddressApiType {
+    provinces: Province[];
+    cities: City[];
+    districts: District[];
+}
+
+const profileEditValidation = z.object({
+    name: z.string().min(1, 'Nama harap diisi'),
+    birthday: z.string({ message: 'Tanggal lahir harap diisi' }).min(1, 'Tanggal lahir harap diisi'),
+    gender: z.string({ message: 'Jenis kelamin harap diisi' }).min(1, 'Jenis kelamin harap diisi'),
+    phonenumber: z.string({ message: 'Harap Mengisi Nomor Hp' }).regex(/^\d{1,13}$/, 'Nomor telepon hanya boleh berisi angka dan maksimal 13 digit'),
+    province: z.string().min(1, 'Harap mengisi provinsi'),
+    cityName: z.string({ message: 'Harap mengisi kota' }),
+    districtName: z.string({ message: 'Harap mengisi kecamatan' }),
+    address: z.string().min(1, 'Harap mengisi alamat'),
+    postalCode: z.string({ message: 'Harap mengisi kode pos' }).regex(/^\d{5}$/, 'Harap mengisi kode pos dengan benar'),
+});
+
+export default function EditProfileAdminPage() {
     const { auth } = usePage<SharedData>().props;
-    const { data, setData, errors, setError } = useForm({
+    const { data, setData, errors, setError, post } = useForm({
         ...auth.user,
+        address: '',
+        province: '',
+        cityName: '',
+        districtName: '',
+        postalCode: '',
     });
+
+    const [addressApi, setAddressApi] = useState<AddressApiType>({
+        provinces: [],
+        cities: [],
+        districts: [],
+    });
+
+    const [image, setImage] = useState<File | null>(null);
+    const inputFile = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        axios
+            .get('https://open-api.my.id/api/wilayah/provinces')
+            .then((res) => setAddressApi((prev) => ({ ...prev, provinces: res.data })))
+            .catch(console.error);
+    }, []);
+
+    useEffect(() => {
+        if (data.province) {
+            const province = addressApi.provinces.find((p) => p.name === data.province);
+            if (province) {
+                axios
+                    .get(`https://open-api.my.id/api/wilayah/regencies/${province.id}`)
+                    .then((res) => setAddressApi((prev) => ({ ...prev, cities: res.data, districts: [] })))
+                    .catch(console.error);
+            }
+            setData('cityName', '');
+        }
+    }, [data.province]);
+
+    useEffect(() => {
+        if (data.cityName) {
+            const city = addressApi.cities.find((c) => c.name === data.cityName);
+            if (city) {
+                axios
+                    .get(`https://open-api.my.id/api/wilayah/districts/${city.id}`)
+                    .then((res) => setAddressApi((prev) => ({ ...prev, districts: res.data })))
+                    .catch(console.error);
+            }
+            setData('districtName', '');
+        }
+    }, [data.cityName]);
+
+    const handleChangeImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files?.[0]) {
+            setImage(e.target.files[0]);
+            setData('profile_picture', URL.createObjectURL(e.target.files[0]));
+        }
+    };
+
+    const handleSubmit = async () => {
+        const validation = profileEditValidation.safeParse(data);
+        const error = validation.error?.format();
+        if (!validation.success) {
+            setError('address', error?.address?._errors[0] as string);
+            setError('birthday', error?.birthday?._errors[0] as string);
+            setError('cityName', error?.cityName?._errors[0] as string);
+            setError('gender', error?.gender?._errors[0] as string);
+            setError('districtName', error?.districtName?._errors[0] as string);
+            setError('name', error?.name?._errors[0] as string);
+            setError('phonenumber', error?.phonenumber?._errors[0] as string);
+            setError('postalCode', error?.postalCode?._errors[0] as string);
+            setError('province', error?.province?._errors[0] as string);
+            return;
+        }
+        if (image) {
+            const imageProvider = new supabaseImage(auth.user.email, 'Image');
+            const profileUrl = await imageProvider.upsertProfile(image);
+            router.post(route('admin.profile.update'), { ...data, profile_picture: [profileUrl as string] });
+        } else {
+            post(route('admin.profile.update'));
+        }
+    };
     return (
         <AdminPageLayout page="Profile">
-            <main className="h-full w-full rounded-t-lg border-[1px] border-b-0 border-[#AFB3FF] bg-[#FFFFFF] shadow-lg">
-                <div className="border-b-[1px] border-[#AFB3FF] p-5 md:px-10 md:py-5">
+            <main className="h-full w-full rounded-t-lg border border-[#AFB3FF] bg-white shadow-lg">
+                <div className="border-b border-[#AFB3FF] p-5 md:px-10 md:py-5">
                     <h1 className="text-xl font-semibold">Edit Profile</h1>
                 </div>
-                <div className="flex min-h-full w-full gap-y-5 p-5 lg:gap-20 lg:p-10">
-                    <div className="flex h-fit flex-col items-center gap-y-2.5 lg:flex-1/5">
-                        <img
-                            src={auth.user.profile_picture}
-                            alt=""
-                            className="mx-auto aspect-square w-1/3 max-w-36 rounded-full shadow md:w-1/4 lg:mx-0 lg:w-full"
-                        />
-                        <Button className="border-2 border-[#5961BE] bg-transparent text-[#3B387E] lg:w-2/3">Pilih Foto</Button>
-                        <h1 className="text-[0.6rem] font-extralight text-[#3B387E]">
-                            Besar File: maks 10Mb
-                            <br />
-                            Ekstensi file: .PNG .JPG .JPEG{' '}
-                        </h1>
+                <div className="flex flex-col gap-10 p-5 lg:flex-row lg:gap-20 lg:p-10">
+                    <div className="flex flex-col items-center gap-3">
+                        <img src={data.profile_picture || '/default-avatar.png'} alt="Profile" className="aspect-square w-36 rounded-full shadow object-cover object-center" />
+                        <Button
+                            onClick={() => inputFile.current?.click()}
+                            className="cursor-pointer border-2 border-[#5961BE] text-[#3B387E] hover:bg-[#5961BE] hover:text-white"
+                        >
+                            Pilih Foto
+                        </Button>
+                        <input type="file" className="hidden" ref={inputFile} accept="image/png, image/jpeg" onChange={handleChangeImage} />
+                        <p className="text-xs text-gray-600">Maks 10Mb | PNG, JPG, JPEG</p>
                     </div>
-                    <div className="grid grid-cols-2 gap-10 lg:flex-4/5">
+                    <div className="grid w-full grid-cols-1 grid-rows-6 gap-6 lg:grid-cols-2">
                         <div>
                             <Label>Nama</Label>
-                            <Input type="text" value={data.name} onChange={e => setData('name',e.target.value)} />
+                            <Input type="text" value={data.name} onChange={(e) => setData('name', e.target.value)} />
+                            {errors.name && <InputError message={errors.name} />}
                         </div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
+                        <div>
+                            <Label>Tanggal Lahir</Label>
+                            <Input type="date" value={data.birthday ?? ''} onChange={(e) => setData('birthday', e.target.value)} />
+                            <InputError message={errors.birthday} />
+                        </div>
+                        <div>
+                            <Label>Jenis Kelamin</Label>
+                            <select
+                                value={data.gender ?? ''}
+                                onChange={(e) => setData('gender', e.target.value as any)}
+                                className="w-full rounded-lg border p-2"
+                            >
+                                <option value=""></option>
+                                <option value="Laki-Laki">Laki - Laki</option>
+                                <option value="Perempuan">Perempuan</option>
+                            </select>
+                            {errors.gender && <InputError message={errors.gender} />}
+                        </div>
+                        <div>
+                            <Label>Email</Label>
+                            <Input disabled type="email" value={data.email} />
+                        </div>
+                        <div>
+                            <Label>No. HP</Label>
+                            <Input type="text" value={data.phonenumber ?? ''} onChange={(e) => setData('phonenumber', e.target.value)} />
+                            {errors.phonenumber && <InputError message={errors.phonenumber} />}
+                        </div>
+                        <div>
+                            <Label>Provinsi</Label>
+                            <select
+                                value={data.province ?? ''}
+                                onChange={(e) => setData('province', e.target.value)}
+                                className="w-full rounded-lg border p-2"
+                            >
+                                <option></option>
+                                {addressApi.provinces.map((prov) => (
+                                    <option key={prov.id} value={prov.name}>
+                                        {prov.name}
+                                    </option>
+                                ))}
+                            </select>
+                            {errors.province && <InputError message={errors.province} />}
+                        </div>
+                        <div>
+                            <Label>Kota/Kabupaten</Label>
+                            <select
+                                value={data.cityName ?? ''}
+                                onChange={(e) => setData('cityName', e.target.value)}
+                                className="w-full rounded-lg border p-2"
+                            >
+                                <option></option>
+                                {addressApi.cities.map((city) => (
+                                    <option key={city.id} value={city.name}>
+                                        {city.name}
+                                    </option>
+                                ))}
+                            </select>
+                            {errors.cityName && <InputError message={errors.cityName} />}
+                        </div>
+                        <div>
+                            <Label>Kecamatan</Label>
+                            <select
+                                value={data.districtName ?? ''}
+                                onChange={(e) => setData('districtName', e.target.value)}
+                                className="w-full rounded-lg border p-2"
+                            >
+                                <option></option>
+                                {addressApi.districts.map((district) => (
+                                    <option key={district.id} value={district.name}>
+                                        {district.name}
+                                    </option>
+                                ))}
+                            </select>
+                            {errors.districtName && <InputError message={errors.districtName} />}
+                        </div>
+                        <div>
+                            <Label>Alamat</Label>
+                            <Input type="text" value={data.address ?? ''} onChange={(e) => setData('address', e.target.value)} />
+                            {errors.address && <InputError message={errors.address} />}
+                        </div>
+                        <div>
+                            <Label>Kode Pos</Label>
+                            <Input type="text" value={data.postalCode ?? ''} onChange={(e) => setData('postalCode', e.target.value)} />
+                            {errors.postalCode && <InputError message={errors.postalCode} />}
+                        </div>
+                        <div className="flex justify-end gap-4 lg:col-span-2">
+                            <Button className="w-32 border text-[#5961BE]">Batal</Button>
+                            <Button onClick={handleSubmit} className="w-32 bg-[#5961BE] text-white">
+                                Simpan
+                            </Button>
+                        </div>
                     </div>
                 </div>
             </main>
