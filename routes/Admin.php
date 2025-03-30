@@ -18,8 +18,8 @@ Route::middleware(['auth', adminMidleware::class])->group(function () {
             Route::post('/edit', [profileController::class, 'update'])->name('admin.profile.update');
         });
         Route::resource('product', ProductController::class)->names('admin.product');
-        Route::get('/stock', 'ProductController@showStock')->name('admin.stock.index');
-        Route::patch('/stock/{id}', 'ProductController@updateStock')->name('admin.stock.update');
-        Route::delete('/stock/{id}', 'ProductController@destroy')->name('admin.stock.destroy');
+        Route::get('/stock', [ProductController::class,'showStock'])->name('admin.stock.index');
+        Route::patch('/stock/{id}', [ProductController::class,'updateStock'])->name('admin.stock.update');
+        Route::delete('/stock/{id}', [ProductController::class,'destroy'])->name('admin.stock.destroy');
     });
 });

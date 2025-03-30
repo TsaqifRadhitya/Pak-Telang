@@ -23,6 +23,7 @@ class profileController extends Controller
         if ($role === 'Pak Telang') {
             return Inertia::render('Pak Telang/Profile/profile', compact('address'));
         } else {
+            return Inertia::render('Mitra/Profile/profile', compact('address'));
         }
     }
 
@@ -36,6 +37,7 @@ class profileController extends Controller
         if ($role === 'Pak Telang') {
             return Inertia::render('Pak Telang/Profile/editProfile', compact('address'));
         } else {
+            return Inertia::render('Mitra/Profile/editProfile', compact('address'));
         }
     }
 
@@ -44,10 +46,9 @@ class profileController extends Controller
         $request->validate(['phonenumber' => ['required', 'unique:' . User::class . ',phonenumber,' . auth()->id()]]);
         $role = Auth::user()->role;
         if ($role === 'Customer') {
-        } else if ($role === 'Pak Telang') {
-            return $this->updateprofileAdmin($request);
-        } else {
+            return;
         }
+        return $this->updateprofilenonCustomer($request);
     }
 
     private function getFullAdress($id)
@@ -65,7 +66,7 @@ class profileController extends Controller
         ];
     }
 
-    private function updateprofileAdmin(Request $request)
+    private function updateprofilenonCustomer(Request $request)
     {
         User::whereId(Auth::user()->id)->update(
             [
@@ -77,6 +78,9 @@ class profileController extends Controller
             ]
         );
         $this->updateAdress($request);
+        if (Auth::user()->role === 'Mitra') {
+            return redirect(route('mitra.profile'));
+        }
         return redirect(route('admin.profile'));
     }
 

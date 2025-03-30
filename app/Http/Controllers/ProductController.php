@@ -15,10 +15,11 @@ class ProductController extends Controller
     {
 
         if(Auth::user()->role === 'Mitra'){
-            $products = Product::whereisdeleted(false)->whereProducttype('siap pakai')->get()->map(function ($item) {
+            $products = Product::whereisdeleted(false)->where('productType','=','siap pakai')->get()->map(function ($item) {
                 $item->productPhoto = json_decode($item->productPhoto);
                 return $item;
             });
+            return Inertia::render('Mitra/Produk/produk',compact('products'));
         }else{
             $products = Product::whereisdeleted(false)->get()->map(function ($item) {
                 $item->productPhoto = json_decode($item->productPhoto);

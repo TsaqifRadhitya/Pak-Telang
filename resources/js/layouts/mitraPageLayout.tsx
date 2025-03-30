@@ -11,7 +11,7 @@ interface Props {
     page: 'Dashboard' | 'Mitra' | 'Produk' | 'Profile';
 }
 
-export default function AdminPageLayout({ children, page }: Props) {
+export default function mitraPageLayout({ children, page }: Props) {
     const { auth } = usePage<SharedData>().props;
     const [hamburgerMenu, setHamburgerMenu] = useState(false);
 
@@ -69,14 +69,14 @@ export default function AdminPageLayout({ children, page }: Props) {
                         </div>
                     </div>
                     <ul className="flex flex-col gap-y-5">
-                        {['Dashboard','Transaksi','Produk','Mitra','Koten','Donasi','Chat','Profile'].map((item) => (
+                        {['Dashboard', 'Produk', 'Profile'].map((item) => (
                             <li
                                 key={item}
                                 className={cn(
                                     'flex cursor-pointer items-center gap-x-1.5 rounded-l-2xl border border-r-0 border-[#AFB3FF] py-1.5 pl-4',
                                     page === item ? 'bg-[#B9BDFF]' : 'hover:bg-[#B9BDFF]/25',
                                 )}
-                                onClick={() => page !== item && router.get(route(`admin.${item.toLowerCase()}`))}
+                                onClick={() => page !== item && router.get(route(`mitra.${item.toLowerCase()}`))}
                             >
                                 <img
                                     src={`https://ybcvbaxalqwrvgemxdzc.supabase.co/storage/v1/object/public/paktelang/Asset/Icon/${item}.svg`}
