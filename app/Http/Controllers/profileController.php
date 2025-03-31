@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Symfony\Component\Uid\Ulid;
 
 class profileController extends Controller
 {
@@ -51,7 +52,7 @@ class profileController extends Controller
                 'birthday' => $request->input('birthday'),
                 'gender' => $request->input('gender'),
                 'phonenumber' => $request->input('phonenumber'),
-                'profile_picture' => $request->input('profile_picture'),
+                'profile_picture' => $request->input('profile_picture') . '?q=' . Ulid::generate(now()),
             ]
         );
         $this->updateAdress($request);

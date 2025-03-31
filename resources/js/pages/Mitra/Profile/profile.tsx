@@ -33,7 +33,7 @@ export default function profilePage() {
                 <div className="flex w-full flex-col gap-y-5 p-5 lg:gap-20 lg:p-10">
                     <div className="flex flex-col gap-y-5 lg:flex-row lg:items-center lg:gap-x-16">
                         <img
-                            src={`${auth.user.profile_picture}?q=${Math.random()*100 + Math.random()*100}`}
+                            src={auth.user.profile_picture || '/Asset/Icon/Profile.svg'}
                             alt=""
                             className="mx-auto aspect-square w-1/3 max-w-36 rounded-full shadow md:w-1/4 lg:mx-0"
                         />

@@ -53,7 +53,6 @@ export default function editProfileCustomer() {
     const { auth, address } = usePage<props>().props;
     const { data, setData, errors, setError, post } = useForm({
         ...auth.user,
-        profile_picture : `${auth.user.profile_picture}?q=${Math.random()*100 + Math.random()*100}`,
         ...address,
     });
 
@@ -137,7 +136,7 @@ export default function editProfileCustomer() {
                     <div className="flex flex-col gap-10 p-5 lg:flex-row lg:gap-20 lg:p-10">
                         <div className="flex flex-col items-center gap-3">
                             <img
-                                src={data.profile_picture || '/default-avatar.png'}
+                                src={data.profile_picture || '/Asset/Icon/Profile.svg'}
                                 alt="Profile"
                                 className="aspect-square w-36 rounded-full object-cover object-center shadow"
                             />
