@@ -16,8 +16,7 @@ class profileController extends Controller
     public function index()
     {
         $role = Auth::user()->role;
-        $addres = Address::with('district')->where('default', '=', true)->where('userId', '=', Auth::user()->id)->first();
-        $address = $addres ? $this->getFullAdress($addres?->id) : null;
+        $address = $this->getFullAdress();
         if ($role === 'Customer') {
             return Inertia::render('Customer/Profile/profile', compact('address'));
         }
@@ -31,12 +30,11 @@ class profileController extends Controller
     public function edit()
     {
         $role = Auth::user()->role;
-        if ($role === 'Customer') {
-        }
-        $addres = Address::with('district')->where('default', '=', true)->where('userId', '=', Auth::user()->id)->first();
-        $address = $addres ? $this->getFullAdress($addres?->id) : null;
+        $address = $this->getFullAdress();
         if ($role === 'Pak Telang') {
             return Inertia::render('Pak Telang/Profile/editProfile', compact('address'));
+        } else if ($role === 'Customer') {
+            return Inertia::render('Customer/Profile/editProfile', compact('address'));
         } else {
             return Inertia::render('Mitra/Profile/editProfile', compact('address'));
         }
@@ -46,29 +44,7 @@ class profileController extends Controller
     {
         $request->validate(['phonenumber' => ['required', 'unique:' . User::class . ',phonenumber,' . auth()->id()]]);
         $role = Auth::user()->role;
-        if ($role === 'Customer') {
-            return;
-        }
-        return $this->updateprofilenonCustomer($request);
-    }
-
-    private function getFullAdress($id)
-    {
-        $addres = Address::whereId($id)->first();
-        $district = $addres->district()->first();
-        $city = $district->city()->first();
-        $province = $city->province()->first();
-        return [
-            'address' => $addres->address,
-            'postalCode' => $addres->postalCode,
-            'districtName' => $district->districtName,
-            'cityName' => $city->cityName,
-            'province' => $province->province,
-        ];
-    }
-
-    private function updateprofilenonCustomer(Request $request)
-    {
+        // return $this->updateprofilenonCustomer($request);
         User::whereId(Auth::user()->id)->update(
             [
                 'name' => $request->input('name'),
@@ -82,7 +58,28 @@ class profileController extends Controller
         if (Auth::user()->role === 'Mitra') {
             return redirect(route('mitra.profile'));
         }
+        if (Auth::user()->role === 'Customer') {
+            return redirect(route('customer.profile'));
+        }
         return redirect(route('admin.profile'));
+    }
+
+    private function getFullAdress()
+    {
+        $addres = Address::where('userId', '=', Auth::user()->id)->first();
+        if ($addres === null) {
+            return null;
+        };
+        $district = $addres->district()->first();
+        $city = $district->city()->first();
+        $province = $city->province()->first();
+        return [
+            'address' => $addres->address,
+            'postalCode' => $addres->postalCode,
+            'districtName' => $district->districtName,
+            'cityName' => $city->cityName,
+            'province' => $province->province,
+        ];
     }
 
     private function updateAdress(Request $request)
@@ -96,12 +93,10 @@ class profileController extends Controller
         $district = District::firstOrNew(['districtName' =>  $request->input('districtName'), 'cityId' => $city->id]);
         $district->save(); // Pastikan tersimpan
 
-        if (Auth::user()->role !== 'Customer') {
-            $address = Address::updateOrCreate(['userId' => Auth::user()->id], [
-                'address' => $request->input('address'),
-                'postalCode' => $request->input('postalCode'),
-                'districtId' => $district->id
-            ]);
-        }
+        $address = Address::updateOrCreate(['userId' => Auth::user()->id], [
+            'address' => $request->input('address'),
+            'postalCode' => $request->input('postalCode'),
+            'districtId' => $district->id
+        ]);
     }
 }

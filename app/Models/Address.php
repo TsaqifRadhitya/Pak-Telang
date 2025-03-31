@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Address extends Model
 {
     use HasUlids;
-    protected $fillable = ['address', 'postalCode', 'districtId', 'userId', 'default'];
+    protected $fillable = ['address', 'postalCode', 'districtId', 'userId'];
 
     public function district()
     {

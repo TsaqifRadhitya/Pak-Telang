@@ -15,7 +15,6 @@ return new class extends Migration
             $table->ulid('id')->primary();
             $table->string('address');
             $table->string('postalCode');
-            $table->boolean('default')->default(true);
             $table->foreignUlid('districtId')->constrained('districts');
             $table->foreignUuid('userId')->constrained('users');
             $table->timestamps();
