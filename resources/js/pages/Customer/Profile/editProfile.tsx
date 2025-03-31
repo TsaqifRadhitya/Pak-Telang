@@ -53,6 +53,7 @@ export default function editProfileCustomer() {
     const { auth, address } = usePage<props>().props;
     const { data, setData, errors, setError, post } = useForm({
         ...auth.user,
+        profile_picture : `${auth.user.profile_picture}?q=${Math.random()*100 + Math.random()*100}`,
         ...address,
     });
 

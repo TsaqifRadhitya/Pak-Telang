@@ -32,7 +32,7 @@ export default function profilePageCustomer() {
                     <div className="flex flex-col gap-y-10 p-6 lg:flex-row lg:p-16">
                         <div className="flex-1/5">
                             <img
-                                src={auth.user.profile_picture}
+                                src={`${auth.user.profile_picture}?q=${Math.random()*100 + Math.random()*100}`}
                                 alt=""
                                 className="aspect-square mx-auto w-1/3 lg:mx-0 lg:w-4/5 rounded-full object-cover object-center shadow"
                             />

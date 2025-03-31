@@ -53,6 +53,7 @@ export default function EditProfileMitraPage() {
     const { auth, address } = usePage<props>().props;
     const { data, setData, errors, setError, post } = useForm({
         ...auth.user,
+        profile_picture : `${auth.user.profile_picture}?q=${Math.random()*100 + Math.random()*100}`,
         ...address,
     });
 
@@ -121,7 +122,7 @@ export default function EditProfileMitraPage() {
         if (image) {
             const imageProvider = new supabaseImage(auth.user.email, 'Image');
             const profileUrl = await imageProvider.upsertProfile(image);
-            router.post(route('mitra.profile.update'), { ...data, profile_picture: profileUrl as string});
+            router.post(route('mitra.profile.update'), { ...data, profile_picture: profileUrl as string });
         } else {
             post(route('mitra.profile.update'));
         }
@@ -135,7 +136,11 @@ export default function EditProfileMitraPage() {
                 <div className="flex flex-col gap-10 p-5 lg:flex-row lg:gap-20 lg:p-10">
                     <div className="flex flex-col items-center gap-3">
                         <img
-                            src={data.profile_picture || '/default-avatar.png'}
+                            src={
+                                data.profile_picture
+                                    ? `${auth.user.profile_picture}?q=${Math.random() * 100 + Math.random() * 100}`
+                                    : '/default-avatar.png'
+                            }
                             alt="Profile"
                             className="aspect-square w-36 rounded-full object-cover object-center shadow"
                         />
@@ -241,9 +246,12 @@ export default function EditProfileMitraPage() {
                         </div>
                         <div className="flex justify-end gap-4 lg:col-span-2">
                             <Button
-                            onClick={() => router.get(route('mitra.profile'))}
-                             className="w-32 border text-[#5961BE] border-[#5961BE] hover:bg-[#5961BE] hover:text-white cursor-pointer">Batal</Button>
-                            <Button onClick={handleSubmit} className="w-32 bg-[#5961BE] text-white hover:bg-[#454b93] cursor-pointer">
+                                onClick={() => router.get(route('mitra.profile'))}
+                                className="w-32 cursor-pointer border border-[#5961BE] text-[#5961BE] hover:bg-[#5961BE] hover:text-white"
+                            >
+                                Batal
+                            </Button>
+                            <Button onClick={handleSubmit} className="w-32 cursor-pointer bg-[#5961BE] text-white hover:bg-[#454b93]">
                                 Simpan
                             </Button>
                         </div>
