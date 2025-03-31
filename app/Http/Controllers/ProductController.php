@@ -13,8 +13,9 @@ class ProductController extends Controller
 {
     public function index()
     {
+
         if (Auth::user() == null) {
-            $product = Product::where('productType','like','siap pakai')->get();
+            $product = Product::where('productType', 'like', 'siap pakai')->get();
             return Inertia::render('Guest/Produk/Produk', compact('product'));
         }
         if (Auth::user()->role === 'Mitra') {
@@ -30,12 +31,14 @@ class ProductController extends Controller
             });
             return Inertia::render('Pak Telang/Produk/produk', compact('products'));
         } else {
+            $product = Product::where('productType', 'like', 'siap pakai')->get();
+            return Inertia::render('Guest/Produk/Produk', compact('product'));
         }
     }
 
     public function customerProductDetail($id)
     {
-        $products = Product::where('productType','=','siap pakai')->where('id', '!=', $id)->get();
+        $products = Product::where('productType', '=', 'siap pakai')->where('id', '!=', $id)->get();
         $productDetail = Product::whereId($id)->first();
         return Inertia::render('Guest/Produk/produkDetail', compact('products', 'productDetail'));
     }

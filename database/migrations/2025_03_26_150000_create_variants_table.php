@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_details', function (Blueprint $table) {
+        Schema::create('variants', function (Blueprint $table) {
             $table->ulid('id')->primary();
-            $table->integer('stock');
-            $table->boolean('disable')->default(false);
-            $table->foreignUlid('variantId')->constrained('variants');
-            $table->foreignUuid('userId')->constrained('users')->onDelete('cascade');
+            $table->string('variantName');
+            $table->integer('variantPrice');
+            $table->float('netto');
+            $table->string('unit');
+            $table->boolean('isDeleted')->default(false);
+            $table->foreignUlid('productId')->constrained('products');
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_details');
+        Schema::dropIfExists('variants');
     }
 };

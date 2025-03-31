@@ -26,10 +26,15 @@ export default function product() {
                         whileInView={{ opacity: 1, scale: 1, transition: { duration: 1 } }}
                         viewport={{ amount: 0.2 }}
                         key={index}
-                        className="relative mx-auto flex h-full w-full flex-col rounded-2xl bg-[#EBEFFF] pb-5 shadow-xl"
+                        onClick={(e) => {
+                            if (!(e.target as HTMLElement).closest('button')) {
+                                router.get(route('produk.detail', { id: i.id }));
+                            }
+                        }}
+                        className="relative mx-auto flex h-full w-full cursor-pointer flex-col rounded-2xl bg-[#EBEFFF] pb-5 shadow-xl"
                     >
                         <div className="h-44 w-full rounded-t-xl bg-[#9A9FFF]">
-                            <div className="mx-auto h-[115%] w-5/6 rounded-b-full bg-gradient-to-b from-[#9A9FFF] from-10% to-95% to-[#5961BE]"></div>
+                            <div className="mx-auto h-[115%] w-5/6 rounded-b-full bg-gradient-to-b from-[#9A9FFF] from-10% to-[#5961BE] to-95%"></div>
                         </div>
                         <div className="mt-12 w-3/5 rounded-r-full bg-[#5961BE] px-6 py-2 shadow-md">
                             <h1 className="text-md w-fit pr-4 font-medium text-white md:text-xl 2xl:text-xl">{i.productName}</h1>
@@ -39,9 +44,7 @@ export default function product() {
                             <h1 className="text-md font-bold text-[#5961BE] md:text-xl 2xl:text-2xl">
                                 {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(i.productPrice)}
                             </h1>
-                            <Button
-                            onClick={()=>router.get(route('produk.detail',{id:i.id}))}
-                            className="cursor-pointer rounded-full bg-transparent text-[#5961BE] ring-2 ring-[#5961BE] hover:bg-[#5961BE] hover:text-white">
+                            <Button className="cursor-pointer rounded-full bg-transparent text-[#5961BE] ring-2 ring-[#5961BE] hover:bg-[#5961BE] hover:text-white">
                                 Beli Sekarang
                             </Button>
                         </div>
