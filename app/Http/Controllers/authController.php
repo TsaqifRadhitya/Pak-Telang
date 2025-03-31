@@ -25,7 +25,7 @@ class authController extends Controller
                 'email' => $userData->email,
                 'name' => $userData->name,
                 'password' => Hash::make(Hash::make('dajadkajakdnakdandkoandad')),
-                'profile_picture' => json_encode([$userData->avatar]),
+                'profile_picture' => $userData->avatar,
                 'role' => 'Customer',
             ]);
         }

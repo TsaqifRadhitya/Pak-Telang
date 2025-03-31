@@ -16,10 +16,11 @@ class profileController extends Controller
     public function index()
     {
         $role = Auth::user()->role;
-        if ($role === 'Customer') {
-        }
         $addres = Address::with('district')->where('default', '=', true)->where('userId', '=', Auth::user()->id)->first();
         $address = $addres ? $this->getFullAdress($addres?->id) : null;
+        if ($role === 'Customer') {
+            return Inertia::render('Customer/Profile/profile', compact('address'));
+        }
         if ($role === 'Pak Telang') {
             return Inertia::render('Pak Telang/Profile/profile', compact('address'));
         } else {

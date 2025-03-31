@@ -121,7 +121,7 @@ export default function EditProfileAdminPage() {
         if (image) {
             const imageProvider = new supabaseImage(auth.user.email, 'Image');
             const profileUrl = await imageProvider.upsertProfile(image);
-            router.post(route('admin.profile.update'), { ...data, profile_picture: [profileUrl as string] });
+            router.post(route('admin.profile.update'), { ...data, profile_picture: profileUrl as string });
         } else {
             post(route('admin.profile.update'));
         }
@@ -241,9 +241,12 @@ export default function EditProfileAdminPage() {
                         </div>
                         <div className="flex justify-end gap-4 lg:col-span-2">
                             <Button
-                            onClick={() => router.get(route('admin.profile'))}
-                             className="w-32 border text-[#5961BE] border-[#5961BE] hover:bg-[#5961BE] hover:text-white cursor-pointer">Batal</Button>
-                            <Button onClick={handleSubmit} className="w-32 bg-[#5961BE] text-white hover:bg-[#454b93] cursor-pointer">
+                                onClick={() => router.get(route('admin.profile'))}
+                                className="w-32 cursor-pointer border border-[#5961BE] text-[#5961BE] hover:bg-[#5961BE] hover:text-white"
+                            >
+                                Batal
+                            </Button>
+                            <Button onClick={handleSubmit} className="w-32 cursor-pointer bg-[#5961BE] text-white hover:bg-[#454b93]">
                                 Simpan
                             </Button>
                         </div>

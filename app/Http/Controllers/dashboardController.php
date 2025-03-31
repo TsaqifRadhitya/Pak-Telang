@@ -11,7 +11,7 @@ class dashboardController extends Controller
     public function index(){
         $role = Auth::user()->role;
         if($role === 'Customer'){
-            return $this->customerDashboard();
+            return redirect(route('customer.profile'));
         }else if($role === 'Mitra'){
             return redirect(route('mitra.dashboard'));
         }else{
@@ -25,9 +25,5 @@ class dashboardController extends Controller
 
     public function mitraDashboard(){
         return Inertia::render('Mitra/Dashboard/dashboard');
-    }
-
-    public function customerDashboard(){
-        return Inertia::render('Customer/Dashboard/dashboard');
     }
 }

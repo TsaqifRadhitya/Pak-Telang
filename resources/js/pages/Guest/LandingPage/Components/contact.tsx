@@ -5,7 +5,7 @@ import HeadingSmall from '../../../../components/heading-small';
 
 export default function contact() {
     return (
-        <div className="hidden grid-cols-4 flex-col gap-4 bg-[#EBEFFF] p-20 pt-0 lg:grid">
+        <div className="hidden grid-cols-4 flex-col gap-4 bg-[#EBEFFF] p-20 px-10 pb-10 pt-0 lg:grid">
             <Card className="col-span-4 h-fit w-full rounded-3xl border-0 bg-white px-5 py-7">
                 <CardContent>
                     <div className="flex items-center justify-between">

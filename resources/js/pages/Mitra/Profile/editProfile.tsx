@@ -121,7 +121,7 @@ export default function EditProfileMitraPage() {
         if (image) {
             const imageProvider = new supabaseImage(auth.user.email, 'Image');
             const profileUrl = await imageProvider.upsertProfile(image);
-            router.post(route('mitra.profile.update'), { ...data, profile_picture: [profileUrl as string] });
+            router.post(route('mitra.profile.update'), { ...data, profile_picture: profileUrl as string});
         } else {
             post(route('mitra.profile.update'));
         }

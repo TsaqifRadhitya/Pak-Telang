@@ -30,7 +30,7 @@ export default function customerPageLayout({ children, page }: { children: React
                     scroll ? 'bg-[#EBEFFF] shadow-md' : null,
                 )}
             >
-                <h1 className="text-2xl font-semibold text-[#3b387e]">Pak Telang</h1>
+                <h1 onClick={() => router.get('/')} className="text-2xl font-semibold text-[#3b387e] cursor-pointer">Pak Telang</h1>
                 <div className="hidden gap-x-16 md:flex">
                     <ul className="flex translate-y-1/5 gap-x-20 font-medium text-[#3b387e]">
                         <li className="">
