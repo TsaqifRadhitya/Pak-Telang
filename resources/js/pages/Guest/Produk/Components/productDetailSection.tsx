@@ -3,6 +3,6 @@ import { props } from "../produkDetail";
 
 export default function productDetailSection(){
     const {productDetail} = usePage<props>().props
-    return(<section className="w-full lg:h-screen">
+    return(<section className="w-full lg:h-screen bg-orange-500">
     </section>)
 }
