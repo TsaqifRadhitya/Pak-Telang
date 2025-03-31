@@ -16,6 +16,9 @@ return new class extends Migration
             $table->ulid('id')->primary();
             $table->string('productName');
             $table->json('productPhoto');
+            $table->integer('productPrice');
+            $table->float('productNetto');
+            $table->string('productUnit');
             $table->text('productDescription');
             $table->enum('productType',['setengah jadi','siap pakai']);
             $table->boolean('isdeleted')->default(false);

@@ -11,35 +11,39 @@ use Inertia\Inertia;
 
 class ProductController extends Controller
 {
+
+    public function landingPageProduct()
+    {
+        $product = Product::where('productType', 'like', 'siap pakai')->get()->each(function ($e) {
+            $e->productPhoto = json_decode($e->productPhoto);
+        });
+        return Inertia::render('Guest/Produk/Produk', compact('product'));
+    }
+
     public function index()
     {
-
-        if (Auth::user() == null) {
-            $product = Product::where('productType', 'like', 'siap pakai')->get();
-            return Inertia::render('Guest/Produk/Produk', compact('product'));
-        }
         if (Auth::user()->role === 'Mitra') {
             $products = Product::whereisdeleted(false)->where('productType', '=', 'siap pakai')->get()->map(function ($item) {
                 $item->productPhoto = json_decode($item->productPhoto);
                 return $item;
             });
             return Inertia::render('Mitra/Produk/produk', compact('products'));
-        } else if (Auth::user()->role === 'Pak Telang') {
+        } else {
             $products = Product::whereisdeleted(false)->get()->map(function ($item) {
                 $item->productPhoto = json_decode($item->productPhoto);
                 return $item;
             });
             return Inertia::render('Pak Telang/Produk/produk', compact('products'));
-        } else {
-            $product = Product::where('productType', 'like', 'siap pakai')->get();
-            return Inertia::render('Guest/Produk/Produk', compact('product'));
         }
     }
 
     public function customerProductDetail($id)
     {
-        $products = Product::where('productType', '=', 'siap pakai')->where('id', '!=', $id)->get();
+        $products = Product::where('productType', '=', 'siap pakai')->where('id', '!=', $id)->get()->each(function ($e) {
+            $e->productPhoto = json_decode($e->productPhoto);
+        });;
         $productDetail = Product::whereId($id)->first();
+        $productDetail->productPhoto = json_decode($productDetail->productPhoto);
         return Inertia::render('Guest/Produk/produkDetail', compact('products', 'productDetail'));
     }
 

@@ -25,7 +25,9 @@ class Product extends Seeder
                 ]),
                 'productPrice' => fake()->numberBetween(1000,1000000),
                 'productType' => 'siap pakai',
-                'productDescription' => fake()->paragraph()
+                'productDescription' => fake()->paragraph(),
+                'productNetto' => 1000,
+                'productUnit' => 'botol'
             ]);
         }
     }

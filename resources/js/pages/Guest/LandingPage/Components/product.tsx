@@ -12,8 +12,9 @@ interface props extends SharedData {
 
 export default function product() {
     const { product } = usePage<props>().props;
+    console.log(product);
     return (
-        <div className="flex min-h-screen flex-col gap-y-10 bg-[#EBEFFF] p-5 lg:px-32 lg:py-20">
+        <div className="flex min-h-screen flex-col gap-y-10 bg-[#EBEFFF] p-5 md:px-10 lg:px-32 lg:py-20">
             <Heading title="Produk Kami" disableMb className="text-4xl font-bold text-[#3B387E]" />
             <HeadingSmall
                 title="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod. "
@@ -31,17 +32,22 @@ export default function product() {
                                 router.get(route('produk.detail', { id: i.id }));
                             }
                         }}
-                        className="relative mx-auto flex h-full w-full cursor-pointer flex-col rounded-2xl bg-[#EBEFFF] pb-5 shadow-xl"
+                        className="relative mx-auto flex aspect-2/3 w-full cursor-pointer flex-col rounded-2xl bg-[#EBEFFF] pb-5 shadow-xl"
                     >
-                        <div className="h-44 w-full rounded-t-xl bg-[#9A9FFF]">
-                            <div className="mx-auto h-[115%] w-5/6 rounded-b-full bg-gradient-to-b from-[#9A9FFF] from-10% to-[#5961BE] to-95%"></div>
+                        <div className="h-2/5 w-full rounded-t-xl bg-[#9A9FFF]"></div>
+                        <div className="absolute top-0 left-1/2 -translate-x-1/2 mx-auto h-1/2 w-5/6 rounded-b-full bg-gradient-to-b from-[#9A9FFF] from-10% to-[#5961BE] to-95%">
+                            <img
+                                src={i.productPhoto[0]}
+                                alt=""
+                                className="absolute bottom-0 left-1/2 aspect-6/9 w-1/2 -translate-x-1/2 object-cover object-center"
+                            />
                         </div>
-                        <div className="mt-12 w-3/5 rounded-r-full bg-[#5961BE] px-6 py-2 shadow-md">
+                        <div className="mt-20 w-3/5 rounded-r-full bg-[#5961BE] px-6 py-2 shadow-md">
                             <h1 className="text-md w-fit pr-4 font-medium text-white md:text-xl 2xl:text-xl">{i.productName}</h1>
                         </div>
-                        <p className="px-6 py-6 text-sm font-medium text-[#5961BE]">{i.productDescription}</p>
+                        <p className="px-6 py-6 text-sm font-medium text-[#5961BE] line-clamp-5">{i.productDescription}</p>
                         <div className="mt-auto flex w-full items-center justify-between px-6">
-                            <h1 className="text-md font-bold text-[#5961BE] md:text-xl 2xl:text-2xl">
+                            <h1 className="text-md font-bold text-[#5961BE] md:text-xl">
                                 {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(i.productPrice)}
                             </h1>
                             <Button className="cursor-pointer rounded-full bg-transparent text-[#5961BE] ring-2 ring-[#5961BE] hover:bg-[#5961BE] hover:text-white">

@@ -16,7 +16,7 @@ class productDetail extends Model
         return $this->belongsTo(User::class, 'userId');
     }
 
-    public function variant()
+    public function product()
     {
         return $this->belongsTo(variant::class, 'variantId');
     }

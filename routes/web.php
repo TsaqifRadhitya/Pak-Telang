@@ -9,7 +9,9 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    $product = Product::all();
+    $product = Product::where('productType','=','siap pakai')->get()->each(function($e){
+        $e->productPhoto = json_decode($e->productPhoto);
+    });
     $kontent = kontent::all();
     return Inertia::render('Guest/LandingPage/landingPage',compact('product','kontent'));
 })->name('home');
@@ -20,7 +22,7 @@ Route::get('konten', function () {
 })->name('konten');
 
 Route::prefix('produk')->group(function(){
-    Route::get('/', [ProductController::class,'index'])->name('produk');
+    Route::get('/', [ProductController::class,'landingPageProduct'])->name('produk');
     Route::get('{id}', [ProductController::class,'customerProductDetail'])->name('produk.detail');
 });
 

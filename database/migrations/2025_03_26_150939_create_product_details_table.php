@@ -15,7 +15,7 @@ return new class extends Migration
             $table->ulid('id')->primary();
             $table->integer('stock');
             $table->boolean('disable')->default(false);
-            $table->foreignUlid('variantId')->constrained('variants');
+            $table->foreignUlid('productId')->constrained('products');
             $table->foreignUuid('userId')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
