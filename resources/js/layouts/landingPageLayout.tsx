@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import Contact from '@/pages/Guest/LandingPage/Components/contact';
 import { SharedData } from '@/types';
 import { Head, router, usePage } from '@inertiajs/react';
 import { Menu } from 'lucide-react';
@@ -142,6 +143,7 @@ export default function LandingPageLayout({ children, page }: { children: React.
                 </div>
             </nav>
             {children}
+            <Contact />
         </div>
     );
 }

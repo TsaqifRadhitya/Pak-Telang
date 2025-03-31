@@ -19,10 +19,11 @@ Route::get('konten', function () {
     return Inertia::render('Guest/Konten/Konten');
 })->name('konten');
 
-Route::get('produk', function () {
-    $product = Product::all();
-    return Inertia::render('Guest/Produk/Produk',compact('product'));
-})->name('produk');
+Route::prefix('produk')->group(function(){
+    Route::get('/', [ProductController::class,'index'])->name('produk');
+    Route::get('{id}', [ProductController::class,'customerProductDetail'])->name('produk.detail');
+});
+
 
 Route::get('donasi', function () {
     return Inertia::render('Guest/Donasi/Donasi');

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('productName');
             $table->json('productPhoto');
             $table->integer('productPrice');
-            $table->string('productDescription');
+            $table->text('productDescription');
             $table->enum('productType',['setengah jadi','siap pakai']);
             $table->boolean('isdeleted')->default(false);
             $table->timestamps();

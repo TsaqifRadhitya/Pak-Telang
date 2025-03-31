@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { SharedData } from '@/types';
 import { productType } from '@/types/product';
-import { usePage } from '@inertiajs/react';
+import { router, usePage } from '@inertiajs/react';
 import { motion } from 'framer-motion'; // Saya mengubah dari 'motion/react' karena sepertinya itu typo
 import Heading from '../../../../components/heading';
 import HeadingSmall from '../../../../components/heading-small';
@@ -39,7 +39,9 @@ export default function product() {
                             <h1 className="text-md font-bold text-[#5961BE] md:text-xl 2xl:text-2xl">
                                 {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(i.productPrice)}
                             </h1>
-                            <Button className="cursor-pointer rounded-full bg-transparent text-[#5961BE] ring-2 ring-[#5961BE] hover:bg-[#5961BE] hover:text-white">
+                            <Button
+                            onClick={()=>router.get(route('produk.detail',{id:i.id}))}
+                            className="cursor-pointer rounded-full bg-transparent text-[#5961BE] ring-2 ring-[#5961BE] hover:bg-[#5961BE] hover:text-white">
                                 Beli Sekarang
                             </Button>
                         </div>

@@ -13,20 +13,31 @@ class ProductController extends Controller
 {
     public function index()
     {
-
-        if(Auth::user()->role === 'Mitra'){
-            $products = Product::whereisdeleted(false)->where('productType','=','siap pakai')->get()->map(function ($item) {
+        if (Auth::user() == null) {
+            $product = Product::where('productType','like','siap pakai')->get();
+            return Inertia::render('Guest/Produk/Produk', compact('product'));
+        }
+        if (Auth::user()->role === 'Mitra') {
+            $products = Product::whereisdeleted(false)->where('productType', '=', 'siap pakai')->get()->map(function ($item) {
                 $item->productPhoto = json_decode($item->productPhoto);
                 return $item;
             });
-            return Inertia::render('Mitra/Produk/produk',compact('products'));
-        }else{
+            return Inertia::render('Mitra/Produk/produk', compact('products'));
+        } else if (Auth::user()->role === 'Pak Telang') {
             $products = Product::whereisdeleted(false)->get()->map(function ($item) {
                 $item->productPhoto = json_decode($item->productPhoto);
                 return $item;
             });
-            return Inertia::render('Pak Telang/Produk/produk',compact('products'));
+            return Inertia::render('Pak Telang/Produk/produk', compact('products'));
+        } else {
         }
+    }
+
+    public function customerProductDetail($id)
+    {
+        $products = Product::where('productType','=','siap pakai')->where('id', '!=', $id)->get();
+        $productDetail = Product::whereId($id)->first();
+        return Inertia::render('Guest/Produk/produkDetail', compact('products', 'productDetail'));
     }
 
     public function store(Request $request)
