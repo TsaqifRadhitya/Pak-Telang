@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('productName');
             $table->json('productPhoto');
             $table->integer('productPrice');
-            $table->float('productNetto');
+            $table->integer('productNetto');
             $table->string('productUnit');
             $table->text('productDescription');
             $table->enum('productType',['setengah jadi','siap pakai']);

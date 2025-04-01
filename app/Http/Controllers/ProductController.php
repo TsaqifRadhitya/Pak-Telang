@@ -23,17 +23,13 @@ class ProductController extends Controller
 
     public function index()
     {
+        $products = Product::whereisdeleted(false)->where('productType', '=', 'siap pakai')->get()->map(function ($item) {
+            $item->productPhoto = json_decode($item->productPhoto);
+            return [...$item->attributesToArray(), 'productStock' => $item->productStocks()->where('userId', '=', Auth::user()->id)->first()?->stock ?? 0];
+        });
         if (Auth::user()->role === 'Mitra') {
-            $products = Product::whereisdeleted(false)->where('productType', '=', 'siap pakai')->get()->map(function ($item) {
-                $item->productPhoto = json_decode($item->productPhoto);
-                return [...$item->attributesToArray(), 'productStock' => $item->productStocks()->first()?->stock ?? 0];
-            });
             return Inertia::render('Mitra/Produk/produk', compact('products'));
         } else {
-            $products = Product::whereisdeleted(false)->get()->map(function ($item) {
-                $item->productPhoto = json_decode($item->productPhoto);
-                return [...$item->attributesToArray(), 'productStock' => $item->productStocks()->first()?->stock ?? 0];
-            });
             return Inertia::render('Pak Telang/Produk/produk', compact('products'));
         }
     }
@@ -55,12 +51,19 @@ class ProductController extends Controller
             'productPrice' => ['required', 'numeric', 'min:1'],
             'productType' => ['required', 'string', Rule::in(['setengah jadi', 'siap pakai'])],
             'productPhoto' => ['array', 'required', 'min:1'],
-            'productDescription' => ['string', 'required']
+            'productDescription' => ['string', 'required'],
+            'productNetto' => ['required', 'numeric'],
+            'productUnit' => ['required']
         ]);
 
         $result['productPhoto'] = json_encode($result['productPhoto']);
 
-        Product::create($result);
+        $result = Product::create($result);
+        productDetail::create([
+            'productId' => $result->id,
+            'stock' => $request->input('productStock'),
+            'userId' => Auth::user()->id
+        ]);
         return back();
     }
 
@@ -76,13 +79,16 @@ class ProductController extends Controller
             'productName' => ['required', 'string'],
             'productPrice' => ['required', 'numeric', 'min:1'],
             'productType' => ['required', 'string', Rule::in(['setengah jadi', 'siap pakai'])],
-            'productPhoto' => ['array', 'required', 'min:1'],
-            'productDescription' => ['string', 'required']
+            'productPhoto' => ['required'],
+            'productDescription' => ['string', 'required'],
+            'productNetto' => ['required', 'numeric'],
+            'productUnit' => ['required']
         ]);
-
         $result['productPhoto'] = json_encode($result['productPhoto']);
-
         Product::whereId($product)->update($result);
+        productDetail::where('productId', '=', $product)->update([
+            'stock' => $request->input('productStock')
+        ]);
         return back();
     }
 
@@ -92,33 +98,17 @@ class ProductController extends Controller
         return back();
     }
 
-    // public function edit($product)
-    // {
-    //     $data = Product::whereId($product)->first();
-    //     $data->productPhoto = json_decode($data->productPhoto);
-    //     return back();
-    // }
-
     public function updateStock(Request $request, $id)
     {
-        $request->validate(['stock' => ['required', 'numeric']]);
-        productDetail::updateOrInsert(
-            ['userId' => Auth::user()->id, 'productId' => $id],
-            ['stock' => $request->input('stock')]
-        );
+        $request->validate(['productStock' => ['required', 'numeric']]);
+        $product_detail = productDetail::where('userId', '=', Auth::user()->id)->where('productId', '=', $id)->first();
+        if ($product_detail === null) {
+            productDetail::create(
+                ['stock' => $request->input('productStock'), 'productId' => $id,'userId' => Auth::user()->id]
+            );
+        } else {
+            $product_detail->update(['stock' => $request->input('productStock')]);
+        }
         return back();
     }
-    // public function showStock()
-    // {
-    //     $user = Auth::user();
-    //     $productStock = productDetail::whereUserid($user->id)->get();
-    //     if ($user->role === 'Pak Telang') {
-    //     } else {
-    //     }
-    // }
-
-    // public function disableProduct($id)
-    // {
-    //     productDetail::whereProductid($id)->update(['disable' => true]);
-    // }
 }

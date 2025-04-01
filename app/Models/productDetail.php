@@ -9,7 +9,7 @@ class productDetail extends Model
 {
     use HasUlids;
 
-    protected $fillable = ['stock', 'disable', 'userId'];
+    protected $fillable = ['stock', 'disable', 'userId','productId'];
 
     public function user()
     {

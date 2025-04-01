@@ -18,6 +18,7 @@ Route::middleware(['auth', mitraMidleware::class])->group(function () {
         });
 
         Route::get('produk', [ProductController::class, 'index'])->name('mitra.produk');
+        Route::patch('produk/{id}', [ProductController::class, 'updateStock'])->name('mitra.produk.update');
         // Route::get('/stock', [ProductController::class, 'showStock'])->name('mitra.stock.index');
         // Route::patch('/stock/{id}', [ProductController::class, 'updateStock'])->name('mitra.stock.update');
         // Route::delete('/stock/{id}', [ProductController::class, 'destroy'])->name('mitra.stock.destroy');
