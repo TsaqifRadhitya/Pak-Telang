@@ -1,29 +1,26 @@
 import Heading from '@/components/heading';
 import HeadingSmall from '@/components/heading-small';
 import { Button } from '@/components/ui/button';
+import { currentMediaQuerry } from '@/hooks/useMediaQuery';
 import { usePage } from '@inertiajs/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import { Navigation, Pagination } from 'swiper/modules';
+import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { props } from '../produkDetail';
 
 export default function productDetailSection() {
     const { productDetail } = usePage<props>().props;
+    const { lg } = currentMediaQuerry();
     return (
         <section className="h-screen w-full bg-[#EBEFFF] p-5 pt-24 lg:px-10 lg:py-20 lg:pt-20 lg:pb-10">
             <main className="flex h-full w-full flex-col gap-5 rounded-lg border border-[#AFB3FF] bg-[#FFFFFF] p-7 shadow-md lg:flex-row lg:gap-20 lg:p-10">
-                <article className="relative flex aspect-8/9 flex-1/3 overflow-y-auto rounded-lg bg-[#AFB3FF] shadow">
-                    <Swiper
-                        navigation
-                        pagination={{ clickable: true }}
-                        modules={[Navigation]}
-                        className="h-auto w-full max-w-sm overflow-hidden rounded-lg"
-                    >
+                <article className="relative flex aspect-8/9 flex-1/3 overflow-y-auto rounded-lg bg-[#AFB3FF] shadow lg:py-5">
+                    <Swiper navigation = {lg} loop modules={[Navigation]} className="h-auto w-full max-w-sm overflow-hidden">
                         {productDetail.productPhoto.map((photo, index) => (
                             <SwiperSlide key={index} className="relative">
-                                <img src={photo} alt={`Product ${index + 1}`} className="h-auto w-full object-contain absolute top-1/2 left-1/2 -translate-1/2" />
+                                <img src={photo} alt={`Product ${index + 1}`} className="h-full w-full object-cover" />
                             </SwiperSlide>
                         ))}
                     </Swiper>
