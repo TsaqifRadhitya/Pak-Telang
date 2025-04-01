@@ -23,13 +23,17 @@ class ProductController extends Controller
 
     public function index()
     {
-        $products = Product::whereisdeleted(false)->where('productType', '=', 'siap pakai')->get()->map(function ($item) {
-            $item->productPhoto = json_decode($item->productPhoto);
-            return [...$item->attributesToArray(), 'productStock' => $item->productStocks()->where('userId', '=', Auth::user()->id)->first()?->stock ?? 0];
-        });
         if (Auth::user()->role === 'Mitra') {
+            $products = Product::whereisdeleted(false)->where('productType', '=', 'siap pakai')->get()->map(function ($item) {
+                $item->productPhoto = json_decode($item->productPhoto);
+                return [...$item->attributesToArray(), 'productStock' => $item->productStocks()->where('userId', '=', Auth::user()->id)->first()?->stock ?? 0];
+            });
             return Inertia::render('Mitra/Produk/produk', compact('products'));
         } else {
+            $products = Product::whereisdeleted(false)->get()->map(function ($item) {
+                $item->productPhoto = json_decode($item->productPhoto);
+                return [...$item->attributesToArray(), 'productStock' => $item->productStocks()->where('userId', '=', Auth::user()->id)->first()?->stock ?? 0];
+            });
             return Inertia::render('Pak Telang/Produk/produk', compact('products'));
         }
     }
