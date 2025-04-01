@@ -2,9 +2,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import AdminPageLayout from '@/layouts/adminPageLayout';
-import { SharedData } from '@/types';
 import { productType } from '@/types/product';
-import { router, useForm, usePage } from '@inertiajs/react';
+import { router, useForm } from '@inertiajs/react';
 import { Edit3Icon, LucideTrash2, Plus } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { z } from 'zod';
@@ -20,10 +19,9 @@ const productFormValidation = z.object({
     productUnit: z.string().min(1, 'harap mengisi satuan netto produk'),
     productDescription: z.string().min(1, 'harap mengisi deskripsi produk'),
     productType: z.string().min(1),
-    productStock: z.number({ message: 'harap mengisi stok produk' }).min(0,'harap mengisi stok produk dengan benar'),
+    productStock: z.number({ message: 'harap mengisi stok produk' }).min(0, 'harap mengisi stok produk dengan benar'),
 });
 export default function productAdminPage({ products }: { products: productType[] }) {
-    const { auth } = usePage<SharedData>().props;
     const [submit, setSubmit] = useState<Boolean>(false);
     const [productSelected, setProductSelected] = useState<productType | null>(null);
     const editState = useRef(false);
@@ -46,7 +44,7 @@ export default function productAdminPage({ products }: { products: productType[]
         reset();
         clearErrors();
         editState.current = false;
-        setSubmit(false)
+        setSubmit(false);
     };
 
     const handleSubmit = async () => {
@@ -63,7 +61,7 @@ export default function productAdminPage({ products }: { products: productType[]
             setError('productUnit', errors?.productUnit?._errors[0] as string);
             return;
         }
-        setSubmit(true)
+        setSubmit(true);
         const imageUploadProvider = new supabaseImage('Pak Telang', 'Image');
         if (editState.current) {
             if (imageBag) {
@@ -77,7 +75,7 @@ export default function productAdminPage({ products }: { products: productType[]
                 );
                 return;
             }
-            patch(route('admin.product.update', { product: data.id }), { onFinish: handleCloseForm  });
+            patch(route('admin.product.update', { product: data.id }), { onFinish: handleCloseForm });
         } else {
             const url = await imageUploadProvider.uploadBatch(imageBag!);
             let uniqueurl = url as string[];
@@ -87,14 +85,13 @@ export default function productAdminPage({ products }: { products: productType[]
     };
 
     const handleChangeImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-        e.preventDefault();
-        const photo = inputField.current?.files;
-        if (photo?.length) {
+        if (inputField.current?.files) {
+            console.log('hit')
             setData(
                 'productPhoto',
-                Object.values(photo as FileList).map((obj) => URL.createObjectURL(obj)),
+                Object.values(inputField.current?.files as FileList).map((obj) => URL.createObjectURL(obj)),
             );
-            setImageBag(photo);
+            setImageBag(inputField.current?.files);
         }
     };
 
