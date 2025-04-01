@@ -11,7 +11,7 @@ export class supabaseImage extends supabaseService {
 
     public async uploadBatch(params: FileList) {
         const promise = Object.values(params).map((item, index) => {
-            return this.supabaseConnection.storage.from('paktelang').upload(`${this.basePath}/Produk/${item.name}`, item, { contentType: item.type })
+            return this.supabaseConnection.storage.from('paktelang').upload(`${this.basePath}/Produk/${item.name}`, item, { contentType: item.type, upsert: true })
         })
         return await this.getUrl((await Promise.all(promise)).map((item) => (item.data?.path)) as string[])
     }
