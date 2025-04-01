@@ -60,4 +60,8 @@ class User extends Authenticatable
     public function address(){
         return $this->hasOne(Address::class,'userId');
     }
+
+    public function district(){
+        return $this->belongsTo(District::class,'districtId');
+    }
 }

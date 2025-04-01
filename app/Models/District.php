@@ -9,13 +9,15 @@ class District extends Model
 {
     use HasUlids;
 
-    protected $fillable = ['districtName','cityId'];
+    protected $fillable = ['districtName', 'cityId'];
 
-    public function city(){
-        return $this->belongsTo(City::class,'cityId','id');
+    public function city()
+    {
+        return $this->belongsTo(City::class, 'cityId', 'id');
     }
 
-    public function addresses(){
-        return $this->hasMany(Address::class,'districtId');
+    public function user()
+    {
+        return $this->hasMany(User::class, 'userId', 'id');
     }
 }

@@ -45,7 +45,6 @@ class profileController extends Controller
     {
         $request->validate(['phonenumber' => ['required', 'unique:' . User::class . ',phonenumber,' . auth()->id()]]);
         $role = Auth::user()->role;
-        // return $this->updateprofilenonCustomer($request);
         User::whereId(Auth::user()->id)->update(
             [
                 'name' => $request->input('name'),
@@ -67,17 +66,16 @@ class profileController extends Controller
 
     private function getFullAdress()
     {
-        $addres = Address::where('userId', '=', Auth::user()->id)->first();
-        if ($addres === null) {
+        if (!Auth::user()->address || !Auth::user()->districtId || !Auth::user()->postalCode) {
             return null;
         };
-        $district = $addres->district()->first();
+        $district = Auth::user()->district()->first();
         $city = $district->city()->first();
         $province = $city->province()->first();
         return [
-            'address' => $addres->address,
-            'postalCode' => $addres->postalCode,
-            'districtName' => $district->districtName,
+            'address' => Auth::user()->address,
+            'postalCode' =>  Auth::user()->postalCode,
+            'districtName' => $district?->districtName,
             'cityName' => $city->cityName,
             'province' => $province->province,
         ];
@@ -94,10 +92,12 @@ class profileController extends Controller
         $district = District::firstOrNew(['districtName' =>  $request->input('districtName'), 'cityId' => $city->id]);
         $district->save(); // Pastikan tersimpan
 
-        $address = Address::updateOrCreate(['userId' => Auth::user()->id], [
-            'address' => $request->input('address'),
-            'postalCode' => $request->input('postalCode'),
-            'districtId' => $district->id
-        ]);
+        User::whereId(Auth::user()->id)->update(
+            [
+                'address' => $request->input('address'),
+                'postalCode' => $request->input('postalCode'),
+                'districtId' => $district->id
+            ]
+            );
     }
 }

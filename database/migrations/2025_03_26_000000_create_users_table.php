@@ -19,11 +19,13 @@ return new class extends Migration
             $table->string('password');
             $table->string('phonenumber')->nullable()->unique();
             $table->string('profile_picture')->nullable();
-            $table->enum('role',['Customer','Pak Telang','Mitra']);
-            $table->enum('gender',['Laki-Laki','Perempuan'])->nullable();
-            $table->string('address')->nullable();
+            $table->enum('role', ['Customer', 'Pak Telang', 'Mitra']);
+            $table->enum('gender', ['Laki-Laki', 'Perempuan'])->nullable();
             $table->date('birthday')->nullable();
             $table->timestamp('email_verified_at')->nullable();
+            $table->text('address')->nullable();
+            $table->string('postalCode')->nullable();
+            $table->foreignUlid('districtId')->nullable()->constrained('districts');
             $table->rememberToken();
             $table->timestamps();
         });
