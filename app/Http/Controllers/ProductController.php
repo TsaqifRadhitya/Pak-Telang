@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
+use Nette\Utils\Arrays;
 
 class ProductController extends Controller
 {
@@ -25,13 +26,13 @@ class ProductController extends Controller
         if (Auth::user()->role === 'Mitra') {
             $products = Product::whereisdeleted(false)->where('productType', '=', 'siap pakai')->get()->map(function ($item) {
                 $item->productPhoto = json_decode($item->productPhoto);
-                return $item;
+                return [...$item->attributesToArray(), 'productStock' => $item->productStocks()->first()?->stock ?? 0];
             });
             return Inertia::render('Mitra/Produk/produk', compact('products'));
         } else {
             $products = Product::whereisdeleted(false)->get()->map(function ($item) {
                 $item->productPhoto = json_decode($item->productPhoto);
-                return $item;
+                return [...$item->attributesToArray(), 'productStock' => $item->productStocks()->first()?->stock ?? 0];
             });
             return Inertia::render('Pak Telang/Produk/produk', compact('products'));
         }
@@ -60,10 +61,8 @@ class ProductController extends Controller
         $result['productPhoto'] = json_encode($result['productPhoto']);
 
         Product::create($result);
+        return back();
     }
-
-    public function create() {}
-
 
     public function show($product)
     {
@@ -84,18 +83,21 @@ class ProductController extends Controller
         $result['productPhoto'] = json_encode($result['productPhoto']);
 
         Product::whereId($product)->update($result);
+        return back();
     }
 
     public function destroy($product)
     {
         Product::whereId($product)->update(['isdeleted' => true]);
+        return back();
     }
 
-    public function edit($product)
-    {
-        $data = Product::whereId($product)->first();
-        $data->productPhoto = json_decode($data->productPhoto);
-    }
+    // public function edit($product)
+    // {
+    //     $data = Product::whereId($product)->first();
+    //     $data->productPhoto = json_decode($data->productPhoto);
+    //     return back();
+    // }
 
     public function updateStock(Request $request, $id)
     {
@@ -104,19 +106,19 @@ class ProductController extends Controller
             ['userId' => Auth::user()->id, 'productId' => $id],
             ['stock' => $request->input('stock')]
         );
+        return back();
     }
+    // public function showStock()
+    // {
+    //     $user = Auth::user();
+    //     $productStock = productDetail::whereUserid($user->id)->get();
+    //     if ($user->role === 'Pak Telang') {
+    //     } else {
+    //     }
+    // }
 
-    public function showStock()
-    {
-        $user = Auth::user();
-        $productStock = productDetail::whereUserid($user->id)->get();
-        if ($user->role === 'Pak Telang') {
-        } else {
-        }
-    }
-
-    public function disableProduct($id)
-    {
-        productDetail::whereProductid($id)->update(['disable' => true]);
-    }
+    // public function disableProduct($id)
+    // {
+    //     productDetail::whereProductid($id)->update(['disable' => true]);
+    // }
 }

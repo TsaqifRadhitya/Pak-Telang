@@ -17,9 +17,9 @@ Route::middleware(['auth', adminMidleware::class])->group(function () {
             Route::get('/edit', [profileController::class, 'edit'])->name('admin.profile.edit');
             Route::post('/edit', [profileController::class, 'update'])->name('admin.profile.update');
         });
-        Route::resource('product', ProductController::class)->names('admin.product');
-        Route::get('/stock', [ProductController::class,'showStock'])->name('admin.stock.index');
-        Route::patch('/stock/{id}', [ProductController::class,'updateStock'])->name('admin.stock.update');
-        Route::delete('/stock/{id}', [ProductController::class,'destroy'])->name('admin.stock.destroy');
+        Route::resource('product', ProductController::class)->except(['create','edit','index'])->names('admin.product');
+        // Route::get('/stock', [ProductController::class,'showStock'])->name('admin.stock.index');
+        // Route::patch('/stock/{id}', [ProductController::class,'updateStock'])->name('admin.stock.update');
+        // Route::delete('/stock/{id}', [ProductController::class,'destroy'])->name('admin.stock.destroy');
     });
 });

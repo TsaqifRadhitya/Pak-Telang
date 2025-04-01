@@ -9,7 +9,7 @@ class productDetail extends Model
 {
     use HasUlids;
 
-    protected $fillable = ['stock', 'disable', 'userId', 'variantId'];
+    protected $fillable = ['stock', 'disable', 'userId'];
 
     public function user()
     {
@@ -18,6 +18,6 @@ class productDetail extends Model
 
     public function product()
     {
-        return $this->belongsTo(variant::class, 'variantId');
+        return $this->belongsTo(Product::class, 'productId');
     }
 }

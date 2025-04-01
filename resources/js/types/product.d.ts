@@ -7,4 +7,5 @@ export type productType = {
     productUnit:string,
     productDescription: string,
     productType:string
+    productStock:number
 }
