@@ -28,25 +28,21 @@ export default function productMitraPage({ products }: { products: productType[]
         id: '',
     });
     const handleSubmit = () => {
-        const stock = data.productStock
-        if (stock.toString() === ""){
-            setError('productStock','Harap mengisi stock product')
-            return
-        }
+        const stock = data.productStock;
 
-        if(stock < 0){
-            setError('productStock','Harap mengisi stock dengan benar')
-            return
+        if (stock < 0) {
+            setError('productStock', 'Harap mengisi stock dengan benar');
+            return;
         }
-        setSubmit(true)
-        patch(route('mitra.produk.update',{id : data.id}),{onFinish : handleCloseForm})
-    }
+        setSubmit(true);
+        patch(route('mitra.produk.update', { id: data.id }), { onFinish: handleCloseForm });
+    };
     const handleCloseForm = () => {
-        reset()
-        clearErrors()
-        setDialog(false)
-        setSubmit(false)
-    }
+        reset();
+        clearErrors();
+        setDialog(false);
+        setSubmit(false);
+    };
     return (
         <>
             {dialog && (
