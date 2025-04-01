@@ -151,7 +151,7 @@ export default function productMitraPage({ products }: { products: productType[]
                                 <div className="flex w-full">
                                     <div className="flex flex-2/3 gap-x-2.5">
                                         {item.productPhoto.map((photo, i) =>
-                                            i > 2 ? null : <img src={photo} key={i} className="aspect-square w-1/4 rounded-lg ring ring-[#B9BDFF]" />,
+                                            i > 2 ? null : <img src={photo} key={i} className="aspect-square object-center object-cover w-1/4 rounded-lg ring ring-[#B9BDFF]" />,
                                         )}
                                     </div>
                                     <div className="flex flex-1/3 justify-end gap-x-1.5">
