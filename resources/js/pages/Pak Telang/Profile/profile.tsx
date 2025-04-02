@@ -1,7 +1,8 @@
 import AdminPageLayout from '@/layouts/adminPageLayout';
 import { SharedData } from '@/types';
-import { usePage } from '@inertiajs/react';
+import { router, usePage } from '@inertiajs/react';
 import { address } from '../../../types/address';
+import { Button } from '@/components/ui/button';
 interface props extends SharedData {
     address?: address;
 }
@@ -13,6 +14,20 @@ export default function profileAdminPage() {
             <main className="h-full w-full rounded-t-lg border-[1px] border-b-0 border-[#AFB3FF] bg-[#FFFFFF] shadow-lg">
                 <div className="flex items-center justify-between border-b-[1px] border-[#AFB3FF] p-5 md:px-10 md:py-5">
                     <h1 className="flex-3/5 text-xl font-semibold">Profile</h1>
+                    <div className="flex flex-2/5 gap-x-3">
+                        <Button
+                            onClick={() => router.get(route('admin.profile.edit'))}
+                            className="flex-1/2 cursor-pointer bg-[#FFA114] text-white hover:bg-[#d68f24]"
+                        >
+                            Edit
+                        </Button>
+                        <Button
+                            onClick={() => router.post(route('logout'))}
+                            className="flex-1/2 cursor-pointer bg-[#FF3636] text-white hover:bg-[#d72e2e]"
+                        >
+                            Log Out
+                        </Button>
+                    </div>
                 </div>
                 <div className="flex w-full flex-col gap-y-5 p-5 lg:gap-20 lg:p-10">
                     <div className="flex flex-col gap-y-5 lg:flex-row lg:items-center lg:gap-x-16">

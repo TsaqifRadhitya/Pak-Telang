@@ -16,9 +16,9 @@ const productFormValidation = z.object({
     productPhoto: z.array(z.string()).nonempty('Harap mengisi foto produk'),
     productPrice: z.number().min(1, 'Harap mengisi harga produk'),
     productNetto: z.number().min(1, 'Harap mengisi netto produk'),
-    productUnit: z.string().min(1, 'harap mengisi satuan netto produk'),
+    productUnit: z.string().min(1, 'harap mengisi satuan'),
     productDescription: z.string().min(1, 'harap mengisi deskripsi produk'),
-    productType: z.string().min(1),
+    productType: z.string().min(1, 'Harap memilih tipe produk'),
     productStock: z.number({ message: 'harap mengisi stok produk' }).min(0, 'harap mengisi stok produk dengan benar'),
 });
 export default function productAdminPage({ products }: { products: productType[] }) {
@@ -86,7 +86,7 @@ export default function productAdminPage({ products }: { products: productType[]
 
     const handleChangeImage = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (inputField.current?.files) {
-            console.log('hit')
+            console.log('hit');
             setData(
                 'productPhoto',
                 Object.values(inputField.current?.files as FileList).map((obj) => URL.createObjectURL(obj)),
@@ -113,7 +113,7 @@ export default function productAdminPage({ products }: { products: productType[]
                 <section id="alertDelete" className="fixed z-50 h-full w-full bg-black/50">
                     <article className="absolute top-1/2 left-1/2 flex w-full max-w-xl -translate-1/2 flex-col items-center gap-y-5 rounded-lg bg-white p-5 pb-10">
                         <Heading title="Warning !!!" className="w-fit text-2xl text-[#5961BE] underline decoration-[#FF0000] underline-offset-8" />
-                        <img src={productSelected?.productPhoto[0]} alt="" className="aspect-video w-2/3" />
+                        <img src={productSelected?.productPhoto[0]} alt="" className="aspect-video w-2/3 object-cover object-center" />
                         <Heading title="Apakah Anda yakin untuk menghapus produk ini ?" className="w-fit text-lg font-medium text-[#5961BE]" />
                         <div className="flex w-1/2 justify-center gap-x-2.5">
                             <Button
@@ -150,7 +150,7 @@ export default function productAdminPage({ products }: { products: productType[]
                                     value={data.productName}
                                     type="text"
                                     placeholder="Nama Produk"
-                                    className="text-[#3B387E]"
+                                    className="border-0 text-[#3B387E] ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:ring-3 focus-visible:ring-[#B9BDFF]"
                                 />
                                 {errors.productName && <p className="text-sm text-red-600">{errors.productName}</p>}
                             </div>
@@ -161,7 +161,7 @@ export default function productAdminPage({ products }: { products: productType[]
                                     value={data.productStock}
                                     type="number"
                                     placeholder="Stok Produk"
-                                    className="text-[#3B387E] decoration-0"
+                                    className="border-0 text-[#3B387E] ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:ring-3 focus-visible:ring-[#B9BDFF]"
                                 />
                                 {errors.productStock && <p className="text-sm text-red-600">{errors.productStock}</p>}
                             </div>
@@ -172,7 +172,7 @@ export default function productAdminPage({ products }: { products: productType[]
                                     value={data.productPrice}
                                     type="number"
                                     placeholder="Harga Product"
-                                    className="text-[#3B387E] decoration-0"
+                                    className="border-0 text-[#3B387E] ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:ring-3 focus-visible:ring-[#B9BDFF]"
                                 />
                                 {errors.productPrice && <p className="text-sm text-red-600">{errors.productPrice}</p>}
                             </div>
@@ -184,7 +184,7 @@ export default function productAdminPage({ products }: { products: productType[]
                                         value={data.productNetto}
                                         type="number"
                                         placeholder="Netto"
-                                        className="text-[#3B387E] decoration-0"
+                                        className="border-0 text-[#3B387E] ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:ring-3 focus-visible:ring-[#B9BDFF]"
                                     />
                                     {errors.productNetto && <p className="text-sm text-red-600">{errors.productNetto}</p>}
                                 </div>
@@ -193,7 +193,7 @@ export default function productAdminPage({ products }: { products: productType[]
                                     <select
                                         onChange={(e) => setData('productUnit', e.target.value)}
                                         value={data.productUnit}
-                                        className="text-[#3B387E] decoration-0"
+                                        className="min-h-9 rounded-lg px-3 py-1 text-[#3B387E] ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:border-[#B9BDFF] focus-visible:ring-3"
                                     >
                                         <option value="">Pilih Satuan</option>
                                         <option value="ml">ml</option>
@@ -209,7 +209,7 @@ export default function productAdminPage({ products }: { products: productType[]
                                 <select
                                     onChange={(e) => setData('productType', e.target.value)}
                                     value={data.productType}
-                                    className="text-[#3B387E] decoration-0"
+                                    className="min-h-9 w-full rounded-lg px-3 py-1 text-[#3B387E] shadow ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:border-[#B9BDFF] focus-visible:ring-3"
                                 >
                                     <option value="">Pilih Tipe Produk</option>
                                     <option value="setengah jadi">Setengah Jadi</option>
@@ -223,7 +223,7 @@ export default function productAdminPage({ products }: { products: productType[]
                                     onChange={(e) => setData('productDescription', e.target.value)}
                                     value={data.productDescription}
                                     placeholder="Deskripsi Produk"
-                                    className="h-20 text-[#3B387E] decoration-0"
+                                    className="border-0 bg-black text-[#3B387E] ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:ring-3 focus-visible:ring-[#B9BDFF]"
                                 />
                                 {errors.productDescription && <p className="text-sm text-red-600">{errors.productDescription}</p>}
                             </div>
@@ -275,13 +275,19 @@ export default function productAdminPage({ products }: { products: productType[]
                     <div className="flex items-center border-b-[1px] border-[#AFB3FF] p-5 md:px-10 md:py-5">
                         <h1 className="text-xl font-semibold">Produk</h1>
                     </div>
-                    <section className="flex w-full flex-col gap-10 overflow-y-auto p-5 lg:grid lg:aspect-9/5 lg:grid-cols-2 lg:p-10">
+                    <section className="flex w-full flex-col gap-10 overflow-y-auto p-5 md:grid md:h-[80vh] md:grid-cols-2 lg:p-10">
                         {products.map((item, i) => (
-                            <div key={i} className="flex aspect-7/4 flex-col justify-between rounded-lg p-5 shadow-lg ring ring-[#B9BDFF]">
+                            <div key={i} className="flex aspect-7/4 flex-col justify-between gap-y-2.5 rounded-lg p-5 shadow-lg ring ring-[#B9BDFF]">
                                 <div className="flex w-full">
                                     <div className="flex flex-2/3 gap-x-2.5">
                                         {item.productPhoto.map((photo, i) =>
-                                            i > 2 ? null : <img src={photo} key={i} className="aspect-square object-center object-cover w-1/4 rounded-lg ring ring-[#B9BDFF]" />,
+                                            i > 2 ? null : (
+                                                <img
+                                                    src={photo}
+                                                    key={i}
+                                                    className="aspect-square w-1/4 rounded-lg object-cover object-center ring ring-[#B9BDFF]"
+                                                />
+                                            ),
                                         )}
                                     </div>
                                     <div className="flex flex-1/3 justify-end gap-x-1.5">
@@ -301,8 +307,9 @@ export default function productAdminPage({ products }: { products: productType[]
                                 </div>
                                 <div>
                                     <div className="flex items-center justify-between">
-                                        <Heading title={item.productName} disableMb />
+                                        <Heading title={item.productName} className="text-md xl:text-xl" disableMb />
                                         <Heading
+                                            className="text-md xl:text-xl"
                                             disableMb
                                             title={new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.productPrice)}
                                         />
@@ -312,7 +319,7 @@ export default function productAdminPage({ products }: { products: productType[]
                                         <HeadingSmall title={`Stock : ${item.productStock}`} />
                                     </div>
                                 </div>
-                                <p className="text-md">{item.productDescription}</p>
+                                <p className="lg:text-md line-clamp-4 text-xs">{item.productDescription}</p>
                             </div>
                         ))}
                     </section>

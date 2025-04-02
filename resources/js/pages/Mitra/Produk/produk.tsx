@@ -55,7 +55,13 @@ export default function productMitraPage({ products }: { products: productType[]
                         <div className="w-full gap-x-20 gap-y-5 lg:grid lg:grid-cols-2 lg:px-2.5">
                             <div>
                                 <HeadingSmall title="Nama Produk" className="text-[#3B387E]" />
-                                <Input value={data.productName} type="text" placeholder="Nama Produk" className="text-[#3B387E]" disabled />
+                                <Input
+                                    value={data.productName}
+                                    type="text"
+                                    placeholder="Nama Produk"
+                                    className="border-0 text-[#3B387E] ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:ring-3 focus-visible:ring-[#B9BDFF]"
+                                    disabled
+                                />
                             </div>
                             <div>
                                 <HeadingSmall title="Stok Produk" className="text-[#3B387E]" />
@@ -64,7 +70,7 @@ export default function productMitraPage({ products }: { products: productType[]
                                     value={data.productStock}
                                     type="number"
                                     placeholder="Stok Produk"
-                                    className="text-[#3B387E] decoration-0"
+                                    className="border-0 text-[#3B387E] ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:ring-3 focus-visible:ring-[#B9BDFF]"
                                 />
                                 {errors.productStock && <p className="text-sm text-red-600">{errors.productStock}</p>}
                             </div>
@@ -74,7 +80,7 @@ export default function productMitraPage({ products }: { products: productType[]
                                     value={data.productPrice}
                                     type="number"
                                     placeholder="Harga Product"
-                                    className="text-[#3B387E] decoration-0"
+                                    className="border-0 text-[#3B387E] ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:ring-3 focus-visible:ring-[#B9BDFF]"
                                     disabled
                                 />
                             </div>
@@ -85,13 +91,17 @@ export default function productMitraPage({ products }: { products: productType[]
                                         value={data.productNetto}
                                         type="number"
                                         placeholder="Netto"
-                                        className="text-[#3B387E] decoration-0"
+                                        className="border-0 text-[#3B387E] ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:ring-3 focus-visible:ring-[#B9BDFF]"
                                         disabled
                                     />
                                 </div>
                                 <div className="flex-1/2 lg:flex-1/4">
                                     <HeadingSmall title="Satuan" className="text-[#3B387E]" />
-                                    <select disabled value={data.productUnit} className="text-[#3B387E] decoration-0">
+                                    <select
+                                        disabled
+                                        value={data.productUnit}
+                                        className="min-h-9 rounded-lg px-3 py-1 text-[#3B387E] ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:border-[#B9BDFF] focus-visible:ring-3"
+                                    >
                                         <option value="">Pilih Satuan</option>
                                         <option value="ml">ml</option>
                                         <option value="liter">Liter</option>
@@ -105,7 +115,7 @@ export default function productMitraPage({ products }: { products: productType[]
                                 <Textarea
                                     value={data.productDescription}
                                     placeholder="Deskripsi Produk"
-                                    className="h-20 text-[#3B387E] decoration-0"
+                                    className="border-0 bg-black text-[#3B387E] ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:ring-3 focus-visible:ring-[#B9BDFF]"
                                     disabled
                                 />
                             </div>
@@ -141,17 +151,22 @@ export default function productMitraPage({ products }: { products: productType[]
             )}
             <MitraPageLayout page="Produk">
                 <main className="relative z-0 h-full w-full rounded-t-lg border-[1px] border-b-0 border-[#AFB3FF] bg-[#FFFFFF] shadow-lg">
-                    <div className="absolute right-0 bottom-0 -translate-1/4 cursor-pointer rounded-full bg-[#B9BDFF] p-4 shadow hover:bg-[#a2a7f9]"></div>
                     <div className="flex items-center border-b-[1px] border-[#AFB3FF] p-5 md:px-10 md:py-5">
                         <h1 className="text-xl font-semibold">Produk</h1>
                     </div>
-                    <section className="flex w-full flex-col gap-10 overflow-y-auto p-5 lg:grid lg:aspect-9/5 lg:grid-cols-2 lg:p-10">
+                    <section className="flex w-full flex-col gap-10 overflow-y-auto p-5 md:grid md:aspect-9/5 md:h-[80vh] md:grid-cols-2 lg:p-10">
                         {products.map((item, i) => (
                             <div key={i} className="flex aspect-7/4 flex-col justify-between rounded-lg p-5 shadow-lg ring ring-[#B9BDFF]">
                                 <div className="flex w-full">
                                     <div className="flex flex-2/3 gap-x-2.5">
                                         {item.productPhoto.map((photo, i) =>
-                                            i > 2 ? null : <img src={photo} key={i} className="aspect-square object-center object-cover w-1/4 rounded-lg ring ring-[#B9BDFF]" />,
+                                            i > 2 ? null : (
+                                                <img
+                                                    src={photo}
+                                                    key={i}
+                                                    className="aspect-square w-1/4 rounded-lg object-cover object-center ring ring-[#B9BDFF]"
+                                                />
+                                            ),
                                         )}
                                     </div>
                                     <div className="flex flex-1/3 justify-end gap-x-1.5">
@@ -165,8 +180,9 @@ export default function productMitraPage({ products }: { products: productType[]
                                 </div>
                                 <div>
                                     <div className="flex items-center justify-between">
-                                        <Heading title={item.productName} disableMb />
+                                        <Heading title={item.productName} className="text-md xl:text-xl" disableMb />
                                         <Heading
+                                            className="text-md xl:text-xl"
                                             disableMb
                                             title={new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.productPrice)}
                                         />
@@ -176,7 +192,7 @@ export default function productMitraPage({ products }: { products: productType[]
                                         <HeadingSmall title={`Stock : ${item.productStock}`} />
                                     </div>
                                 </div>
-                                <p className="text-md">{item.productDescription}</p>
+                                <p className="lg:text-md line-clamp-4 text-xs">{item.productDescription}</p>
                             </div>
                         ))}
                     </section>

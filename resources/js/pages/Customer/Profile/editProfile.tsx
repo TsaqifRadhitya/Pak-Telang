@@ -128,7 +128,7 @@ export default function editProfileCustomer() {
     };
     return (
         <CustomerPageLayout page="Profile">
-            <main className="min-h-screen w-full lg:h-screen p-10 pt-20 lg:pt-20 lg:p-20 bg-[#EBEFFF] text-[#3B387E]">
+            <main className="min-h-screen w-full bg-[#EBEFFF] p-10 pt-20 text-[#3B387E] lg:h-screen lg:p-20 lg:pt-20">
                 <main className="h-full w-full rounded-lg border border-[#AFB3FF] bg-white shadow-lg">
                     <div className="border-b border-[#AFB3FF] p-5 md:px-10 md:py-5">
                         <h1 className="text-xl font-semibold">Edit Profile</h1>
@@ -152,12 +152,22 @@ export default function editProfileCustomer() {
                         <div className="grid w-full grid-cols-1 grid-rows-6 gap-6 lg:grid-cols-2">
                             <div>
                                 <Label>Nama</Label>
-                                <Input type="text" value={data.name} onChange={(e) => setData('name', e.target.value)} />
+                                <Input
+                                    className="border-0 ring ring-[#B9BDFF] focus-visible:ring-[#B9BDFF]"
+                                    type="text"
+                                    value={data.name}
+                                    onChange={(e) => setData('name', e.target.value)}
+                                />
                                 {errors.name && <InputError message={errors.name} />}
                             </div>
                             <div>
                                 <Label>Tanggal Lahir</Label>
-                                <Input type="date" value={data.birthday ?? ''} onChange={(e) => setData('birthday', e.target.value)} />
+                                <Input
+                                    className="border-0 ring ring-[#B9BDFF] focus-visible:ring-[#B9BDFF]"
+                                    type="date"
+                                    value={data.birthday ?? ''}
+                                    onChange={(e) => setData('birthday', e.target.value)}
+                                />
                                 <InputError message={errors.birthday} />
                             </div>
                             <div>
@@ -165,7 +175,7 @@ export default function editProfileCustomer() {
                                 <select
                                     value={data.gender ?? ''}
                                     onChange={(e) => setData('gender', e.target.value as any)}
-                                    className="w-full rounded-lg border p-2"
+                                    className="w-full rounded-lg p-2 ring ring-[#B9BDFF] focus-visible:ring-3"
                                 >
                                     <option value=""></option>
                                     <option value="Laki-Laki">Laki - Laki</option>
@@ -175,11 +185,21 @@ export default function editProfileCustomer() {
                             </div>
                             <div>
                                 <Label>Email</Label>
-                                <Input disabled type="email" value={data.email} />
+                                <Input
+                                    className="border-0 ring ring-[#B9BDFF] focus-visible:ring-[#B9BDFF]"
+                                    disabled
+                                    type="email"
+                                    value={data.email}
+                                />
                             </div>
                             <div>
                                 <Label>No. HP</Label>
-                                <Input type="text" value={data.phonenumber ?? ''} onChange={(e) => setData('phonenumber', e.target.value)} />
+                                <Input
+                                    className="border-0 ring ring-[#B9BDFF] focus-visible:ring-[#B9BDFF]"
+                                    type="text"
+                                    value={data.phonenumber ?? ''}
+                                    onChange={(e) => setData('phonenumber', e.target.value)}
+                                />
                                 {errors.phonenumber && <InputError message={errors.phonenumber} />}
                             </div>
                             <div>
@@ -187,7 +207,7 @@ export default function editProfileCustomer() {
                                 <select
                                     value={data.province ?? ''}
                                     onChange={(e) => setData('province', e.target.value)}
-                                    className="w-full rounded-lg border p-2"
+                                    className="w-full rounded-lg p-2 ring ring-[#B9BDFF] focus-visible:ring-3"
                                 >
                                     <option></option>
                                     {addressApi.provinces.map((prov) => (
@@ -203,7 +223,7 @@ export default function editProfileCustomer() {
                                 <select
                                     value={data.cityName ?? ''}
                                     onChange={(e) => setData('cityName', e.target.value)}
-                                    className="w-full rounded-lg border p-2"
+                                    className="w-full rounded-lg p-2 ring ring-[#B9BDFF] focus-visible:ring-3"
                                 >
                                     <option></option>
                                     {addressApi.cities.map((city) => (
@@ -219,7 +239,7 @@ export default function editProfileCustomer() {
                                 <select
                                     value={data.districtName ?? ''}
                                     onChange={(e) => setData('districtName', e.target.value)}
-                                    className="w-full rounded-lg border p-2"
+                                    className="w-full rounded-lg p-2 ring ring-[#B9BDFF] focus-visible:ring-3"
                                 >
                                     <option></option>
                                     {addressApi.districts.map((district) => (
@@ -232,12 +252,22 @@ export default function editProfileCustomer() {
                             </div>
                             <div>
                                 <Label>Alamat</Label>
-                                <Input type="text" value={data.address ?? ''} onChange={(e) => setData('address', e.target.value)} />
+                                <Input
+                                    className="border-0 ring ring-[#B9BDFF] focus-visible:ring-[#B9BDFF]"
+                                    type="text"
+                                    value={data.address ?? ''}
+                                    onChange={(e) => setData('address', e.target.value)}
+                                />
                                 {errors.address && <InputError message={errors.address} />}
                             </div>
                             <div>
                                 <Label>Kode Pos</Label>
-                                <Input type="text" value={data.postalCode ?? ''} onChange={(e) => setData('postalCode', e.target.value)} />
+                                <Input
+                                    className="border-0 ring ring-[#B9BDFF] focus-visible:ring-[#B9BDFF]"
+                                    type="text"
+                                    value={data.postalCode ?? ''}
+                                    onChange={(e) => setData('postalCode', e.target.value)}
+                                />
                                 {errors.postalCode && <InputError message={errors.postalCode} />}
                             </div>
                             <div className="flex justify-end gap-4 lg:col-span-2">
