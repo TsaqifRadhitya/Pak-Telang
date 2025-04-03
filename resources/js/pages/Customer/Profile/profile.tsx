@@ -10,8 +10,8 @@ export default function profilePageCustomer() {
     const { auth, address } = usePage<props>().props;
     return (
         <CustomerPageLayout page="Profile">
-            <main className="min-h-screen bg-[#EBEFFF] p-5 lg:p-10 pt-20 lg:pt-24">
-                <article className="min-h-[86vh] lg:h-full w-full rounded-lg border border-[#AFB3FF] bg-[#FFFFFF] shadow-xl">
+            <main className="min-h-screen bg-[#EBEFFF] flex flex-col p-5 lg:p-10 pt-20 lg:pt-24">
+                <article className="flex-1 w-full rounded-lg border border-[#AFB3FF] bg-[#FFFFFF] shadow-xl">
                     <header className="flex items-center border-b border-[#AFB3FF] px-6 py-6 lg:px-16">
                         <h1 className="flex-3/5 text-xl font-semibold text-[#3B387E]">Profile</h1>
                         <div className="flex flex-1/9 gap-x-3">
