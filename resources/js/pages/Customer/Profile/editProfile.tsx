@@ -128,7 +128,7 @@ export default function editProfileCustomer() {
     };
     return (
         <CustomerPageLayout page="Profile">
-            <main className="min-h-screen w-full bg-[#EBEFFF] p-10 pt-20 text-[#3B387E] lg:h-screen lg:p-20 lg:pt-20">
+            <main className="min-h-screen w-full bg-[#EBEFFF] p-5 pt-20 text-[#3B387E] lg:h-screen lg:p-20 lg:pt-20">
                 <main className="h-full w-full rounded-lg border border-[#AFB3FF] bg-white shadow-lg">
                     <div className="border-b border-[#AFB3FF] p-5 md:px-10 md:py-5">
                         <h1 className="text-xl font-semibold">Edit Profile</h1>
@@ -272,7 +272,7 @@ export default function editProfileCustomer() {
                             </div>
                             <div className="flex justify-end gap-4 lg:col-span-2">
                                 <Button
-                                    onClick={() => router.get(route('admin.profile'))}
+                                    onClick={() => router.get(route('customer.profile'))}
                                     className="w-32 cursor-pointer border border-[#5961BE] text-[#5961BE] hover:bg-[#5961BE] hover:text-white"
                                 >
                                     Batal
