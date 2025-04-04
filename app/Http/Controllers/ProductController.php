@@ -53,7 +53,7 @@ class ProductController extends Controller
         $result =  $request->validate([
             'productName' => ['required', 'string'],
             'productPrice' => ['required', 'numeric', 'min:1'],
-            'productType' => ['required', 'string', Rule::in(['setengah jadi', 'siap pakai'])],
+            'productType' => ['required', 'string', Rule::in(['Bahan Baku', 'Barang jadi'])],
             'productPhoto' => ['array', 'required', 'min:1'],
             'productDescription' => ['string', 'required'],
             'productNetto' => ['required', 'numeric'],
@@ -79,10 +79,11 @@ class ProductController extends Controller
 
     public function update(Request $request, $product)
     {
+        // dd($request->all());
         $result =  $request->validate([
             'productName' => ['required', 'string'],
             'productPrice' => ['required', 'numeric', 'min:1'],
-            'productType' => ['required', 'string', Rule::in(['setengah jadi', 'siap pakai'])],
+            'productType' => ['required', 'string', Rule::in(['Bahan Baku', 'Barang jadi'])],
             'productPhoto' => ['required'],
             'productDescription' => ['string', 'required'],
             'productNetto' => ['required', 'numeric'],
@@ -90,9 +91,17 @@ class ProductController extends Controller
         ]);
         $result['productPhoto'] = json_encode($result['productPhoto']);
         Product::whereId($product)->update($result);
-        productDetail::where('productId', '=', $product)->update([
+        $productDetail = productDetail::where('productId', '=', $product)->where('userId', '=', Auth::user()->id)->update([
             'stock' => $request->input('productStock')
         ]);
+
+        if ($productDetail === 0) {
+            productDetail::create([
+                'stock' => $request->input('productStock'),
+                'productId' => $product,
+                'userId' => Auth::user()->id
+            ]);
+        }
         return back();
     }
 
@@ -108,7 +117,7 @@ class ProductController extends Controller
         $product_detail = productDetail::where('userId', '=', Auth::user()->id)->where('productId', '=', $id)->first();
         if ($product_detail === null) {
             productDetail::create(
-                ['stock' => $request->input('productStock'), 'productId' => $id,'userId' => Auth::user()->id]
+                ['stock' => $request->input('productStock'), 'productId' => $id, 'userId' => Auth::user()->id]
             );
         } else {
             $product_detail->update(['stock' => $request->input('productStock')]);

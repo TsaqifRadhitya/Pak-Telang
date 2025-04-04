@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Symfony\Component\Uid\Ulid;
+use Illuminate\Support\Str;
 
 class profileController extends Controller
 {
@@ -45,13 +46,15 @@ class profileController extends Controller
     {
         $request->validate(['phonenumber' => ['required', 'unique:' . User::class . ',phonenumber,' . auth()->id()]]);
         $role = Auth::user()->role;
+
+        $profilePicture = Str::contains($request->input('profile_picture'), '?q=') ? $request->input('profile_picture') : $request->input('profile_picture') . '?q=' . Ulid::generate(now());
         User::whereId(Auth::user()->id)->update(
             [
                 'name' => $request->input('name'),
                 'birthday' => $request->input('birthday'),
                 'gender' => $request->input('gender'),
                 'phonenumber' => $request->input('phonenumber'),
-                'profile_picture' => $request->input('profile_picture') . '?q=' . Ulid::generate(now()),
+                'profile_picture' => $profilePicture,
             ]
         );
         $this->updateAdress($request);
@@ -98,6 +101,6 @@ class profileController extends Controller
                 'postalCode' => $request->input('postalCode'),
                 'districtId' => $district->id
             ]
-            );
+        );
     }
 }

@@ -13,13 +13,13 @@ import { supabaseImage } from '../../../services/imageStorage';
 
 const productFormValidation = z.object({
     productName: z.string().min(1, 'Harap mengisi nama produk'),
-    productPhoto: z.array(z.string()).nonempty('Harap mengisi foto produk'),
+    productPhoto: z.array(z.string()).nonempty('Harap mengupload foto produk'),
     productPrice: z.number().min(1, 'Harap mengisi harga produk'),
     productNetto: z.number().min(1, 'Harap mengisi netto produk'),
-    productUnit: z.string().min(1, 'harap mengisi satuan'),
-    productDescription: z.string().min(1, 'harap mengisi deskripsi produk'),
-    productType: z.string().min(1, 'Harap memilih tipe produk'),
-    productStock: z.number({ message: 'harap mengisi stok produk' }).min(0, 'harap mengisi stok produk dengan benar'),
+    productUnit: z.enum(['ml','liter','gram','kg'],{message : 'Harap mengisi satuan'}),
+    productDescription: z.string().min(1, 'Harap mengisi deskripsi produk'),
+    productType: z.enum(['Barang jadi','Bahan Baku'],{message : 'Harap mengisi tipe produk' }),
+    productStock: z.number({ message: 'Harap mengisi stok produk' }).min(0, 'Harap mengisi stok produk dengan benar'),
 });
 export default function productAdminPage({ products }: { products: productType[] }) {
     const [submit, setSubmit] = useState<Boolean>(false);
@@ -212,8 +212,8 @@ export default function productAdminPage({ products }: { products: productType[]
                                     className="min-h-9 w-full rounded-lg px-3 py-1 text-[#3B387E] shadow ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:border-[#B9BDFF] focus-visible:ring-3"
                                 >
                                     <option value="">Pilih Tipe Produk</option>
-                                    <option value="setengah jadi">Setengah Jadi</option>
-                                    <option value="siap pakai">Siap Pakai</option>
+                                    <option value="Bahan baku">Bahan baku</option>
+                                    <option value="Barang jadi">Barang jadi</option>
                                 </select>
                                 {errors.productType && <p className="text-sm text-red-600">{errors.productType}</p>}
                             </div>

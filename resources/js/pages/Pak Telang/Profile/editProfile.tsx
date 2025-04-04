@@ -34,7 +34,7 @@ interface AddressApiType {
 }
 
 const profileEditValidation = z.object({
-    name: z.string({message : 'Harap mengisi nama'}).min(1, 'Harap mengisi nama'),
+    name: z.string({ message: 'Harap mengisi nama' }).min(1, 'Harap mengisi nama'),
     birthday: z.string({ message: 'Harap mengisi tanggal lahir' }).min(1, 'Harap mengisi tanggal lahir'),
     gender: z.string({ message: 'Harap mengisi jenis kelamin' }).min(1, 'Harap mengisi jenis kelamin'),
     phonenumber: z.string({ message: 'Harap mengisi Nomor Hp' }).regex(/^\d{1,13}$/, 'Nomor telepon hanya boleh berisi angka dan maksimal 13 digit'),

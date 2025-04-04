@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('productNetto');
             $table->string('productUnit');
             $table->text('productDescription');
-            $table->enum('productType',['setengah jadi','siap pakai']);
+            $table->enum('productType',['Barang jadi','Bahan Baku']);
             $table->boolean('isdeleted')->default(false);
             $table->timestamps();
         });

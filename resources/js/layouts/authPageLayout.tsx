@@ -12,11 +12,11 @@ export default function AuthLayout({children,head,className,type} : {children : 
             </main>
             <aside className="relative hidden md:flex-3/5 xl:flex-2/5 2xl:flex-1/3 bg-[#666FD5] xl:block">
                 <div className="absolute top-1/2 flex min-h-5/7 w-5/6 -translate-x-1/6 -translate-y-1/2 flex-row rounded-[4rem] bg-[#AFB3FF] p-15">
-                    {type === 'login' && <h1 className="text-5xl text-white">
-                        Masuk dan temukan kesegaran dalam <br/>setiap tegukan!
+                    {type === 'login' && <h1 className="text-4xl text-white">
+                        Masuk dan temukan kesegaran dalam <br/>setiap <br/> tegukan!
                     </h1>}
-                    {type === 'register' &&  <h1 className="text-5xl text-white">
-                        Bergabunglah dan rasakan kesegaran dalam <br/> setiap <br/> tegukan!
+                    {type === 'register' &&  <h1 className="text-4xl text-white">
+                        Bergabunglah dan rasakan kesegaran <br/> dalam <br/> setiap <br/> tegukan!
                     </h1>}
                     <img
                         src="Asset\Image\bungaTelang.png"
