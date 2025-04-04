@@ -35,8 +35,6 @@ export default function RegisterPage() {
             if (!(errors.password && errors.password)) {
                 if (data.password != data.password_confirmation) {
                     setError('password_confirmation', 'Password tidak sama');
-                    setData('password', '');
-                    setData('password_confirmation', '');
                 }
             }
             return;
