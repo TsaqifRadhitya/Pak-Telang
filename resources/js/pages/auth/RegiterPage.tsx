@@ -9,10 +9,10 @@ import z from 'zod';
 import InputError from '../../components/input-error';
 
 const RegisterValidation = z.object({
-    name: z.string(),
-    email: z.string().email(),
-    password: z.string().min(8),
-    password_confirmation: z.string().min(8),
+    name: z.string({ message: 'Harap mengisi nama' }),
+    email: z.string({ message: 'Harap mengisi email' }).email('Harap mengisi email dengan format yang benar'),
+    password: z.string({ message: 'Harap mengisi password' }).min(8, 'Password minimal 8 karakter'),
+    password_confirmation: z.string({ message: 'Harap mengisi konfirmasi password' }).min(8, 'Konfirmasi password minimal 8 karakter'),
 });
 
 type RegisterForm = {
@@ -23,7 +23,6 @@ type RegisterForm = {
 };
 
 export default function registerPage() {
-    // window.addEventListener('load', () => document.querySelector('#app')?.removeAttribute('data-page'));
     const { data, setData, errors, setError, post } = useForm<RegisterForm>();
 
     const handleSubmit = () => {
@@ -45,7 +44,7 @@ export default function registerPage() {
         post(route('register'));
     };
     return (
-        <AuthLayout head="Register" type='register'>
+        <AuthLayout head="Register" type="register">
             <div className="flex flex-col gap-y-3">
                 <Heading title="Hii there, Welcome!" className="text-center text-4xl font-bold text-[#3B387E]" disableMb={true} />
                 <HeadingSmall title="Please fill out form to register" className="text-center text-sm font-extralight text-[#3B387E]" />
@@ -101,13 +100,13 @@ export default function registerPage() {
                 />
             </div>
 
-            <Button className="text-white h-12 rounded-2xl bg-[#666FD5] text-xl hover:cursor-pointer hover:bg-[#4e55a1]" onClick={handleSubmit}>
+            <Button className="h-12 rounded-2xl bg-[#666FD5] text-xl text-white hover:cursor-pointer hover:bg-[#4e55a1]" onClick={handleSubmit}>
                 Register
             </Button>
             <div className="flex flex-row items-center gap-x-1">
                 <HeadingSmall title="Already registered?" className="text-sm font-extralight text-[#3B387E]" />
                 <a href={route('login')} className="text-md mb-0.5 font-semibold text-[#3B387E]">
-                    Sign Up
+                    Login
                 </a>
             </div>
             <div className="flex flex-row items-center gap-x-5">
@@ -123,7 +122,7 @@ export default function registerPage() {
                     <span>
                         <img className="w-8" src="Asset\Icon\Google.png" alt="" />
                     </span>
-                    login with <span className="font-black">google</span>
+                    register with <span className="font-black">google</span>
                 </Button>
             </div>
         </AuthLayout>

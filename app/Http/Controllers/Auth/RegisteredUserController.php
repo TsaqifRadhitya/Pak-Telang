@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -32,10 +33,16 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:' . User::class,
+            'email' => 'required|string|lowercase|email|max:255|',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        if(User::where('email','=',$request->input('email'))->count() > 0){
+            throw ValidationException::withMessages([
+                'email' => 'Email telah terdaftar',
+            ]);
+            return back();
+        }
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,

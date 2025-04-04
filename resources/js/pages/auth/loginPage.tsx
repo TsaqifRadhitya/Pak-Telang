@@ -16,15 +16,13 @@ type LoginForm = {
 };
 
 const loginSchema = z.object({
-    email: z.string().email('Email tidak valid'),
-    password: z.string().min(6, 'Password minimal 6 karakter'),
+    email: z.string({message : 'Harap mengisi email'}).email('Email tidak valid'),
+    password: z.string({message : "Harap mengisi password"}).min(8, 'Password minimal 8 karakter'),
     remember: z.boolean().optional(),
 });
 
 export default function loginPage() {
     const page = usePage().props;
-
-    console.log(page.errors);
 
     useEffect(() => {
         if (page.errors.email) setError('email', page.errors.email[0]);
