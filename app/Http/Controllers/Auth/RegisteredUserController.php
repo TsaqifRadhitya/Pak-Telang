@@ -34,13 +34,20 @@ class RegisteredUserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|',
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'password' => ['required'],
         ]);
 
-        if(User::where('email','=',$request->input('email'))->count() > 0){
-            throw ValidationException::withMessages([
-                'email' => 'Email telah terdaftar',
-            ]);
+        if (User::where('email', '=', $request->input('email'))->count() > 0) {
+            if ($request->input('password') != $request->input('password_confirmation')){
+                throw ValidationException::withMessages([
+                    'email' => 'Email telah terdaftar',
+                    'password' => 'Password tidak sama'
+                ]);
+            } else {
+                throw ValidationException::withMessages([
+                    'email' => 'Email telah terdaftar',
+                ]);
+            }
             return back();
         }
         $user = User::create([
