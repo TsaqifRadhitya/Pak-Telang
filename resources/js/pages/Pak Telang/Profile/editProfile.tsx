@@ -34,15 +34,15 @@ interface AddressApiType {
 }
 
 const profileEditValidation = z.object({
-    name: z.string().min(1, 'Nama harap diisi'),
-    birthday: z.string({ message: 'Tanggal lahir harap diisi' }).min(1, 'Tanggal lahir harap diisi'),
-    gender: z.string({ message: 'Jenis kelamin harap diisi' }).min(1, 'Jenis kelamin harap diisi'),
-    phonenumber: z.string({ message: 'Harap Mengisi Nomor Hp' }).regex(/^\d{1,13}$/, 'Nomor telepon hanya boleh berisi angka dan maksimal 13 digit'),
-    province: z.string().min(1, 'Harap mengisi provinsi'),
+    name: z.string({message : 'Harap mengisi nama'}).min(1, 'Harap mengisi nama'),
+    birthday: z.string({ message: 'Harap mengisi tanggal lahir' }).min(1, 'Harap mengisi tanggal lahir'),
+    gender: z.string({ message: 'Harap mengisi jenis kelamin' }).min(1, 'Harap mengisi jenis kelamin'),
+    phonenumber: z.string({ message: 'Harap mengisi Nomor Hp' }).regex(/^\d{1,13}$/, 'Nomor telepon hanya boleh berisi angka dan maksimal 13 digit'),
+    province: z.string({ message: 'Harap mengisi provinsi' }).min(1, 'Harap mengisi provinsi'),
     cityName: z.string({ message: 'Harap mengisi kota' }),
     districtName: z.string({ message: 'Harap mengisi kecamatan' }),
     address: z.string().min(1, 'Harap mengisi alamat'),
-    postalCode: z.string({ message: 'Harap mengisi kode pos' }).regex(/^\d{5}$/, 'Harap mengisi kode pos dengan benar'),
+    postalCode: z.string({ message: 'Harap mengisi kode pos' }).regex(/^\d{5}$/, 'Kode pos memiliki 5 karakter'),
 });
 
 interface props extends SharedData {

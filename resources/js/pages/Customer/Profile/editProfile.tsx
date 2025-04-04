@@ -34,15 +34,15 @@ interface AddressApiType {
 }
 
 const profileEditValidation = z.object({
-    name: z.string().min(1, 'Nama harap diisi'),
-    birthday: z.string({ message: 'Tanggal lahir harap diisi' }).min(1, 'Tanggal lahir harap diisi'),
-    gender: z.string({ message: 'Jenis kelamin harap diisi' }).min(1, 'Jenis kelamin harap diisi'),
-    phonenumber: z.string({ message: 'Harap Mengisi Nomor Hp' }).regex(/^\d{1,13}$/, 'Nomor telepon hanya boleh berisi angka dan maksimal 13 digit'),
-    province: z.string().min(1, 'Harap mengisi provinsi'),
+    name: z.string({message : 'Harap mengisi nama'}).min(1, 'Harap mengisi nama'),
+    birthday: z.string({ message: 'Harap mengisi tanggal lahir' }).min(1, 'Harap mengisi tanggal lahir'),
+    gender: z.string({ message: 'Harap mengisi jenis kelamin' }).min(1, 'Harap mengisi jenis kelamin'),
+    phonenumber: z.string({ message: 'Harap mengisi Nomor Hp' }).regex(/^\d{1,13}$/, 'Nomor telepon hanya boleh berisi angka dan maksimal 13 digit'),
+    province: z.string({ message: 'Harap mengisi provinsi' }).min(1, 'Harap mengisi provinsi'),
     cityName: z.string({ message: 'Harap mengisi kota' }),
     districtName: z.string({ message: 'Harap mengisi kecamatan' }),
     address: z.string().min(1, 'Harap mengisi alamat'),
-    postalCode: z.string({ message: 'Harap mengisi kode pos' }).regex(/^\d{5}$/, 'Harap mengisi kode pos dengan benar'),
+    postalCode: z.string({ message: 'Harap mengisi kode pos' }).regex(/^\d{5}$/, 'Kode pos memiliki 5 karakter'),
 });
 
 interface props extends SharedData {
@@ -128,8 +128,8 @@ export default function editProfileCustomer() {
     };
     return (
         <CustomerPageLayout page="Profile">
-            <main className="min-h-screen w-full bg-[#EBEFFF] p-5 pt-20 text-[#3B387E] lg:h-screen lg:p-20 lg:pt-20">
-                <main className="h-full w-full rounded-lg border border-[#AFB3FF] bg-white shadow-lg">
+            <main className="min-h-screen w-full bg-[#EBEFFF] p-5 pt-20 text-[#3B387E] lg:p-20 lg:pt-20">
+                <main className="min-h-full w-full rounded-lg border border-[#AFB3FF] bg-white shadow-lg">
                     <div className="border-b border-[#AFB3FF] p-5 md:px-10 md:py-5">
                         <h1 className="text-xl font-semibold">Edit Profile</h1>
                     </div>
