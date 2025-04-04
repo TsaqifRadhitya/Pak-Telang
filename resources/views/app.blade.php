@@ -39,8 +39,8 @@
 
     @routes
     @viteReactRefresh
-    {{-- @vite(['resources/js/app.tsx', "resources/js/pages/{$page['component']}.tsx"]) --}}
-    @vite(['resources/js/app.jsx', 'resources/css/app.css'])
+    @vite(['resources/js/app.tsx', "resources/js/pages/{$page['component']}.tsx"])
+    {{-- @vite(['resources/js/app.jsx', 'resources/css/app.css']) --}}
     @inertiaHead
 </head>
 
