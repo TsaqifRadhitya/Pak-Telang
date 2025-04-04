@@ -15,7 +15,7 @@ class ProductController extends Controller
 
     public function landingPageProduct()
     {
-        $product = Product::where('productType', 'like', 'siap pakai')->get()->each(function ($e) {
+        $product = Product::where('productType', 'like', 'Barang jadi')->get()->each(function ($e) {
             $e->productPhoto = json_decode($e->productPhoto);
         });
         return Inertia::render('Guest/Produk/Produk', compact('product'));
@@ -24,7 +24,7 @@ class ProductController extends Controller
     public function index()
     {
         if (Auth::user()->role === 'Mitra') {
-            $products = Product::whereisdeleted(false)->where('productType', '=', 'siap pakai')->get()->map(function ($item) {
+            $products = Product::whereisdeleted(false)->where('productType', '=', 'Barang jadi')->get()->map(function ($item) {
                 $item->productPhoto = json_decode($item->productPhoto);
                 return [...$item->attributesToArray(), 'productStock' => $item->productStocks()->where('userId', '=', Auth::user()->id)->first()?->stock ?? 0];
             });
@@ -40,7 +40,7 @@ class ProductController extends Controller
 
     public function customerProductDetail($id)
     {
-        $products = Product::where('productType', '=', 'siap pakai')->where('id', '!=', $id)->get()->each(function ($e) {
+        $products = Product::where('productType', '=', 'Barang jadi')->where('id', '!=', $id)->get()->each(function ($e) {
             $e->productPhoto = json_decode($e->productPhoto);
         });;
         $productDetail = Product::whereId($id)->first();
