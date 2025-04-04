@@ -265,7 +265,7 @@ export default function productAdminPage({ products }: { products: productType[]
                 </section>
             )}
             <AdminPageLayout page="Produk">
-                <main className="relative z-0 h-full w-full rounded-t-lg border-[1px] border-b-0 border-[#AFB3FF] bg-[#FFFFFF] shadow-lg">
+                <main className="relative z-0 flex-1 w-full rounded-t-lg border-[1px] border-b-0 border-[#AFB3FF] bg-[#FFFFFF] shadow-lg">
                     <button
                         onClick={() => setDialog((prev) => ({ ...prev, create: true }))}
                         className="fixed right-0 bottom-0 -translate-1/4 cursor-pointer rounded-full bg-[#B9BDFF] p-4 shadow hover:bg-[#a2a7f9] lg:absolute"
@@ -275,7 +275,7 @@ export default function productAdminPage({ products }: { products: productType[]
                     <div className="flex items-center border-b-[1px] border-[#AFB3FF] p-5 md:px-10 md:py-5">
                         <h1 className="text-xl font-semibold">Produk</h1>
                     </div>
-                    <section className="flex w-full flex-col gap-10 overflow-y-auto p-5 md:grid md:h-[80vh] md:grid-cols-2 lg:p-10">
+                    <section className="flex w-full flex-col gap-10 overflow-y-auto p-5 md:grid md:h-[82vh] md:grid-cols-2 lg:p-10">
                         {products.map((item, i) => (
                             <div key={i} className="flex aspect-7/4 flex-col justify-between gap-y-2.5 rounded-lg p-5 shadow-lg ring ring-[#B9BDFF]">
                                 <div className="flex w-full">
