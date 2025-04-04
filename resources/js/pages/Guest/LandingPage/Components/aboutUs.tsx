@@ -1,11 +1,9 @@
 import { Button } from '@/components/ui/button';
-import { currentMediaQuerry } from '@/hooks/useMediaQuery';
 import { router } from '@inertiajs/react';
 import { motion } from 'framer-motion';
 import { LucideArrowRight } from 'lucide-react';
 
 export default function About() {
-    const { sm, md, lg, xl, xxl } = currentMediaQuerry();
     return (
         <div className="object-center relative min-h-screen overflow-hidden bg-[#EBEFFF] p-6">
             <div className=" z-30 flex w-full flex-col gap-y-10 p-6 md:gap-y-20 md:p-20 md:px-32 lg:gap-y-20">

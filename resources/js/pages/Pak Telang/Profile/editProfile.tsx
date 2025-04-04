@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AdminPageLayout from '@/layouts/adminPageLayout';
 import { supabaseImage } from '@/services/imageStorage';
-import { SharedData } from '@/types';
+import { gender, SharedData } from '@/types';
 import { router, useForm, usePage } from '@inertiajs/react';
 import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
@@ -173,7 +173,7 @@ export default function EditProfileAdminPage() {
                             <Label>Jenis Kelamin</Label>
                             <select
                                 value={data.gender ?? ''}
-                                onChange={(e) => setData('gender', e.target.value as any)}
+                                onChange={(e) => setData('gender', e.target.value as gender)}
                                 className="w-full rounded-lg p-2 ring ring-[#B9BDFF] focus-visible:ring-3"
                             >
                                 <option value=""></option>

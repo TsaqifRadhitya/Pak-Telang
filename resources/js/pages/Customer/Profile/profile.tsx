@@ -6,7 +6,7 @@ import { router, usePage } from '@inertiajs/react';
 interface props extends SharedData {
     address: address;
 }
-export default function profilePageCustomer() {
+export default function ProfilePageCustomer() {
     const { auth, address } = usePage<props>().props;
     return (
         <CustomerPageLayout page="Profile">

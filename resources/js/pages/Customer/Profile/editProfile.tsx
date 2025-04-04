@@ -10,6 +10,7 @@ import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import z from 'zod';
 import { address } from '../../../types/address';
+import { gender } from '@/types';
 interface Province {
     id: string;
     name: string;
@@ -49,7 +50,7 @@ interface props extends SharedData {
     address: address;
 }
 
-export default function editProfileCustomer() {
+export default function EditProfileCustomer() {
     const { auth, address } = usePage<props>().props;
     const { data, setData, errors, setError, post } = useForm({
         ...auth.user,
@@ -174,7 +175,7 @@ export default function editProfileCustomer() {
                                 <Label>Jenis Kelamin</Label>
                                 <select
                                     value={data.gender ?? ''}
-                                    onChange={(e) => setData('gender', e.target.value as any)}
+                                    onChange={(e) => setData('gender', e.target.value as gender)}
                                     className="w-full rounded-lg p-2 ring ring-[#B9BDFF] focus-visible:ring-3"
                                 >
                                     <option value=""></option>

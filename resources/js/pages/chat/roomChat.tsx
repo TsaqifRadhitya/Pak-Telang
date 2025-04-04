@@ -26,8 +26,8 @@ export default function ChatRoom() {
     const [roomchatMessages, setMessages] = useState<messageType[]>(messages);
     const [inputMessage, setInputMessage] = useState<string>('');
     const messagesEndRef = useRef<HTMLDivElement>(null);
-    const [onetime, setOnetime] = useState<Boolean>(false);
-    const [signal, setSignal] = useState<Boolean>(false);
+    const [onetime, setOnetime] = useState<boolean>(false);
+    const [signal, setSignal] = useState<boolean>(false);
     const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {

@@ -10,7 +10,7 @@ interface props extends SharedData {
     product: productType[];
 }
 
-export default function product() {
+export default function Product() {
     const { product } = usePage<props>().props;
     console.log(product);
     return (

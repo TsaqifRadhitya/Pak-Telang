@@ -1,7 +1,7 @@
 import Heading from '@/components/heading';
 import HeadingSmall from '@/components/heading-small';
 import { Button } from '@/components/ui/button';
-import { currentMediaQuerry } from '@/hooks/useMediaQuery';
+import { useCurrentMediaQuerry } from '@/hooks/useMediaQuery';
 import { usePage } from '@inertiajs/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -10,9 +10,9 @@ import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { props } from '../produkDetail';
 
-export default function productDetailSection() {
+export default function ProductDetailSection() {
     const { productDetail } = usePage<props>().props;
-    const { lg } = currentMediaQuerry();
+    const { lg } = useCurrentMediaQuerry();
     return (
         <section className="h-screen w-full bg-[#EBEFFF] p-5 pt-24 lg:px-10 lg:py-20 lg:pt-20 lg:pb-10">
             <main className="flex h-full w-full flex-col gap-5 rounded-lg border border-[#AFB3FF] bg-[#FFFFFF] p-7 shadow-md lg:flex-row lg:gap-20 lg:p-10">

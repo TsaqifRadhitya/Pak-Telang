@@ -1,12 +1,12 @@
 import { Button } from '@/components/ui/button';
-import { currentMediaQuerry } from '@/hooks/useMediaQuery';
+import { useCurrentMediaQuerry} from '@/hooks/useMediaQuery';
 import { router } from '@inertiajs/react';
 import { LucideArrowRight } from 'lucide-react';
 import { motion } from 'motion/react';
 import backgroundImage from '../../../../../../public/Asset/Background Image/Testimoni.png';
 
-export default function testimoni() {
-    const { lg } = currentMediaQuerry();
+export default function Testimoni() {
+    const { lg } = useCurrentMediaQuerry();
     return (
         <div
             className="relative flex min-h-screen flex-col justify-center gap-y-20 overflow-hidden bg-cover bg-center bg-no-repeat object-center p-10 pt-32 md:justify-start lg:items-center lg:p-20 lg:px-32 lg:pt-35 xl:h-screen xl:flex-row"

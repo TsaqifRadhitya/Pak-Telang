@@ -7,7 +7,7 @@ interface props extends SharedData {
     address?: address;
 }
 
-export default function profileAdminPage() {
+export default function ProfileAdminPage() {
     const { auth, address } = usePage<props>().props;
     return (
         <AdminPageLayout page="Profile">

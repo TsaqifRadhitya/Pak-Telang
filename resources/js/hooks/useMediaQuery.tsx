@@ -54,7 +54,7 @@ function useMediaQuery(query: string, { defaultValue = false, initializeWithValu
     return matches;
 }
 
-export function currentMediaQuerry(){
+export function useCurrentMediaQuerry(){
     return {
         sm : useMediaQuery('(min-width: 640px)'),
         md: useMediaQuery('(min-width: 768px)'),

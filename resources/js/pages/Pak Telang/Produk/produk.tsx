@@ -21,8 +21,8 @@ const productFormValidation = z.object({
     productType: z.enum(['Barang jadi','Bahan Baku'],{message : 'Harap mengisi tipe produk' }),
     productStock: z.number({ message: 'Harap mengisi stok produk' }).min(0, 'Harap mengisi stok produk dengan benar'),
 });
-export default function productAdminPage({ products }: { products: productType[] }) {
-    const [submit, setSubmit] = useState<Boolean>(false);
+export default function ProductAdminPage({ products }: { products: productType[] }) {
+    const [submit, setSubmit] = useState<boolean>(false);
     const [productSelected, setProductSelected] = useState<productType | null>(null);
     const editState = useRef(false);
     const [dialog, setDialog] = useState({ delete: false, create: false, edit: false });
@@ -67,7 +67,7 @@ export default function productAdminPage({ products }: { products: productType[]
             if (imageBag) {
                 const url = await imageUploadProvider.uploadBatch(imageBag);
                 let uniqueurl = url as string[];
-                uniqueurl = uniqueurl.map((url, index) => `${url}?q=${Math.random() * 100}`);
+                uniqueurl = uniqueurl.map((url) => `${url}?q=${Math.random() * 100}`);
                 router.patch(
                     route('admin.product.update', { product: data.id }),
                     { ...data, productPhoto: uniqueurl },
@@ -79,12 +79,12 @@ export default function productAdminPage({ products }: { products: productType[]
         } else {
             const url = await imageUploadProvider.uploadBatch(imageBag!);
             let uniqueurl = url as string[];
-            uniqueurl = uniqueurl.map((url, index) => `${url}?q=${Math.random() * 100}`);
+            uniqueurl = uniqueurl.map((url) => `${url}?q=${Math.random() * 100}`);
             router.post(route('admin.product.store'), { ...data, productPhoto: uniqueurl }, { onFinish: handleCloseForm });
         }
     };
 
-    const handleChangeImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChangeImage = () => {
         if (inputField.current?.files) {
             console.log('hit');
             setData(

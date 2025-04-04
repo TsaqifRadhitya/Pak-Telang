@@ -8,7 +8,7 @@ interface props extends SharedData {
     address?: address;
 }
 
-export default function profilePage() {
+export default function ProfilePage() {
     const { auth, address } = usePage<props>().props;
     return (
         <MitraPageLayout page="Profile">

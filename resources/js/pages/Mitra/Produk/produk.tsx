@@ -8,9 +8,9 @@ import { productType } from '@/types/product';
 import { useForm } from '@inertiajs/react';
 import { Edit3Icon } from 'lucide-react';
 import { useState } from 'react';
-export default function productMitraPage({ products }: { products: productType[] }) {
+export default function ProductMitraPage({ products }: { products: productType[] }) {
     const [dialog, setDialog] = useState(false);
-    const [submit, setSubmit] = useState<Boolean>(false);
+    const [submit, setSubmit] = useState<boolean>(false);
 
     const handleEdit = (params: productType) => {
         setData(params);

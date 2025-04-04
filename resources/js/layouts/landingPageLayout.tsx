@@ -13,7 +13,7 @@ export default function LandingPageLayout({ children, page }: { children: React.
     const { auth } = usePage<SharedData>().props;
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const {scrollYProgress} = useScroll()
-    const [scroll,setScroll] = useState<Boolean>(false)
+    const [scroll,setScroll] = useState<boolean>(false)
     useMotionValueEvent(scrollYProgress,'change',(latestValue)=> {
         if(latestValue){
             setScroll(true)

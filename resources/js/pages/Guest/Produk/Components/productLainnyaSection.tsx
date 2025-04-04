@@ -4,7 +4,7 @@ import Heading from '../../../../components/heading';
 import HeadingSmall from '../../../../components/heading-small';
 import { props } from '../produkDetail';
 
-export default function productLainnyaSection() {
+export default function ProductLainnyaSection() {
     const { products } = usePage<props>().props;
     return (
         <section className="min-h-screen w-full bg-[#EBEFFF] p-5 lg:px-10 lg:pt-10 lg:pb-20">

@@ -1,9 +1,8 @@
-import { useState } from "react";
 
-function component(){
+// function component(){
 
-}
+// }
 
-function alertInfo(){
+// function alertInfo(){
 
-}
+// }

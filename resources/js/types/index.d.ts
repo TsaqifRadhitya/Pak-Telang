@@ -30,6 +30,7 @@ export interface SharedData {
     [key: string]: unknown;
 }
 
+export type gender = 'Laki-Laki' | 'Perempuan'
 export interface User {
     id: string;
     name: string;
@@ -37,7 +38,7 @@ export interface User {
     avatar: string;
     email_verified_at: string | null;
     phonenumber:string;
-    gender : 'Laki-Laki' | 'Perempuan'
+    gender : gender
     birthday:string
     profile_picture : string;
     created_at: string;

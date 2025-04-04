@@ -22,7 +22,7 @@ type RegisterForm = {
     password_confirmation: string;
 };
 
-export default function registerPage() {
+export default function RegisterPage() {
     const { data, setData, errors, setError, post } = useForm<RegisterForm>();
 
     const handleSubmit = () => {

@@ -4,9 +4,8 @@ import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import AuthLayout from '@/layouts/authPageLayout';
-import { router, useForm, usePage } from '@inertiajs/react';
-import { Mail,Lock } from 'lucide-react';
-import { useEffect } from 'react';
+import { router, useForm } from '@inertiajs/react';
+import { Lock, Mail } from 'lucide-react';
 import { z } from 'zod';
 
 type LoginForm = {
@@ -16,18 +15,12 @@ type LoginForm = {
 };
 
 const loginSchema = z.object({
-    email: z.string({message : 'Harap mengisi email'}).email('Email tidak valid'),
-    password: z.string({message : "Harap mengisi password"}).min(8, 'Password minimal 8 karakter'),
+    email: z.string({ message: 'Harap mengisi email' }).email('Email tidak valid'),
+    password: z.string({ message: 'Harap mengisi password' }).min(8, 'Password minimal 8 karakter'),
     remember: z.boolean().optional(),
 });
 
-export default function loginPage() {
-    const page = usePage().props;
-
-    useEffect(() => {
-        if (page.errors.email) setError('email', page.errors.email[0]);
-    }, []);
-
+export default function LoginPage() {
     const { post, data, errors, setData, setError, reset } = useForm<LoginForm>();
     const handleSubmit = () => {
         const result = loginSchema.safeParse(data);
@@ -36,10 +29,10 @@ export default function loginPage() {
             setError('password', result.error?.format().password?._errors[0] as string);
             return;
         }
-        post(route('login'), { onFinish: () => reset('password') });
+        post(route('login'), { onSuccess: () => reset() });
     };
     return (
-        <AuthLayout head="Login" type='login'>
+        <AuthLayout head="Login" type="login">
             <div className="flex flex-col gap-y-3">
                 <Heading title="Welcome Back!" className="text-center text-4xl font-bold text-[#3B387E]" disableMb={true} />
                 <HeadingSmall title="Silahkan melakukan login" className="text-center text-sm font-extralight text-[#3B387E]" />
@@ -51,6 +44,7 @@ export default function loginPage() {
                         type="email"
                         className="h-12 rounded-xl border-0 pl-2 font-medium text-[#3B387E] ring-0 placeholder:font-medium placeholder:text-[#3B387E] focus-visible:ring-0"
                         placeholder="Email"
+                        value={data.email}
                         onChange={(e) => setData('email', e.target.value)}
                     />
                 </div>
@@ -63,12 +57,13 @@ export default function loginPage() {
                         type="password"
                         className="h-12 rounded-xl border-0 pl-2 font-medium text-[#3B387E] ring-0 placeholder:font-medium placeholder:text-[#3B387E] focus-visible:ring-0"
                         placeholder="Password"
+                        value={data.password}
                         onChange={(e) => setData('password', e.target.value)}
                     />
                 </div>
                 <InputError message={errors.password === 'Required' ? 'Harap Mengisi Password' : errors.password} />
             </div>
-            <Button className="h-12 rounded-2xl text-white bg-[#666FD5] text-xl hover:cursor-pointer hover:bg-[#4e55a1]" onClick={handleSubmit}>
+            <Button className="h-12 rounded-2xl bg-[#666FD5] text-xl text-white hover:cursor-pointer hover:bg-[#4e55a1]" onClick={handleSubmit}>
                 Login
             </Button>
             <div className="flex flex-row items-center gap-x-1">

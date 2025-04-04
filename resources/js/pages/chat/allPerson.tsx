@@ -11,7 +11,7 @@ interface props extends SharedData {
     persons: personType[];
 }
 
-export default function allPerson() {
+export default function AllPerson() {
     const { persons } = usePage<props>().props;
     console.log(persons);
     return (

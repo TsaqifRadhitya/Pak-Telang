@@ -11,7 +11,7 @@ interface Props {
     page: 'Dashboard' | 'Mitra' | 'Produk' | 'Profile';
 }
 
-export default function mitraPageLayout({ children, page }: Props) {
+export default function MitraPageLayout({ children, page }: Props) {
     const { auth } = usePage<SharedData>().props;
     const [hamburgerMenu, setHamburgerMenu] = useState(false);
 
