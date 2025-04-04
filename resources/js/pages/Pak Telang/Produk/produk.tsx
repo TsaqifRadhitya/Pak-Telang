@@ -12,13 +12,13 @@ import HeadingSmall from '../../../components/heading-small';
 import { supabaseImage } from '../../../services/imageStorage';
 
 const productFormValidation = z.object({
-    productName: z.string().min(1, 'Harap mengisi nama produk'),
+    productName: z.string({ message: 'Harap mengisi nama produk' }).min(1, 'Harap mengisi nama produk'),
     productPhoto: z.array(z.string()).nonempty('Harap mengupload foto produk'),
-    productPrice: z.number().min(1, 'Harap mengisi harga produk'),
-    productNetto: z.number().min(1, 'Harap mengisi netto produk'),
-    productUnit: z.enum(['ml','liter','gram','kg'],{message : 'Harap mengisi satuan'}),
-    productDescription: z.string().min(1, 'Harap mengisi deskripsi produk'),
-    productType: z.enum(['Barang jadi','Bahan Baku'],{message : 'Harap mengisi tipe produk' }),
+    productPrice: z.number({ message: 'Harap mengisi harga produk' }).min(1, 'Harap mengisi harga produk'),
+    productNetto: z.number({ message: 'Harap mengisi netto produk' }).min(1, 'Harap mengisi netto produk'),
+    productUnit: z.enum(['ml', 'liter', 'gram', 'kg'], { message: 'Harap mengisi satuan' }),
+    productDescription: z.string({ message: 'Harap mengisi deskripsi produk' }).min(1, 'Harap mengisi deskripsi produk'),
+    productType: z.enum(['Barang jadi', 'Bahan Baku'], { message: 'Harap mengisi tipe produk' }),
     productStock: z.number({ message: 'Harap mengisi stok produk' }).min(0, 'Harap mengisi stok produk dengan benar'),
 });
 export default function ProductAdminPage({ products }: { products: productType[] }) {
@@ -265,7 +265,7 @@ export default function ProductAdminPage({ products }: { products: productType[]
                 </section>
             )}
             <AdminPageLayout page="Produk">
-                <main className="relative z-0 flex-1 w-full rounded-t-lg border-[1px] border-b-0 border-[#AFB3FF] bg-[#FFFFFF] shadow-lg">
+                <main className="relative z-0 w-full flex-1 rounded-t-lg border-[1px] border-b-0 border-[#AFB3FF] bg-[#FFFFFF] shadow-lg">
                     <button
                         onClick={() => setDialog((prev) => ({ ...prev, create: true }))}
                         className="fixed right-0 bottom-0 -translate-1/4 cursor-pointer rounded-full bg-[#B9BDFF] p-4 shadow hover:bg-[#a2a7f9] lg:absolute"
