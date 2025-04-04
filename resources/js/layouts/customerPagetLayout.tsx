@@ -42,7 +42,7 @@ export default function customerPageLayout({ children, page }: { children: React
                                         : 'hover:underline hover:decoration-4 hover:underline-offset-8'
                                 }
                             >
-                                Profile
+                                Profil
                             </a>
                         </li>
                         <li>

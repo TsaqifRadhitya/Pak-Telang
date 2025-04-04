@@ -13,7 +13,7 @@ export default function profilePageCustomer() {
             <main className="min-h-screen bg-[#EBEFFF] flex flex-col p-5 lg:p-10 pt-20 lg:pt-24">
                 <article className="flex-1 w-full rounded-lg border border-[#AFB3FF] bg-[#FFFFFF] shadow-xl">
                     <header className="flex items-center border-b border-[#AFB3FF] px-6 py-6 lg:px-16">
-                        <h1 className="flex-3/5 text-xl font-semibold text-[#3B387E]">Profile</h1>
+                        <h1 className="flex-3/5 text-xl font-semibold text-[#3B387E]">Profil</h1>
                         <div className="flex flex-1/9 gap-x-3">
                             <Button
                                 onClick={() => router.get(route('customer.profile.edit'))}

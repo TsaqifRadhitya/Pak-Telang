@@ -14,7 +14,7 @@ export default function profilePage() {
         <MitraPageLayout page="Profile">
             <main className="h-full w-full rounded-t-lg border-[1px] border-b-0 border-[#AFB3FF] bg-[#FFFFFF] shadow-lg">
                 <div className="flex items-center justify-between border-b-[1px] border-[#AFB3FF] p-5 md:px-10 md:py-5">
-                    <h1 className="flex-3/5 text-xl font-semibold">Profile</h1>
+                    <h1 className="flex-3/5 text-xl font-semibold">Profil</h1>
                     <div className="flex flex-2/5 gap-x-3">
                         <Button
                             onClick={() => router.get(route('mitra.profile.edit'))}

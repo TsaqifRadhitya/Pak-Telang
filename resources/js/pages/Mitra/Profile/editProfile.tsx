@@ -130,7 +130,7 @@ export default function EditProfileMitraPage() {
         <MitraPageLayout page="Profile">
             <main className="h-full w-full rounded-t-lg border border-[#AFB3FF] bg-white shadow-lg">
                 <div className="border-b border-[#AFB3FF] p-5 md:px-10 md:py-5">
-                    <h1 className="text-xl font-semibold">Edit Profile</h1>
+                    <h1 className="text-xl font-semibold">Edit Profil</h1>
                 </div>
                 <div className="flex flex-col gap-10 p-5 lg:flex-row lg:gap-20 lg:p-10">
                     <div className="flex flex-col items-center gap-3">

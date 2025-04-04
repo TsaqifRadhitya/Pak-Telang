@@ -42,7 +42,7 @@ export default function AdminPageLayout({ children, page }: Props) {
                                         src={`https://ybcvbaxalqwrvgemxdzc.supabase.co/storage/v1/object/public/paktelang/Asset/Icon/${item}.svg`}
                                         alt=""
                                     />
-                                    <h2>{item}</h2>
+                                    <h2>{item === 'Profile' ? 'Profil' : item}</h2>
                                 </li>
                             ))}
                         </ul>
@@ -82,7 +82,7 @@ export default function AdminPageLayout({ children, page }: Props) {
                                     src={`https://ybcvbaxalqwrvgemxdzc.supabase.co/storage/v1/object/public/paktelang/Asset/Icon/${item}.svg`}
                                     alt=""
                                 />
-                                <h2>{item}</h2>
+                                <h2>{item === 'Profile' ? 'Profil' : item}</h2>
                             </li>
                         ))}
                     </ul>
