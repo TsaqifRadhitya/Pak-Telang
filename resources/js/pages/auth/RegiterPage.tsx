@@ -9,7 +9,7 @@ import z from 'zod';
 import InputError from '../../components/input-error';
 
 const RegisterValidation = z.object({
-    name: z.string({ message: 'Harap mengisi nama' }),
+    name: z.string({ message: 'Harap mengisi nama' }).min(1,'Harap mengisi nama'),
     email: z.string({ message: 'Harap mengisi email' }).email('Harap mengisi email dengan format yang benar'),
     password: z.string({ message: 'Harap mengisi password' }).min(8, 'Password minimal 8 karakter'),
     password_confirmation: z.string({ message: 'Harap mengisi konfirmasi password' }).min(8, 'Konfirmasi password minimal 8 karakter'),
