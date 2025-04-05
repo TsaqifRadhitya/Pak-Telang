@@ -31,6 +31,10 @@ class authController extends Controller
         }
         Auth::login($user, true);
 
-        return to_route('dashboard');
+        if (Auth::user()->role === 'Customer') {
+            return redirect()->intended('/');
+        }
+
+        return redirect()->intended(route('dashboard'));
     }
 }

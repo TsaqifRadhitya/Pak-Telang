@@ -23,7 +23,7 @@ Route::get('konten', function () {
 
 Route::prefix('produk')->group(function(){
     Route::get('/', [ProductController::class,'landingPageProduct'])->name('produk');
-    Route::get('{id}', [ProductController::class,'customerProductDetail'])->name('produk.detail');
+Route::get('{id}', [ProductController::class,'customerProductDetail'])->name('produk.detail');
 });
 
 

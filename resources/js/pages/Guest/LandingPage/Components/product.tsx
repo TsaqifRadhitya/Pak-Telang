@@ -13,7 +13,6 @@ interface props extends SharedData {
 
 export default function Product() {
     const { product } = usePage<props>().props;
-    console.log(product);
     return (
         <div className="flex min-h-screen flex-col gap-y-10 bg-[#EBEFFF] p-5 md:px-10 lg:px-32 lg:py-20">
             <Heading title="Produk Kami" disableMb className="text-4xl font-bold text-[#3B387E]" />

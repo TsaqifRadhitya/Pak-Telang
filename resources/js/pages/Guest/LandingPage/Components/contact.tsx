@@ -1,11 +1,14 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { SharedData } from '@/types';
+import { router, usePage } from '@inertiajs/react';
 import { Copyright } from 'lucide-react';
 import HeadingSmall from '../../../../components/heading-small';
-
+import { InstagramIcon } from 'lucide-react';
 export default function contact() {
+    const { auth } = usePage<SharedData>().props;
     return (
-        <div className="hidden grid-cols-4 flex-col gap-4 bg-[#EBEFFF] p-20 px-10 pb-10 pt-0 lg:grid">
+        <div className="hidden grid-cols-4 flex-col gap-4 bg-[#EBEFFF] p-20 px-10 pt-0 pb-10 lg:grid">
             <Card className="col-span-4 h-fit w-full rounded-3xl border-0 bg-white px-5 py-7">
                 <CardContent>
                     <div className="flex items-center justify-between">
@@ -22,9 +25,14 @@ export default function contact() {
                                 Copyright 2025
                             </p>
                         </div>
-                        <Button className="min-h-full scale-125 cursor-pointer rounded-xl bg-[#5961BE] font-medium text-white hover:bg-[#4e55a1]">
-                            Register Now
-                        </Button>
+                        {!auth.user && (
+                            <Button
+                                onClick={() => router.get('register')}
+                                className="min-h-full scale-125 cursor-pointer rounded-xl bg-[#5961BE] font-medium text-white hover:bg-[#4e55a1]"
+                            >
+                                Register Now
+                            </Button>
+                        )}
                     </div>
                 </CardContent>
             </Card>
@@ -33,10 +41,10 @@ export default function contact() {
                     <CardTitle className="text-xl">Social Media</CardTitle>
                     <p className="text-sm">Jangan lupa ikuti sosial media kami untuk update harian kami.</p>
                 </CardHeader>
-                <CardContent>
-                    <CardDescription>Pak Telang</CardDescription>
-                    <CardDescription>Pak Telang</CardDescription>
-                    <CardDescription>Pak Telang</CardDescription>
+                <CardContent className='flex flex-col gap-y-5'>
+                    <CardDescription className='flex items-center gap-x-4 text-[#3B387E]'><img src='Asset\Icon\Instagram.svg'/>paktelang</CardDescription>
+                    <CardDescription className='flex items-center gap-x-4 text-[#3B387E]'><img src='Asset\Icon\Youtube.svg'/>paktelang</CardDescription>
+                    <CardDescription className='flex items-center gap-x-4 text-[#3B387E]'><img src='Asset\Icon\Tiktok.svg'/>paktelang</CardDescription>
                 </CardContent>
             </Card>
             <Card className="rounded-3xl border-0 bg-white p-7.5 px-2.5 text-[#3B387E]">
@@ -44,10 +52,10 @@ export default function contact() {
                     <CardTitle className="text-xl">Kontak</CardTitle>
                     <p className="text-sm">Hubungi kami melalui beberapa cara berikut ini.</p>
                 </CardHeader>
-                <CardContent>
-                    <CardDescription>08123456789</CardDescription>
-                    <CardDescription>08123456789</CardDescription>
-                    <CardDescription>Jl. Rajawali, Krajan, Klungkung, Kec. Sukorambi, Kabupaten Jember, Jawa Timur</CardDescription>
+                <CardContent className='flex flex-col gap-y-5'>
+                    <CardDescription className='flex items-center gap-x-4 text-[#3B387E] '><img src='Asset\Icon\Phone.svg'/>08123456789</CardDescription>
+                    <CardDescription className='flex items-center gap-x-4 text-[#3B387E] '><img src='Asset\Icon\Whatsapp.svg'/>08123456789</CardDescription>
+                    <CardDescription className='flex items-center gap-x-4 text-[#3B387E] '><img src='Asset\Icon\Location.svg'/>Jl. Rajawali, Krajan, Klungkung, Kec. Sukorambi, Kabupaten Jember, Jawa Timur</CardDescription>
                 </CardContent>
             </Card>
             <Card className="col-span-2 rounded-3xl border-0 bg-white py-0">
