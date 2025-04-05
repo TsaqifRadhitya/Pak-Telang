@@ -1,11 +1,11 @@
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 import { SharedData } from '@/types';
 import { productType } from '@/types/product';
 import { router, usePage } from '@inertiajs/react';
 import { motion } from 'framer-motion'; // Saya mengubah dari 'motion/react' karena sepertinya itu typo
 import Heading from '../../../../components/heading';
 import HeadingSmall from '../../../../components/heading-small';
-import { cn } from '@/lib/utils';
 
 interface props extends SharedData {
     product: productType[];
@@ -36,7 +36,7 @@ export default function Product() {
                         className="relative mx-auto flex aspect-2/3 w-full cursor-pointer flex-col rounded-2xl bg-[#EBEFFF] pb-5 shadow-xl"
                     >
                         <div className="h-2/5 w-full rounded-t-xl bg-[#9A9FFF]"></div>
-                        <div className="absolute top-0 left-1/2 -translate-x-1/2 mx-auto h-1/2 w-5/6 rounded-b-full bg-gradient-to-b from-[#9A9FFF] from-10% to-[#5961BE] to-95%">
+                        <div className="absolute top-0 left-1/2 mx-auto h-1/2 w-5/6 -translate-x-1/2 rounded-b-full bg-gradient-to-b from-[#9A9FFF] from-10% to-[#5961BE] to-95%">
                             <img
                                 src={i.productPhoto[0]}
                                 alt=""
@@ -44,9 +44,16 @@ export default function Product() {
                             />
                         </div>
                         <div className="mt-20 w-3/5 rounded-r-full bg-[#5961BE] px-6 py-2 shadow-md">
-                            <h1 className={cn("text-md w-fit pr-4 font-medium text-white md:text-xl xl:text-xl leading-5",i.productName.length > 15 && "xl:text-sm")}>{i.productName}</h1>
+                            <h1
+                                className={cn(
+                                    'text-md w-fit pr-4 leading-5 font-medium text-white md:text-xl xl:text-xl',
+                                    i.productName.length > 15 && 'xl:text-sm',
+                                )}
+                            >
+                                {i.productName}
+                            </h1>
                         </div>
-                        <p className="px-6 py-6 text-sm font-medium text-[#5961BE] line-clamp-5">{i.productDescription}</p>
+                        <p className="line-clamp-5 px-6 py-6 text-sm font-medium text-[#5961BE]">{i.productDescription}</p>
                         <div className="mt-auto flex w-full items-center justify-between px-6">
                             <h1 className="text-md font-bold text-[#5961BE] md:text-xl">
                                 {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(i.productPrice)}
