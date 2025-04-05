@@ -5,6 +5,7 @@ import { router, usePage } from '@inertiajs/react';
 import { motion } from 'framer-motion'; // Saya mengubah dari 'motion/react' karena sepertinya itu typo
 import Heading from '../../../../components/heading';
 import HeadingSmall from '../../../../components/heading-small';
+import { cn } from '@/lib/utils';
 
 interface props extends SharedData {
     product: productType[];
@@ -43,7 +44,7 @@ export default function Product() {
                             />
                         </div>
                         <div className="mt-20 w-3/5 rounded-r-full bg-[#5961BE] px-6 py-2 shadow-md">
-                            <h1 className="text-md w-fit pr-4 font-medium text-white md:text-xl 2xl:text-xl">{i.productName}</h1>
+                            <h1 className={cn("text-md w-fit pr-4 font-medium text-white md:text-xl xl:text-xl leading-5",i.productName.length > 15 && "xl:text-sm")}>{i.productName}</h1>
                         </div>
                         <p className="px-6 py-6 text-sm font-medium text-[#5961BE] line-clamp-5">{i.productDescription}</p>
                         <div className="mt-auto flex w-full items-center justify-between px-6">
