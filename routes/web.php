@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    $product = Product::where('productType','=','Barang Jadi')->get()->each(function($e){
+    $product = Product::where('productType','=','Barang jadi')->get()->each(function($e){
         $e->productPhoto = json_decode($e->productPhoto);
     });
     $kontent = kontent::all();
