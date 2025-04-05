@@ -4,7 +4,7 @@ import { Textarea } from '@/components/ui/textarea';
 import AdminPageLayout from '@/layouts/adminPageLayout';
 import { productType } from '@/types/product';
 import { router, useForm } from '@inertiajs/react';
-import { Cross, Edit3Icon, LucideTrash2, Plus } from 'lucide-react';
+import { Edit3Icon, LucideTrash2, Plus } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { z } from 'zod';
 import Heading from '../../../components/heading';
@@ -230,9 +230,11 @@ export default function ProductAdminPage({ products }: { products: productType[]
                             <div className="flex flex-col gap-y-2.5 lg:col-span-2">
                                 <HeadingSmall title="Foto Produk" className="text-[#3B387E]" />
                                 {!data.productPhoto.length && (
-                                    <div onClick={()=> inputField.current?.click()}
-                                    className="flex flex-col cursor-pointer justify-center items-center aspect-square w-1/6 rounded-lg bg-[#D9D9D9] text-[#3B387E]">
-                                        <Plus size={50}/>
+                                    <div
+                                        onClick={() => inputField.current?.click()}
+                                        className="flex aspect-square w-1/6 cursor-pointer flex-col items-center justify-center rounded-lg bg-[#D9D9D9] text-[#3B387E]"
+                                    >
+                                        <Plus size={50} />
                                     </div>
                                 )}
                                 <div className="flex flex-wrap gap-2.5">

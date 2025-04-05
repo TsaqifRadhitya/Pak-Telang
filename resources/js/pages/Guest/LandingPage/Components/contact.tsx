@@ -4,8 +4,7 @@ import { SharedData } from '@/types';
 import { router, usePage } from '@inertiajs/react';
 import { Copyright } from 'lucide-react';
 import HeadingSmall from '../../../../components/heading-small';
-import { InstagramIcon } from 'lucide-react';
-export default function contact() {
+export default function Contact() {
     const { auth } = usePage<SharedData>().props;
     return (
         <div className="hidden grid-cols-4 flex-col gap-4 bg-[#EBEFFF] p-20 px-10 pt-0 pb-10 lg:grid">
