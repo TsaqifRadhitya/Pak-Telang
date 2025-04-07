@@ -1,3 +1,4 @@
+import SweetAlert from '@/components/sweatAlert';
 import { cn } from '@/lib/utils';
 import { SharedData } from '@/types';
 import { Head, router, usePage } from '@inertiajs/react';
@@ -12,11 +13,16 @@ interface Props {
 }
 
 export default function AdminPageLayout({ children, page }: Props) {
-    const { auth } = usePage<SharedData>().props;
+    const { auth, flash } = usePage<SharedData>().props;
+    console.log(flash)
     const [hamburgerMenu, setHamburgerMenu] = useState(false);
 
     return (
         <div className="flex min-h-screen flex-col gap-y-5 bg-[#EBEFFF] text-[#3B387E] lg:gap-y-0 lg:px-10">
+            {flash.success && <SweetAlert unique={Math.random() * 100} type="Success" message={flash.success} />}
+            {flash.error && <SweetAlert unique={Math.random() * 100} type="Error" message={flash.error} />}
+            {flash.info && <SweetAlert unique={Math.random() * 100} type="Info" message={flash.info} />}
+            {flash.warning && <SweetAlert unique={Math.random() * 100} type="Warning" message={flash.warning} />}
             <Head title={page} />
 
             {/* Mobile Sidebar Overlay */}
@@ -32,7 +38,7 @@ export default function AdminPageLayout({ children, page }: Props) {
                             <Heading title="Pak Telang" className="text-2xl" />
                         </div>
                         <ul className="space-y-4">
-                            {['Dashboard', 'Mitra', 'Produk', 'Profile'].map((item) => (
+                            {['Dashboard', 'Transaksi', 'Produk', 'Mitra', 'Konten', 'Donasi', 'Chat', 'Profile'].map((item) => (
                                 <li
                                     key={item}
                                     className="flex cursor-pointer items-center gap-x-1.5 text-xl"
@@ -53,8 +59,8 @@ export default function AdminPageLayout({ children, page }: Props) {
             {/* Header */}
             <header className="sticky top-0 z-40 flex items-center gap-x-2.5 bg-white px-5 py-5 shadow lg:relative lg:bg-transparent lg:shadow-none">
                 <Menu color="#3B387E" className="cursor-pointer lg:hidden" onClick={() => setHamburgerMenu(true)} />
-                <div onClick={()=> router.get('/')}>
-                    <Heading title="Pak Telang" className='cursor-pointer' />
+                <div onClick={() => router.get('/')}>
+                    <Heading title="Pak Telang" className="cursor-pointer" />
                 </div>
             </header>
 
@@ -69,7 +75,7 @@ export default function AdminPageLayout({ children, page }: Props) {
                         </div>
                     </div>
                     <ul className="flex flex-col gap-y-5">
-                        {['Dashboard','Transaksi','Produk','Mitra','Koten','Donasi','Chat','Profile'].map((item) => (
+                        {['Dashboard', 'Transaksi', 'Produk', 'Mitra', 'Konten', 'Donasi', 'Chat', 'Profile'].map((item) => (
                             <li
                                 key={item}
                                 className={cn(
@@ -89,7 +95,7 @@ export default function AdminPageLayout({ children, page }: Props) {
                 </aside>
 
                 {/* Main Content */}
-                <main className="flex-1 lg:flex-4/5 flex flex-col">{children}</main>
+                <main className="flex flex-1 flex-col lg:flex-4/5">{children}</main>
             </div>
         </div>
     );

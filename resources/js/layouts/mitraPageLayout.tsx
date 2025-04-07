@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Menu } from 'lucide-react';
 import { ReactNode, useState } from 'react';
 import Heading from '../components/heading';
+import SweetAlert from '@/components/sweatAlert';
 
 interface Props {
     children: ReactNode;
@@ -12,13 +13,16 @@ interface Props {
 }
 
 export default function MitraPageLayout({ children, page }: Props) {
-    const { auth } = usePage<SharedData>().props;
+    const { auth,flash } = usePage<SharedData>().props;
     const [hamburgerMenu, setHamburgerMenu] = useState(false);
 
     return (
         <div className="flex min-h-screen flex-col gap-y-5 bg-[#EBEFFF] text-[#3B387E] lg:gap-y-0 lg:px-10">
             <Head title={page} />
-
+            {flash.success && <SweetAlert type='Success' message={flash.success}/>}
+            {flash.error && <SweetAlert type='Error' message={flash.error}/>}
+            {flash.info && <SweetAlert type='Info' message={flash.info}/>}
+            {flash.warning && <SweetAlert type='Warning' message={flash.warning}/>}
             {/* Mobile Sidebar Overlay */}
             {hamburgerMenu && (
                 <div className="fixed inset-0 z-50 bg-black/50 lg:hidden" onClick={() => setHamburgerMenu(false)}>

@@ -15,7 +15,6 @@ class authController extends Controller
     {
         return Inertia::location(Socialite::driver('google')->redirect()->getTargetUrl());
     }
-
     public function callbackOauth(Request $request)
     {
         $userData = Socialite::driver('google')->stateless()->user();
@@ -30,11 +29,15 @@ class authController extends Controller
             ]);
         }
         Auth::login($user, true);
+        $role = Auth::user()->role;
+        if ($role === 'Customer') {
+            return redirect()->intended('/')->with('success','Login Berhasil!');
+        }else if($role === 'Pak Telang'){
 
-        if (Auth::user()->role === 'Customer') {
-            return redirect()->intended('/');
+            return redirect()->intended(route('admin.dashboard'))->with('success','Login Berhasil!');
+        }else{
+            return redirect()->intended(route('mitra.dashboard'))->with('success','Login Berhasil!');
+
         }
-
-        return redirect()->intended(route('dashboard'));
     }
 }

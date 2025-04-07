@@ -22,6 +22,7 @@ const loginSchema = z.object({
 
 export default function LoginPage() {
     const { post, data, errors, setData, setError, reset } = useForm<LoginForm>();
+    console.log(Object.values(errors).filter((e) => typeof e === 'string')[0]);
     const handleSubmit = () => {
         const result = loginSchema.safeParse(data);
         if (!result.success) {
@@ -34,6 +35,15 @@ export default function LoginPage() {
     return (
         <AuthLayout head="Login" type="login">
             <div className="flex flex-col gap-y-3">
+                {Object.values(errors).length > 0 && (
+                    <div className="fixed top-0 right-0 z-50 -translate-x-1/6 translate-y-1/2 rounded-lg border-2 font-semibold border-red-700 bg-white p-5 text-red-900 shadow-lg transition duration-300">
+                        {Object.values(errors)
+                            .filter((e) => typeof e === 'string')
+                            .map((message) => (
+                                <h1>{message} !</h1>
+                            ))}
+                    </div>
+                )}
                 <Heading title="Welcome Back!" className="text-center text-4xl font-bold text-[#3B387E]" disableMb={true} />
                 <HeadingSmall title="Silahkan melakukan login" className="text-center text-sm font-extralight text-[#3B387E]" />
             </div>

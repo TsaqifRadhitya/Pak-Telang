@@ -15,8 +15,8 @@ export default function Contact() {
                             <div className="flex items-end gap-x-5">
                                 <h1 className="text-2xl font-black text-[#3B387E]">Pak Telang</h1>
                                 <HeadingSmall
-                                    title="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod."
-                                    className="text-[#3B387E]"
+                                    title="Pilihan minuman berkualitas untuk hari-harimu yang lebih sehat"
+                                    className="text-[#3B387E] text-lg"
                                 />
                             </div>
                             <p className="flex items-center gap-x-1 text-xs text-[#3B387E]">

@@ -68,7 +68,7 @@ class ProductController extends Controller
             'stock' => $request->input('productStock'),
             'userId' => Auth::user()->id
         ]);
-        return back();
+        return back()->with('success','Product Berhasil Ditambahkan !');
     }
 
     public function show($product)
@@ -102,13 +102,13 @@ class ProductController extends Controller
                 'userId' => Auth::user()->id
             ]);
         }
-        return back();
+        return back()->with('success','Product Berhasil Diperbarui !');
     }
 
     public function destroy($product)
     {
         Product::whereId($product)->update(['isdeleted' => true]);
-        return back();
+        return back()->with('success','Product Berhasil Dihapus !');
     }
 
     public function updateStock(Request $request, $id)
@@ -122,6 +122,6 @@ class ProductController extends Controller
         } else {
             $product_detail->update(['stock' => $request->input('productStock')]);
         }
-        return back();
+        return back()->with('success','Stock Product Berhasil Diperbarui !');
     }
 }

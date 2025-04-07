@@ -1,8 +1,0 @@
-
-// function component(){
-
-// }
-
-// function alertInfo(){
-
-// }

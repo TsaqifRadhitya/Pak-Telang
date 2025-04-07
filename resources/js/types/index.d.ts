@@ -15,6 +15,13 @@ export interface NavGroup {
     items: NavItem[];
 }
 
+export interface flash {
+    success : string
+    info : string,
+    warning : string
+    error : string
+}
+
 export interface NavItem {
     title: string;
     href: string;
@@ -26,6 +33,7 @@ export interface SharedData {
     name: string;
     quote: { message: string; author: string };
     auth: Auth;
+    flash : flash;
     ziggy: Config & { location: string };
     [key: string]: unknown;
 }

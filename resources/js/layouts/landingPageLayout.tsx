@@ -24,7 +24,7 @@ export default function LandingPageLayout({ children, page }: { children: React.
     return (
         <div className="relative min-h-screen w-full">
             <Head title={page} />
-            <nav className={cn("hidden lg:fixed top-0 z-50 lg:flex w-full flex-row items-center justify-between px-10 py-5",scroll ? "bg-[#EBEFFF] shadow-md" : null)}>
+            <nav className={cn("hidden lg:fixed top-0 z-50 lg:flex w-full flex-row items-center justify-between px-10 py-5",scroll ? "bg-[#EBEFFF] shadow-md rounded-b-3xl" : null)}>
                 <h1 className="text-2xl font-semibold text-[#3b387e]">Pak Telang</h1>
                 <div className="hidden gap-x-16 md:flex">
                     <ul className="flex gap-x-20 font-medium text-[#3b387e] translate-y-1/5">

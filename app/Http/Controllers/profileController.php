@@ -44,7 +44,7 @@ class profileController extends Controller
 
     public function update(Request $request)
     {
-        $request->validate(['phonenumber' => ['required', 'unique:' . User::class . ',phonenumber,' . auth()->id()]]);
+        $request->validate(['phonenumber' => ['required', 'unique:' . User::class . ',phonenumber,' . auth()->id()]], ['phonenumber.unique' => "Nomor Hp Sudah Terdaftar"]);
         $role = Auth::user()->role;
 
         $profilePicture = Str::contains($request->input('profile_picture'), '?q=') ? $request->input('profile_picture') : $request->input('profile_picture') . '?q=' . Ulid::generate(now());
@@ -59,12 +59,12 @@ class profileController extends Controller
         );
         $this->updateAdress($request);
         if (Auth::user()->role === 'Mitra') {
-            return redirect(route('mitra.profile'));
+            return redirect(route('mitra.profile'))->with('success', 'Profile Berhasil Diperbarui !');
         }
         if (Auth::user()->role === 'Customer') {
-            return redirect(route('customer.profile'));
+            return redirect(route('customer.profile'))->with('success', 'Profile Berhasil Diperbarui !');
         }
-        return redirect(route('admin.profile'));
+        return redirect(route('admin.profile'))->with('success', 'Profile Berhasil Diperbarui !');
     }
 
     private function getFullAdress()

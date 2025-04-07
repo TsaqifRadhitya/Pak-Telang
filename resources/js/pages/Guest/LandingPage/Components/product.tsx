@@ -17,8 +17,8 @@ export default function Product() {
         <div className="flex min-h-screen flex-col gap-y-10 bg-[#EBEFFF] p-5 md:px-10 lg:px-32 lg:py-20">
             <Heading title="Produk Kami" disableMb className="text-4xl font-bold text-[#3B387E]" />
             <HeadingSmall
-                title="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod. "
-                className="font-semibold text-[#3B387E]"
+                title="Berbagai minuman herbal alami yang menyegarkan, dibuat dari bahan pilihan dan tanpa bahan pengawet. Temukan rasa yang pas untukmu di sini!"
+                className="font-semibold text-[#3B387E] text-sm md:text-md lg:text-lg xl:text-xl"
             />
             <div className="max-w-9xl relative mx-auto flex w-full flex-col gap-y-10 px-4 md:grid md:grid-cols-2 md:gap-5 lg:gap-10 xl:grid xl:h-full xl:grid-cols-3 xl:gap-20 xl:px-0">
                 {product.map((i, index) => (
@@ -26,7 +26,7 @@ export default function Product() {
                         initial={{ scale: 0.5, opacity: 0 }}
                         whileInView={{ opacity: 1, scale: 1, transition: { duration: 1 } }}
                         viewport={{ amount: 0.2 }}
-                        key={index}
+                    key={index}
                         onClick={(e) => {
                             if (!(e.target as HTMLElement).closest('button')) {
                                 router.get(route('produk.detail', { id: i.id }));

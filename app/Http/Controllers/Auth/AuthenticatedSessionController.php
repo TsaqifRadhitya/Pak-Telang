@@ -18,7 +18,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(Request $request): Response
     {
-        return Inertia::render('auth/loginPage',[
+        return Inertia::render('auth/loginPage', [
             'canResetPassword' => Route::has('password.request'),
             'status' => $request->session()->get('status'),
         ]);
@@ -32,10 +32,16 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
-        if(Auth::user()->role === 'Customer'){
-            return redirect()->intended('/');
+        $role = Auth::user()->role === 'Customer';
+        if ($role === 'Customer') {
+            return redirect()->intended('/')->with('success', 'Login Berhasil!');
+        } else if ($role === 'Pak Telang') {
+
+            return redirect()->intended(route('admin.dashboard'))->with('success', 'Login Berhasil!');
+        } else {
+            return redirect()->intended(route('mitra.dashboard'))->with('success', 'Login Berhasil!');
         }
-        return redirect()->intended(route('dashboard', absolute: false));
+        return redirect()->intended(route('dashboard', absolute: false))->with('success', 'Login Berhasil!');
     }
 
     /**
@@ -48,6 +54,6 @@ class AuthenticatedSessionController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('/')->with('success', 'Logout Berhasil!');
     }
 }

@@ -1,7 +1,9 @@
+import SweetAlert from '@/components/sweatAlert';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import Contact from '@/pages/Guest/LandingPage/Components/contact';
-import { Head, Link, router } from '@inertiajs/react';
+import { SharedData } from '@/types';
+import { Head, Link, router, usePage } from '@inertiajs/react';
 import { Menu } from 'lucide-react';
 import { useMotionValueEvent, useScroll } from 'motion/react';
 import { useState } from 'react';
@@ -9,6 +11,7 @@ import { useState } from 'react';
 type navLocation = 'Profile' | 'Riwayat' | 'Pengajuan Mitra' | 'Kerja Sama';
 
 export default function CustomerPageLayout({ children, page }: { children: React.ReactNode; page: navLocation }) {
+    const { flash } = usePage<SharedData>().props;
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const { scrollYProgress } = useScroll();
     const [scroll, setScroll] = useState<boolean>(false);
@@ -22,10 +25,14 @@ export default function CustomerPageLayout({ children, page }: { children: React
     return (
         <div className="relative min-h-screen w-full">
             <Head title={page} />
+            {flash.success && <SweetAlert type="Success" message={flash.success} />}
+            {flash.error && <SweetAlert type="Error" message={flash.error} />}
+            {flash.info && <SweetAlert type="Info" message={flash.info} />}
+            {flash.warning && <SweetAlert type="Warning" message={flash.warning} />}
             <nav
                 className={cn(
-                    'top-0 z-50 hidden w-full flex-row items-center justify-between px-10 py-5 lg:fixed lg:flex',
-                    scroll ? 'bg-[#EBEFFF] shadow-md' : null,
+                    'top-0 z-40 hidden w-full flex-row items-center justify-between px-10 py-5 lg:fixed lg:flex',
+                    scroll ? 'rounded-b-3xl bg-[#EBEFFF] shadow-md' : null,
                 )}
             >
                 <h1 onClick={() => router.get('/')} className="cursor-pointer text-2xl font-semibold text-[#3b387e]">
