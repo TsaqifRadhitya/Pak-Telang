@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import Contact from '@/pages/Guest/LandingPage/Components/contact';
-import { Head, router } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import { Menu } from 'lucide-react';
 import { useMotionValueEvent, useScroll } from 'motion/react';
 import { useState } from 'react';
@@ -34,8 +34,8 @@ export default function CustomerPageLayout({ children, page }: { children: React
                 <div className="hidden gap-x-16 md:flex">
                     <ul className="flex translate-y-1/5 gap-x-20 font-medium text-[#3b387e]">
                         <li className="">
-                            <a
-                                // href={route('home')}
+                            <Link
+                                href="#"
                                 className={
                                     page === 'Profile'
                                         ? 'underline decoration-4 underline-offset-8'
@@ -43,11 +43,11 @@ export default function CustomerPageLayout({ children, page }: { children: React
                                 }
                             >
                                 Profil
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a
-                                // href={route('konten')}
+                            <Link
+                                href={route('konten')}
                                 className={
                                     page === 'Riwayat'
                                         ? 'underline decoration-4 underline-offset-8'
@@ -55,11 +55,11 @@ export default function CustomerPageLayout({ children, page }: { children: React
                                 }
                             >
                                 Riwayat
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a
-                                // href={route('produk')}
+                            <Link
+                                href="#"
                                 className={
                                     page === 'Pengajuan Mitra'
                                         ? 'underline decoration-4 underline-offset-8'
@@ -67,11 +67,11 @@ export default function CustomerPageLayout({ children, page }: { children: React
                                 }
                             >
                                 Pengajuan Mitra
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a
-                                // href={route('donasi')}
+                            <Link
+                                href="#"
                                 className={
                                     page === 'Kerja Sama'
                                         ? 'underline decoration-4 underline-offset-8'
@@ -79,7 +79,7 @@ export default function CustomerPageLayout({ children, page }: { children: React
                                 }
                             >
                                 Kerja Sama
-                            </a>
+                            </Link>
                         </li>
                     </ul>
                     <div className="flex gap-x-2">
@@ -106,8 +106,8 @@ export default function CustomerPageLayout({ children, page }: { children: React
                 >
                     <ul className="flex flex-col gap-y-4 text-lg font-medium text-[#3b387e]">
                         <li>
-                            <a
-                                // href={route('home')}
+                            <Link
+                                href="#"
                                 className={
                                     page === 'Profile'
                                         ? 'underline decoration-4 underline-offset-8'
@@ -115,11 +115,11 @@ export default function CustomerPageLayout({ children, page }: { children: React
                                 }
                             >
                                 Profile
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a
-                                // href={route('konten')}
+                            <Link
+                                href="#"
                                 className={
                                     page === 'Riwayat'
                                         ? 'underline decoration-4 underline-offset-8'
@@ -127,11 +127,11 @@ export default function CustomerPageLayout({ children, page }: { children: React
                                 }
                             >
                                 Riwayat
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a
-                                // href={route('produk')}
+                            <Link
+                                href="#"
                                 className={
                                     page === 'Pengajuan Mitra'
                                         ? 'underline decoration-4 underline-offset-8'
@@ -139,11 +139,11 @@ export default function CustomerPageLayout({ children, page }: { children: React
                                 }
                             >
                                 Pengajuan Mitra
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a
-                                // href={route('donasi')}
+                            <Link
+                                href="#"
                                 className={
                                     page === 'Kerja Sama'
                                         ? 'underline decoration-4 underline-offset-8'
@@ -151,7 +151,7 @@ export default function CustomerPageLayout({ children, page }: { children: React
                                 }
                             >
                                 Kerja Sama
-                            </a>
+                            </Link>
                         </li>
                     </ul>
                     <div className="mt-4 flex flex-col gap-y-2">

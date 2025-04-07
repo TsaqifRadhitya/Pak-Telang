@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import Contact from '@/pages/Guest/LandingPage/Components/contact';
 import { SharedData } from '@/types';
-import { Head, router, usePage } from '@inertiajs/react';
+import { Head, router, usePage,Link } from '@inertiajs/react';
 import { Menu } from 'lucide-react';
 import { useMotionValueEvent, useScroll } from 'motion/react';
 import { useState } from 'react';
@@ -29,24 +29,24 @@ export default function LandingPageLayout({ children, page }: { children: React.
                 <div className="hidden gap-x-16 md:flex">
                     <ul className="flex gap-x-20 font-medium text-[#3b387e] translate-y-1/5">
                         <li className="">
-                            <a href={route('home')} className={page === 'Home' ? 'underline decoration-4 underline-offset-8' : 'hover:underline hover:decoration-4 hover:underline-offset-8'}>
+                            <Link href={route('home')} className={page === 'Home' ? 'underline decoration-4 underline-offset-8' : 'hover:underline hover:decoration-4 hover:underline-offset-8'}>
                                 Home
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a href={route('konten')} className={page === 'Konten' ? 'underline decoration-4 underline-offset-8' : 'hover:underline hover:decoration-4 hover:underline-offset-8'}>
+                            <Link href={route('konten')} className={page === 'Konten' ? 'underline decoration-4 underline-offset-8' : 'hover:underline hover:decoration-4 hover:underline-offset-8'}>
                                 Konten
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a href={route('produk')} className={page === 'Produk' ? 'underline decoration-4 underline-offset-8' : 'hover:underline hover:decoration-4 hover:underline-offset-8'}>
+                            <Link href={route('produk')} className={page === 'Produk' ? 'underline decoration-4 underline-offset-8' : 'hover:underline hover:decoration-4 hover:underline-offset-8'}>
                                 Produk
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a href={route('donasi')} className={page === 'Donasi' ? 'underline decoration-4 underline-offset-8' : 'hover:underline hover:decoration-4 hover:underline-offset-8'}>
+                            <Link href={route('donasi')} className={page === 'Donasi' ? 'underline decoration-4 underline-offset-8' : 'hover:underline hover:decoration-4 hover:underline-offset-8'}>
                                 Donasi
-                            </a>
+                            </Link>
                         </li>
                     </ul>
                     <div className="flex gap-x-2">
