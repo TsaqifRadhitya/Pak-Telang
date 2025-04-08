@@ -89,17 +89,17 @@ export default function CustomerPageLayout({ children, page }: { children: React
                             </Link>
                         </li>
                     </ul>
-                    <div className="flex gap-x-2">
+                    {/* <div className="flex gap-x-2">
                         <Button
                             onClick={() => router.post(route('logout'))}
                             className="min-h-10 min-w-28 cursor-pointer bg-[#EC2525] font-medium text-white hover:bg-[#db1d1d]"
                         >
                             Log Out
                         </Button>
-                    </div>
+                    </div> */}
                 </div>
             </nav>
-            <nav className="rounded-b-3xl fixed top-0 z-50 flex w-full flex-row items-center justify-between bg-white px-6 py-4 shadow-sm md:px-10 lg:hidden">
+            <nav className={cn("fixed top-0 z-50 flex w-full flex-row items-center justify-between bg-white px-6 py-4 shadow-sm md:px-10 lg:hidden",!isMenuOpen && "rounded-b-3xl")}>
                 <h1 className="text-2xl font-bold text-[#3b387e]">Pak Telang</h1>
 
                 {/* Mobile Menu Button */}
@@ -109,7 +109,7 @@ export default function CustomerPageLayout({ children, page }: { children: React
 
                 {/* Navigation Menu */}
                 <div
-                    className={`absolute top-16 left-0 w-full origin-top bg-white p-6 shadow-md transition-all ${isMenuOpen ? 'scale-y-100' : 'scale-y-0'}`}
+                    className={`absolute top-16 left-0 w-full origin-top bg-white p-6 shadow-md rounded-b-3xl transition-all ${isMenuOpen ? 'scale-y-100' : 'scale-y-0'}`}
                 >
                     <ul className="flex flex-col gap-y-4 text-lg font-medium text-[#3b387e]">
                         <li>
@@ -161,14 +161,14 @@ export default function CustomerPageLayout({ children, page }: { children: React
                             </Link>
                         </li>
                     </ul>
-                    <div className="mt-4 flex flex-col gap-y-2">
+                    {/* <div className="mt-4 flex flex-col gap-y-2">
                         <Button
                             onClick={() => router.post(route('logout'))}
                             className="min-h-10 min-w-28 cursor-pointer bg-[#EC2525] font-medium text-white hover:bg-[#db1d1d]"
                         >
                             Log Out
                         </Button>
-                    </div>
+                    </div> */}
                 </div>
             </nav>
             {children}

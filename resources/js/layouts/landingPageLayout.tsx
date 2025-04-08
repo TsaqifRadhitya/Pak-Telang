@@ -80,7 +80,7 @@ export default function LandingPageLayout({ children, page }: { children: React.
                     </div>
                 </div>
             </nav>
-            <nav className="lg:hidden fixed top-0 z-50 flex flex-row w-full items-center justify-between bg-white px-6 py-4 shadow-sm md:px-10">
+            <nav className={cn("lg:hidden fixed top-0 z-50 flex flex-row w-full items-center justify-between bg-white px-6 py-4 shadow-sm md:px-10",!isMenuOpen && "rounded-b-3xl")}>
                 <h1 className="text-2xl font-bold text-[#3b387e]">Pak Telang</h1>
 
                 {/* Mobile Menu Button */}
@@ -90,7 +90,7 @@ export default function LandingPageLayout({ children, page }: { children: React.
 
                 {/* Navigation Menu */}
                 <div
-                    className={`absolute top-16 left-0 origin-top bg-white p-6 shadow-md transition-all w-full ${isMenuOpen ? 'scale-y-100' : 'scale-y-0'}`}
+                    className={`absolute top-16 left-0 origin-top bg-white p-6 shadow-md transition-all rounded-b-3xl w-full ${isMenuOpen ? 'scale-y-100' : 'scale-y-0'}`}
                 >
                     <ul className="flex flex-col gap-y-4 text-lg font-medium text-[#3b387e]">
                         <li>

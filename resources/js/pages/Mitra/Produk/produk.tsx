@@ -154,7 +154,7 @@ export default function ProductMitraPage({ products }: { products: productType[]
                     <div className="flex items-center border-b-[1px] border-[#AFB3FF] p-5 md:px-10 md:py-5">
                         <h1 className="text-xl font-semibold">Produk</h1>
                     </div>
-                    <section className="flex w-full flex-col gap-10 overflow-y-auto p-5 md:grid md:aspect-9/5 md:h-[80vh] md:grid-cols-2 lg:p-10">
+                    <section className="flex w-full flex-col gap-10 overflow-y-auto p-5 md:grid md:h-[80vh] md:grid-cols-2 lg:p-10">
                         {products.map((item, i) => (
                             <div key={i} className="flex aspect-7/4 flex-col justify-between rounded-lg p-5 shadow-lg ring ring-[#B9BDFF]">
                                 <div className="flex w-full">

@@ -1,3 +1,4 @@
+import SweetAlert from '@/components/sweatAlert';
 import { cn } from '@/lib/utils';
 import { SharedData } from '@/types';
 import { Head, router, usePage } from '@inertiajs/react';
@@ -5,7 +6,6 @@ import { motion } from 'framer-motion';
 import { Menu } from 'lucide-react';
 import { ReactNode, useState } from 'react';
 import Heading from '../components/heading';
-import SweetAlert from '@/components/sweatAlert';
 
 interface Props {
     children: ReactNode;
@@ -13,16 +13,16 @@ interface Props {
 }
 
 export default function MitraPageLayout({ children, page }: Props) {
-    const { auth,flash } = usePage<SharedData>().props;
+    const { auth, flash } = usePage<SharedData>().props;
     const [hamburgerMenu, setHamburgerMenu] = useState(false);
 
     return (
         <div className="flex min-h-screen flex-col gap-y-5 bg-[#EBEFFF] text-[#3B387E] lg:gap-y-0 lg:px-10">
             <Head title={page} />
-            {flash.success && <SweetAlert type='Success' message={flash.success}/>}
-            {flash.error && <SweetAlert type='Error' message={flash.error}/>}
-            {flash.info && <SweetAlert type='Info' message={flash.info}/>}
-            {flash.warning && <SweetAlert type='Warning' message={flash.warning}/>}
+            {flash.success && <SweetAlert type="Success" message={flash.success} />}
+            {flash.error && <SweetAlert type="Error" message={flash.error} />}
+            {flash.info && <SweetAlert type="Info" message={flash.info} />}
+            {flash.warning && <SweetAlert type="Warning" message={flash.warning} />}
             {/* Mobile Sidebar Overlay */}
             {hamburgerMenu && (
                 <div className="fixed inset-0 z-50 bg-black/50 lg:hidden" onClick={() => setHamburgerMenu(false)}>
@@ -36,7 +36,7 @@ export default function MitraPageLayout({ children, page }: Props) {
                             <Heading title="Pak Telang" className="text-2xl" />
                         </div>
                         <ul className="space-y-4">
-                            {['Dashboard', 'Mitra', 'Produk', 'Profile'].map((item) => (
+                            {['Dashboard', 'Transaksi', 'Produk', 'Order Bahan', 'Bantuan', 'Profile'].map((item) => (
                                 <li
                                     key={item}
                                     className="flex cursor-pointer items-center gap-x-1.5 text-xl"
@@ -55,10 +55,10 @@ export default function MitraPageLayout({ children, page }: Props) {
             )}
 
             {/* Header */}
-            <header className="rounded-b-3xl sticky top-0 z-40 flex items-center gap-x-2.5 bg-white px-5 py-5 shadow lg:relative lg:bg-transparent lg:shadow-none">
+            <header className="sticky top-0 z-40 flex items-center gap-x-2.5 rounded-b-3xl bg-white px-5 py-5 shadow lg:relative lg:bg-transparent lg:shadow-none">
                 <Menu color="#3B387E" className="cursor-pointer lg:hidden" onClick={() => setHamburgerMenu(true)} />
-                <div onClick={()=> router.get('/')}>
-                    <Heading title="Pak Telang" className='cursor-pointer' />
+                <div onClick={() => router.get('/')}>
+                    <Heading title="Pak Telang" className="cursor-pointer" />
                 </div>
             </header>
 
@@ -73,7 +73,7 @@ export default function MitraPageLayout({ children, page }: Props) {
                         </div>
                     </div>
                     <ul className="flex flex-col gap-y-5">
-                        {['Dashboard', 'Produk', 'Profile'].map((item) => (
+                        {['Dashboard', 'Transaksi', 'Produk', 'Order Bahan', 'Bantuan', 'Profile'].map((item) => (
                             <li
                                 key={item}
                                 className={cn(

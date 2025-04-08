@@ -42,7 +42,7 @@ const profileEditValidation = z.object({
     province: z.string({ message: 'Harap mengisi provinsi' }).min(1, 'Harap mengisi provinsi'),
     cityName: z.string({ message: 'Harap mengisi kota' }),
     districtName: z.string({ message: 'Harap mengisi kecamatan' }),
-    address: z.string().min(1, 'Harap mengisi alamat'),
+    address: z.string({message : 'Harap mengisi alamat'}).min(1, 'Harap mengisi alamat'),
     postalCode: z.string({ message: 'Harap mengisi kode pos' }).regex(/^\d{5}$/, 'Kode pos memiliki 5 karakter'),
 });
 
