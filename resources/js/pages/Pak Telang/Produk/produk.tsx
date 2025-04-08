@@ -113,12 +113,12 @@ export default function ProductAdminPage({ products }: { products: productType[]
                 <section id="alertDelete" className="fixed z-50 h-full w-full bg-black/50">
                     <article className="absolute top-1/2 left-1/2 flex w-full max-w-xl -translate-1/2 flex-col items-center gap-y-5 rounded-2xl border border-[#8A7300] bg-[#FFFDF1] p-5 pb-10">
                         <div className='flex w-full items-center gap-x-4'>
-                            <img src="Asset\Icon\warningIcon.svg" alt="" />
+                            <img src="https://ybcvbaxalqwrvgemxdzc.supabase.co/storage/v1/object/public/paktelang/Asset/Icon/warningIcon.svg" alt="" />
                             <h1 className='text-[#8A7300] font-bold text-xl'
                             >Warning!!</h1>
                         </div>
                         <img src={productSelected?.productPhoto[0]} alt="" className="aspect-video w-1/3 object-cover object-center" />
-                        <Heading title="Apakah Anda yakin untuk menghapus produk ini ?" className="w-3/5 text-center mx-auto text-lg font-medium text-[#8A7300]" />
+                        <Heading title="Apakah Anda yakin untuk menghapus produk ini ?" className="w-4/5 text-center mx-auto text-md line leading-5 font-medium text-[#8A7300]" />
                         <div className="flex w-1/2 justify-center gap-x-2.5">
                             <Button
                                 className="w-1/2 cursor-pointer bg-[#FFFDF1] font-semibold text-green-600 ring ring-green-600 hover:bg-green-600 hover:text-white"
