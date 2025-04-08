@@ -9,7 +9,7 @@ export default function Testimoni() {
     const { lg } = useCurrentMediaQuerry();
     return (
         <div
-            className="relative flex min-h-screen flex-col justify-center gap-y-20 overflow-hidden bg-cover bg-center bg-no-repeat object-center p-10 pt-32 md:justify-start lg:items-center lg:p-20 lg:px-32 lg:pt-35 xl:h-screen xl:flex-row"
+            className="relative flex min-h-screen w-full flex-col justify-center gap-y-20 overflow-hidden bg-cover bg-center bg-no-repeat object-center p-10 pt-32 md:justify-start lg:items-center lg:p-20 lg:px-32 lg:pt-35 xl:h-screen xl:flex-row"
             style={{ backgroundImage: `url(${backgroundImage})` }}
         >
             <motion.div
@@ -23,20 +23,21 @@ export default function Testimoni() {
                     </div>
                 </div>
                 <h1 className="text-center text-3xl font-bold lg:text-left lg:text-4xl xl:text-5xl">Testimoni</h1>
-                <p className="lg:text-md w-full text-sm xl:w-2/3 xl:text-xl">Gimana sih pendapat mereka tentang produk Pak Telang?</p>
+                <p className="hidden xl:block lg:text-md w-full text-sm xl:w-2/3 xl:text-xl 2xl:text-3xl">Gimana sih<br/> pendapat mereka <br/> tentang produk <br/> Pak Telang?</p>
+                <p className="xl:hidden lg:text-md w-full text-md xl:w-2/3 xl:text-xl 2xl:text-3xl">Gimana sih pendapat mereka tentang produk Pak Telang?</p>
                 <Button
                     onClick={() => router.get(route('produk'))}
                     className="cursor-pointer bg-[#5961BE] text-[#EBEFFF] hover:bg-[#4e55a1] lg:mx-auto lg:w-1/2 xl:mx-0 xl:w-1/3"
                 >
                     Pesan Sekarang <LucideArrowRight color="#EBEFFF" />
                 </Button>
-                <div className="absolute left-0 hidden h-full w-full translate-y-1/2 gap-x-9 py-20 lg:top-0 lg:translate-x-7/10 lg:translate-y-0 xl:top-1/2 xl:flex xl:h-[110%] xl:-translate-y-1/2">
+                <div className="absolute left-0 hidden h-full w-full translate-y-1/2 gap-x-9 py-15 lg:top-0 lg:translate-x-7/10 lg:translate-y-0 xl:top-1/2 xl:flex xl:h-[110%] xl:-translate-y-1/2">
                     {Array.from({ length: 2 }).map((i, index) => (
                         <motion.div
                             initial={{ x: -300 + index * -300, opacity: 0 }}
                             whileInView={{ x: 0, opacity: 1, transition: { duration: 0.3 + index * 0.6, delay: 0.3 * index } }}
                             key={index}
-                            className="flex flex-1/2 flex-col gap-y-5 rounded-lg bg-[#5961BE] p-10 lg:gap-y-2.5 lg:p-5 xl:gap-y-5 xl:p-10"
+                            className="flex flex-1/2 flex-col gap-y-5 rounded-lg bg-[#5961BE] p-10 lg:gap-y-2.5 lg:p-5 xl:gap-y-5 xl:p-10 overflow-y-hidden"
                         >
                             <div className="relative flex-1/2">
                                 <div className="absolute top-0 h-full w-1/4 -translate-x-2/3 -translate-y-1/3 rounded-lg bg-transparent px-8 pt-16 pb-24 text-center">
@@ -64,7 +65,7 @@ export default function Testimoni() {
                         initial={{ x: index % 2 === 0 ? -50 : 50 + index * (index % 2 === 0 ? -50 : 50), opacity: 0 }}
                         whileInView={{ x: 0, opacity: 1, transition: { duration: 0.3 + index * 0.6, delay: 0.3 * index } }}
                         key={index}
-                        className="flex flex-1/2 flex-col gap-y-5 rounded-lg bg-[#5961BE] p-10"
+                        className="flex aspect-3/4 flex-1/2 flex-col gap-y-5 rounded-lg bg-[#5961BE] p-10"
                     >
                         <div className="relative flex-1/2">
                             <div className="absolute top-0 h-full w-1/4 -translate-x-2/3 -translate-y-1/3 rounded-lg bg-transparent px-8 pt-16 pb-24 text-center">
