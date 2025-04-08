@@ -20,8 +20,10 @@ export default function SweetAlert({ message, type }: props) {
     const icon =
         type === 'Error' ? '/errorIcon.svg' : type === 'Info' ? '/infoIcon.svg' : type === 'Success' ? '/successIcon.svg' : '/warningIcon.svg';
     const [show, setShow] = useState<boolean>();
+
     const { quote } = usePage<SharedData>().props;
     useEffect(() => {
+        console.log('/public/Asset/Icon' + icon);
         setShow(true);
         const timeout = setTimeout(() => {
             setShow(false);
@@ -33,9 +35,12 @@ export default function SweetAlert({ message, type }: props) {
             <motion.div
                 initial={{ y: -100 }}
                 animate={{ y: 0, transition: { duration: 0.4, ease: 'easeInOut' } }}
-                className={cn('fixed top-0 z-50 flex w-full gap-x-5 rounded-lg border p-5 py-2.5 shadow-xl md:right-5 md:max-w-96 md:min-w-72 lg:top-5', style)}
+                className={cn(
+                    'fixed top-0 z-50 flex w-full gap-x-5 rounded-lg border p-5 py-2.5 shadow-xl md:right-5 md:max-w-96 md:min-w-72 lg:top-5',
+                    style,
+                )}
             >
-                <img src={'Asset/Icon' + icon} className="scale-125" />
+                <img src={'https://ybcvbaxalqwrvgemxdzc.supabase.co/storage/v1/object/public/paktelang/Asset/Icon' + icon} className="scale-125" />
                 <div>
                     <p className="font-semibold">{header}</p>
                     <p>{message}</p>

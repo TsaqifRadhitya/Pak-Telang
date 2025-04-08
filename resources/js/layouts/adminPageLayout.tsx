@@ -14,15 +14,14 @@ interface Props {
 
 export default function AdminPageLayout({ children, page }: Props) {
     const { auth, flash } = usePage<SharedData>().props;
-    console.log(flash)
     const [hamburgerMenu, setHamburgerMenu] = useState(false);
 
     return (
         <div className="flex min-h-screen flex-col gap-y-5 bg-[#EBEFFF] text-[#3B387E] lg:gap-y-0 lg:px-10">
-            {flash.success && <SweetAlert unique={Math.random() * 100} type="Success" message={flash.success} />}
-            {flash.error && <SweetAlert unique={Math.random() * 100} type="Error" message={flash.error} />}
-            {flash.info && <SweetAlert unique={Math.random() * 100} type="Info" message={flash.info} />}
-            {flash.warning && <SweetAlert unique={Math.random() * 100} type="Warning" message={flash.warning} />}
+            {flash.success && <SweetAlert type="Success" message={flash.success} />}
+            {flash.error && <SweetAlert type="Error" message={flash.error} />}
+            {flash.info && <SweetAlert type="Info" message={flash.info} />}
+            {flash.warning && <SweetAlert type="Warning" message={flash.warning} />}
             <Head title={page} />
 
             {/* Mobile Sidebar Overlay */}
@@ -57,7 +56,7 @@ export default function AdminPageLayout({ children, page }: Props) {
             )}
 
             {/* Header */}
-            <header className="sticky top-0 z-40 flex items-center gap-x-2.5 bg-white px-5 py-5 shadow lg:relative lg:bg-transparent lg:shadow-none">
+            <header className="rounded-b-3xl sticky top-0 z-40 flex items-center gap-x-2.5 bg-white px-5 py-5 shadow lg:relative lg:bg-transparent lg:shadow-none">
                 <Menu color="#3B387E" className="cursor-pointer lg:hidden" onClick={() => setHamburgerMenu(true)} />
                 <div onClick={() => router.get('/')}>
                     <Heading title="Pak Telang" className="cursor-pointer" />

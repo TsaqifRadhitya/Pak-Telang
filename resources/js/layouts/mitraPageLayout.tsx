@@ -55,7 +55,7 @@ export default function MitraPageLayout({ children, page }: Props) {
             )}
 
             {/* Header */}
-            <header className="sticky top-0 z-40 flex items-center gap-x-2.5 bg-white px-5 py-5 shadow lg:relative lg:bg-transparent lg:shadow-none">
+            <header className="rounded-b-3xl sticky top-0 z-40 flex items-center gap-x-2.5 bg-white px-5 py-5 shadow lg:relative lg:bg-transparent lg:shadow-none">
                 <Menu color="#3B387E" className="cursor-pointer lg:hidden" onClick={() => setHamburgerMenu(true)} />
                 <div onClick={()=> router.get('/')}>
                     <Heading title="Pak Telang" className='cursor-pointer' />

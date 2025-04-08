@@ -99,7 +99,7 @@ export default function CustomerPageLayout({ children, page }: { children: React
                     </div>
                 </div>
             </nav>
-            <nav className="fixed top-0 z-50 flex w-full flex-row items-center justify-between bg-white px-6 py-4 shadow-sm md:px-10 lg:hidden">
+            <nav className="rounded-b-3xl fixed top-0 z-50 flex w-full flex-row items-center justify-between bg-white px-6 py-4 shadow-sm md:px-10 lg:hidden">
                 <h1 className="text-2xl font-bold text-[#3b387e]">Pak Telang</h1>
 
                 {/* Mobile Menu Button */}
