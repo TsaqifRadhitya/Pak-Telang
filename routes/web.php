@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\dashboardController;
 use App\Http\Controllers\messageController;
+use App\Http\Controllers\mitraController;
 use App\Http\Controllers\ProductController;
 use App\Models\kontent;
 use App\Models\Product;
@@ -32,6 +33,7 @@ Route::get('donasi', function () {
 })->name('donasi');
 
 Route::middleware('auth')->group(function () {
+    Route::get('mou',[mitraController::class,'mou'])->name('mou');
     Route::get('/chat',[messageController::class,'allPerson'])->name('chat.index');
     Route::get('/chat/{id}',[messageController::class,'getChatRoom'])->name('chat.create');
     Route::post('/chat/{id}',[messageController::class,'pustChat'])->name('chat.store');
