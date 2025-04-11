@@ -13,7 +13,7 @@ export class mouEditor {
         // await this.replacer()
     }
 
-    static async replacer(sourceUrl: string, data: mouDataReplacer): Promise<String> {
+    static async replacer(sourceUrl: string, data: mouDataReplacer): Promise<Blob> {
         const response = await fetch(sourceUrl)
         const zip = new PizZip(await response.arrayBuffer());
         const doc = new Docxtemplater(zip, {
@@ -22,7 +22,6 @@ export class mouEditor {
                 end: '}}'
             }
         })
-        console.log(doc)
         doc.setData({
             "TANGGAL": new Date().toLocaleString('id-ID'),
             "TANGGAL DATE": new Date().toLocaleString('id-ID'),
@@ -38,6 +37,6 @@ export class mouEditor {
             mimeType:
                 "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
         });
-        return URL.createObjectURL(output)
+        return output
     }
 }
