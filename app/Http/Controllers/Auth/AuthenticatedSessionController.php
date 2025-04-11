@@ -32,16 +32,14 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
-        $role = Auth::user()->role === 'Customer';
+        $role = Auth::user()->role;
         if ($role === 'Customer') {
             return redirect()->intended('/')->with('success', 'Login Berhasil!');
         } else if ($role === 'Pak Telang') {
-
             return redirect()->intended(route('admin.dashboard'))->with('success', 'Login Berhasil!');
         } else {
             return redirect()->intended(route('mitra.dashboard'))->with('success', 'Login Berhasil!');
         }
-        return redirect()->intended(route('dashboard', absolute: false))->with('success', 'Login Berhasil!');
     }
 
     /**

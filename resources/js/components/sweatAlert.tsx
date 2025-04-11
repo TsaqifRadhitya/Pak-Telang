@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 import { SharedData } from '@/types';
 import { usePage } from '@inertiajs/react';
-import { motion } from 'motion/react';
+import { AnimatePresence, motion } from 'motion/react';
 import { useEffect, useState } from 'react';
 
 interface props {
@@ -19,33 +19,41 @@ export default function SweetAlert({ message, type }: props) {
 
     const icon =
         type === 'Error' ? '/errorIcon.svg' : type === 'Info' ? '/infoIcon.svg' : type === 'Success' ? '/successIcon.svg' : '/warningIcon.svg';
-    const [show, setShow] = useState<boolean>();
+    const [show, setShow] = useState<boolean>(false);
 
     const { quote } = usePage<SharedData>().props;
     useEffect(() => {
-        console.log('/public/Asset/Icon' + icon);
+        console.log(quote.message);
         setShow(true);
         const timeout = setTimeout(() => {
             setShow(false);
         }, 2500);
-        return () => clearTimeout(timeout);
+        return () => {
+            clearTimeout(timeout);
+        };
     }, [quote.message]);
     return (
-        show && (
-            <motion.div
-                initial={{ y: -100 }}
-                animate={{ y: 0, transition: { duration: 0.4, ease: 'easeInOut' } }}
-                className={cn(
-                    'fixed top-0 z-50 flex w-full gap-x-5 rounded-lg border p-5 py-2.5 shadow-xl md:right-5 md:max-w-96 md:min-w-72 lg:top-5',
-                    style,
-                )}
-            >
-                <img src={'https://ybcvbaxalqwrvgemxdzc.supabase.co/storage/v1/object/public/paktelang/Asset/Icon' + icon} className="scale-125" />
-                <div>
-                    <p className="font-semibold">{header}</p>
-                    <p>{message}</p>
-                </div>
-            </motion.div>
-        )
+        <AnimatePresence>
+            {show && (
+                <motion.div
+                    initial={{ y: -100 }}
+                    animate={{ y: 0, transition: { duration: 0.4, ease: 'easeInOut' } }}
+                    exit={{ y: -100, transition: { duration: 0.4, ease: 'easeInOut' } }}
+                    className={cn(
+                        'fixed top-1 z-50 flex w-full gap-x-5 rounded-lg border p-5 py-2.5 shadow-xl md:right-5 md:max-w-96 md:min-w-72 lg:top-5',
+                        style,
+                    )}
+                >
+                    <img
+                        src={'https://ybcvbaxalqwrvgemxdzc.supabase.co/storage/v1/object/public/paktelang/Asset/Icon' + icon}
+                        className="scale-125"
+                    />
+                    <div>
+                        <p className="font-semibold">{header}</p>
+                        <p>{message}</p>
+                    </div>
+                </motion.div>
+            )}
+        </AnimatePresence>
     );
 }

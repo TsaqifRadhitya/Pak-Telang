@@ -1,5 +1,4 @@
 import SweetAlert from '@/components/sweatAlert';
-import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import Contact from '@/pages/Guest/LandingPage/Components/contact';
 import { SharedData } from '@/types';
@@ -8,7 +7,7 @@ import { Menu } from 'lucide-react';
 import { useMotionValueEvent, useScroll } from 'motion/react';
 import { useState } from 'react';
 
-type navLocation = 'Profile' | 'Riwayat' | 'Pengajuan Mitra' | 'Kerja Sama';
+type navLocation = 'Profile' | 'Riwayat' | 'Pengajuan Mitra' | 'Kerja Sama' | 'Dashboard';
 
 export default function CustomerPageLayout({ children, page }: { children: React.ReactNode; page: navLocation }) {
     const { flash } = usePage<SharedData>().props;
@@ -42,7 +41,19 @@ export default function CustomerPageLayout({ children, page }: { children: React
                     <ul className="flex translate-y-1/5 gap-x-20 font-medium text-[#3b387e]">
                         <li className="">
                             <Link
-                                href="#"
+                                href={route('dashboard')}
+                                className={
+                                    page === 'Dashboard'
+                                        ? 'underline decoration-4 underline-offset-8'
+                                        : 'hover:underline hover:decoration-4 hover:underline-offset-8'
+                                }
+                            >
+                                Dashboard
+                            </Link>
+                        </li>
+                        <li className="">
+                            <Link
+                                href={route('customer.profile')}
                                 className={
                                     page === 'Profile'
                                         ? 'underline decoration-4 underline-offset-8'
@@ -54,7 +65,7 @@ export default function CustomerPageLayout({ children, page }: { children: React
                         </li>
                         <li>
                             <Link
-                                href={route('konten')}
+                                href="#"
                                 className={
                                     page === 'Riwayat'
                                         ? 'underline decoration-4 underline-offset-8'
@@ -76,18 +87,6 @@ export default function CustomerPageLayout({ children, page }: { children: React
                                 Pengajuan Mitra
                             </Link>
                         </li>
-                        <li>
-                            <Link
-                                href="#"
-                                className={
-                                    page === 'Kerja Sama'
-                                        ? 'underline decoration-4 underline-offset-8'
-                                        : 'hover:underline hover:decoration-4 hover:underline-offset-8'
-                                }
-                            >
-                                Kerja Sama
-                            </Link>
-                        </li>
                     </ul>
                     {/* <div className="flex gap-x-2">
                         <Button
@@ -99,7 +98,12 @@ export default function CustomerPageLayout({ children, page }: { children: React
                     </div> */}
                 </div>
             </nav>
-            <nav className={cn("fixed top-0 z-50 flex w-full flex-row items-center justify-between bg-white px-6 py-4 shadow-sm md:px-10 lg:hidden",!isMenuOpen && "rounded-b-3xl")}>
+            <nav
+                className={cn(
+                    'fixed top-0 z-50 flex w-full flex-row items-center justify-between bg-white px-6 py-4 shadow-sm md:px-10 lg:hidden',
+                    !isMenuOpen && 'rounded-b-3xl',
+                )}
+            >
                 <h1 className="text-2xl font-bold text-[#3b387e]">Pak Telang</h1>
 
                 {/* Mobile Menu Button */}
@@ -109,9 +113,21 @@ export default function CustomerPageLayout({ children, page }: { children: React
 
                 {/* Navigation Menu */}
                 <div
-                    className={`absolute top-16 left-0 w-full origin-top bg-white p-6 shadow-md rounded-b-3xl transition-all ${isMenuOpen ? 'scale-y-100' : 'scale-y-0'}`}
+                    className={`absolute top-16 left-0 w-full origin-top rounded-b-3xl bg-white p-6 shadow-md transition-all ${isMenuOpen ? 'scale-y-100' : 'scale-y-0'}`}
                 >
                     <ul className="flex flex-col gap-y-4 text-lg font-medium text-[#3b387e]">
+                        <li>
+                            <Link
+                                href="#"
+                                className={
+                                    page === 'Dashboard'
+                                        ? 'underline decoration-4 underline-offset-8'
+                                        : 'hover:underline hover:decoration-4 hover:underline-offset-8'
+                                }
+                            >
+                                Dashboard
+                            </Link>
+                        </li>
                         <li>
                             <Link
                                 href="#"
@@ -146,18 +162,6 @@ export default function CustomerPageLayout({ children, page }: { children: React
                                 }
                             >
                                 Pengajuan Mitra
-                            </Link>
-                        </li>
-                        <li>
-                            <Link
-                                href="#"
-                                className={
-                                    page === 'Kerja Sama'
-                                        ? 'underline decoration-4 underline-offset-8'
-                                        : 'hover:underline hover:decoration-4 hover:underline-offset-8'
-                                }
-                            >
-                                Kerja Sama
                             </Link>
                         </li>
                     </ul>

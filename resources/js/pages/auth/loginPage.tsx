@@ -16,7 +16,7 @@ type LoginForm = {
 
 const loginSchema = z.object({
     email: z.string({ message: 'Harap mengisi email' }).email('Email tidak valid'),
-    password: z.string({ message: 'Harap mengisi password' }).min(8, 'Password minimal 8 karakter'),
+    password: z.string({ message: 'Harap mengisi password' }).min(8, 'Harap mengisi password'),
     remember: z.boolean().optional(),
 });
 
@@ -35,15 +35,6 @@ export default function LoginPage() {
     return (
         <AuthLayout head="Login" type="login">
             <div className="flex flex-col gap-y-3">
-                {Object.values(errors).length > 0 && (
-                    <div className="fixed top-0 right-0 z-50 -translate-x-1/6 translate-y-1/2 rounded-lg border-2 font-semibold border-red-700 bg-white p-5 text-red-900 shadow-lg transition duration-300">
-                        {Object.values(errors)
-                            .filter((e) => typeof e === 'string')
-                            .map((message) => (
-                                <h1>{message} !</h1>
-                            ))}
-                    </div>
-                )}
                 <Heading title="Welcome Back!" className="text-center text-4xl font-bold text-[#3B387E]" disableMb={true} />
                 <HeadingSmall title="Silahkan melakukan login" className="text-center text-sm font-extralight text-[#3B387E]" />
             </div>
