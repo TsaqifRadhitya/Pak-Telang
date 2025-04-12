@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 import { SharedData } from '@/types';
-import { usePage } from '@inertiajs/react';
+import { router, usePage } from '@inertiajs/react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useEffect, useState } from 'react';
 
@@ -27,6 +27,7 @@ export default function SweetAlert({ message, type }: props) {
         setShow(true);
         const timeout = setTimeout(() => {
             setShow(false);
+            router.reload({ only: ['flash'] });
         }, 2500);
         return () => {
             clearTimeout(timeout);
