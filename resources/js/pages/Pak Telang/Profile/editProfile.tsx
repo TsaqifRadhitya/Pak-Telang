@@ -9,7 +9,7 @@ import { router, useForm, usePage } from '@inertiajs/react';
 import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import z from 'zod';
-import { address } from '../../../types/address';
+import { addressType } from '../../../types/address';
 interface Province {
     id: string;
     name: string;
@@ -46,7 +46,7 @@ const profileEditValidation = z.object({
 });
 
 interface props extends SharedData {
-    address: address;
+    address: addressType;
 }
 
 export default function EditProfileAdminPage() {

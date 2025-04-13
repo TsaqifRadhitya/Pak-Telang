@@ -1,4 +1,4 @@
-export type address = {
+export type addressType = {
     address : string,
     postalCode : string,
     districtName : string,

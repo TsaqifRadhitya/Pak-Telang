@@ -16,10 +16,10 @@ export interface NavGroup {
 }
 
 export interface flash {
-    success : string
-    info : string,
-    warning : string
-    error : string
+    success: string
+    info: string,
+    warning: string
+    error: string
 }
 
 export interface NavItem {
@@ -33,7 +33,7 @@ export interface SharedData {
     name: string;
     quote: { message: string; author: string };
     auth: Auth;
-    flash : flash;
+    flash: flash;
     ziggy: Config & { location: string };
     [key: string]: unknown;
 }
@@ -45,10 +45,10 @@ export interface User {
     email: string;
     avatar: string;
     email_verified_at: string | null;
-    phonenumber:string;
-    gender : gender
-    birthday:string
-    profile_picture : string;
+    phonenumber: string;
+    gender: gender
+    birthday: string
+    profile_picture: string;
     created_at: string;
     updated_at: string; // This allows for additional properties...
 }

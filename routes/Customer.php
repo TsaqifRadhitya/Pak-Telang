@@ -14,7 +14,8 @@ Route::middleware(['auth', customerMidleware::class])->group(function () {
     });
 
     Route::prefix('pengajuanmitra')->group(function () {
-        Route::get('/',[pengajuanMitraController::class,'index'])->name('customer.pengajuanmitra.index');
-        Route::get('/create',[pengajuanMitraController::class,'create'])->name('customer.pengajuanmitra.create');
+        Route::get('/', [pengajuanMitraController::class, 'index'])->name('customer.pengajuanmitra.index');
+        Route::get('/create', [pengajuanMitraController::class, 'create'])->name('customer.pengajuanmitra.create');
+        Route::get('/status', [pengajuanMitraController::class, 'status'])->name('customer.pengajuanmitra.status');
     });
 });

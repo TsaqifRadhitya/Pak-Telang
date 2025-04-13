@@ -41,9 +41,9 @@ export default function Contact() {
                     <p className="text-sm">Jangan lupa ikuti sosial media kami untuk update harian kami.</p>
                 </CardHeader>
                 <CardContent className='flex flex-col gap-y-5'>
-                    <CardDescription className='flex items-center gap-x-4 text-[#3B387E]'><img src='Asset\Icon\Instagram.svg'/>paktelang</CardDescription>
-                    <CardDescription className='flex items-center gap-x-4 text-[#3B387E]'><img src='Asset\Icon\Youtube.svg'/>paktelang</CardDescription>
-                    <CardDescription className='flex items-center gap-x-4 text-[#3B387E]'><img src='Asset\Icon\Tiktok.svg'/>paktelang</CardDescription>
+                    <CardDescription className='flex items-center gap-x-4 text-[#3B387E]'><img src={window.location.origin + '/Asset/Icon/Instagram.svg'}/>paktelang</CardDescription>
+                    <CardDescription className='flex items-center gap-x-4 text-[#3B387E]'><img src={window.location.origin + '/Asset/Icon/Youtube.svg'}/>paktelang</CardDescription>
+                    <CardDescription className='flex items-center gap-x-4 text-[#3B387E]'><img src={window.location.origin + '/Asset/Icon/Tiktok.svg'}/>paktelang</CardDescription>
                 </CardContent>
             </Card>
             <Card className="rounded-3xl border-0 bg-white p-7.5 px-2.5 text-[#3B387E]">
@@ -52,9 +52,9 @@ export default function Contact() {
                     <p className="text-sm">Hubungi kami melalui beberapa cara berikut ini.</p>
                 </CardHeader>
                 <CardContent className='flex flex-col gap-y-5'>
-                    <CardDescription className='flex items-center gap-x-4 text-[#3B387E] '><img src='Asset\Icon\Phone.svg'/>08123456789</CardDescription>
-                    <CardDescription className='flex items-center gap-x-4 text-[#3B387E] '><img src='Asset\Icon\Whatsapp.svg'/>08123456789</CardDescription>
-                    <CardDescription className='flex items-center gap-x-4 text-[#3B387E] '><img src='Asset\Icon\Location.svg'/>Jl. Rajawali, Krajan, Klungkung, Kec. Sukorambi, Kabupaten Jember, Jawa Timur</CardDescription>
+                    <CardDescription className='flex items-center gap-x-4 text-[#3B387E] '><img src={ window.location.origin + '/Asset/Icon/Phone.svg'}/>08123456789</CardDescription>
+                    <CardDescription className='flex items-center gap-x-4 text-[#3B387E] '><img src={window.location.origin +  '/Asset/Icon/Whatsapp.svg'}/>08123456789</CardDescription>
+                    <CardDescription className='flex items-center gap-x-4 text-[#3B387E] '><img src={window.location.origin + '/Asset/Icon/Location.svg'}/>Jl. Rajawali, Krajan, Klungkung, Kec. Sukorambi, Kabupaten Jember, Jawa Timur</CardDescription>
                 </CardContent>
             </Card>
             <Card className="col-span-2 rounded-3xl border-0 bg-white py-0">
