@@ -77,7 +77,7 @@ export default function CustomerPageLayout({ children, page }: { children: React
                         </li>
                         <li>
                             <Link
-                                href="#"
+                                href={route('customer.pengajuanmitra.index')}
                                 className={
                                     page === 'Pengajuan Mitra'
                                         ? 'underline decoration-4 underline-offset-8'
@@ -154,7 +154,7 @@ export default function CustomerPageLayout({ children, page }: { children: React
                         </li>
                         <li>
                             <Link
-                                href="#"
+                                href={route('customer.pengajuanmitra.index')}
                                 className={
                                     page === 'Pengajuan Mitra'
                                         ? 'underline decoration-4 underline-offset-8'
