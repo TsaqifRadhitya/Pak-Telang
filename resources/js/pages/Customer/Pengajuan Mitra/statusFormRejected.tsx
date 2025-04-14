@@ -25,7 +25,7 @@ export default function FormRejected() {
                                 kerja sama berikutnya
                             </p>
                         </article>
-                        <Button className="min-w-sm cursor-pointer bg-[#5961BE] text-white hover:bg-[#4e55a1]">Ajukan Ulang</Button>
+                        <Button className="md:min-w-sm cursor-pointer bg-[#5961BE] text-white hover:bg-[#4e55a1]">Ajukan Ulang</Button>
                     </div>
                 </div>
             </section>
