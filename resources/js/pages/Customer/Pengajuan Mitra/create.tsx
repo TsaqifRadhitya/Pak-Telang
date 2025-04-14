@@ -106,7 +106,7 @@ export default function Create() {
     };
 
     const handleSubmit = () => {
-        console.log(data);
+        clearErrors()
         const validation = pengajuanMitraEditValidation.safeParse(data);
         console.log(validation.error?.format());
         const err = validation.error?.format();
@@ -126,6 +126,7 @@ export default function Create() {
             setError('postalCode', err?.postalCode?._errors[0] as string);
             setError('province', err?.province?._errors[0] as string);
         }
+        console.log(fotoDapur,fotoKtp)
         // router.post(route(''), { data });
     };
     return (
