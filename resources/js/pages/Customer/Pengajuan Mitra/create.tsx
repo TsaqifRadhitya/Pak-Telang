@@ -10,26 +10,44 @@ import { useForm, usePage } from '@inertiajs/react';
 import axios from 'axios';
 import { Plus } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { z } from 'zod';
 import Heading from '../../../components/heading';
 
 type Merge<T> = {
     [K in keyof T]: T[K];
 };
-type props = Merge<SharedData & addressType>;
+interface props extends SharedData {
+    address: addressType;
+}
 
 type form = Merge<
     { NIK: string; namaUsaha: string; fotoKTP: string; fotoDapur: string[]; alasanPengajuan: string; kulkas: boolean } & addressType & User
 >;
 
+const pengajuanMitraEditValidation = z.object({
+    name: z.string({ message: 'Harap mengisi nama' }).min(1, 'Harap mengisi nama'),
+    birthday: z.string({ message: 'Harap mengisi tanggal lahir' }).min(1, 'Harap mengisi tanggal lahir'),
+    gender: z.string({ message: 'Harap mengisi jenis kelamin' }).min(1, 'Harap mengisi jenis kelamin'),
+    phonenumber: z.string({ message: 'Harap mengisi Nomor Hp' }).regex(/^\d{1,13}$/, 'Nomor telepon hanya boleh berisi angka dan maksimal 13 digit'),
+    NIK: z.string({ message: 'Harap mengisi NIK' }).min(16, 'Jumlah digit NIK harus 16'),
+    province: z.string({ message: 'Harap mengisi provinsi' }).min(1, 'Harap mengisi provinsi'),
+    cityName: z.string({ message: 'Harap mengisi kota' }),
+    districtName: z.string({ message: 'Harap mengisi kecamatan' }),
+    address: z.string({ message: "Harap mengisi alamat" }).min(1, 'Harap mengisi alamat'),
+    postalCode: z.string({ message: 'Harap mengisi kode pos' }).regex(/^\d{5}$/, 'Kode pos memiliki 5 karakter'),
+    fotoKTP: z.string({ message: 'Harap mengupload foto KTP' }),
+    namaUsaha: z.string({ message: 'Harap mengisi nama usaha' }).min(1, 'Harap mengisi nama usaha'),
+    kulkas: z.boolean({ message: 'Harap mengisi kepemilikan kulkas' }),
+    alasanPengajuan: z.string({ message: 'Harap mengisi alasan pengajuan' }).min(1, 'Harap mengisi alasan pengajuan'),
+    fotoDapur: z.array(z.string()).nonempty('Harap mengupload foto dapur'),
+});
+
 export default function Create() {
-    const { address, districtName, postalCode, cityName, province, auth } = usePage<props>().props;
+    const { address, auth } = usePage<props>().props;
     const { data, setData, errors, setError, clearErrors } = useForm<form>({
-        address,
-        postalCode,
-        districtName,
-        cityName,
-        province,
+        ...address,
         ...auth.user,
+        fotoDapur : [] as string[]
     } as form);
     const [addressApi, setAddressApi] = useState<AddressApiType>({
         provinces: [],
@@ -85,6 +103,30 @@ export default function Create() {
                 Object.values(e.target.files).map((img) => URL.createObjectURL(img)),
             );
         }
+    };
+
+    const handleSubmit = () => {
+        console.log(data);
+        const validation = pengajuanMitraEditValidation.safeParse(data);
+        console.log(validation.error?.format());
+        const err = validation.error?.format();
+        if (!validation.success) {
+            setError('NIK', err?.NIK?._errors[0] as string);
+            setError('address', err?.address?._errors[0] as string);
+            setError('alasanPengajuan', err?.alasanPengajuan?._errors[0] as string);
+            setError('birthday', err?.birthday?._errors[0] as string);
+            setError('cityName', err?.cityName?._errors[0] as string);
+            setError('districtName', err?.districtName?._errors[0] as string);
+            setError('fotoDapur', err?.fotoDapur?._errors[0] as string);
+            setError('fotoKTP', err?.fotoKTP?._errors[0] as string);
+            setError('kulkas', err?.kulkas?._errors[0] as string);
+            setError('namaUsaha', err?.namaUsaha?._errors[0] as string);
+            setError('name', err?.name?._errors[0] as string);
+            setError('phonenumber', err?.phonenumber?._errors[0] as string);
+            setError('postalCode', err?.postalCode?._errors[0] as string);
+            setError('province', err?.province?._errors[0] as string);
+        }
+        // router.post(route(''), { data });
     };
     return (
         <CustomerPageLayout page="Pengajuan Mitra">
@@ -305,7 +347,7 @@ export default function Create() {
                             />
                             <h2 className="text-lg font-semibold">Alasan Pengajuan</h2>
                             <p className="mb-2">Anda dapat mengupload lebih dari 1 gambar</p>
-                            {!data.fotoDapur && (
+                            {!data.fotoDapur.length && (
                                 <div
                                     onClick={() => inputFileDapur.current?.click()}
                                     className="flex aspect-video w-1/6 cursor-pointer items-center justify-center rounded-lg bg-[#C5C5C5]"
@@ -330,7 +372,9 @@ export default function Create() {
                         </div>
                     </div>
                     <div className="mt-6 flex justify-end">
-                        <Button className="cursor-pointer bg-[#5961BE] px-6 text-white hover:bg-[#4e55a1]">Ajukan Sekarang</Button>
+                        <Button onClick={handleSubmit} className="cursor-pointer bg-[#5961BE] px-6 text-white hover:bg-[#4e55a1]">
+                            Ajukan Sekarang
+                        </Button>
                     </div>
                 </div>
             </div>

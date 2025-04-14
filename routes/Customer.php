@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\mitraController;
 use App\Http\Controllers\pengajuanMitraController;
 use App\Http\Controllers\profileController;
 use App\Http\Middleware\customerMidleware;
@@ -16,6 +15,7 @@ Route::middleware(['auth', customerMidleware::class])->group(function () {
     Route::prefix('pengajuanmitra')->group(function () {
         Route::get('/', [pengajuanMitraController::class, 'index'])->name('customer.pengajuanmitra.index');
         Route::get('/create', [pengajuanMitraController::class, 'create'])->name('customer.pengajuanmitra.create');
-        Route::get('/status', [pengajuanMitraController::class, 'status'])->name('customer.pengajuanmitra.status');
+        Route::post('/store', [pengajuanMitraController::class, 'store'])->name('customer.pengajuanmitra.store');
+        Route::get('/status', [pengajuanMitraController::class, 'statusCheck'])->name('customer.pengajuanmitra.status');
     });
 });

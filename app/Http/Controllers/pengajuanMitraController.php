@@ -38,7 +38,9 @@ class pengajuanMitraController extends Controller
         ];
     }
 
-    public function statusCheck(Request $request) {}
+    public function statusCheck(Request $request) {
+        return Inertia::render('Customer/Pengajuan Mitra/statusMouRejected');
+    }
 
     public function statusUpdate(Request $request) {}
 

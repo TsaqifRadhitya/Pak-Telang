@@ -17,7 +17,7 @@ export class supabaseImage extends supabaseService {
     }
 
     public async upsertProfile(params: File) {
-        const result = await this.supabaseConnection.storage.from('paktelang').update(`${this.basePath}profile`, params, { contentType: params.type, upsert: true })
+        const result = await this.supabaseConnection.storage.from('paktelang').update(`${this.basePath}profile/profile`, params, { contentType: params.type, upsert: true })
         const url = await this.getUrl(result.data!.path)
         return url
     }

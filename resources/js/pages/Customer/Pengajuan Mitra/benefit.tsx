@@ -1,9 +1,9 @@
 export default function Benefit() {
     return (
-        <section className="flex min-h-screen w-full flex-col items-center bg-[#EBEFFF] text-[#3B387E] lg:p-32 lg:gap-20">
+        <section className="flex min-h-screen w-full flex-col items-center bg-[#EBEFFF] text-[#3B387E] p-5 lg:p-32 gap-10 lg:gap-20">
             <header className="flex flex-col items-center text-center lg:w-3/5">
-                <h1 className="text-[2.8rem] font-black">Keuntungan Menjadi Mitra Kami</h1>
-                <h3 className="text-xl lg:max-w-11/12">
+                <h1 className="text-2xl lg:text-[2.8rem] font-black">Keuntungan Menjadi Mitra Kami</h1>
+                <h3 className="text-lg lg:max-w-11/12">
                     Bergabunglah dengan komunitas mitra kami dari berbagai daerah dan dapatkan peluang kerja sama baru.
                 </h3>
             </header>
@@ -29,7 +29,7 @@ export default function Benefit() {
                     </article>
                 </div>
             </article>
-            <section className="flex flex-col lg:flex-row gap-x-32">
+            <section className="flex flex-col lg:flex-row gap-10 lg:gap-32">
                 <article className="flex flex-col items-center flex-1/4 text-center">
                     <h3 className="font-bold text-3xl">100K+</h3>
                     <p>Mitra di Seluruh <br/> Indonesia</p>
