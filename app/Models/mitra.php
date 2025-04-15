@@ -10,4 +10,6 @@ class mitra extends Model
 {
     /** @use HasFactory<\Database\Factories\MitraFactory> */
     use HasFactory,HasUlids;
+
+    protected $fillable = ['namaUsaha', 'fotoKTP', 'fotoDapur', 'alasanPengajuan', 'kulkas', 'mou', 'address', 'postalCode', 'pesanPersetujuan', 'statusPengajuan','isOpen', 'districtId', 'userId'];
 }

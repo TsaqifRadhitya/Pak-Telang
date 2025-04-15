@@ -33,7 +33,7 @@ const pengajuanMitraEditValidation = z.object({
     province: z.string({ message: 'Harap mengisi provinsi' }).min(1, 'Harap mengisi provinsi'),
     cityName: z.string({ message: 'Harap mengisi kota' }),
     districtName: z.string({ message: 'Harap mengisi kecamatan' }),
-    address: z.string({ message: "Harap mengisi alamat" }).min(1, 'Harap mengisi alamat'),
+    address: z.string({ message: 'Harap mengisi alamat' }).min(1, 'Harap mengisi alamat'),
     postalCode: z.string({ message: 'Harap mengisi kode pos' }).regex(/^\d{5}$/, 'Kode pos memiliki 5 karakter'),
     fotoKTP: z.string({ message: 'Harap mengupload foto KTP' }),
     namaUsaha: z.string({ message: 'Harap mengisi nama usaha' }).min(1, 'Harap mengisi nama usaha'),
@@ -44,10 +44,10 @@ const pengajuanMitraEditValidation = z.object({
 
 export default function Create() {
     const { address, auth } = usePage<props>().props;
-    const { data, setData, errors, setError, clearErrors } = useForm<form>({
+    const { data, setData, errors, setError, clearErrors, post } = useForm<form>({
         ...address,
         ...auth.user,
-        fotoDapur : [] as string[]
+        fotoDapur: [] as string[],
     } as form);
     const [addressApi, setAddressApi] = useState<AddressApiType>({
         provinces: [],
@@ -106,7 +106,7 @@ export default function Create() {
     };
 
     const handleSubmit = () => {
-        clearErrors()
+        clearErrors();
         const validation = pengajuanMitraEditValidation.safeParse(data);
         console.log(validation.error?.format());
         const err = validation.error?.format();
@@ -125,8 +125,11 @@ export default function Create() {
             setError('phonenumber', err?.phonenumber?._errors[0] as string);
             setError('postalCode', err?.postalCode?._errors[0] as string);
             setError('province', err?.province?._errors[0] as string);
+            setError('gender', err?.gender?._errors[0] as string);
+            return;
         }
-        console.log(fotoDapur,fotoKtp)
+        console.log(fotoDapur, fotoKtp);
+        post(route('customer.pengajuanmitra.store'));
         // router.post(route(''), { data });
     };
     return (
@@ -200,7 +203,7 @@ export default function Create() {
                                 value={data.NIK ?? ''}
                                 onChange={(e) => setData('NIK', e.target.value)}
                             />
-                            <InputError message={errors.birthday} />
+                            <InputError message={errors.NIK} />
                         </div>
                     </div>
                     <h1 className="font-bold">Alamat KTP</h1>
@@ -351,7 +354,7 @@ export default function Create() {
                             {!data.fotoDapur.length && (
                                 <div
                                     onClick={() => inputFileDapur.current?.click()}
-                                    className="flex aspect-video w-1/6 cursor-pointer items-center justify-center rounded-lg bg-[#C5C5C5]"
+                                    className="flex aspect-video w-1/2 cursor-pointer items-center justify-center rounded-lg bg-[#C5C5C5] lg:w-1/6"
                                 >
                                     <Plus />
                                 </div>
@@ -373,7 +376,7 @@ export default function Create() {
                         </div>
                     </div>
                     <div className="mt-6 flex justify-end">
-                        <Button onClick={handleSubmit} className="cursor-pointer bg-[#5961BE] px-6 text-white hover:bg-[#4e55a1]">
+                        <Button onClick={handleSubmit} className="w-full cursor-pointer bg-[#5961BE] px-6 text-white hover:bg-[#4e55a1] lg:w-fit">
                             Ajukan Sekarang
                         </Button>
                     </div>

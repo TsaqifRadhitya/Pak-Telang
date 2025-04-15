@@ -14,8 +14,18 @@ return new class extends Migration
         Schema::create('mitras', function (Blueprint $table) {
             $table->ulid('id')->primary();
             $table->boolean('isOpen')->default(false);
+            $table->string('namaUsaha');
+            $table->string('fotoKTP');
+            $table->json('fotoDapur');
+            $table->text('alasanPengajuan');
+            $table->boolean('kulkas');
+            $table->string('mou')->nullable();
+            $table->string('address');
+            $table->string('postalCode');
+            $table->string('pesanPersetujuan')->nullable();
+            $table->enum('statusPengajuan', ['Menunggu Persetujuan Formulir', 'Formulir disetujui', 'Formulir ditolak', 'Menunggu MOU', 'Menunggu Persetujuan MOU', 'MOU disetujui', 'MOU ditolak']);
+            $table->foreignUlid('districtId')->constrained('districts');
             $table->foreignUuid('userId')->constrained('users');
-            $table->foreignUlid('pengajuanId')->constrained('pengajuan_mitras');
             $table->timestamps();
         });
     }

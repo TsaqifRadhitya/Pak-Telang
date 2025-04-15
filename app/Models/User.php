@@ -57,8 +57,8 @@ class User extends Authenticatable
         return $this->hasMany(productDetail::class,'userId');
     }
 
-    public function address(){
-        return $this->hasOne(Address::class,'userId');
+    public function mitra(){
+        return $this->hasOne(mitra::class,'userId');
     }
 
     public function district(){
