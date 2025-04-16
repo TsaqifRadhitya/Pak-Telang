@@ -1,16 +1,15 @@
 import AdminPageLayout from '@/layouts/adminPageLayout';
 import { cn } from '@/lib/utils';
-import { usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import mitra from '../../../types/mitra';
 import AllMitra from './allMitra';
 import SubmissionMitra from './submissionMitra';
 
-export type prop  = {
+export type prop = {
     mitra: mitra[];
     pengajuanMitra: mitra[];
-}
-export default function mitraAdminPage() {
+};
+export default function MitraAdminPage() {
     const [firstSubmenu, setFirstSubtMenu] = useState<boolean>(false);
     return (
         <AdminPageLayout page="Mitra">
