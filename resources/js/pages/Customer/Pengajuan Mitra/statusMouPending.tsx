@@ -16,6 +16,7 @@ export default function MouPending() {
         if (e.target.files?.length) {
             setMou(e.target.files[0]);
         }
+        console.log(mou)
     };
     return (
         <CustomerPageLayout page="Pengajuan Mitra">

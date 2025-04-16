@@ -1,4 +1,3 @@
-import { Input } from '@/components/ui/input';
 import CustomerPageLayout from '@/layouts/customerPagetLayout';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import Heading from '../../../components/heading';
