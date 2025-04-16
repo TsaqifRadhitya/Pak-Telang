@@ -17,7 +17,7 @@ export default function AdminPageLayout({ children, page }: Props) {
     const [hamburgerMenu, setHamburgerMenu] = useState(false);
 
     return (
-        <div className="flex min-h-screen flex-col gap-y-5 bg-[#EBEFFF] text-[#3B387E] lg:gap-y-0 lg:px-10">
+        <div className="flex min-h-screen over flex-col gap-y-5 bg-[#EBEFFF] text-[#3B387E] lg:gap-y-0 lg:px-10">
             {flash.success && <SweetAlert type="Success" message={flash.success} />}
             {flash.error && <SweetAlert type="Error" message={flash.error} />}
             {flash.info && <SweetAlert type="Info" message={flash.info} />}

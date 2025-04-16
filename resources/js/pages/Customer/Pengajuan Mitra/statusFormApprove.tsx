@@ -1,11 +1,12 @@
 import { Button } from '@/components/ui/button';
 import CustomerPageLayout from '@/layouts/customerPagetLayout';
+import { router } from '@inertiajs/react';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import Heading from '../../../components/heading';
 
 export default function FormApprove() {
     return (
-        <CustomerPageLayout page="Kerja Sama">
+        <CustomerPageLayout page="Pengajuan Mitra">
             <section className="flex h-fit w-full bg-[#EBEFFF] p-5 pt-20 lg:p-10 lg:pt-20">
                 <div className="flex flex-1 flex-col items-center justify-center gap-5 text-[#3B387E]">
                     <div className="w-full rounded-3xl border border-[#AFB3FF] bg-[#FFFFFF] p-5 px-10 shadow lg:px-16">
@@ -24,7 +25,12 @@ export default function FormApprove() {
                                 Selanjutnya, kamu akan masuk ke tahap penandatanganan MOU (Memorandum of Understanding) sebagai mitra resmi kami.
                             </p>
                         </article>
-                        <Button className="cursor-pointer bg-[#5961BE] text-white hover:bg-[#4e55a1]">Tanda Tangan Sekarang</Button>
+                        <Button
+                            onClick={() => router.get(route('customer.mou.index'))}
+                            className="cursor-pointer bg-[#5961BE] text-white hover:bg-[#4e55a1]"
+                        >
+                            Tanda Tangan Sekarang
+                        </Button>
                     </div>
                 </div>
             </section>

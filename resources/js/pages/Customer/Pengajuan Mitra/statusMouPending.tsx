@@ -18,7 +18,7 @@ export default function MouPending() {
         }
     };
     return (
-        <CustomerPageLayout page="Kerja Sama">
+        <CustomerPageLayout page="Pengajuan Mitra">
             <section className="flex w-full bg-[#EBEFFF] p-5 pt-20 lg:p-10 lg:pt-20">
                 <Input type="file" accept="application/pdf" className="hidden" ref={inputFile} onChange={handleChangeInput} />
                 <div className="flex flex-1 flex-col items-center justify-center gap-5 text-[#3B387E]">

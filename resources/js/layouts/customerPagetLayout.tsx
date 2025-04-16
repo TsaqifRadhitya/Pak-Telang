@@ -7,7 +7,7 @@ import { Menu } from 'lucide-react';
 import { useMotionValueEvent, useScroll } from 'motion/react';
 import { useState } from 'react';
 
-type navLocation = 'Profile' | 'Riwayat' | 'Pengajuan Mitra' | 'Kerja Sama' | 'Dashboard';
+type navLocation = 'Profile' | 'Riwayat' | 'Pengajuan Mitra' | 'Dashboard';
 
 export default function CustomerPageLayout({ children, page }: { children: React.ReactNode; page: navLocation }) {
     const { flash } = usePage<SharedData>().props;
@@ -130,7 +130,7 @@ export default function CustomerPageLayout({ children, page }: { children: React
                         </li>
                         <li>
                             <Link
-                                href="#"
+                                href={route('customer.profile')}
                                 className={
                                     page === 'Profile'
                                         ? 'underline decoration-4 underline-offset-8'

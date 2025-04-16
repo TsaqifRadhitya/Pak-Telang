@@ -10,6 +10,7 @@ use App\Models\Province;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Nette\Utils\Validators;
 
 class pengajuanMitraController extends Controller
 {
@@ -42,6 +43,14 @@ class pengajuanMitraController extends Controller
         ];
     }
 
+    public function mou()
+    {
+        $mitra = mitra::with('user')->where('userId', '=', Auth::user()->id)->where('statusPengajuan', '=', 'Formulir disetujui')->first();
+        if (!$mitra) abort(404);
+        $mitra = [...$mitra->toArray(), 'address' => $this->getMitraAddress($mitra), 'fotoDapur' => json_decode($mitra->fotoDapur)];
+        return Inertia::render('Customer/Pengajuan Mitra/statusMouPending', compact('mitra'));
+    }
+
     public function statusCheck(Request $request)
     {
         $status = $request->user()->mitra->statusPengajuan;
@@ -53,51 +62,74 @@ class pengajuanMitraController extends Controller
             case 'Formulir ditolak':
                 return Inertia::render('Customer/Pengajuan Mitra/statusFormRejected');
             case 'Menunggu MOU':
-                return Inertia::render('Customer/Pengajuan Mitra/statusMouPending');
             case 'MOU ditolak':
                 return Inertia::render('Customer/Pengajuan Mitra/statusMouRejected');
         }
     }
 
-    public function statusUpdate(Request $request, $status, $id)
+    public function statusUpdate(Request $request, $id, $status)
     {
-        $mitraStatus = $request->user()->mitra->statusPengajuan;
+        $mitraStatus = mitra::whereId($id)->first()->statusPengajuan;
         if ($mitraStatus === "Menunggu Persetujuan Formulir") {
-            if ($status === "Approve") {
+            if ($status === "accept") {
                 $updateStatus = "Formulir disetujui";
-            } else if ($status === "Decline") {
+            } else if ($status === "decline") {
                 $updateStatus = "Formulir ditolak";
             }
-        } else if ($mitraStatus === 'Menunggu Persetujuan MOU') {
-            if ($status === "Approve") {
+        } else if ($mitraStatus === 'Menunggu MOU') {
+            if ($status === "accept") {
                 $updateStatus = "MOU ditolak";
-            } else if ($status === "Decline") {
+            } else if ($status === "decline") {
                 $updateStatus = "MOU ditolak";
             }
         }
 
-        if ($updateStatus) {
+        if (isset($updateStatus)) {
             mitra::whereId($id)->update(
                 ['statusPengajuan' => $updateStatus, 'pesanPersetujuan' => $request->input('pesanPersetujuan')]
             );
+            return back()->with('success', 'Berhasil Mengubah Status Pengajuan Mitra');
         }
-        return back()->with('success', 'Berhasil Mengubah Status Pengajuan Mitra');
     }
 
     public function detailPengajuan($id)
     {
-        $mitra = mitra::whereId($id)->where('statusPengajuan', '!=', 'MOU disetujui')->first();
+
+        $mitra = mitra::with('user')->whereId($id)->where('statusPengajuan', '!=', 'MOU disetujui')->first();
+
+        $mitra = [...$mitra->toArray(), 'address' => $this->getMitraAddress($mitra), 'fotoDapur' => json_decode($mitra->fotoDapur)];
+
         if ($mitra) {
-            return;
+            return Inertia::render('Pak Telang/Mitra/detailSubmission', compact('mitra'));
         }
         abort(404);
     }
 
+    private function getMitraAddress(mitra $mitra)
+    {
+        $district = $mitra->district()->first();
+        $city = $district->city()->first();
+        $province = $city->province()->first();
+        return [
+            'address' => $mitra->address,
+            'postalCode' =>  $mitra->postalCode,
+            'districtName' => $district?->districtName,
+            'cityName' => $city->cityName,
+            'province' => $province->province,
+        ];
+    }
+
     public function store(Request $request)
     {
-        if ($request->user()->mitra->statusPengajuan === 'Menunggu MOU') {
+        if ($request->user()->mitra?->statusPengajuan === 'Menunggu MOU') {
             return $this->storeMoU($request);
         }
+        $request->validate([
+            'namaUsaha' => ['required', 'unique:mitras,namaUsaha'],
+        ], [
+            'namaUsaha.unique' => 'Nama Usaha Sudah Terdaftar',
+        ]);
+
         $resBody = $request->all();
         $resBody['fotoDapur'] = json_encode($resBody['fotoDapur']);
         $province = Province::firstOrNew(['province' =>  $request->input('province')]);

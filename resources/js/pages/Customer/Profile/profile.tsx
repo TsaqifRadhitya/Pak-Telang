@@ -1,10 +1,10 @@
 import { Button } from '@/components/ui/button';
 import CustomerPageLayout from '@/layouts/customerPagetLayout';
 import { SharedData } from '@/types';
-import { address } from '@/types/address';
+import { addressType } from '@/types/address';
 import { router, usePage } from '@inertiajs/react';
 interface props extends SharedData {
-    address: address;
+    address: addressType;
 }
 export default function ProfilePageCustomer() {
     const { auth, address } = usePage<props>().props;

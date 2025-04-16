@@ -8,6 +8,7 @@ export default interface mitra {
     fotoKTP : string,
     isOpen : boolean,
     kulkas : boolean,
+    NIK:string
     mou : string,
     namaUsaha : string,
     pesanPersetujuan : string

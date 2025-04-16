@@ -5,7 +5,7 @@ import Heading from '../../../components/heading';
 
 export default function FormPending() {
     return (
-        <CustomerPageLayout page="Kerja Sama">
+        <CustomerPageLayout page="Pengajuan Mitra">
             <section className="flex h-fit w-full bg-[#EBEFFF] p-5 pt-20 lg:p-10 lg:pt-20">
                 <div className="flex flex-1 flex-col items-center justify-center gap-5 text-[#3B387E]">
                     <div className="w-full rounded-3xl border border-[#AFB3FF] bg-[#FFFFFF] p-5 px-10 shadow lg:px-16">

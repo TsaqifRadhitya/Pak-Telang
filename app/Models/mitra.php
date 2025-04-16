@@ -11,7 +11,7 @@ class mitra extends Model
     /** @use HasFactory<\Database\Factories\MitraFactory> */
     use HasFactory,HasUlids;
 
-    protected $fillable = ['namaUsaha', 'fotoKTP', 'fotoDapur', 'alasanPengajuan', 'kulkas', 'mou', 'address', 'postalCode', 'pesanPersetujuan', 'statusPengajuan','isOpen', 'districtId', 'userId'];
+    protected $fillable = ['namaUsaha', 'fotoKTP','NIK', 'fotoDapur', 'alasanPengajuan', 'kulkas', 'mou', 'address', 'postalCode', 'pesanPersetujuan', 'statusPengajuan','isOpen', 'districtId', 'userId'];
 
     public function user(){
         return $this->belongsTo(User::class,'userId');

@@ -5,7 +5,7 @@ import Heading from '../../../components/heading';
 
 export default function FormRejected() {
     return (
-        <CustomerPageLayout page="Kerja Sama">
+        <CustomerPageLayout page="Pengajuan Mitra">
             <section className="flex h-fit w-full bg-[#EBEFFF] p-5 pt-20 lg:p-10 lg:pt-20">
                 <div className="flex flex-1 flex-col items-center justify-center gap-5 text-[#3B387E]">
                     <div className="w-full rounded-3xl border border-[#AFB3FF] bg-[#FFFFFF] p-5 px-10 shadow lg:px-16">
@@ -25,7 +25,7 @@ export default function FormRejected() {
                                 kerja sama berikutnya
                             </p>
                         </article>
-                        <Button className="md:min-w-sm cursor-pointer bg-[#5961BE] text-white hover:bg-[#4e55a1]">Ajukan Ulang</Button>
+                        <Button className="cursor-pointer bg-[#5961BE] text-white hover:bg-[#4e55a1] md:min-w-sm">Ajukan Ulang</Button>
                     </div>
                 </div>
             </section>
