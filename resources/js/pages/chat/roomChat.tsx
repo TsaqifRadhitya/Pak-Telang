@@ -41,9 +41,9 @@ export default function ChatRoom() {
         }
     }, [auth.user.id, target.id]);
 
-    // useEffect(() => {
-    //     chatService.sendSignal(auth.user.id.toString(), 'typing');
-    // }, [inputMessage]);
+    useEffect(() => {
+        return () => {chatService.sendSignal(auth.user.id.toString(), 'typing')};
+    }, []);
 
     const handelSignal = (type: 'typing' | 'leave') => {
         if (type === 'typing') {

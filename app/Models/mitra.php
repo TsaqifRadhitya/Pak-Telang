@@ -12,4 +12,12 @@ class mitra extends Model
     use HasFactory,HasUlids;
 
     protected $fillable = ['namaUsaha', 'fotoKTP', 'fotoDapur', 'alasanPengajuan', 'kulkas', 'mou', 'address', 'postalCode', 'pesanPersetujuan', 'statusPengajuan','isOpen', 'districtId', 'userId'];
+
+    public function user(){
+        return $this->belongsTo(User::class,'userId');
+    }
+
+    public function district(){
+        return $this->belongsTo(District::class,'districtId');
+    }
 }

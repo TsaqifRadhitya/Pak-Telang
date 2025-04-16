@@ -1,12 +1,26 @@
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import CustomerPageLayout from '@/layouts/customerPagetLayout';
+import { useRef, useState } from 'react';
 import Heading from '../../../components/heading';
 import HeadingSmall from '../../../components/heading-small';
 
 export default function MouPending() {
+    const [mou, setMou] = useState<File | undefined>();
+    const inputFile = useRef<HTMLInputElement>(null);
+    const handleOpen = () => {
+        inputFile.current?.click();
+    };
+
+    const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files?.length) {
+            setMou(e.target.files[0]);
+        }
+    };
     return (
         <CustomerPageLayout page="Kerja Sama">
             <section className="flex w-full bg-[#EBEFFF] p-5 pt-20 lg:p-10 lg:pt-20">
+                <Input type="file" accept="application/pdf" className="hidden" ref={inputFile} onChange={handleChangeInput} />
                 <div className="flex flex-1 flex-col items-center justify-center gap-5 text-[#3B387E]">
                     <div className="w-full rounded-3xl border border-[#AFB3FF] bg-[#FFFFFF] p-5 px-10 shadow lg:px-16">
                         <h1 className="font-bold">Pengajuan Mitra</h1>
@@ -30,9 +44,11 @@ export default function MouPending() {
                                 yang sah.
                             </p>
                             <p className="text-xs md:text-sm">
-                                Setelah Penandatanga scan dan unggah file MoU melalu {' '}
-                                <span className="cursor-pointer underline decoration-[1.5px] underline-offset-2">link berikut</span> atau tombol
-                                dibawah dokumen.
+                                Setelah Penandatanga scan dan unggah file MoU melalu{' '}
+                                <span onClick={handleOpen} className="cursor-pointer underline decoration-[1.5px] underline-offset-2">
+                                    link berikut
+                                </span>{' '}
+                                atau tombol dibawah dokumen.
                             </p>
                         </article>
                         <iframe
@@ -40,8 +56,13 @@ export default function MouPending() {
                             className="h-screen w-full"
                         ></iframe>
                         <div className="flex w-full gap-3">
-                            <Button className="flex-1 bg-[#5961BE] text-white md:flex-none hover:bg-transparent ring ring-[#5961BE] hover:text-[#5961BE] cursor-pointer hover:font-semibold">Unduh File Sekarang</Button>
-                            <Button className="cursor-pointer flex-1 bg-transparent font-semibold text-[#5961BE] ring ring-[#5961BE] hover:bg-[#5961BE] hover:font-normal hover:text-white md:flex-none">
+                            <Button className="flex-1 cursor-pointer bg-[#5961BE] text-white ring ring-[#5961BE] hover:bg-transparent hover:font-semibold hover:text-[#5961BE] md:flex-none">
+                                Unduh File Sekarang
+                            </Button>
+                            <Button
+                                onClick={handleOpen}
+                                className="flex-1 cursor-pointer bg-transparent font-semibold text-[#5961BE] ring ring-[#5961BE] hover:bg-[#5961BE] hover:font-normal hover:text-white md:flex-none"
+                            >
                                 Unggah MoU
                             </Button>
                         </div>

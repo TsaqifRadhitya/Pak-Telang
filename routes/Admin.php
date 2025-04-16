@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\dashboardController;
 use App\Http\Controllers\mitraController;
+use App\Http\Controllers\pengajuanMitraController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\profileController;
 use App\Http\Middleware\adminMidleware;
@@ -12,8 +13,8 @@ Route::middleware(['auth', adminMidleware::class])->group(function () {
         Route::get('dashboard', [dashboardController::class, 'adminDashboard'])->name('admin.dashboard');
         Route::prefix('mitra')->group(function () {
             Route::get('/', [mitraController::class, 'index'])->name('admin.mitra');
-            Route::get('{id}/pengajuan', [mitraController::class,'detailPengajuan'])->name('admin.mitra.pengajuan.index');
-            Route::get('{id}/{status}', [mitraController::class,'statusUpdate'])->name('admin.mitra.pengajuan.update');
+            Route::get('{id}/pengajuan', [pengajuanMitraController::class,'detailPengajuan'])->name('admin.mitra.pengajuan.index');
+            Route::patch('{id}/{status}', [pengajuanMitraController::class,'statusUpdate'])->name('admin.mitra.pengajuan.update');
         });
         Route::get('produk', [ProductController::class, 'index'])->name('admin.produk');
         Route::prefix('profile')->group(function () {

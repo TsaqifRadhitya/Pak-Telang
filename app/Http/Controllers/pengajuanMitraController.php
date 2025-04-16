@@ -86,8 +86,8 @@ class pengajuanMitraController extends Controller
 
     public function detailPengajuan($id)
     {
-        $data = mitra::whereId($id)->where('statusPengajuan', '!=', 'MOU disetujui')->first();
-        if ($data) {
+        $mitra = mitra::whereId($id)->where('statusPengajuan', '!=', 'MOU disetujui')->first();
+        if ($mitra) {
             return;
         }
         abort(404);
