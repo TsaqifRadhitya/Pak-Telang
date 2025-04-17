@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { Menu } from 'lucide-react';
 import { ReactNode, useEffect, useState } from 'react';
 import Heading from '../components/heading';
+import { useCurrentMediaQuerry } from '@/hooks/useMediaQuery';
 
 interface Props {
     children: ReactNode;
@@ -14,10 +15,15 @@ interface Props {
 
 export default function AdminPageLayout({ children, page }: Props) {
     const { auth, flash } = usePage<SharedData>().props;
+    const {lg} = useCurrentMediaQuerry()
     const [hamburgerMenu, setHamburgerMenu] = useState(false);
     useEffect(()=> {
         router.reload()
     },[])
+
+    useEffect(()=>{
+        lg ? document.querySelector('body')?.classList.add('overflow-y-hidden') : document.querySelector('body')?.classList.remove('overflow-y-hidden');
+    },[lg])
 
     return (
         <div className="flex min-h-screen over flex-col gap-y-5 bg-[#EBEFFF] text-[#3B387E] lg:gap-y-0 lg:px-10">

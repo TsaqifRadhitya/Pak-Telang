@@ -1,9 +1,12 @@
 import { Button } from '@/components/ui/button';
 import CustomerPageLayout from '@/layouts/customerPagetLayout';
+import { router, usePage } from '@inertiajs/react';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import Heading from '../../../components/heading';
+import mitra from '@/types/mitra';
 
 export default function FormRejected() {
+    const { mitra } = usePage<{ mitra: mitra }>().props;
     return (
         <CustomerPageLayout page="Pengajuan Mitra">
             <section className="flex h-fit w-full bg-[#EBEFFF] p-5 pt-20 lg:p-10 lg:pt-20">
@@ -19,13 +22,20 @@ export default function FormRejected() {
                             autoplay
                         />
                         <article className="flex flex-col items-center justify-center text-center">
-                            <h3 className="text-xl font-bold">Mohon maaf, pengajuan kemitraanmu belum bisa kami setujui saat ini</h3>
+                            <h3 className="text-xl font-bold">
+                                {mitra.pesanPersetujuan ?? 'Mohon maaf, pengajuan kemitraanmu belum bisa kami setujui saat ini'}
+                            </h3>
                             <p className="max-w-xl">
                                 Jangan khawatir! Kamu bisa mengajukan kembali di lain waktu setelah melakukan penyesuaian. Kami tunggu kesempatan
                                 kerja sama berikutnya
                             </p>
                         </article>
-                        <Button className="cursor-pointer bg-[#5961BE] text-white hover:bg-[#4e55a1] md:min-w-sm">Ajukan Ulang</Button>
+                        <Button
+                            onClick={() => router.get(route('customer.pengajuanmitra.create'))}
+                            className="cursor-pointer bg-[#5961BE] text-white hover:bg-[#4e55a1] md:min-w-sm"
+                        >
+                            Ajukan Ulang
+                        </Button>
                     </div>
                 </div>
             </section>

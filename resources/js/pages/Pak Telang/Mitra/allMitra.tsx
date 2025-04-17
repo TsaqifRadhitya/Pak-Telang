@@ -15,7 +15,7 @@ export default function AllMitra() {
                         <h1 className="w-full text-start text-xl font-black">{mitra.user.name}</h1>
                         <div className="flex w-full items-center justify-between gap-x-1.5 text-[0.65rem]">
                             <p className="flex-1/2">{mitra.user.email}</p>
-                            <p className="flex-1/2">{mitra.user.email}</p>
+                            <p className="flex-1/2 text-end">{mitra.user.phonenumber}</p>
                         </div>
                     </div>
 

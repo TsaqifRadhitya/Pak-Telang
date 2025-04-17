@@ -135,7 +135,7 @@ export default function DetailSubmission() {
                                         <h3>Foto KTP</h3>
                                         <h3>:</h3>
                                     </div>
-                                    <img src={mitra.fotoKTP} className="aspect-video lg:w-2/5" alt="" />
+                                    <img src={mitra.fotoKTP} className="aspect-video w-2/3 lg:w-2/5" alt="" />
                                 </div>
                             </div>
                         </div>
@@ -210,7 +210,7 @@ export default function DetailSubmission() {
                         )}
                     </article>
                     {(mitra.statusPengajuan === 'Formulir disetujui' || mitra.statusPengajuan.search('MOU') > -1) && (
-                        <article className="w-full flex-1 space-y-10 rounded-lg border border-[#AFB3FF] bg-[#FFFFFF] px-5 py-2.5 shadow-xl lg:p-10 lg:pt-7">
+                        <article className="w-full flex-1 space-y-10 rounded-lg border border-[#AFB3FF] bg-[#FFFFFF] px-5 py-5 lg:py-2.5 lg:pb-8 shadow-xl lg:p-10 lg:pt-7">
                             <div className="flex w-full justify-between">
                                 <Heading title="Dokumen Memorandum of Understanding" />
                                 <h1
@@ -219,17 +219,17 @@ export default function DetailSubmission() {
                                         mitra.statusPengajuan === 'MOU disetujui'
                                             ? 'text-[#048730]'
                                             : mitra.statusPengajuan === 'MOU ditolak'
-                                              ? 'text-[#EC2525]'
-                                              : 'text-[#FFA114]',
+                                                ? 'text-[#EC2525]'
+                                                : 'text-[#FFA114]',
                                     )}
                                 >
                                     {mitra.statusPengajuan === 'MOU disetujui'
                                         ? 'Disetujui'
                                         : mitra.statusPengajuan === 'Formulir disetujui'
-                                          ? 'Menunggu MoU'
-                                          : mitra.statusPengajuan === 'MOU ditolak'
-                                            ? 'Ditolak'
-                                            : 'Menunggu Persetujuan MoU'}
+                                            ? 'Menunggu MoU'
+                                            : mitra.statusPengajuan === 'MOU ditolak'
+                                                ? 'Ditolak'
+                                                : 'Menunggu Persetujuan MoU'}
                                 </h1>
                             </div>
                             <iframe

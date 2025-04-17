@@ -1,9 +1,12 @@
 import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
 import CustomerPageLayout from '@/layouts/customerPagetLayout';
+import mitra from '@/types/mitra';
+import { usePage } from '@inertiajs/react';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 export default function MouRejected() {
+    const { mitra } = usePage<{ mitra: mitra }>().props;
     return (
         <CustomerPageLayout page="Pengajuan Mitra">
             <section className="flex h-fit w-full bg-[#EBEFFF] p-5 pt-20 lg:p-10 lg:pt-20">
@@ -20,13 +23,14 @@ export default function MouRejected() {
                         />
                         <article className="flex flex-col items-center justify-center text-center">
                             <h3 className="text-xl font-semibold">
-                                Namun mohon maaf, dokumen MOU yang kami terima belum dapat kami proses karena terdapat beberapa kendala
+                                {mitra.pesanPersetujuan ??
+                                    'Namun mohon maaf, dokumen MOU yang kami terima belum dapat kami proses karena terdapat beberapa kendala'}
                             </h3>
                             <p className="lg:w-3/5">Jangan khawatir! Anda bisa mengajukan kembali di lain waktu setelah melakukan penyesuaian.</p>
                         </article>
                         <Button className="cursor-pointer bg-[#5961BE] text-white hover:bg-[#4e55a1] md:min-w-sm">Ajukan Ulang</Button>
                         <div className="h-[1px] w-full bg-[#5961BE]"></div>
-                        <article className='w-full space-y-1'>
+                        <article className="w-full space-y-1">
                             <h1 className="font-semibold">Apa yang bisa Anda lakukan?</h1>
                             <p className="">Silakan periksa kembali dokumen MOU yang telah Anda tanda tangani dan pastikan:</p>
                             <p>1. Semua bagian diisi sesuai petunjuk</p>

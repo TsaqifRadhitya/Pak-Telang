@@ -12,7 +12,7 @@ export default function SubmissionMitra() {
                 <h1 className='w-full text-start font-black text-xl'>{mitra.user.name}</h1>
                 <div className='flex w-full justify-between text-[0.65rem] gap-x-1.5 items-center'>
                     <p className='flex-1/2'>{mitra.user.email}</p>
-                    <p className='flex-1/2'>{mitra.user.email}</p>
+                    <p className='flex-1/2 text-end'>{mitra.user.phonenumber}</p>
                 </div>
                 <HeadingSmall className='text-xs' title={`${mitra.address.address} ${mitra.address.districtName}, ${mitra.address.cityName}, ${mitra.address.province} ${mitra.address.postalCode}`}/>
                 <div className={cn('w-full text-center font-[570] py-1.5 self-start text-xs rounded-2xl text-white',mitra.statusPengajuan.search('Menunggu') > -1 ? "bg-[#FFAC31]" : mitra.statusPengajuan.search('disetujui') > -1 ? "bg-[#1BA536]" : "bg-[#EC2525]")}>

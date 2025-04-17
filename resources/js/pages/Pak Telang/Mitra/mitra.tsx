@@ -10,11 +10,11 @@ export type prop = {
     pengajuanMitra: mitra[];
 };
 export default function MitraAdminPage() {
-    const [firstSubmenu, setFirstSubtMenu] = useState<boolean>(false);
+    const [firstSubmenu, setFirstSubtMenu] = useState<boolean>(true);
     return (
         <AdminPageLayout page="Mitra">
             <main className="h-full w-full rounded-t-lg border-[1px] border-b-0 border-[#AFB3FF] bg-[#FFFFFF] shadow-lg">
-                <div className="flex items-center gap-x-4 border-b-[1px] border-[#AFB3FF] p-5 md:px-10 md:py-5">
+                <div className="flex flex-row-reverse justify-end items-center gap-x-4 border-b-[1px] border-[#AFB3FF] p-5 md:px-10 md:py-5">
                     <h1
                         onClick={() => setFirstSubtMenu(false)}
                         className={cn('cursor-pointer text-xl font-semibold', !firstSubmenu && 'underline decoration-[4px] underline-offset-[6px]')}

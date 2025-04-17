@@ -13,7 +13,7 @@ Route::middleware(['auth', adminMidleware::class])->group(function () {
         Route::get('dashboard', [dashboardController::class, 'adminDashboard'])->name('admin.dashboard');
         Route::prefix('mitra')->group(function () {
             Route::get('/', [mitraController::class, 'index'])->name('admin.mitra');
-            Route::get('{id}/pengajuan', [pengajuanMitraController::class,'detailPengajuan'])->name('admin.mitra.pengajuan.index');
+        Route::get('{id}/pengajuan', [pengajuanMitraController::class,'detailPengajuan'])->name('admin.mitra.pengajuan.index');
             Route::patch('{id}/{status}', [pengajuanMitraController::class,'statusUpdate'])->name('admin.mitra.pengajuan.update');
         });
         Route::get('produk', [ProductController::class, 'index'])->name('admin.produk');

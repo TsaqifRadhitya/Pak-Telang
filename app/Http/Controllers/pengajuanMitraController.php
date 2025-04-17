@@ -21,8 +21,15 @@ class pengajuanMitraController extends Controller
 
     public function create(Request $request)
     {
-        $address = $this->getFullAdress();
-        return Inertia::render('Customer/Pengajuan Mitra/create', compact('address'));
+
+        $mitra = mitra::where('userId', '=', Auth::user()->id)->first();
+
+        if ($mitra === null || $mitra->statusPengajuan === 'Formulir ditolak') {
+            $address = $this->getFullAdress();
+            return Inertia::render('Customer/Pengajuan Mitra/create', compact('address'));
+        }
+
+        return redirect(route('customer.pengajuanmitra.status'));
     }
 
     private function getFullAdress()
@@ -52,17 +59,17 @@ class pengajuanMitraController extends Controller
 
     public function statusCheck(Request $request)
     {
-        $status = $request->user()->mitra->statusPengajuan;
-        switch ($status) {
+        $mitra = $request->user()->mitra;
+        switch ($mitra->statusPengajuan) {
             case "Menunggu Persetujuan Formulir":
-                return Inertia::render('Customer/Pengajuan Mitra/statusFormPending');
+                return Inertia::render('Customer/Pengajuan Mitra/statusFormPending', compact('mitra'));
             case 'Formulir disetujui':
-                return Inertia::render('Customer/Pengajuan Mitra/statusFormApprove');
+                return Inertia::render('Customer/Pengajuan Mitra/statusFormApprove', compact('mitra'));
             case 'Formulir ditolak':
-                return Inertia::render('Customer/Pengajuan Mitra/statusFormRejected');
+                return Inertia::render('Customer/Pengajuan Mitra/statusFormRejected', compact('mitra'));
             case 'Menunggu MOU':
             case 'MOU ditolak':
-                return Inertia::render('Customer/Pengajuan Mitra/statusMouRejected');
+                return Inertia::render('Customer/Pengajuan Mitra/statusMouRejected', compact('mitra'));
         }
     }
 

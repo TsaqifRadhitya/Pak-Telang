@@ -4,7 +4,6 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import CustomerPageLayout from '@/layouts/customerPagetLayout';
 import { AddressApiType } from '@/pages/Mitra/Profile/editProfile';
-import { supabaseImage } from '@/services/imageStorage';
 import { gender, SharedData, User } from '@/types';
 import { addressType } from '@/types/address';
 import { router, useForm, usePage } from '@inertiajs/react';
@@ -13,6 +12,7 @@ import { Plus } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { z } from 'zod';
 import Heading from '../../../components/heading';
+import { supabaseImage } from '@/services/imageStorage';
 
 type Merge<T> = {
     [K in keyof T]: T[K];
@@ -45,7 +45,7 @@ const pengajuanMitraEditValidation = z.object({
 
 export default function Create() {
     const { address, auth } = usePage<props>().props;
-    const { data, setData, errors, setError, clearErrors } = useForm<form>({
+    const { data, setData, errors, setError, clearErrors} = useForm<form>({
         ...address,
         ...auth.user,
         fotoDapur: [] as string[],
@@ -106,7 +106,7 @@ export default function Create() {
         }
     };
 
-    const handleSubmit = async () => {
+    const handleSubmit = async() => {
         clearErrors();
         const validation = pengajuanMitraEditValidation.safeParse(data);
         const err = validation.error?.format();
@@ -128,12 +128,15 @@ export default function Create() {
             setError('gender', err?.gender?._errors[0] as string);
             return;
         }
-        const imageUploader = new supabaseImage(auth.user.email, 'Mou');
-        const urlFotoDapur = imageUploader.uploadBatchDapur(fotoDapur as FileList);
-        const urlFotoKTP = imageUploader.upsertKTP(fotoKtp as File);
+        const imageUploader = new supabaseImage(auth.user.email,'Mou')
+        const urlFotoDapur =  imageUploader.uploadBatchDapur(fotoDapur as FileList)
+        const urlFotoKTP = imageUploader.upsertKTP(fotoKtp as File)
 
-        const ress = await Promise.all([urlFotoDapur, urlFotoKTP]);
-        router.post(route('customer.pengajuanmitra.store'), { ...data, fotoKTP: ress[1], fotoDapur: ress[0] });
+        const ress = await Promise.all([urlFotoDapur,urlFotoKTP])
+        router.post(route('customer.pengajuanmitra.store'), { ...data,
+            fotoKTP : ress[1],
+            fotoDapur : ress[0]
+        });
     };
     return (
         <CustomerPageLayout page="Pengajuan Mitra">
