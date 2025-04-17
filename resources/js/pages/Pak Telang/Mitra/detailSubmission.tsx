@@ -183,7 +183,7 @@ export default function DetailSubmission() {
                         </div>
                         <div className="flex gap-x-7.5">
                             <div className="flex w-1/5 justify-between">
-                                <h3>Alasan Pengajuan</h3>
+                                <h3>Foto Dapur</h3>
                                 <h3>:</h3>
                             </div>
                             <div className="grid w-4/6 gap-5 lg:grid-cols-3">
