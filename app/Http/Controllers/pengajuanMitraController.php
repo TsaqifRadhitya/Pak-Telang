@@ -60,15 +60,16 @@ class pengajuanMitraController extends Controller
     public function statusCheck(Request $request)
     {
         $mitra = $request->user()->mitra;
-        switch ($mitra->statusPengajuan) {
+        $mitra = [...$mitra->toArray(), 'address' => $this->getMitraAddress($mitra), 'fotoDapur' => json_decode($mitra->fotoDapur)];
+        switch ($mitra['statusPengajuan']) {
             case "Menunggu Persetujuan Formulir":
                 return Inertia::render('Customer/Pengajuan Mitra/statusFormPending', compact('mitra'));
             case 'Formulir disetujui':
                 return Inertia::render('Customer/Pengajuan Mitra/statusFormApprove', compact('mitra'));
             case 'Formulir ditolak':
                 return Inertia::render('Customer/Pengajuan Mitra/statusFormRejected', compact('mitra'));
-            case 'Menunggu MOU':
-
+            case 'Menunggu Persetujuan MOU':
+                return Inertia::render('Customer/Pengajuan Mitra/statusMoUWaitingApprovement', compact('mitra'));
             case 'MOU ditolak':
                 return Inertia::render('Customer/Pengajuan Mitra/statusMouRejected', compact('mitra'));
         }

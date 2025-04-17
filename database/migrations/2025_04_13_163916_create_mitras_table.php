@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('address');
             $table->string('postalCode');
             $table->string('pesanPersetujuan')->nullable();
-            $table->enum('statusPengajuan', ['Menunggu Persetujuan Formulir', 'Formulir disetujui', 'Formulir ditolak', 'Menunggu MOU', 'MOU disetujui', 'MOU ditolak']);
+            $table->enum('statusPengajuan', ['Menunggu Persetujuan Formulir', 'Formulir disetujui', 'Formulir ditolak', 'Menunggu Persetujuan MOU', 'MOU disetujui', 'MOU ditolak']);
             $table->foreignUlid('districtId')->constrained('districts');
             $table->foreignUuid('userId')->constrained('users');
             $table->timestamps();
