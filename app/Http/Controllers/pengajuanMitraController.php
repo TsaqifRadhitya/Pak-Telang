@@ -5,12 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\City;
 use App\Models\District;
 use App\Models\mitra;
-use App\Models\pengajuanMitra;
 use App\Models\Province;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
-use Nette\Utils\Validators;
 
 class pengajuanMitraController extends Controller
 {
@@ -69,7 +68,7 @@ class pengajuanMitraController extends Controller
 
     public function statusUpdate(Request $request, $id, $status)
     {
-        $mitraStatus = mitra::whereId($id)->first()->statusPengajuan;
+        $mitraStatus = mitra::whereId($id)->first()?->statusPengajuan;
         if ($mitraStatus === "Menunggu Persetujuan Formulir") {
             if ($status === "accept") {
                 $updateStatus = "Formulir disetujui";
@@ -90,19 +89,19 @@ class pengajuanMitraController extends Controller
             );
             return back()->with('success', 'Berhasil Mengubah Status Pengajuan Mitra');
         }
+        abort(404);
     }
 
     public function detailPengajuan($id)
     {
 
-        $mitra = mitra::with('user')->whereId($id)->where('statusPengajuan', '!=', 'MOU disetujui')->first();
+        $mitra = mitra::with('user')->whereId($id)->first();
 
-        $mitra = [...$mitra->toArray(), 'address' => $this->getMitraAddress($mitra), 'fotoDapur' => json_decode($mitra->fotoDapur)];
 
         if ($mitra) {
+            $mitra = [...$mitra->toArray(), 'address' => $this->getMitraAddress($mitra), 'fotoDapur' => json_decode($mitra->fotoDapur)];
             return Inertia::render('Pak Telang/Mitra/detailSubmission', compact('mitra'));
         }
-        abort(404);
     }
 
     private function getMitraAddress(mitra $mitra)
@@ -124,11 +123,22 @@ class pengajuanMitraController extends Controller
         if ($request->user()->mitra?->statusPengajuan === 'Menunggu MOU') {
             return $this->storeMoU($request);
         }
+
         $request->validate([
-            'namaUsaha' => ['required', 'unique:mitras,namaUsaha'],
+            'namaUsaha' => ['required', 'unique:mitras,namaUsaha', 'phonenumber' => ['required', 'unique:' . User::class . ',phonenumber,' . auth()->id()]],
         ], [
             'namaUsaha.unique' => 'Nama Usaha Sudah Terdaftar',
+            'phonenumber.unique' => "Nomor Hp Sudah Terdaftar"
         ]);
+
+        User::whereId($request->user()->id)->update(
+            [
+                'phonenumber' => $request->input('phonenumber'),
+                'name' => $request->input('name'),
+                'birthday' => $request->input('birthday'),
+                'gender' => $request->input('gender')
+            ],
+        );
 
         $resBody = $request->all();
         $resBody['fotoDapur'] = json_encode($resBody['fotoDapur']);

@@ -114,7 +114,7 @@ export default function DetailSubmission() {
                                         <h3>Tanggal Lahir</h3>
                                         <h3>:</h3>
                                     </div>
-                                    <h3>{mitra.user.birthday}</h3>
+                                    <h3>{mitra.user.birthday.split('-').reverse().join('-')}</h3>
                                 </div>
                                 <div className="flex gap-x-7.5">
                                     <div className="flex w-1/5 justify-between">
@@ -146,10 +146,18 @@ export default function DetailSubmission() {
                             <h1
                                 className={cn(
                                     'text-xl font-bold',
-                                    mitra.statusPengajuan === 'Menunggu Persetujuan Formulir' ? 'text-[#FFA114]' : 'text-[#048730]',
+                                    mitra.statusPengajuan === 'Menunggu Persetujuan Formulir'
+                                        ? 'text-[#FFA114]'
+                                        : mitra.statusPengajuan === 'Formulir ditolak'
+                                          ? 'text-[#EC2525]'
+                                          : 'text-[#048730]',
                                 )}
                             >
-                                {mitra.statusPengajuan === 'Menunggu Persetujuan Formulir' ? 'Pending' : 'Disetujui'}
+                                {mitra.statusPengajuan === 'Menunggu Persetujuan Formulir'
+                                    ? 'Pending'
+                                    : mitra.statusPengajuan === 'Formulir ditolak'
+                                      ? 'Ditolak'
+                                      : 'Disetujui'}
                             </h1>
                         </div>
                         <div className="flex gap-x-7.5">
@@ -180,7 +188,7 @@ export default function DetailSubmission() {
                             </div>
                             <div className="grid w-4/6 gap-5 lg:grid-cols-3">
                                 {mitra.fotoDapur.map((dapur) => (
-                                    <img src={dapur} className="aspect-video w-full" />
+                                    <img src={dapur} className="aspect-video w-full object-center object-cover" />
                                 ))}
                             </div>
                         </div>
@@ -201,34 +209,51 @@ export default function DetailSubmission() {
                             </div>
                         )}
                     </article>
-                    <article className="w-full flex-1 space-y-10 rounded-lg border border-[#AFB3FF] bg-[#FFFFFF] px-5 py-2.5 shadow-xl lg:p-10 lg:pt-7">
-                        <div className="flex w-full justify-between">
-                            <Heading title="Dokumen Memorandum of Understanding" />
-                            <h1 className={cn('text-xl font-bold', mitra.statusPengajuan === 'MOU disetujui' ? 'text-[#048730]' : 'text-[#FFA114]')}>
-                                {mitra.statusPengajuan === 'MOU disetujui' ? 'Disetujui' : 'Pending'}
-                            </h1>
-                        </div>
-                        <iframe
-                            src="https://docs.google.com/gview?embedded=true&url=https://docs.google.com/document/d/12ToP0oLIFvBCniG5Jyhtt_SrW7M4E0WM"
-                            className="h-screen w-full"
-                        ></iframe>
-                        {mitra.statusPengajuan === 'Menunggu MOU' && (
-                            <div className="flex w-full justify-end gap-5">
-                                <Button
-                                    onClick={() => handleChangeStatus('decline')}
-                                    className="cursor-pointer bg-transparent font-semibold text-[#5961BE] ring ring-[#5961BE] hover:bg-[#5961BE] hover:font-normal hover:text-white lg:w-1/4"
+                    {(mitra.statusPengajuan === 'Formulir disetujui' || mitra.statusPengajuan.search('MOU') > -1) && (
+                        <article className="w-full flex-1 space-y-10 rounded-lg border border-[#AFB3FF] bg-[#FFFFFF] px-5 py-2.5 shadow-xl lg:p-10 lg:pt-7">
+                            <div className="flex w-full justify-between">
+                                <Heading title="Dokumen Memorandum of Understanding" />
+                                <h1
+                                    className={cn(
+                                        'text-xl font-bold',
+                                        mitra.statusPengajuan === 'MOU disetujui'
+                                            ? 'text-[#048730]'
+                                            : mitra.statusPengajuan === 'MOU ditolak'
+                                              ? 'text-[#EC2525]'
+                                              : 'text-[#FFA114]',
+                                    )}
                                 >
-                                    Batal
-                                </Button>
-                                <Button
-                                    onClick={() => handleChangeStatus('accept')}
-                                    className="cursor-pointer bg-[#5961BE] font-normal text-white ring ring-[#5961BE] hover:bg-transparent hover:font-semibold hover:text-[#5961BE] lg:w-1/4"
-                                >
-                                    Yakin
-                                </Button>
+                                    {mitra.statusPengajuan === 'MOU disetujui'
+                                        ? 'Disetujui'
+                                        : mitra.statusPengajuan === 'Formulir disetujui'
+                                          ? 'Menunggu MoU'
+                                          : mitra.statusPengajuan === 'MOU ditolak'
+                                            ? 'Ditolak'
+                                            : 'Menunggu Persetujuan MoU'}
+                                </h1>
                             </div>
-                        )}
-                    </article>
+                            <iframe
+                                src="https://docs.google.com/gview?embedded=true&url=https://docs.google.com/document/d/12ToP0oLIFvBCniG5Jyhtt_SrW7M4E0WM"
+                                className="h-screen w-full"
+                            ></iframe>
+                            {mitra.statusPengajuan === 'Menunggu MOU' && (
+                                <div className="flex w-full justify-end gap-5">
+                                    <Button
+                                        onClick={() => handleChangeStatus('decline')}
+                                        className="cursor-pointer bg-transparent font-semibold text-[#5961BE] ring ring-[#5961BE] hover:bg-[#5961BE] hover:font-normal hover:text-white lg:w-1/4"
+                                    >
+                                        Batal
+                                    </Button>
+                                    <Button
+                                        onClick={() => handleChangeStatus('accept')}
+                                        className="cursor-pointer bg-[#5961BE] font-normal text-white ring ring-[#5961BE] hover:bg-transparent hover:font-semibold hover:text-[#5961BE] lg:w-1/4"
+                                    >
+                                        Yakin
+                                    </Button>
+                                </div>
+                            )}
+                        </article>
+                    )}
                 </article>
             </AdminPageLayout>
         </>

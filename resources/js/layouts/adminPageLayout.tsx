@@ -4,7 +4,7 @@ import { SharedData } from '@/types';
 import { Head, router, usePage } from '@inertiajs/react';
 import { motion } from 'framer-motion';
 import { Menu } from 'lucide-react';
-import { ReactNode, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import Heading from '../components/heading';
 
 interface Props {
@@ -15,6 +15,9 @@ interface Props {
 export default function AdminPageLayout({ children, page }: Props) {
     const { auth, flash } = usePage<SharedData>().props;
     const [hamburgerMenu, setHamburgerMenu] = useState(false);
+    useEffect(()=> {
+        router.reload()
+    },[])
 
     return (
         <div className="flex min-h-screen over flex-col gap-y-5 bg-[#EBEFFF] text-[#3B387E] lg:gap-y-0 lg:px-10">

@@ -6,12 +6,13 @@ import CustomerPageLayout from '@/layouts/customerPagetLayout';
 import { AddressApiType } from '@/pages/Mitra/Profile/editProfile';
 import { gender, SharedData, User } from '@/types';
 import { addressType } from '@/types/address';
-import { useForm, usePage } from '@inertiajs/react';
+import { router, useForm, usePage } from '@inertiajs/react';
 import axios from 'axios';
 import { Plus } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { z } from 'zod';
 import Heading from '../../../components/heading';
+import { supabaseImage } from '@/services/imageStorage';
 
 type Merge<T> = {
     [K in keyof T]: T[K];
@@ -105,10 +106,9 @@ export default function Create() {
         }
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async() => {
         clearErrors();
         const validation = pengajuanMitraEditValidation.safeParse(data);
-        console.log(validation.error?.format());
         const err = validation.error?.format();
         if (!validation.success) {
             setError('NIK', err?.NIK?._errors[0] as string);
@@ -128,9 +128,15 @@ export default function Create() {
             setError('gender', err?.gender?._errors[0] as string);
             return;
         }
-        console.log(fotoDapur, fotoKtp);
-        post(route('customer.pengajuanmitra.store'));
-        // router.post(route(''), { data });
+        const imageUploader = new supabaseImage(auth.user.email,'Mou')
+        const urlFotoDapur =  imageUploader.uploadBatchDapur(fotoDapur as FileList)
+        const urlFotoKTP = imageUploader.upsertKTP(fotoKtp as File)
+
+        const ress = await Promise.all([urlFotoDapur,urlFotoKTP])
+        router.post(route('customer.pengajuanmitra.store'), { ...data,
+            fotoKTP : ress[1],
+            fotoDapur : ress[0]
+        });
     };
     return (
         <CustomerPageLayout page="Pengajuan Mitra">
