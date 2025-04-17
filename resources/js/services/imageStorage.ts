@@ -2,7 +2,7 @@ import { supabaseService } from "./supabase";
 
 export class supabaseImage extends supabaseService {
 
-    private basePath: string;
+    protected basePath: string;
 
     constructor(user: string, type: 'Image' | 'Video' | 'Mou') {
         super()

@@ -52,7 +52,7 @@ class pengajuanMitraController extends Controller
     public function mou()
     {
         $mitra = mitra::with('user')->where('userId', '=', Auth::user()->id)->where('statusPengajuan', '=', 'Formulir disetujui')->first();
-        if (!$mitra) abort(404);
+        if (!$mitra) return redirect(route('customer.pengajuanmitra.status'));
         $mitra = [...$mitra->toArray(), 'address' => $this->getMitraAddress($mitra), 'fotoDapur' => json_decode($mitra->fotoDapur)];
         return Inertia::render('Customer/Pengajuan Mitra/statusMouPending', compact('mitra'));
     }
@@ -68,6 +68,7 @@ class pengajuanMitraController extends Controller
             case 'Formulir ditolak':
                 return Inertia::render('Customer/Pengajuan Mitra/statusFormRejected', compact('mitra'));
             case 'Menunggu MOU':
+
             case 'MOU ditolak':
                 return Inertia::render('Customer/Pengajuan Mitra/statusMouRejected', compact('mitra'));
         }
@@ -82,9 +83,9 @@ class pengajuanMitraController extends Controller
             } else if ($status === "decline") {
                 $updateStatus = "Formulir ditolak";
             }
-        } else if ($mitraStatus === 'Menunggu MOU') {
+        } else if ($mitraStatus === 'Menunggu Persetujuan MOU') {
             if ($status === "accept") {
-                $updateStatus = "MOU ditolak";
+                $updateStatus = "MOU disetujui";
             } else if ($status === "decline") {
                 $updateStatus = "MOU ditolak";
             }
@@ -127,7 +128,7 @@ class pengajuanMitraController extends Controller
 
     public function store(Request $request)
     {
-        if ($request->user()->mitra?->statusPengajuan === 'Menunggu MOU') {
+        if ($request->user()->mitra?->statusPengajuan === 'Formulir disetujui') {
             return $this->storeMoU($request);
         }
 
@@ -166,6 +167,6 @@ class pengajuanMitraController extends Controller
         mitra::where('userId', '=', $request->user()->id)->update(
             ['statusPengajuan' => 'Menunggu Persetujuan MOU', 'mou' => $request->input('mou')]
         );
-        return back()->with('success', 'Berhasil Mengupload Pengesahan MoU');
+        // return redirect(route('customer.pengajuanmitra.status'))->with('success', 'Berhasil Mengupload Pengesahan MoU');
     }
 }

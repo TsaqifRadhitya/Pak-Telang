@@ -3,17 +3,26 @@ import { Textarea } from '@/components/ui/textarea';
 import AdminPageLayout from '@/layouts/adminPageLayout';
 import { cn } from '@/lib/utils';
 import mitra from '@/types/mitra';
+import { mouEditor } from '@/utils/mouEditor';
 import { router, usePage } from '@inertiajs/react';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+import { renderAsync } from 'docx-preview';
 import { useEffect, useRef, useState } from 'react';
 import Heading from '../../../components/heading';
 import HeadingSmall from '../../../components/heading-small';
 
+const mouUrl = 'https://ybcvbaxalqwrvgemxdzc.supabase.co/storage/v1/object/public/paktelang/Mou/Template/MOU%20Pak%20Telang%20(2).docx';
+
 export default function DetailSubmission() {
+    const { mitra } = usePage<{ mitra: mitra }>().props;
+
     useEffect(() => {
         document.querySelector('body')?.classList.add('overflow-y-hidden');
+        mouEditor.replacer(mitra.mou ??  mouUrl, { User: mitra.user, address: mitra.address }).then((ress) => {
+            renderAsync(ress, document.getElementById('docpreview') as HTMLElement);
+        });
     }, []);
-    const { mitra } = usePage<{ mitra: mitra }>().props;
+
     const [modal, setModal] = useState<boolean>(false);
     const inputText = useRef<HTMLTextAreaElement>(null);
     const typeStatus = useRef<string>(null);
@@ -188,7 +197,7 @@ export default function DetailSubmission() {
                             </div>
                             <div className="grid w-4/6 gap-5 lg:grid-cols-3">
                                 {mitra.fotoDapur.map((dapur) => (
-                                    <img src={dapur} className="aspect-video w-full object-center object-cover" />
+                                    <img src={dapur} className="aspect-video w-full object-cover object-center" />
                                 ))}
                             </div>
                         </div>
@@ -210,7 +219,7 @@ export default function DetailSubmission() {
                         )}
                     </article>
                     {(mitra.statusPengajuan === 'Formulir disetujui' || mitra.statusPengajuan.search('MOU') > -1) && (
-                        <article className="w-full flex-1 space-y-10 rounded-lg border border-[#AFB3FF] bg-[#FFFFFF] px-5 py-5 lg:py-2.5 lg:pb-8 shadow-xl lg:p-10 lg:pt-7">
+                        <article className="flex w-full flex-1 flex-col space-y-10 overflow-y-auto rounded-lg border border-[#AFB3FF] bg-[#FFFFFF] px-5 py-5 shadow-xl lg:p-10 lg:py-2.5 lg:pt-7 lg:pb-8">
                             <div className="flex w-full justify-between">
                                 <Heading title="Dokumen Memorandum of Understanding" />
                                 <h1
@@ -219,24 +228,23 @@ export default function DetailSubmission() {
                                         mitra.statusPengajuan === 'MOU disetujui'
                                             ? 'text-[#048730]'
                                             : mitra.statusPengajuan === 'MOU ditolak'
-                                                ? 'text-[#EC2525]'
-                                                : 'text-[#FFA114]',
+                                              ? 'text-[#EC2525]'
+                                              : 'text-[#FFA114]',
                                     )}
                                 >
                                     {mitra.statusPengajuan === 'MOU disetujui'
                                         ? 'Disetujui'
                                         : mitra.statusPengajuan === 'Formulir disetujui'
-                                            ? 'Menunggu MoU'
-                                            : mitra.statusPengajuan === 'MOU ditolak'
-                                                ? 'Ditolak'
-                                                : 'Menunggu Persetujuan MoU'}
+                                          ? 'Menunggu MoU'
+                                          : mitra.statusPengajuan === 'MOU ditolak'
+                                            ? 'Ditolak'
+                                            : 'Menunggu Persetujuan MoU'}
                                 </h1>
                             </div>
-                            <iframe
-                                src="https://docs.google.com/gview?embedded=true&url=https://docs.google.com/document/d/12ToP0oLIFvBCniG5Jyhtt_SrW7M4E0WM"
-                                className="h-screen w-full"
-                            ></iframe>
-                            {mitra.statusPengajuan === 'Menunggu MOU' && (
+                            <div className="max-h-screen overflow-y-auto">
+                                <div id="docpreview" className="h-screen w-full"></div>
+                            </div>
+                            {mitra.statusPengajuan === 'Menunggu Persetujuan MOU' && (
                                 <div className="flex w-full justify-end gap-5">
                                     <Button
                                         onClick={() => handleChangeStatus('decline')}
