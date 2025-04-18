@@ -2,7 +2,7 @@ import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
 import CustomerPageLayout from '@/layouts/customerPagetLayout';
 import mitra from '@/types/mitra';
-import { usePage } from '@inertiajs/react';
+import { router, usePage } from '@inertiajs/react';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 export default function MouRejected() {
@@ -28,7 +28,7 @@ export default function MouRejected() {
                             </h3>
                             <p className="lg:w-3/5">Jangan khawatir! Anda bisa mengajukan kembali di lain waktu setelah melakukan penyesuaian.</p>
                         </article>
-                        <Button className="cursor-pointer bg-[#5961BE] text-white hover:bg-[#4e55a1] md:min-w-sm">Ajukan Ulang</Button>
+                        <Button onClick={() => router.get(route('customer.mou.index'))} className="cursor-pointer bg-[#5961BE] text-white hover:bg-[#4e55a1] md:min-w-sm">Ajukan Ulang</Button>
                         <div className="h-[1px] w-full bg-[#5961BE]"></div>
                         <article className="w-full space-y-1">
                             <h1 className="font-semibold">Apa yang bisa Anda lakukan?</h1>

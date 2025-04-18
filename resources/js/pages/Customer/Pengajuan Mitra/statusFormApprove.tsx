@@ -22,7 +22,7 @@ export default function FormApprove() {
                             autoplay
                         />
                         <article className="flex flex-col items-center justify-center text-center">
-                            <h3 className="text-xl font-bold">{mitra.pesanPersetujuan ?? "Selamat! Pengajuan kemitraan kamu telah disetujui"}</h3>
+                            <h3 className="text-xl font-bold">{mitra.pesanPersetujuan ? mitra.pesanPersetujuan :  "Selamat! Pengajuan kemitraan kamu telah disetujui"}</h3>
                             <p className="lg:w-3/5">
                                 Selanjutnya, kamu akan masuk ke tahap penandatanganan MOU (Memorandum of Understanding) sebagai mitra resmi kami.
                             </p>

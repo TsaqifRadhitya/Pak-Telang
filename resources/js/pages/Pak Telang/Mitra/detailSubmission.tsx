@@ -15,10 +15,12 @@ const mouUrl = 'https://ybcvbaxalqwrvgemxdzc.supabase.co/storage/v1/object/publi
 
 export default function DetailSubmission() {
     const { mitra } = usePage<{ mitra: mitra }>().props;
+    console.log(mitra.fotoDapur)
 
     useEffect(() => {
         document.querySelector('body')?.classList.add('overflow-y-hidden');
-        mouEditor.replacer(mitra.mou ??  mouUrl, { User: mitra.user, address: mitra.address }).then((ress) => {
+        if(mitra.mou) return
+        mouEditor.replacer(mouUrl, { User: mitra.user, address: mitra.address }).then((ress) => {
             renderAsync(ress, document.getElementById('docpreview') as HTMLElement);
         });
     }, []);
@@ -242,7 +244,8 @@ export default function DetailSubmission() {
                                 </h1>
                             </div>
                             <div className="max-h-screen overflow-y-auto">
-                                <div id="docpreview" className="h-screen w-full"></div>
+                                {!mitra.mou && <div id="docpreview" className="h-screen w-full"></div>}
+                                {mitra.mou && <iframe className="h-screen w-full" src={mitra.mou}></iframe>}
                             </div>
                             {mitra.statusPengajuan === 'Menunggu Persetujuan MOU' && (
                                 <div className="flex w-full justify-end gap-5">

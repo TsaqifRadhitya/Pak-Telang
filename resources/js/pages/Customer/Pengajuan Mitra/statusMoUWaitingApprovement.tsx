@@ -38,7 +38,7 @@ Kami akan segera menghubungi Anda begitu review selesai kami lakukan."
                             </div>
                         </article>
                         <div className="max-h-screen w-full overflow-y-auto">
-                            <div id="docpreview" className="h-screen w-full"></div>
+                            <iframe src={mitra.mou} className='w-full h-screen'></iframe>
                         </div>
                         <p className="text-center">
                             Terima kasih telah menjadi bagian dari kami! <br /> Mari kita tumbuh dan sukses bersama!

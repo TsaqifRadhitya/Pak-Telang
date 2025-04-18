@@ -19,7 +19,7 @@ export class mouEditor extends supabaseImage {
     static download() {
         const link = document.createElement('a');
         link.href = URL.createObjectURL(this.mou as Blob);
-        link.download = 'nama_file.docx';
+        link.download = 'Mou.pdf';
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);

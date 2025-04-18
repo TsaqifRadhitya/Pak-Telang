@@ -7,6 +7,7 @@ import mitra from '@/types/mitra';
 
 export default function FormRejected() {
     const { mitra } = usePage<{ mitra: mitra }>().props;
+    console.log(mitra.pesanPersetujuan)
     return (
         <CustomerPageLayout page="Pengajuan Mitra">
             <section className="flex h-fit w-full bg-[#EBEFFF] p-5 pt-20 lg:p-10 lg:pt-20">
@@ -23,7 +24,7 @@ export default function FormRejected() {
                         />
                         <article className="flex flex-col items-center justify-center text-center">
                             <h3 className="text-xl font-bold">
-                                {mitra.pesanPersetujuan ?? 'Mohon maaf, pengajuan kemitraanmu belum bisa kami setujui saat ini'}
+                                {mitra.pesanPersetujuan ? mitra.pesanPersetujuan : 'Mohon maaf, pengajuan kemitraanmu belum bisa kami setujui saat ini'}
                             </h3>
                             <p className="max-w-xl">
                                 Jangan khawatir! Kamu bisa mengajukan kembali di lain waktu setelah melakukan penyesuaian. Kami tunggu kesempatan

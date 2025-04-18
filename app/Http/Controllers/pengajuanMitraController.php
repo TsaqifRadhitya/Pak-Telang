@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Illuminate\Validation\ValidationException;
 
 class pengajuanMitraController extends Controller
 {
@@ -51,7 +52,7 @@ class pengajuanMitraController extends Controller
 
     public function mou()
     {
-        $mitra = mitra::with('user')->where('userId', '=', Auth::user()->id)->where('statusPengajuan', '=', 'Formulir disetujui')->first();
+        $mitra = mitra::with('user')->where('userId', '=', Auth::user()->id)->where('statusPengajuan', '=', 'Formulir disetujui')->orWhere('statusPengajuan', '=', 'MOU ditolak')->first();
         if (!$mitra) return redirect(route('customer.pengajuanmitra.status'));
         $mitra = [...$mitra->toArray(), 'address' => $this->getMitraAddress($mitra), 'fotoDapur' => json_decode($mitra->fotoDapur)];
         return Inertia::render('Customer/Pengajuan Mitra/statusMouPending', compact('mitra'));
@@ -77,7 +78,8 @@ class pengajuanMitraController extends Controller
 
     public function statusUpdate(Request $request, $id, $status)
     {
-        $mitraStatus = mitra::whereId($id)->first()?->statusPengajuan;
+        $mitra = mitra::whereId($id)->first();
+        $mitraStatus = $mitra?->statusPengajuan;
         if ($mitraStatus === "Menunggu Persetujuan Formulir") {
             if ($status === "accept") {
                 $updateStatus = "Formulir disetujui";
@@ -87,6 +89,9 @@ class pengajuanMitraController extends Controller
         } else if ($mitraStatus === 'Menunggu Persetujuan MOU') {
             if ($status === "accept") {
                 $updateStatus = "MOU disetujui";
+                User::whereId($mitra->userId)->update(
+                    ['role' => 'Mitra']
+                );
             } else if ($status === "decline") {
                 $updateStatus = "MOU ditolak";
             }
@@ -94,7 +99,7 @@ class pengajuanMitraController extends Controller
 
         if (isset($updateStatus)) {
             mitra::whereId($id)->update(
-                ['statusPengajuan' => $updateStatus, 'pesanPersetujuan' => $request->input('pesanPersetujuan')]
+                ['statusPengajuan' => $updateStatus, 'pesanPersetujuan' => $request->input('pesanPersetujuan') ?? "",]
             );
             return back()->with('success', 'Berhasil Mengubah Status Pengajuan Mitra');
         }
@@ -129,16 +134,21 @@ class pengajuanMitraController extends Controller
 
     public function store(Request $request)
     {
-        if ($request->user()->mitra?->statusPengajuan === 'Formulir disetujui') {
+        if ($request->user()->mitra?->statusPengajuan === 'Formulir disetujui' || $request->user()->mitra?->statusPengajuan === 'MOU ditolak') {
             return $this->storeMoU($request);
         }
 
         $request->validate([
-            'namaUsaha' => ['required', 'unique:mitras,namaUsaha', 'phonenumber' => ['required', 'unique:' . User::class . ',phonenumber,' . auth()->id()]],
+            'phonenumber' => ['required', 'unique:' . User::class . ',phonenumber,' . auth()->id()],
         ], [
-            'namaUsaha.unique' => 'Nama Usaha Sudah Terdaftar',
+
             'phonenumber.unique' => "Nomor Hp Sudah Terdaftar"
         ]);
+
+        if (mitra::where('userId', '!=', Auth::user()->id)->where('namaUsaha', '=', $request->namaUsaha)->count() > 0) {
+            throw ValidationException::withMessages(['namaUsaha' => 'Nama Usaha Sudah Terdaftar']);
+            return back();
+        }
 
         User::whereId($request->user()->id)->update(
             [
@@ -159,7 +169,28 @@ class pengajuanMitraController extends Controller
 
         $district = District::firstOrNew(['districtName' =>  $request->input('districtName'), 'cityId' => $city->id]);
         $district->save(); // Pastikan tersimpan
-        mitra::create([...$resBody, "userId" => Auth::user()->id, "districtId" => $district->id, "statusPengajuan" => "Menunggu Persetujuan Formulir"]);
+
+        $dataMitra = mitra::where('userId', '=', Auth::user()->id);
+
+        if ($dataMitra === null) {
+            mitra::create([...$resBody, "userId" => Auth::user()->id, "districtId" => $district->id, "statusPengajuan" => "Menunggu Persetujuan Formulir"]);
+        } else {
+            $dataMitra->update(
+                [
+                    'address' => $request->address,
+                    'alasanPengajuan' => $request->alasanPengajuan,
+                    'fotoDapur' => $resBody['fotoDapur'],
+                    'fotoKTP' => $request->fotoKTP,
+                    'kulkas' => $request->kulkas,
+                    'namaUsaha' => $request->namaUsaha,
+                    'NIK' => $request->NIK,
+                    'postalCode' => $request->postalCode,
+                    "userId" => Auth::user()->id,
+                    "districtId" => $district->id,
+                    "statusPengajuan" => "Menunggu Persetujuan Formulir"
+                ]
+            );
+        }
         return redirect(route('customer.pengajuanmitra.status'))->with('success', 'Berhasil Mengirim Form Pengajuan Mitra');
     }
 
@@ -168,6 +199,6 @@ class pengajuanMitraController extends Controller
         mitra::where('userId', '=', $request->user()->id)->update(
             ['statusPengajuan' => 'Menunggu Persetujuan MOU', 'mou' => $request->input('mou')]
         );
-        // return redirect(route('customer.pengajuanmitra.status'))->with('success', 'Berhasil Mengupload Pengesahan MoU');
+        return redirect(route('customer.pengajuanmitra.status'))->with('success', 'Berhasil Mengupload Pengesahan MoU');
     }
 }

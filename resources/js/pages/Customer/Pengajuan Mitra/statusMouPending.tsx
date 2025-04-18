@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import CustomerPageLayout from '@/layouts/customerPagetLayout';
+import { cn } from '@/lib/utils';
 import { SharedData } from '@/types';
 import mitra from '@/types/mitra';
 import { mouEditor } from '@/utils/mouEditor';
@@ -29,17 +30,17 @@ export default function MouPending() {
         inputFile.current?.click();
     };
 
-    const handleSubmit = async() => {
+    const handleSubmit = async () => {
         if (!mou) {
             setErrMou(true);
             return;
         }
 
         const moueditor = new mouEditor(auth.user.email, 'Mou');
-        const ress = await moueditor.uploadMoU(mou)
+        const ress = await moueditor.uploadMoU(mou);
 
         router.post(route('customer.pengajuanmitra.store'), {
-            mou : ress
+            mou: ress,
         });
     };
 
@@ -92,9 +93,9 @@ export default function MouPending() {
                             </Button>
                         </div>
                         <div className="max-h-screen w-full overflow-y-auto">
-                            <div id="docpreview" className="h-screen w-full"></div>
+                            <div id="docpreview" className={cn('h-screen w-full', mou && 'hidden')}></div>
+                            {mou && <iframe className="h-screen w-full" src={URL.createObjectURL(mou)}></iframe>}
                         </div>
-
                         <Input
                             type="file"
                             accept="application/pdf"
