@@ -1,4 +1,5 @@
 import SweetAlert from '@/components/sweatAlert';
+import { useCurrentMediaQuerry } from '@/hooks/useMediaQuery';
 import { cn } from '@/lib/utils';
 import { SharedData } from '@/types';
 import { Head, router, usePage } from '@inertiajs/react';
@@ -6,7 +7,6 @@ import { motion } from 'framer-motion';
 import { Menu } from 'lucide-react';
 import { ReactNode, useEffect, useState } from 'react';
 import Heading from '../components/heading';
-import { useCurrentMediaQuerry } from '@/hooks/useMediaQuery';
 
 interface Props {
     children: ReactNode;
@@ -15,18 +15,22 @@ interface Props {
 
 export default function AdminPageLayout({ children, page }: Props) {
     const { auth, flash } = usePage<SharedData>().props;
-    const {lg} = useCurrentMediaQuerry()
+    const { lg } = useCurrentMediaQuerry();
     const [hamburgerMenu, setHamburgerMenu] = useState(false);
-    useEffect(()=> {
-        router.reload()
-    },[])
+    useEffect(() => {
+        router.reload();
+    }, []);
 
-    useEffect(()=>{
-        lg ? document.querySelector('body')?.classList.add('overflow-y-hidden') : document.querySelector('body')?.classList.remove('overflow-y-hidden');
-    },[lg])
+    useEffect(() => {
+        if (lg) {
+            document.querySelector('body')?.classList.add('overflow-y-hidden');
+        } else {
+            document.querySelector('body')?.classList.remove('overflow-y-hidden');
+        }
+    }, [lg]);
 
     return (
-        <div className="flex min-h-screen over flex-col gap-y-5 bg-[#EBEFFF] text-[#3B387E] lg:gap-y-0 lg:px-10">
+        <div className="over flex min-h-screen flex-col gap-y-5 bg-[#EBEFFF] text-[#3B387E] lg:gap-y-0 lg:px-10">
             {flash.success && <SweetAlert type="Success" message={flash.success} />}
             {flash.error && <SweetAlert type="Error" message={flash.error} />}
             {flash.info && <SweetAlert type="Info" message={flash.info} />}
@@ -65,7 +69,7 @@ export default function AdminPageLayout({ children, page }: Props) {
             )}
 
             {/* Header */}
-            <header className="rounded-b-3xl sticky top-0 z-40 flex items-center gap-x-2.5 bg-white px-5 py-5 shadow lg:relative lg:bg-transparent lg:shadow-none">
+            <header className="sticky top-0 z-40 flex items-center gap-x-2.5 rounded-b-3xl bg-white px-5 py-5 shadow lg:relative lg:bg-transparent lg:shadow-none">
                 <Menu color="#3B387E" className="cursor-pointer lg:hidden" onClick={() => setHamburgerMenu(true)} />
                 <div onClick={() => router.get('/')}>
                     <Heading title="Pak Telang" className="cursor-pointer" />
@@ -75,7 +79,7 @@ export default function AdminPageLayout({ children, page }: Props) {
             <div className="flex flex-1 gap-x-7 px-5 lg:px-0">
                 {/* Sidebar */}
                 <aside className="hidden flex-col gap-y-7 rounded-t-xl border border-b-0 border-[#AFB3FF] bg-white pt-5 pl-5 shadow-lg lg:flex lg:w-72">
-                    <div className="flex items-center gap-x-3 mr-5">
+                    <div className="mr-5 flex items-center gap-x-3">
                         <img src={auth.user.profile_picture} alt="Profile" className="aspect-square w-1/5 rounded-full shadow" />
                         <div>
                             <h2 className="text-md font-semibold">{auth.user.name}</h2>

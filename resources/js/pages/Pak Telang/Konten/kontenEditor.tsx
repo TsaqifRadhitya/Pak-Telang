@@ -100,7 +100,7 @@ const previewExtensions = [
 ];
 
 export default function KontenEditor() {
-    const [text, setText] = useState<any>(null);
+    const [text, setText] = useState(null);
 
     const html = text ? generateHTML(text, previewExtensions) : '<p class="text-gray-400">Belum ada konten</p>';
     console.log(html);
@@ -122,7 +122,7 @@ export default function KontenEditor() {
                         console.log(e);
                         setText(e);
                     }}
-                    extensions={extensions as any}
+                    extensions={extensions}
                 />
             </div>
         </div>
