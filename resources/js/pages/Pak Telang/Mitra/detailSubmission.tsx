@@ -11,7 +11,6 @@ import { useEffect, useRef, useState } from 'react';
 import Heading from '../../../components/heading';
 import HeadingSmall from '../../../components/heading-small';
 
-const mouUrl = 'https://ybcvbaxalqwrvgemxdzc.supabase.co/storage/v1/object/public/paktelang/Mou/Template/MOU%20Pak%20Telang%20(2).docx';
 
 export default function DetailSubmission() {
     const { mitra } = usePage<{ mitra: mitra }>().props;
@@ -20,7 +19,7 @@ export default function DetailSubmission() {
     useEffect(() => {
         document.querySelector('body')?.classList.add('overflow-y-hidden');
         if(mitra.mou) return
-        mouEditor.replacer(mouUrl, { User: mitra.user, address: mitra.address }).then((ress) => {
+        mouEditor.replacer(mitra).then((ress) => {
             renderAsync(ress, document.getElementById('docpreview') as HTMLElement);
         });
     }, []);

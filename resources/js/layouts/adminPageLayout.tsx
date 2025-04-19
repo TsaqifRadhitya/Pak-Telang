@@ -36,7 +36,6 @@ export default function AdminPageLayout({ children, page }: Props) {
             {flash.info && <SweetAlert type="Info" message={flash.info} />}
             {flash.warning && <SweetAlert type="Warning" message={flash.warning} />}
             <Head title={page} />
-
             {/* Mobile Sidebar Overlay */}
             {hamburgerMenu && (
                 <div className="fixed inset-0 z-50 bg-black/50 lg:hidden" onClick={() => setHamburgerMenu(false)}>
@@ -67,7 +66,6 @@ export default function AdminPageLayout({ children, page }: Props) {
                     </motion.nav>
                 </div>
             )}
-
             {/* Header */}
             <header className="sticky top-0 z-40 flex items-center gap-x-2.5 rounded-b-3xl bg-white px-5 py-5 shadow lg:relative lg:bg-transparent lg:shadow-none">
                 <Menu color="#3B387E" className="cursor-pointer lg:hidden" onClick={() => setHamburgerMenu(true)} />
@@ -75,7 +73,6 @@ export default function AdminPageLayout({ children, page }: Props) {
                     <Heading title="Pak Telang" className="cursor-pointer" />
                 </div>
             </header>
-
             <div className="flex flex-1 gap-x-7 px-5 lg:px-0">
                 {/* Sidebar */}
                 <aside className="hidden flex-col gap-y-7 rounded-t-xl border border-b-0 border-[#AFB3FF] bg-white pt-5 pl-5 shadow-lg lg:flex lg:w-72">
@@ -105,7 +102,6 @@ export default function AdminPageLayout({ children, page }: Props) {
                         ))}
                     </ul>
                 </aside>
-
                 {/* Main Content */}
                 <main className="flex flex-1 flex-col lg:flex-4/5">{children}</main>
             </div>

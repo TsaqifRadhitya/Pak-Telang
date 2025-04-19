@@ -2,7 +2,7 @@ import { supabaseService } from "./supabase";
 
 export class supabaseImage extends supabaseService {
 
-    protected basePath: string;
+    private basePath: string;
 
     constructor(user: string, type: 'Image' | 'Video' | 'Mou') {
         super()
@@ -35,11 +35,4 @@ export class supabaseImage extends supabaseService {
         return url
     }
 
-    public async getUrl(params: string | string[]) {
-        if (typeof params === 'string') {
-            return await this.supabaseConnection.storage.from('paktelang').getPublicUrl(params).data.publicUrl
-        } else if (Array.isArray(params)) {
-            return Promise.all(params.map(async (path) => this.supabaseConnection.storage.from('paktelang').getPublicUrl(path).data.publicUrl))
-        }
-    }
 }
