@@ -55,8 +55,9 @@ class kontenController extends Controller
         return Inertia::render('Pak Telang/Konten/allKonten', compact('kontens'));
     }
 
-    public function show($konten) {
-        return redirect(route('konten.show',['kontent' => $konten]));
+    public function show($konten)
+    {
+        return redirect(route('konten.show', ['kontent' => $konten]));
     }
 
     public function store(Request $request)
@@ -148,7 +149,7 @@ class kontenController extends Controller
             ]);
         }
 
-        return redirect(route('admin.konten'))->with('success','Berhasil memperbarui konten');
+        return redirect(route('admin.konten'))->with('success', 'Berhasil memperbarui konten');
     }
 
     public function edit($konten)
