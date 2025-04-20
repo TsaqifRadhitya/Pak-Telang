@@ -21,6 +21,7 @@ export class chatServices extends supabaseService {
                 });
             }
         })
+
         chanel.on('broadcast', { event: 'Broadcast' }, (payload) => {
             console.log(payload)
             if(payload.payload.id === target){

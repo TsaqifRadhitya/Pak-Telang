@@ -10,7 +10,7 @@ import Heading from '../components/heading';
 
 interface Props {
     children: ReactNode;
-    page: 'Dashboard' | 'Mitra' | 'Produk' | 'Profile';
+    page: 'Dashboard' | 'Mitra' | 'Produk' | 'Profile' | "Konten";
 }
 
 export default function AdminPageLayout({ children, page }: Props) {

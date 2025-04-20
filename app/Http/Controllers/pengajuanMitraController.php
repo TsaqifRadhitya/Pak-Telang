@@ -61,6 +61,7 @@ class pengajuanMitraController extends Controller
     public function statusCheck(Request $request)
     {
         $mitra = $request->user()->mitra;
+        if($mitra === null) return redirect(route('customer.pengajuanmitra.create'));
         $mitra = [...$mitra->toArray(), 'address' => $this->getMitraAddress($mitra), 'fotoDapur' => json_decode($mitra->fotoDapur)];
         switch ($mitra['statusPengajuan']) {
             case "Menunggu Persetujuan Formulir":
@@ -170,7 +171,7 @@ class pengajuanMitraController extends Controller
         $district = District::firstOrNew(['districtName' =>  $request->input('districtName'), 'cityId' => $city->id]);
         $district->save(); // Pastikan tersimpan
 
-        $dataMitra = mitra::where('userId', '=', Auth::user()->id);
+        $dataMitra = mitra::where('userId', '=', Auth::user()->id)->first();
 
         if ($dataMitra === null) {
             mitra::create([...$resBody, "userId" => Auth::user()->id, "districtId" => $district->id, "statusPengajuan" => "Menunggu Persetujuan Formulir"]);

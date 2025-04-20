@@ -143,7 +143,7 @@ export default function EditProfileCustomer() {
                             />
                             <Button
                                 onClick={() => inputFile.current?.click()}
-                                className="cursor-pointer border-2 border-[#5961BE] text-[#3B387E] hover:bg-[#5961BE] hover:text-white"
+                                className="bg-white cursor-pointer border-2 border-[#5961BE] text-[#3B387E] hover:bg-[#5961BE] hover:text-white"
                             >
                                 Pilih Foto
                             </Button>
@@ -274,7 +274,7 @@ export default function EditProfileCustomer() {
                             <div className="flex justify-end gap-4 lg:col-span-2">
                                 <Button
                                     onClick={() => router.get(route('customer.profile'))}
-                                    className="w-32 cursor-pointer border border-[#5961BE] text-[#5961BE] hover:bg-[#5961BE] hover:text-white"
+                                    className="w-32 bg-white cursor-pointer border border-[#5961BE] text-[#5961BE] hover:bg-[#5961BE] hover:text-white"
                                 >
                                     Batal
                                 </Button>

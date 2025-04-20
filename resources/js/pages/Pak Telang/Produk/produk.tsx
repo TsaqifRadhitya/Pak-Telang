@@ -224,6 +224,7 @@ export default function ProductAdminPage({ products }: { products: productType[]
                             <div className="col-span-2">
                                 <HeadingSmall title="Deskripsi Produk" className="text-[#3B387E]" />
                                 <Textarea
+
                                     onChange={(e) => setData('productDescription', e.target.value)}
                                     value={data.productDescription}
                                     placeholder="Deskripsi Produk"
@@ -248,7 +249,7 @@ export default function ProductAdminPage({ products }: { products: productType[]
                                 </div>
                                 <Button
                                     onClick={() => inputField.current?.click()}
-                                    className="cursor-pointer text-[#3B387E] ring ring-[#5961BE] hover:bg-[#5961BE] hover:text-white lg:w-1/6"
+                                    className="cursor-pointer text-[#3B387E] bg-white ring ring-[#5961BE] hover:bg-[#5961BE] hover:text-white lg:w-1/6"
                                 >
                                     Upload Foto
                                 </Button>

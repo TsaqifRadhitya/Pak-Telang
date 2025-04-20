@@ -41,7 +41,7 @@ const profileEditValidation = z.object({
     province: z.string({ message: 'Harap mengisi provinsi' }).min(1, 'Harap mengisi provinsi'),
     cityName: z.string({ message: 'Harap mengisi kota' }),
     districtName: z.string({ message: 'Harap mengisi kecamatan' }),
-    address: z.string({message : 'Harap mengisi alamat'}).min(1, 'Harap mengisi alamat'),
+    address: z.string({ message: 'Harap mengisi alamat' }).min(1, 'Harap mengisi alamat'),
     postalCode: z.string({ message: 'Harap mengisi kode pos' }).regex(/^\d{5}$/, 'Kode pos memiliki 5 karakter'),
 });
 
@@ -141,7 +141,7 @@ export default function EditProfileAdminPage() {
                         />
                         <Button
                             onClick={() => inputFile.current?.click()}
-                            className="cursor-pointer border-2 border-[#5961BE] text-[#3B387E] hover:bg-[#5961BE] hover:text-white"
+                            className="cursor-pointer border-2 border-[#5961BE] bg-white text-[#3B387E] hover:bg-[#5961BE] hover:text-white"
                         >
                             Pilih Foto
                         </Button>
@@ -267,7 +267,7 @@ export default function EditProfileAdminPage() {
                         <div className="flex justify-end gap-4 lg:col-span-2">
                             <Button
                                 onClick={() => router.get(route('admin.profile'))}
-                                className="w-32 cursor-pointer border border-[#5961BE] text-[#5961BE] hover:bg-[#5961BE] hover:text-white"
+                                className="w-32 cursor-pointer border border-[#5961BE] bg-white text-[#5961BE] hover:bg-[#5961BE] hover:text-white"
                             >
                                 Batal
                             </Button>

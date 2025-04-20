@@ -1,10 +1,11 @@
 <?php
 
 use App\Http\Controllers\dashboardController;
+use App\Http\Controllers\kontenController;
 use App\Http\Controllers\messageController;
 use App\Http\Controllers\mitraController;
 use App\Http\Controllers\ProductController;
-use App\Models\kontent;
+use App\Models\konten;
 use App\Models\Product;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
@@ -14,7 +15,7 @@ Route::get('/', function () {
     $product = Product::where('productType','=','Barang jadi')->get()->each(function($e){
         $e->productPhoto = json_decode($e->productPhoto);
     });
-    $kontent = kontent::all();
+    $kontent = konten::all();
     return Inertia::render('Guest/LandingPage/landingPage',compact('product','kontent'));
 })->name('home');
 
@@ -23,9 +24,10 @@ Route::get('konteneditor',function(){
 });
 
 
-Route::get('konten', function () {
-    return Inertia::render('Guest/Konten/Konten');
-})->name('konten');
+Route::prefix('konten')->group(function(){
+    Route::get('/',[kontenController::class,'viewIndex'])->name('konten');
+    Route::get('{id}',[kontenController::class,'viewShow'])->name('konten.show');
+});
 
 Route::prefix('produk')->group(function(){
     Route::get('/', [ProductController::class,'landingPageProduct'])->name('produk');

@@ -141,7 +141,7 @@ export default function EditProfileMitraPage() {
                         />
                         <Button
                             onClick={() => inputFile.current?.click()}
-                            className="cursor-pointer border-2 border-[#5961BE] text-[#3B387E] hover:bg-[#5961BE] hover:text-white"
+                            className="cursor-pointer border-2 bg-white border-[#5961BE] text-[#3B387E] hover:bg-[#5961BE] hover:text-white"
                         >
                             Pilih Foto
                         </Button>
@@ -267,7 +267,7 @@ export default function EditProfileMitraPage() {
                         <div className="flex justify-end gap-4 lg:col-span-2">
                             <Button
                                 onClick={() => router.get(route('mitra.profile'))}
-                                className="w-32 cursor-pointer border border-[#5961BE] text-[#5961BE] hover:bg-[#5961BE] hover:text-white"
+                                className="w-32 cursor-pointer bg-white border border-[#5961BE] text-[#5961BE] hover:bg-[#5961BE] hover:text-white"
                             >
                                 Batal
                             </Button>
