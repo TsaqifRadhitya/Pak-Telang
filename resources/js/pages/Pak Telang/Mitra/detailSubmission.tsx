@@ -87,7 +87,7 @@ export default function DetailSubmission() {
                 </div>
             )}
             <AdminPageLayout page="Mitra">
-                <article className="flex-1 space-y-5 overflow-y-auto pb-16 lg:max-h-[91.4vh]">
+                <article className="flex-1 space-y-5 overflow-y-auto pb-16 max-h-[91.4vh]">
                     <article className="w-full flex-1 rounded-lg border border-[#AFB3FF] bg-[#FFFFFF] shadow-xl">
                         <div className="flex items-center justify-between border-b-[1px] border-[#AFB3FF] p-5 md:px-10 md:py-5">
                             <h1 className="text-xl font-semibold">Mitra</h1>
