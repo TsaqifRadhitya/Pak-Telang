@@ -51,18 +51,6 @@ export default function CustomerPageLayout({ children, page }: { children: React
                                 Dashboard
                             </Link>
                         </li>
-                        <li className="">
-                            <Link
-                                href={route('customer.profile')}
-                                className={
-                                    page === 'Profile'
-                                        ? 'underline decoration-4 underline-offset-8'
-                                        : 'hover:underline hover:decoration-4 hover:underline-offset-8'
-                                }
-                            >
-                                Profil
-                            </Link>
-                        </li>
                         <li>
                             <Link
                                 href="#"
@@ -88,6 +76,18 @@ export default function CustomerPageLayout({ children, page }: { children: React
                             </Link>
                         </li>
                     </ul>
+                    <li className="">
+                        <Link
+                            href={route('customer.profile')}
+                            className={
+                                page === 'Profile'
+                                    ? 'underline decoration-4 underline-offset-8'
+                                    : 'hover:underline hover:decoration-4 hover:underline-offset-8'
+                            }
+                        >
+                            Profil
+                        </Link>
+                    </li>
                     {/* <div className="flex gap-x-2">
                         <Button
                             onClick={() => router.post(route('logout'))}
@@ -130,18 +130,6 @@ export default function CustomerPageLayout({ children, page }: { children: React
                         </li>
                         <li>
                             <Link
-                                href={route('customer.profile')}
-                                className={
-                                    page === 'Profile'
-                                        ? 'underline decoration-4 underline-offset-8'
-                                        : 'hover:underline hover:decoration-4 hover:underline-offset-8'
-                                }
-                            >
-                                Profile
-                            </Link>
-                        </li>
-                        <li>
-                            <Link
                                 href="#"
                                 className={
                                     page === 'Riwayat'
@@ -163,6 +151,18 @@ export default function CustomerPageLayout({ children, page }: { children: React
                             >
                                 Pengajuan Mitra
                             </Link>
+                        <li>
+                            <Link
+                                href={route('customer.profile')}
+                                className={
+                                    page === 'Profile'
+                                        ? 'underline decoration-4 underline-offset-8'
+                                        : 'hover:underline hover:decoration-4 hover:underline-offset-8'
+                                }
+                            >
+                                Profile
+                            </Link>
+                        </li>
                         </li>
                     </ul>
                     {/* <div className="mt-4 flex flex-col gap-y-2">

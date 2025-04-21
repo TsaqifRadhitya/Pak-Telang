@@ -145,7 +145,7 @@ export default function DetailSubmission() {
                                         <h3>Foto KTP</h3>
                                         <h3>:</h3>
                                     </div>
-                                    <img src={mitra.fotoKTP} className="aspect-video w-2/3 lg:w-2/5" alt="" />
+                                    <img src={mitra.fotoKTP} className="aspect-video w-2/3 object-cover object-center lg:w-2/5" alt="" />
                                 </div>
                             </div>
                         </div>
@@ -242,7 +242,7 @@ export default function DetailSubmission() {
                                             : 'Menunggu Persetujuan MoU'}
                                 </h1>
                             </div>
-                            <div className="max-h-screen overflow-y-auto">
+                            <div className="max-h-screen max-w-[87vw] mx-auto lg:max-w-[65vw] overflow-y-auto">
                                 {!mitra.mou && <div id="docpreview" className="h-screen w-full"></div>}
                                 {mitra.mou && <iframe className="h-screen w-full" src={mitra.mou}></iframe>}
                             </div>
