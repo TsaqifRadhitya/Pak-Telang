@@ -59,9 +59,9 @@ export default function AllKonten({ kontens }: { kontens: kontenType[] }) {
                     <div className="flex items-center border-b-[1px] border-[#AFB3FF] p-5 md:px-10 md:py-5">
                         <h1 className="text-xl font-semibold">Konten</h1>
                     </div>
-                    <div className="flex max-h-[82.6vh] flex-1 flex-col overflow-y-aut p-10 lg:relative lg:grid lg:grid-cols-3">
+                    <div className="flex max-h-[82.6vh] flex-1 flex-col overflow-y-auto p-10 lg:relative md:grid gap-5 md:grid-cols-2 xl:grid-cols-3">
                         {kontens.map((konten) => (
-                            <div className="aspect-square w-full rounded-xl bg-white p-5 shadow">
+                            <div className="aspect-square w-full rounded-xl bg-white p-5 shadow ring ring-[#AFB3FF]">
                                 <div className="relative flex w-full overflow-hidden rounded-xl">
                                     <img src={konten.imageCover} alt="" className="z-0 aspect-3/2 object-center object-cover" />
                                     <div className="absolute top-0 z-10 flex h-full w-full flex-1 flex-col justify-between bg-black/30 p-5 py-3">
