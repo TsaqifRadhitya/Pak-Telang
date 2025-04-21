@@ -1,5 +1,4 @@
 import SweetAlert from '@/components/sweatAlert';
-import { useCurrentMediaQuerry } from '@/hooks/useMediaQuery';
 import { cn } from '@/lib/utils';
 import { SharedData } from '@/types';
 import { Head, router, usePage } from '@inertiajs/react';
@@ -10,17 +9,16 @@ import Heading from '../components/heading';
 
 interface Props {
     children: ReactNode;
-    page: 'Dashboard' | 'Mitra' | 'Produk' | 'Profile' | "Konten";
+    page: 'Dashboard' | 'Mitra' | 'Produk' | 'Profile' | 'Konten';
 }
 
 export default function AdminPageLayout({ children, page }: Props) {
     const { auth, flash } = usePage<SharedData>().props;
-    const { lg } = useCurrentMediaQuerry();
+
     const [hamburgerMenu, setHamburgerMenu] = useState(false);
     useEffect(() => {
         router.reload();
     }, []);
-
 
     return (
         <div className="over flex min-h-screen flex-col gap-y-5 bg-[#EBEFFF] text-[#3B387E] lg:gap-y-0 lg:px-10">

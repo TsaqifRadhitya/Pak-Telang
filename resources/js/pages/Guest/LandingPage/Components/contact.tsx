@@ -10,7 +10,7 @@ export default function Contact() {
         <div className="grid grid-cols-1 flex-col gap-4 bg-[#EBEFFF] p-20 px-5 pt-0 pb-10 lg:grid-cols-4 lg:px-10">
             <Card className="h-fit w-full rounded-3xl border-0 bg-white px-5 py-7 lg:col-span-4">
                 <CardContent>
-                    <div className="flex items-center justify-between gap-x-5">
+                    <div className="flex flex-col lg:flex-row items-center justify-between gap-x-5">
                         <div className="flex flex-col w-full gap-y-2">
                             <div className="flex flex-col items-end gap-x-5 lg:flex-row">
                                 <h1 className="text-2xl font-black text-[#3B387E] w-full lg:w-fit text-start">Pak Telang</h1>
