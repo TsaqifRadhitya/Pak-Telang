@@ -242,7 +242,7 @@ export default function DetailSubmission() {
                                             : 'Menunggu Persetujuan MoU'}
                                 </h1>
                             </div>
-                            <div className="max-h-screen max-w-[87vw] mx-auto lg:max-w-[65vw] overflow-y-auto">
+                            <div className="max-h-screen w-full max-w-[87vw] mx-auto lg:max-w-[65vw] overflow-y-auto">
                                 {!mitra.mou && <div id="docpreview" className="h-screen w-full"></div>}
                                 {mitra.mou && <iframe className="h-screen w-full" src={mitra.mou}></iframe>}
                             </div>

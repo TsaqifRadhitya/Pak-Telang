@@ -21,13 +21,6 @@ export default function AdminPageLayout({ children, page }: Props) {
         router.reload();
     }, []);
 
-    useEffect(() => {
-        if (lg) {
-            document.querySelector('body')?.classList.add('overflow-y-hidden');
-        } else {
-            document.querySelector('body')?.classList.remove('overflow-y-hidden');
-        }
-    }, [lg]);
 
     return (
         <div className="over flex min-h-screen flex-col gap-y-5 bg-[#EBEFFF] text-[#3B387E] lg:gap-y-0 lg:px-10">
