@@ -4,7 +4,7 @@ import { SharedData } from '@/types';
 import { Head, router, usePage } from '@inertiajs/react';
 import { motion } from 'framer-motion';
 import { Menu } from 'lucide-react';
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useState } from 'react';
 import Heading from '../components/heading';
 
 interface Props {
