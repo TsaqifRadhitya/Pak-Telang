@@ -15,8 +15,8 @@ Route::middleware(['auth', adminMidleware::class])->group(function () {
 
         Route::prefix('mitra')->group(function () {
             Route::get('/', [mitraController::class, 'index'])->name('admin.mitra');
-        Route::get('{id}/pengajuan', [pengajuanMitraController::class,'detailPengajuan'])->name('admin.mitra.pengajuan.index');
-            Route::patch('{id}/{status}', [pengajuanMitraController::class,'statusUpdate'])->name('admin.mitra.pengajuan.update');
+            Route::get('{id}/pengajuan', [pengajuanMitraController::class, 'detailPengajuan'])->name('admin.mitra.pengajuan.index');
+            Route::patch('{id}/{status}', [pengajuanMitraController::class, 'statusUpdate'])->name('admin.mitra.pengajuan.update');
         });
 
         Route::resource('product', ProductController::class)->except(['create', 'edit', 'index'])->names('admin.product');
@@ -28,8 +28,8 @@ Route::middleware(['auth', adminMidleware::class])->group(function () {
             Route::post('/edit', [profileController::class, 'update'])->name('admin.profile.update');
         });
 
-        Route::get('konten',[kontenController::class,'index'])->name('admin.konten');
-        Route::resource('konten',kontenController::class)->except('index')->names('admin.konten');
+        Route::get('konten', [kontenController::class, 'index'])->name('admin.konten');
+        Route::resource('konten', kontenController::class)->except('index')->names('admin.konten');
 
         // Route::get('/stock', [ProductController::class,'showStock'])->name('admin.stock.index');
         // Route::patch('/stock/{id}', [ProductController::class,'updateStock'])->name('admin.stock.update');

@@ -16,9 +16,6 @@ export default function AdminPageLayout({ children, page }: Props) {
     const { auth, flash } = usePage<SharedData>().props;
 
     const [hamburgerMenu, setHamburgerMenu] = useState(false);
-    useEffect(() => {
-        router.reload();
-    }, []);
 
     return (
         <div className="over flex min-h-screen flex-col gap-y-5 bg-[#EBEFFF] text-[#3B387E] lg:gap-y-0 lg:px-10">

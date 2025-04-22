@@ -156,7 +156,7 @@ export default function ProductMitraPage({ products }: { products: productType[]
                     </div>
                     <section className="flex w-full flex-col gap-10 overflow-y-auto p-5 md:grid md:h-[80vh] md:grid-cols-2 lg:p-10">
                         {products.map((item, i) => (
-                            <div key={i} className="flex aspect-7/4 flex-col justify-between rounded-lg p-5 shadow-lg ring ring-[#B9BDFF]">
+                            <div key={i} className="flex h-full min-h-[258px] w-full flex-col justify-between rounded-lg p-5 shadow-lg ring ring-[#B9BDFF]">
                                 <div className="flex w-full">
                                     <div className="flex flex-2/3 gap-x-2.5">
                                         {item.productPhoto.map((photo, i) =>

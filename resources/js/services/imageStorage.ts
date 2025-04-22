@@ -16,11 +16,18 @@ export class supabaseImage extends supabaseService {
         return await this.getUrl((await Promise.all(promise)).map((item) => (item.data?.path)) as string[])
     }
 
-    public async uploadKonten(params: FileList) {
-        const promise = Object.values(params).map((item) => {
-            return this.supabaseConnection.storage.from('paktelang').upload(`${this.basePath}/${item.name}`, item, { contentType: item.type, upsert: true })
-        })
-        return await this.getUrl((await Promise.all(promise)).map((item) => (item.data?.path)) as string[])
+    public async uploadKonten(params: FileList | File[]) {
+        if (typeof params === typeof FileList) {
+            const promise = Object.values(params).map((item) => {
+                return this.supabaseConnection.storage.from('paktelang').upload(`${this.basePath}/${item.name}`, item, { contentType: item.type, upsert: true })
+            })
+            return await this.getUrl((await Promise.all(promise)).map((item) => (item.data?.path)) as string[])
+        } else {
+            const promise = (params as File[]).map((item) => {
+                return this.supabaseConnection.storage.from('paktelang').upload(`${this.basePath}/${item.name}`, item, { contentType: item.type, upsert: true })
+            })
+            return await this.getUrl((await Promise.all(promise)).map((item) => (item.data?.path)) as string[])
+        }
     }
 
     public async upsertProfile(params: File) {

@@ -22,7 +22,7 @@ return new class extends Migration
             $table->enum('role', ['Customer', 'Pak Telang', 'Mitra']);
             $table->enum('gender', ['Laki-Laki', 'Perempuan'])->nullable();
             $table->date('birthday')->nullable();
-            $table->timestamp('email_verified_at')->nullable();
+            // $table->timestamp('email_verified_at')->nullable();
             $table->text('address')->nullable();
             $table->string('postalCode')->nullable();
             $table->foreignUlid('districtId')->nullable()->constrained('districts');

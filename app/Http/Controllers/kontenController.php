@@ -57,7 +57,12 @@ class kontenController extends Controller
 
     public function show($konten)
     {
-        return redirect(route('konten.show', ['kontent' => $konten]));
+        $konten = konten::whereId($konten)->first();
+        if($konten->imageContent){
+            $konten->imageContent = json_decode($konten->imageContent);
+        }
+        $editAble = true;
+        return Inertia::render('Guest/Konten/detailKontent',compact('konten','editAble'));
     }
 
     public function store(Request $request)
@@ -106,7 +111,7 @@ class kontenController extends Controller
                 'slug' => $request->slug,
             ]);
         }
-        return redirect(route('admin.konten'))->with('success', 'Berhasil Menambahkan Konten');
+        return redirect(route('admin.konten'))->with('success', 'Konten baru berhasil ditambahkan');
     }
 
     public function update(Request $request, $konten)

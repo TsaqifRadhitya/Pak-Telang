@@ -9,8 +9,9 @@ import { router, useForm } from '@inertiajs/react';
 import { useRef, useState } from 'react';
 import z from 'zod';
 import { supabaseImage } from '../../../services/imageStorage';
+import { Plus, LucideTrash2 } from 'lucide-react';
 
-const youtubeUrlRegex = /^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/)[\w-]{11}$/;
+const youtubeUrlRegex = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/watch\?v=)([a-zA-Z0-9_-]{11})(?:[&?][^#\s]*)?$/;
 
 const inputValidation = z.object({
     slug: z.string({ message: 'Harap mengisi judul' }).min(1, 'Harap mengisi judul'),
@@ -28,8 +29,8 @@ const inputValidation = z.object({
 });
 
 export default function CreateKonten() {
-    const { data, setData, errors, setError, clearErrors} = useForm<kontenType>();
-    const [imageBag, setImageBag] = useState<FileList>();
+    const { data, setData, errors, setError, clearErrors } = useForm<kontenType>();
+    const [imageBag, setImageBag] = useState<File[]>();
     const [sampul, setSampul] = useState<FileList>();
     const imageBagRef = useRef<HTMLInputElement>(null);
     const imageCoverRef = useRef<HTMLInputElement>(null);
@@ -42,13 +43,29 @@ export default function CreateKonten() {
                 return;
             }
             const files = Object.values(e.target.files);
-            setImageBag(e.target.files);
+            setImageBag((prev) => {
+                if (prev) {
+                    return [...prev, ...files];
+                }
+                return files;
+            });
             setData(
                 'imageContent',
-                files.map((foto) => URL.createObjectURL(foto)),
+                data.imageContent
+                    ? [...data.imageContent, ...files.map((foto) => URL.createObjectURL(foto))]
+                    : files.map((foto) => URL.createObjectURL(foto)),
             );
+            e.target.value = '';
         }
     };
+
+    const handleRemoveImage = (id: number) => {
+        const newListUrl = data.imageContent?.filter((data, index) => index != id);
+        setData('imageContent', newListUrl);
+        const newImageBag = imageBag?.filter((data, index) => index != id);
+        setImageBag(newImageBag);
+    };
+
     const handleSubmit = async () => {
         clearErrors();
         const validationResult = inputValidation.safeParse(data);
@@ -64,7 +81,7 @@ export default function CreateKonten() {
         const imageUploader = new supabaseImage('Pak Telang', 'Konten');
         if (imageBag) {
             const urlImageCover = imageUploader.uploadKonten(sampul as FileList);
-            const urlImageContent = imageUploader.uploadKonten(imageBag as FileList);
+            const urlImageContent = imageUploader.uploadKonten(imageBag as File[]);
             const allUrl = await Promise.all([urlImageContent, urlImageCover]);
             router.post(route('admin.konten.store'), {
                 ...data,
@@ -74,13 +91,13 @@ export default function CreateKonten() {
             return;
         }
         const urlImageCover = await imageUploader.uploadKonten(sampul as FileList);
-        console.log(urlImageCover);
         router.post(route('admin.konten.store'), {
             ...data,
             imageCover: urlImageCover![0],
             imageContent: null,
         });
     };
+    console.log(data.imageContent);
     return (
         <AdminPageLayout page="Konten">
             <main className="flex h-full w-full flex-col rounded-t-lg border-[1px] border-b-0 border-[#AFB3FF] bg-[#FFFFFF] shadow-lg">
@@ -93,7 +110,8 @@ export default function CreateKonten() {
                         <Input
                             value={data.slug}
                             onChange={(e) => setData('slug', e.target.value)}
-                            className="border-0 ring ring-[#B9BDFF] focus-visible:ring-[#B9BDFF]"
+                            placeholder="Judul"
+                            className="border-0 ring ring-[#B9BDFF] placeholder:text-[#AFB3FF] focus-visible:ring-[#B9BDFF]"
                             type="text"
                         />
                         {errors.slug && <p className="text-xs font-extralight text-red-600 italic">{errors.slug}</p>}
@@ -103,8 +121,9 @@ export default function CreateKonten() {
                             <Label className="text-lg font-semibold">Link Video</Label>
                             <Input
                                 value={data.video}
+                                placeholder="Link Video"
                                 onChange={(e) => setData('video', e.target.value)}
-                                className="border-0 ring ring-[#B9BDFF] focus-visible:ring-[#B9BDFF]"
+                                className="border-0 ring ring-[#B9BDFF] placeholder:text-[#AFB3FF] focus-visible:ring-[#B9BDFF]"
                                 type="text"
                             />
                             {errors.video && <p className="text-xs font-extralight text-red-600 italic">{errors.video}</p>}
@@ -135,7 +154,10 @@ export default function CreateKonten() {
                         <Input
                             id="imageCover"
                             onChange={handleChangeImage}
-                            className={cn('border-0 ring ring-[#B9BDFF] focus-visible:ring-[#B9BDFF]', data.imageCover && 'hidden')}
+                            className={cn(
+                                'file:text-[#3B387E cursor-pointer border-0 ring ring-[#B9BDFF] file:cursor-pointer focus-visible:ring-[#B9BDFF]',
+                                data.imageCover && 'hidden',
+                            )}
                             type="file"
                             accept="image/png, image/jpeg"
                             ref={imageCoverRef}
@@ -145,33 +167,32 @@ export default function CreateKonten() {
                     <div className="flex flex-col gap-0.5">
                         <Label className="text-lg font-semibold">Lampiran Foto</Label>
 
-                        {imageBag && (
-                            <div className="grid w-full cursor-pointer gap-7 lg:grid-cols-3">
-                                {Object.values(imageBag).map((img) => (
-                                    <img
-                                        onClick={() => imageBagRef.current?.click()}
-                                        src={URL.createObjectURL(img)}
-                                        className="aspect-video w-full rounded-xl object-cover object-center"
-                                    />
+                        {data.imageContent ?  data.imageContent.length > 0 &&  (
+                            <div className="grid w-full gap-7 lg:grid-cols-3">
+                                {data.imageContent.map((img, index) => (
+                                    <div className="relative" key={index}>
+                                        <Button onClick={() => handleRemoveImage(index)} className="bg-[#EC2525] ring-[#EC2525] ring hover:bg-white hover:text-[#EC2525] cursor-pointer absolute top-2 right-2">
+                                            <LucideTrash2/>
+                                        </Button>
+                                        <img
+                                            onClick={() => imageBagRef.current?.click()}
+                                            src={img}
+                                            className="ring ring-[#969bfa] aspect-video w-full rounded-xl object-cover object-center"
+                                        />
+                                    </div>
                                 ))}
-                                <div
-                                    onClick={() => {
-                                        setData('imageContent', []);
-                                        setImageBag(undefined);
-                                        if (imageBagRef.current?.value) {
-                                            imageBagRef.current.value = '';
-                                        }
-                                    }}
-                                    className="flex aspect-video w-full items-center justify-center rounded-lg bg-red-400 text-white ring ring-red-400 hover:bg-transparent hover:font-semibold hover:text-red-400"
-                                >
-                                    <p>Delete All</p>
+                                <div onClick={()=> imageBagRef.current?.click()} className="cursor-pointer flex items-center justify-center aspect-video rounded-xl w-full border-2 border-dashed stroke-dash-2 border-[#B9BDFF]">
+                                    <Plus size={75} strokeWidth={2} className='text-[#969bfa]'/>
                                 </div>
                             </div>
-                        )}
+                        ) : null}
                         <Input
                             id="imageContent"
                             onChange={handleChangeImage}
-                            className={cn('border-0 ring ring-[#B9BDFF] focus-visible:ring-[#B9BDFF]', imageBag && 'hidden')}
+                            className={cn(
+                                'file:text-[#3B387E]c cursor-pointer border-0 ring ring-[#B9BDFF] file:cursor-pointer focus-visible:ring-[#B9BDFF]',
+                                data.imageContent?.length && 'hidden',
+                            )}
                             type="file"
                             multiple
                             accept="image/png, image/jpeg"
@@ -181,6 +202,7 @@ export default function CreateKonten() {
                     <div className="flex flex-col gap-0.5">
                         <Label className="text-lg font-semibold">Isi Konten</Label>
                         <Textarea
+                            placeholder="Silahkan mengisi isi konten"
                             onChange={(e) => setData('content', e.target.value)}
                             value={data.content}
                             className="h-[26.8vh] border-0 bg-black text-[#3B387E] ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:ring-3 focus-visible:ring-[#B9BDFF]"

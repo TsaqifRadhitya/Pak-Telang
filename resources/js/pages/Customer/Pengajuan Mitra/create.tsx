@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import CustomerPageLayout from '@/layouts/customerPagetLayout';
 import { AddressApiType } from '@/pages/Mitra/Profile/editProfile';
+import { supabaseImage } from '@/services/imageStorage';
 import { gender, SharedData, User } from '@/types';
 import { addressType } from '@/types/address';
 import { router, useForm, usePage } from '@inertiajs/react';
@@ -12,7 +13,6 @@ import { Plus } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { z } from 'zod';
 import Heading from '../../../components/heading';
-import { supabaseImage } from '@/services/imageStorage';
 
 type Merge<T> = {
     [K in keyof T]: T[K];
@@ -45,7 +45,7 @@ const pengajuanMitraEditValidation = z.object({
 
 export default function Create() {
     const { address, auth } = usePage<props>().props;
-    const { data, setData, errors, setError, clearErrors} = useForm<form>({
+    const { data, setData, errors, setError, clearErrors } = useForm<form>({
         ...address,
         ...auth.user,
         fotoDapur: [] as string[],
@@ -106,7 +106,7 @@ export default function Create() {
         }
     };
 
-    const handleSubmit = async() => {
+    const handleSubmit = async () => {
         clearErrors();
         const validation = pengajuanMitraEditValidation.safeParse(data);
         const err = validation.error?.format();
@@ -128,15 +128,12 @@ export default function Create() {
             setError('gender', err?.gender?._errors[0] as string);
             return;
         }
-        const imageUploader = new supabaseImage(auth.user.email,'Mou')
-        const urlFotoDapur =  imageUploader.uploadBatchDapur(fotoDapur as FileList)
-        const urlFotoKTP = imageUploader.upsertKTP(fotoKtp as File)
+        const imageUploader = new supabaseImage(auth.user.email, 'Mou');
+        const urlFotoDapur = imageUploader.uploadBatchDapur(fotoDapur as FileList);
+        const urlFotoKTP = imageUploader.upsertKTP(fotoKtp as File);
 
-        const ress = await Promise.all([urlFotoDapur,urlFotoKTP])
-        router.post(route('customer.pengajuanmitra.store'), { ...data,
-            fotoKTP : ress[1],
-            fotoDapur : ress[0]
-        });
+        const ress = await Promise.all([urlFotoDapur, urlFotoKTP]);
+        router.post(route('customer.pengajuanmitra.store'), { ...data, fotoKTP: ress[1], fotoDapur: ress[0] });
     };
     return (
         <CustomerPageLayout page="Pengajuan Mitra">
@@ -150,9 +147,10 @@ export default function Create() {
                         <div className="space-y-2">
                             <h2 className="text-lg font-semibold">Nama</h2>
                             <Input
-                                className="border-0 ring ring-[#B9BDFF] focus-visible:ring-[#B9BDFF]"
+                                className="border-0 ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:ring-[#B9BDFF]"
                                 type="text"
                                 value={data.name}
+                                placeholder="Nama"
                                 onChange={(e) => setData('name', e.target.value)}
                             />
                             <InputError message={errors.name} />
@@ -160,9 +158,10 @@ export default function Create() {
                         <div className="space-y-2">
                             <h2 className="font-semibold">Tanggal Lahir</h2>
                             <Input
-                                className="border-0 ring ring-[#B9BDFF] focus-visible:ring-[#B9BDFF]"
+                                className="border-0 ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:ring-[#B9BDFF]"
                                 type="date"
                                 value={data.birthday ?? ''}
+                                placeholder="Tanggal Lahir"
                                 onChange={(e) => setData('birthday', e.target.value)}
                             />
                             <InputError message={errors.birthday} />
@@ -172,7 +171,7 @@ export default function Create() {
                             <select
                                 value={data.gender ?? ''}
                                 onChange={(e) => setData('gender', e.target.value as gender)}
-                                className="w-full rounded-lg p-2 ring ring-[#B9BDFF] focus-visible:ring-3"
+                                className="w-full rounded-lg p-2 ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:ring-3"
                             >
                                 <option value=""></option>
                                 <option value="Laki-Laki">Laki - Laki</option>
@@ -184,8 +183,9 @@ export default function Create() {
                             <h2 className="text-lg font-semibold">Email</h2>
                             <Input
                                 disabled
-                                className="border-0 ring ring-[#B9BDFF] focus-visible:ring-[#B9BDFF]"
+                                className="border-0 ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:ring-[#B9BDFF]"
                                 type="text"
+                                placeholder="Email"
                                 value={data.email}
                                 onChange={(e) => setData('name', e.target.value)}
                             />
@@ -194,8 +194,9 @@ export default function Create() {
                         <div className="space-y-2">
                             <h2 className="text-lg font-semibold">No. Hp</h2>
                             <Input
-                                className="border-0 ring ring-[#B9BDFF] focus-visible:ring-[#B9BDFF]"
+                                className="border-0 ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:ring-[#B9BDFF]"
                                 type="text"
+                                placeholder="No. Hp"
                                 value={data.phonenumber ?? ''}
                                 onChange={(e) => setData('phonenumber', e.target.value)}
                             />
@@ -204,9 +205,10 @@ export default function Create() {
                         <div className="space-y-2">
                             <h2 className="text-lg font-semibold">NIK</h2>
                             <Input
-                                className="border-0 ring ring-[#B9BDFF] focus-visible:ring-[#B9BDFF]"
+                                className="border-0 ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:ring-[#B9BDFF]"
                                 type="number"
                                 value={data.NIK ?? ''}
+                                placeholder="NIK"
                                 onChange={(e) => setData('NIK', e.target.value)}
                             />
                             <InputError message={errors.NIK} />
@@ -219,9 +221,9 @@ export default function Create() {
                             <select
                                 value={data.province ?? ''}
                                 onChange={(e) => setData('province', e.target.value)}
-                                className="w-full rounded-lg p-2 ring ring-[#B9BDFF] focus-visible:ring-3"
+                                className="w-full rounded-lg p-2 ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:ring-3"
                             >
-                                <option></option>
+                                <option>Provinsi</option>
                                 {addressApi.provinces.map((prov) => (
                                     <option key={prov.id} value={prov.name}>
                                         {prov.name}
@@ -235,9 +237,9 @@ export default function Create() {
                             <select
                                 value={data.cityName ?? ''}
                                 onChange={(e) => setData('cityName', e.target.value)}
-                                className="w-full rounded-lg p-2 ring ring-[#B9BDFF] focus-visible:ring-3"
+                                className="w-full rounded-lg p-2 ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:ring-3"
                             >
-                                <option></option>
+                                <option>Kota/Kabupaten</option>
                                 {addressApi.cities.map((city) => (
                                     <option key={city.id} value={city.name}>
                                         {city.name}
@@ -251,9 +253,9 @@ export default function Create() {
                             <select
                                 value={data.districtName ?? ''}
                                 onChange={(e) => setData('districtName', e.target.value)}
-                                className="w-full rounded-lg p-2 ring ring-[#B9BDFF] focus-visible:ring-3"
+                                className="w-full rounded-lg p-2 ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:ring-3"
                             >
-                                <option></option>
+                                <option>Kecamatan</option>
                                 {addressApi.districts.map((district) => (
                                     <option key={district.id} value={district.name}>
                                         {district.name}
@@ -265,7 +267,8 @@ export default function Create() {
                         <div>
                             <h2 className="text-lg font-semibold">Kode Pos</h2>
                             <Input
-                                className="border-0 ring ring-[#B9BDFF] focus-visible:ring-[#B9BDFF]"
+                                placeholder="Kode Pos"
+                                className="border-0 ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:ring-[#B9BDFF]"
                                 type="text"
                                 value={data.postalCode ?? ''}
                                 onChange={(e) => setData('postalCode', e.target.value)}
@@ -277,7 +280,7 @@ export default function Create() {
                             <Textarea
                                 onChange={(e) => setData('address', e.target.value)}
                                 value={data.address}
-                                placeholder="Deskripsi Produk"
+                                placeholder="Masukkan alamat lengkap usaha (nama jalan, dusun, dll)"
                                 className="min-h-20 border-0 bg-black text-[#3B387E] ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:ring-3 focus-visible:ring-[#B9BDFF]"
                             />
                             {errors.address && <InputError message={errors.address} />}
@@ -315,8 +318,9 @@ export default function Create() {
                         <div>
                             <h2 className="text-lg font-semibold">Nama Usaha</h2>
                             <Input
-                                className="border-0 ring ring-[#B9BDFF] focus-visible:ring-[#B9BDFF]"
+                                className="border-0 ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:ring-[#B9BDFF]"
                                 type="text"
+                                placeholder='Nama Usaha'
                                 value={data.namaUsaha ?? ''}
                                 onChange={(e) => setData('namaUsaha', e.target.value)}
                             />
@@ -327,9 +331,9 @@ export default function Create() {
                             <select
                                 value={`${data.kulkas}` !== '' ? `${data.kulkas}` : ''}
                                 onChange={(e) => setData('kulkas', e.target.value === 'true')}
-                                className="w-full rounded-lg p-2 ring ring-[#B9BDFF] focus-visible:ring-3"
+                                className="w-full rounded-lg p-2 ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:ring-3"
                             >
-                                <option></option>
+                                <option>Pilih Kepemilikan</option>
                                 <option value={'true'}>Iya</option>
                                 <option value={'false'}>Tidak</option>
                             </select>
@@ -343,7 +347,7 @@ export default function Create() {
                                 placeholder="Masukkan alasan anda mengajukan diri menjadi mitra"
                                 className="min-h-20 border-0 bg-black text-[#3B387E] ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:ring-3 focus-visible:ring-[#B9BDFF]"
                             />
-                            {errors.address && <InputError message={errors.address} />}
+                            {errors.alasanPengajuan && <InputError message={errors.alasanPengajuan} />}
                         </div>
                         <div className="space-y-1 lg:col-span-2">
                             <input

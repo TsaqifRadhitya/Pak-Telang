@@ -196,15 +196,17 @@ export default function EditKonten({ konten }: { konten: kontenType }) {
                                 </div>
                             </div>
                         )}
-                        <Input
-                            id="imageContent"
-                            onChange={handleChangeImage}
-                            className={cn('border-0 ring ring-[#B9BDFF] focus-visible:ring-[#B9BDFF]', imageBag && 'hidden')}
-                            type="file"
-                            multiple
-                            accept="image/png, image/jpeg"
-                            ref={imageBagRef}
-                        />
+                        {!data.imageContent && (
+                            <Input
+                                id="imageContent"
+                                onChange={handleChangeImage}
+                                className={cn('border-0 ring ring-[#B9BDFF] focus-visible:ring-[#B9BDFF]', imageBag && 'hidden')}
+                                type="file"
+                                multiple
+                                accept="image/png, image/jpeg"
+                                ref={imageBagRef}
+                            />
+                        )}
                     </div>
                     <div className="flex flex-col gap-0.5">
                         <Label className="text-lg font-semibold">Isi Konten</Label>

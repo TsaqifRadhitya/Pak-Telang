@@ -208,13 +208,13 @@ export default function DetailSubmission() {
                                     onClick={() => handleChangeStatus('decline')}
                                     className="cursor-pointer bg-transparent font-semibold text-[#5961BE] ring ring-[#5961BE] hover:bg-[#5961BE] hover:font-normal hover:text-white lg:w-1/4"
                                 >
-                                    Batal
+                                    Tolak
                                 </Button>
                                 <Button
                                     onClick={() => handleChangeStatus('accept')}
                                     className="cursor-pointer bg-[#5961BE] font-normal text-white ring ring-[#5961BE] hover:bg-transparent hover:font-semibold hover:text-[#5961BE] lg:w-1/4"
                                 >
-                                    Yakin
+                                    Terima
                                 </Button>
                             </div>
                         )}
@@ -252,13 +252,13 @@ export default function DetailSubmission() {
                                         onClick={() => handleChangeStatus('decline')}
                                         className="cursor-pointer bg-transparent font-semibold text-[#5961BE] ring ring-[#5961BE] hover:bg-[#5961BE] hover:font-normal hover:text-white lg:w-1/4"
                                     >
-                                        Batal
+                                        Tolak
                                     </Button>
                                     <Button
                                         onClick={() => handleChangeStatus('accept')}
                                         className="cursor-pointer bg-[#5961BE] font-normal text-white ring ring-[#5961BE] hover:bg-transparent hover:font-semibold hover:text-[#5961BE] lg:w-1/4"
                                     >
-                                        Yakin
+                                        Terima
                                     </Button>
                                 </div>
                             )}

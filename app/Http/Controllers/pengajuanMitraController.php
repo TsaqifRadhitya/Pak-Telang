@@ -61,7 +61,7 @@ class pengajuanMitraController extends Controller
     public function statusCheck(Request $request)
     {
         $mitra = $request->user()->mitra;
-        if($mitra === null) return redirect(route('customer.pengajuanmitra.create'));
+        if ($mitra === null) return redirect(route('customer.pengajuanmitra.create'));
         $mitra = [...$mitra->toArray(), 'address' => $this->getMitraAddress($mitra), 'fotoDapur' => json_decode($mitra->fotoDapur)];
         switch ($mitra['statusPengajuan']) {
             case "Menunggu Persetujuan Formulir":
@@ -102,7 +102,8 @@ class pengajuanMitraController extends Controller
             mitra::whereId($id)->update(
                 ['statusPengajuan' => $updateStatus, 'pesanPersetujuan' => $request->input('pesanPersetujuan') ?? "",]
             );
-            return back()->with('success', 'Berhasil Mengubah Status Pengajuan Mitra');
+            $alertTyple = $status === "accept" ? 'menyetujui' : 'menolak';
+            return back()->with('success', 'Anda berhasil ' . $alertTyple . ' pengajuan' . $mitra->user->name.'.');
         }
         abort(404);
     }
@@ -200,6 +201,6 @@ class pengajuanMitraController extends Controller
         mitra::where('userId', '=', $request->user()->id)->update(
             ['statusPengajuan' => 'Menunggu Persetujuan MOU', 'mou' => $request->input('mou')]
         );
-        return redirect(route('customer.pengajuanmitra.status'))->with('success', 'Berhasil Mengupload Pengesahan MoU');
+        return redirect(route('customer.pengajuanmitra.status'))->with('success', 'Dokumen MoU anda berhasil diunggah');
     }
 }

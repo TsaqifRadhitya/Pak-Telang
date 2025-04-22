@@ -19,11 +19,6 @@ Route::get('/', function () {
     return Inertia::render('Guest/LandingPage/landingPage',compact('product','kontent'));
 })->name('home');
 
-Route::get('konteneditor',function(){
-    return Inertia::render('Pak Telang/Konten/kontenEditor');
-});
-
-
 Route::prefix('konten')->group(function(){
     Route::get('/',[kontenController::class,'viewIndex'])->name('konten');
     Route::get('{id}',[kontenController::class,'viewShow'])->name('konten.show');
