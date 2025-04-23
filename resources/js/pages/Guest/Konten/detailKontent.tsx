@@ -68,13 +68,13 @@ export default function DetailKontent({ konten, editAble }: { konten: kontenType
                             <div className="absolute top-25 right-10 z-10 flex w-full justify-end gap-2 lg:top-10">
                                 <Button
                                     onClick={() => router.get(route('admin.konten.edit', { konten: konten.id }))}
-                                    className="w-full max-w-30 cursor-pointer bg-[#FFAC31] ring ring-[#FFAC31] hover:bg-white hover:text-[#FFAC31]"
+                                    className="w-full max-w-30 cursor-pointer bg-[#FFAC31] text-white ring ring-[#FFAC31] hover:bg-white hover:text-[#FFAC31]"
                                 >
                                     Ubah
                                 </Button>
                                 <Button
                                     onClick={() => setDialog(true)}
-                                    className="w-full max-w-30 cursor-pointer bg-[#EC2525] ring ring-[#EC2525] hover:bg-white hover:text-[#EC2525]"
+                                    className="w-full max-w-30 cursor-pointer bg-[#EC2525] text-white ring ring-[#EC2525] hover:bg-white hover:text-[#EC2525]"
                                 >
                                     Hapus
                                 </Button>
@@ -91,34 +91,38 @@ export default function DetailKontent({ konten, editAble }: { konten: kontenType
                             <Heading className="text-white lg:text-4xl" title={konten.slug} />
                             <div className="flex flex-1 flex-col gap-2.5 rounded-t-3xl bg-[#EBEFFF] px-10 pt-5 text-[#3B387E] lg:gap-10 lg:px-20 lg:pt-10">
                                 <HeadingSmall
-                                    title={
-                                        'Pak Telang - Jember, ' +
-                                        Intl.DateTimeFormat('id-ID', { dateStyle: 'full' }).format(new Date(konten.created_at))
-                                    }
+                                    title={'Pak Telang - ' + Intl.DateTimeFormat('id-ID', { dateStyle: 'full' }).format(new Date(konten.created_at))}
                                 />
-                                <img className="z-0 mx-auto aspect-video object-cover" src={konten.imageCover} alt="" />
+                                <img className="z-0 mx-auto aspect-video w-full max-w-4xl object-cover" src={konten.imageCover} alt="" />
                                 <div className="">
                                     <pre className="lg:text-md font-sans text-xs break-words whitespace-pre-wrap text-black md:text-sm">
                                         {konten.content}
                                     </pre>
                                 </div>
-                                {konten.imageContent?.length && (
-                                    <Carousel className="mx-auto aspect-video w-11/12">
-                                        <CarouselContent>
-                                            {konten.imageContent?.map((img, key) => (
-                                                <CarouselItem>
-                                                    <img key={key} src={img} className="aspect-video w-full object-cover object-center" />
-                                                </CarouselItem>
-                                            ))}
-                                        </CarouselContent>
-                                        <CarouselPrevious className="translate-x-20 border-none bg-white hover:bg-[#bebebe]" />
-                                        <CarouselNext className="-translate-x-20 border-none bg-white hover:bg-[#bebebe]" />
-                                    </Carousel>
-                                )}
+                                {konten.imageContent?.length ? (
+                                    konten.imageContent.length > 1 ? (
+                                        <Carousel className="mx-auto aspect-video w-full max-w-4xl">
+                                            <CarouselContent>
+                                                {konten.imageContent?.map((img, key) => (
+                                                    <CarouselItem>
+                                                        <img key={key} src={img} className="aspect-video w-full object-cover object-center" />
+                                                    </CarouselItem>
+                                                ))}
+                                            </CarouselContent>
+                                            <CarouselPrevious className="translate-x-20 border-none bg-white hover:bg-[#bebebe]" />
+                                            <CarouselNext className="-translate-x-20 border-none bg-white hover:bg-[#bebebe]" />
+                                        </Carousel>
+                                    ) : <img src={konten.imageContent[0]} className='w-full max-w-4xl aspect-video mx-auto object-center object-cover'/>
+                                ) : null}
                                 <div className="grid w-full grid-cols-3"></div>
                                 {konten.video && (
                                     <div>
-                                        {<iframe className="mx-auto aspect-video w-11/12" src={`https://www.youtube.com/embed/${videoId}`}></iframe>}
+                                        {
+                                            <iframe
+                                                className="mx-auto aspect-video w-full max-w-4xl"
+                                                src={`https://www.youtube.com/embed/${videoId}`}
+                                            ></iframe>
+                                        }
                                     </div>
                                 )}
                             </div>

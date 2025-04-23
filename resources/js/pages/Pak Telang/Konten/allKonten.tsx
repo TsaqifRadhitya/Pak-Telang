@@ -25,7 +25,7 @@ export default function AllKonten({ kontens }: { kontens: kontenType[] }) {
                             <HeadingSmall
                                 className="text-sm"
                                 title={
-                                    'Pak Telang - Jember, ' + Intl.DateTimeFormat('id-ID', { dateStyle: 'full' }).format(new Date(konten.created_at))
+                                    'Pak Telang - ' + Intl.DateTimeFormat('id-ID', { dateStyle: 'full' }).format(new Date(konten.created_at))
                                 }
                             />
                             <pre className="lg:text-md line-clamp-5 font-sans text-xs break-words whitespace-pre-wrap text-black md:text-sm">

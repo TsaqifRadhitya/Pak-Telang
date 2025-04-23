@@ -6,6 +6,7 @@ import AdminPageLayout from '@/layouts/adminPageLayout';
 import { cn } from '@/lib/utils';
 import { kontenType } from '@/types/koten';
 import { router, useForm } from '@inertiajs/react';
+import { LucideTrash2, Plus } from 'lucide-react';
 import { useRef, useState } from 'react';
 import z from 'zod';
 import { supabaseImage } from '../../../services/imageStorage';
@@ -28,9 +29,8 @@ const inputValidation = z.object({
 });
 
 export default function EditKonten({ konten }: { konten: kontenType }) {
-    console.log(konten);
     const { data, setData, errors, setError, clearErrors } = useForm<kontenType>({ ...konten });
-    const [imageBag, setImageBag] = useState<FileList>();
+    const [imageBag, setImageBag] = useState<{ image: File; objectUrl: string }[]>();
     const [sampul, setSampul] = useState<FileList>();
     const imageBagRef = useRef<HTMLInputElement>(null);
     const imageCoverRef = useRef<HTMLInputElement>(null);
@@ -42,14 +42,26 @@ export default function EditKonten({ konten }: { konten: kontenType }) {
                 setSampul(e.target.files);
                 return;
             }
-            const files = Object.values(e.target.files);
-            setImageBag(e.target.files);
-            setData(
-                'imageContent',
-                files.map((foto) => URL.createObjectURL(foto)),
-            );
+            const files_raw = Object.values(e.target.files);
+            const files = files_raw.map((foto) => URL.createObjectURL(foto));
+            setData('imageContent', data.imageContent?.length ? [...data.imageContent, ...files] : files);
+            setImageBag((prev) => {
+                if (prev) {
+                    return [...prev, ...files_raw.map((data, index) => ({ image: data, objectUrl: files[index] }))];
+                }
+                return [...files_raw.map((data, index) => ({ image: data, objectUrl: files[index] }))];
+            });
+            e.target.value = '';
         }
     };
+
+    const handleRemoveImage = (id: number) => {
+        const newListUrl = data.imageContent?.filter((data, index) => index != id);
+        setData('imageContent', newListUrl);
+        const newImageBag = imageBag?.filter((data, index) => index != id);
+        setImageBag(newImageBag);
+    };
+
     const handleSubmit = async () => {
         clearErrors();
         const validationResult = inputValidation.safeParse(data);
@@ -65,8 +77,9 @@ export default function EditKonten({ konten }: { konten: kontenType }) {
         const imageUploader = new supabaseImage('Pak Telang', 'Konten');
         if (sampul && imageBag) {
             const urlImageCover = imageUploader.uploadKonten(sampul as FileList);
-            const urlImageContent = imageUploader.uploadKonten(imageBag as FileList);
+            const urlImageContent = imageUploader.uploadKonten(imageBag.map((data) => data.image) as File[]);
             const allUrl = await Promise.all([urlImageContent, urlImageCover]);
+            const mergedImageContent = data.imageContent?.map((url) => allUrl[0]![imageBag.findIndex((data) => data.objectUrl === url)] ?? url);
             router.patch(
                 route('admin.konten.update', {
                     konten: konten.id,
@@ -74,7 +87,7 @@ export default function EditKonten({ konten }: { konten: kontenType }) {
                 {
                     ...data,
                     imageCover: allUrl[1]![0],
-                    imageContent: allUrl[0],
+                    imageContent: mergedImageContent,
                 },
             );
         } else if (sampul) {
@@ -89,7 +102,8 @@ export default function EditKonten({ konten }: { konten: kontenType }) {
                 },
             );
         } else if (imageBag) {
-            const urlImageContent = await imageUploader.uploadKonten(imageBag as FileList);
+            const urlImageContent = await imageUploader.uploadKonten(imageBag.map((data) => data.image) as File[]);
+            const mergedImageContent = data.imageContent?.map((url) => urlImageContent![imageBag.findIndex((data) => data.objectUrl === url)] ?? url);
             router.patch(
                 route('admin.konten.update', {
                     ...data,
@@ -97,7 +111,7 @@ export default function EditKonten({ konten }: { konten: kontenType }) {
                 }),
                 {
                     ...data,
-                    imageContent: urlImageContent,
+                    imageContent: mergedImageContent,
                 },
             );
         } else {
@@ -156,14 +170,17 @@ export default function EditKonten({ konten }: { konten: kontenType }) {
                         {data.imageCover && (
                             <img
                                 src={data.imageCover}
-                                className="mx-auto aspect-video w-1/2 cursor-pointer rounded-lg object-cover object-center"
+                                className="mx-auto aspect-video w-1/2 cursor-pointer rounded-lg object-cover object-center ring ring-[#AFB3FF]"
                                 onClick={() => imageCoverRef.current?.click()}
                             ></img>
                         )}
                         <Input
                             id="imageCover"
                             onChange={handleChangeImage}
-                            className={cn('border-0 ring ring-[#B9BDFF] focus-visible:ring-[#B9BDFF]', data.imageCover && 'hidden')}
+                            className={cn(
+                                'file:text-[#3B387E cursor-pointer border-0 ring ring-[#B9BDFF] file:cursor-pointer focus-visible:ring-[#B9BDFF]',
+                                data.imageCover && 'hidden',
+                            )}
                             type="file"
                             accept="image/png, image/jpeg"
                             ref={imageCoverRef}
@@ -173,40 +190,45 @@ export default function EditKonten({ konten }: { konten: kontenType }) {
                     <div className="flex flex-col gap-0.5">
                         <Label className="text-lg font-semibold">Lampiran Foto</Label>
 
-                        {(data.imageContent?.length as number) > 0 && (
-                            <div className="grid w-full cursor-pointer gap-7 lg:grid-cols-3">
-                                {data.imageContent?.map((img) => (
-                                    <img
-                                        onClick={() => imageBagRef.current?.click()}
-                                        src={img}
-                                        className="aspect-video w-full rounded-xl object-cover object-center"
-                                    />
-                                ))}
-                                <div
-                                    onClick={() => {
-                                        setData('imageContent', undefined);
-                                        setImageBag(undefined);
-                                        if (imageBagRef.current?.value) {
-                                            imageBagRef.current.value = '';
-                                        }
-                                    }}
-                                    className="flex aspect-video w-full items-center justify-center rounded-lg bg-red-400 text-white ring ring-red-400 hover:bg-transparent hover:font-semibold hover:text-red-400"
-                                >
-                                    <p>Delete All</p>
-                                </div>
-                            </div>
-                        )}
-                        {!data.imageContent && (
-                            <Input
-                                id="imageContent"
-                                onChange={handleChangeImage}
-                                className={cn('border-0 ring ring-[#B9BDFF] focus-visible:ring-[#B9BDFF]', imageBag && 'hidden')}
-                                type="file"
-                                multiple
-                                accept="image/png, image/jpeg"
-                                ref={imageBagRef}
-                            />
-                        )}
+                        {data.imageContent
+                            ? data.imageContent.length > 0 && (
+                                  <div className="grid w-full gap-7 lg:grid-cols-3">
+                                      {data.imageContent.map((img, index) => (
+                                          <div className="relative" key={index}>
+                                              <Button
+                                                  onClick={() => handleRemoveImage(index)}
+                                                  className="group absolute top-2 right-2 cursor-pointer bg-[#EC2525] ring ring-[#EC2525] hover:bg-white hover:text-[#EC2525]"
+                                              >
+                                                  <LucideTrash2 className="text-white group-hover:text-[#EC2525]" />
+                                              </Button>
+                                              <img
+                                                  onClick={() => imageBagRef.current?.click()}
+                                                  src={img}
+                                                  className="aspect-video w-full rounded-xl object-cover object-center ring ring-[#969bfa]"
+                                              />
+                                          </div>
+                                      ))}
+                                      <div
+                                          onClick={() => imageBagRef.current?.click()}
+                                          className="stroke-dash-2 flex aspect-video w-full cursor-pointer items-center justify-center rounded-xl border-2 border-dashed border-[#B9BDFF]"
+                                      >
+                                          <Plus size={75} strokeWidth={2} className="text-[#969bfa]" />
+                                      </div>
+                                  </div>
+                              )
+                            : null}
+                        <Input
+                            id="imageContent"
+                            onChange={handleChangeImage}
+                            className={cn(
+                                'file:text-[#3B387E]c cursor-pointer border-0 ring ring-[#B9BDFF] file:cursor-pointer focus-visible:ring-[#B9BDFF]',
+                                data.imageContent?.length && 'hidden',
+                            )}
+                            type="file"
+                            multiple
+                            accept="image/png, image/jpeg"
+                            ref={imageBagRef}
+                        />
                     </div>
                     <div className="flex flex-col gap-0.5">
                         <Label className="text-lg font-semibold">Isi Konten</Label>

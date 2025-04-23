@@ -28,7 +28,7 @@ export default function SweetAlert({ message, type }: props) {
         const timeout = setTimeout(() => {
             setShow(false);
             router.reload({ only: ['flash'] });
-        }, 2500);
+        }, 1500);
         return () => {
             clearTimeout(timeout);
         };

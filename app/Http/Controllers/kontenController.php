@@ -58,11 +58,11 @@ class kontenController extends Controller
     public function show($konten)
     {
         $konten = konten::whereId($konten)->first();
-        if($konten->imageContent){
+        if ($konten->imageContent) {
             $konten->imageContent = json_decode($konten->imageContent);
         }
         $editAble = true;
-        return Inertia::render('Guest/Konten/detailKontent',compact('konten','editAble'));
+        return Inertia::render('Guest/Konten/detailKontent', compact('konten', 'editAble'));
     }
 
     public function store(Request $request)

@@ -6,10 +6,10 @@ import AdminPageLayout from '@/layouts/adminPageLayout';
 import { cn } from '@/lib/utils';
 import { kontenType } from '@/types/koten';
 import { router, useForm } from '@inertiajs/react';
+import { LucideTrash2, Plus } from 'lucide-react';
 import { useRef, useState } from 'react';
 import z from 'zod';
 import { supabaseImage } from '../../../services/imageStorage';
-import { Plus, LucideTrash2 } from 'lucide-react';
 
 const youtubeUrlRegex = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/watch\?v=)([a-zA-Z0-9_-]{11})(?:[&?][^#\s]*)?$/;
 
@@ -51,7 +51,7 @@ export default function CreateKonten() {
             });
             setData(
                 'imageContent',
-                data.imageContent
+                data.imageContent?.length
                     ? [...data.imageContent, ...files.map((foto) => URL.createObjectURL(foto))]
                     : files.map((foto) => URL.createObjectURL(foto)),
             );
@@ -83,6 +83,7 @@ export default function CreateKonten() {
             const urlImageCover = imageUploader.uploadKonten(sampul as FileList);
             const urlImageContent = imageUploader.uploadKonten(imageBag as File[]);
             const allUrl = await Promise.all([urlImageContent, urlImageCover]);
+            console.log(allUrl);
             router.post(route('admin.konten.store'), {
                 ...data,
                 imageCover: allUrl[1]![0],
@@ -97,7 +98,6 @@ export default function CreateKonten() {
             imageContent: null,
         });
     };
-    console.log(data.imageContent);
     return (
         <AdminPageLayout page="Konten">
             <main className="flex h-full w-full flex-col rounded-t-lg border-[1px] border-b-0 border-[#AFB3FF] bg-[#FFFFFF] shadow-lg">
@@ -147,7 +147,7 @@ export default function CreateKonten() {
                         {data.imageCover && (
                             <img
                                 src={data.imageCover}
-                                className="mx-auto aspect-video w-1/2 cursor-pointer rounded-lg object-cover object-center"
+                                className="mx-auto aspect-video w-1/2 cursor-pointer rounded-lg object-cover object-center ring ring-[#AFB3FF]"
                                 onClick={() => imageCoverRef.current?.click()}
                             ></img>
                         )}
@@ -167,25 +167,33 @@ export default function CreateKonten() {
                     <div className="flex flex-col gap-0.5">
                         <Label className="text-lg font-semibold">Lampiran Foto</Label>
 
-                        {data.imageContent ?  data.imageContent.length > 0 &&  (
-                            <div className="grid w-full gap-7 lg:grid-cols-3">
-                                {data.imageContent.map((img, index) => (
-                                    <div className="relative" key={index}>
-                                        <Button onClick={() => handleRemoveImage(index)} className="bg-[#EC2525] ring-[#EC2525] ring hover:bg-white hover:text-[#EC2525] cursor-pointer absolute top-2 right-2">
-                                            <LucideTrash2/>
-                                        </Button>
-                                        <img
-                                            onClick={() => imageBagRef.current?.click()}
-                                            src={img}
-                                            className="ring ring-[#969bfa] aspect-video w-full rounded-xl object-cover object-center"
-                                        />
-                                    </div>
-                                ))}
-                                <div onClick={()=> imageBagRef.current?.click()} className="cursor-pointer flex items-center justify-center aspect-video rounded-xl w-full border-2 border-dashed stroke-dash-2 border-[#B9BDFF]">
-                                    <Plus size={75} strokeWidth={2} className='text-[#969bfa]'/>
-                                </div>
-                            </div>
-                        ) : null}
+                        {data.imageContent
+                            ? data.imageContent.length > 0 && (
+                                  <div className="grid w-full gap-7 lg:grid-cols-3">
+                                      {data.imageContent.map((img, index) => (
+                                          <div className="relative" key={index}>
+                                              <Button
+                                                  onClick={() => handleRemoveImage(index)}
+                                                  className="group absolute top-2 right-2 cursor-pointer bg-[#EC2525] ring ring-[#EC2525] hover:bg-white hover:text-[#EC2525]"
+                                              >
+                                                  <LucideTrash2 className="text-white group-hover:text-[#EC2525]" />
+                                              </Button>
+                                              <img
+                                                  onClick={() => imageBagRef.current?.click()}
+                                                  src={img}
+                                                  className="aspect-video w-full rounded-xl object-cover object-center ring ring-[#969bfa]"
+                                              />
+                                          </div>
+                                      ))}
+                                      <div
+                                          onClick={() => imageBagRef.current?.click()}
+                                          className="stroke-dash-2 flex aspect-video w-full cursor-pointer items-center justify-center rounded-xl border-2 border-dashed border-[#B9BDFF]"
+                                      >
+                                          <Plus size={75} strokeWidth={2} className="text-[#969bfa]" />
+                                      </div>
+                                  </div>
+                              )
+                            : null}
                         <Input
                             id="imageContent"
                             onChange={handleChangeImage}

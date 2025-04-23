@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 export default function SubmissionMitra() {
     const { pengajuanMitra } = usePage<prop>().props;
     return (
-        <section className="grid w-full flex-col gap-7.5 overflow-y-auto p-5 px-10 pt-2.5 md:grid md:h-[82vh] md:grid-cols-2 xl:grid-cols-3 lg:pt-10 lg:px-12">
+        <section className="grid w-full flex-col gap-7.5 overflow-y-auto p-5 px-10 pt-5 md:grid md:h-[82vh] md:grid-cols-2 xl:grid-cols-3 lg:pt-5">
             {pengajuanMitra.map((mitra)=> <article onClick={()=>router.get(route('admin.mitra.pengajuan.index',{id : mitra.id}))} className='cursor-pointer ring ring-[#B9BDFF] w-full aspect-square shadow-md rounded-lg flex flex-col items-center px-10 py-5 justify-between'>
                 <img src={mitra.user.profile_picture} className="w-1/2 aspect-square object-center object-cover rounded-full" alt="" />
                 <h1 className='w-full text-start font-black text-xl'>{mitra.user.name}</h1>

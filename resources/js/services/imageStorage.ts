@@ -17,12 +17,12 @@ export class supabaseImage extends supabaseService {
     }
 
     public async uploadKonten(params: FileList | File[]) {
-        if (typeof params === typeof FileList) {
+        try {
             const promise = Object.values(params).map((item) => {
                 return this.supabaseConnection.storage.from('paktelang').upload(`${this.basePath}/${item.name}`, item, { contentType: item.type, upsert: true })
             })
             return await this.getUrl((await Promise.all(promise)).map((item) => (item.data?.path)) as string[])
-        } else {
+        } catch {
             const promise = (params as File[]).map((item) => {
                 return this.supabaseConnection.storage.from('paktelang').upload(`${this.basePath}/${item.name}`, item, { contentType: item.type, upsert: true })
             })

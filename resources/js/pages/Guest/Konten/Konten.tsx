@@ -19,20 +19,31 @@ export default function KontenPage() {
     const [isloading, setIsloading] = useState<boolean>(false);
     const { kontens, category, search } = usePage<props>().props;
     const [data, setData] = useState<{ category: string; search: string }>({
-        category: category ?? '',
+        category: category ?? 'default',
         search: search ?? '',
     });
 
     const handleFilterSearch = (param?: string) => {
         if (param) {
             setData((prev) => ({ ...prev, category: param }));
+            router.reload({
+                onStart: () => setIsloading(true),
+                onFinish: () => setIsloading(false),
+                only: ['kontens', 'search', 'mitra'],
+                data: {
+                    search: data.search,
+                    category: param !== 'default' ? param : null,
+                },
+            });
+            return;
         }
         router.reload({
             onStart: () => setIsloading(true),
             onFinish: () => setIsloading(false),
+            only: ['kontens', 'search', 'mitra'],
             data: {
                 search: data.search,
-                category: param ?? data.category,
+                category: data.category !== 'default' ? data.category : null,
             },
         });
     };
@@ -49,15 +60,15 @@ export default function KontenPage() {
                         e.preventDefault();
                         handleFilterSearch();
                     }}
-                    className="flex gap-x-2.5"
+                    className="flex flex-col-reverse gap-2.5 lg:flex-row"
                 >
                     <select
-                        value={data.category ?? ''}
+                        value={data.category}
                         disabled={isloading}
                         onChange={(e) => handleFilterSearch(e.target.value)}
                         className="w-full flex-1/4 rounded-lg bg-white p-2 ring ring-[#5961BE] focus-visible:ring-3"
                     >
-                        <option value={''}>Category</option>
+                        <option value={'default'}>Category</option>
                         <option value={'Blog'}>Blog</option>
                         <option value={'Penyaluran Donasi'}>Penyaluran Donasi</option>
                     </select>
@@ -68,38 +79,41 @@ export default function KontenPage() {
                         disabled={isloading}
                         value={data.search}
                         onChange={(e) => setData((prev) => ({ ...prev, search: e.target.value }))}
-                        onKeyDown={(e) => e.key === 'Enter' && handleFilterSearch()}
                     />
                 </form>
                 <article className={cn('mt-5 w-full gap-10 px-2.5 md:grid-cols-2 xl:grid-cols-3', !isloading && kontens.length && 'grid')}>
                     {!isloading ? (
-                        kontens.length > 0 ? kontens.map((konten: kontenType) => (
-                            <div className="flex w-full flex-col gap-1.5 rounded-xl bg-white p-10 shadow">
-                                <div className="relative flex w-full overflow-hidden rounded-xl">
-                                    <img src={konten.imageCover} alt="" className="z-0 aspect-3/2 object-cover object-center" />
-                                    <div className="absolute top-0 z-10 h-full w-full flex-1 bg-black/30 p-5 py-3">
-                                        <h1 className="z-10 text-xl font-semibold text-white">{konten.category}</h1>
+                        kontens.length > 0 ? (
+                            kontens.map((konten: kontenType) => (
+                                <div className="flex w-full flex-col gap-1.5 rounded-xl bg-white p-10 shadow">
+                                    <div className="relative flex w-full overflow-hidden rounded-xl">
+                                        <img src={konten.imageCover} alt="" className="z-0 aspect-3/2 object-cover object-center" />
+                                        <div className="absolute top-0 z-10 h-full w-full flex-1 bg-black/30 p-5 py-3">
+                                            <h1 className="z-10 text-xl font-semibold text-white">{konten.category}</h1>
+                                        </div>
+                                    </div>
+                                    <Heading className="mt-5" title={konten.slug} />
+                                    <HeadingSmall
+                                        className="text-sm"
+                                        title={
+                                            'Pak Telang -   ' +
+                                            Intl.DateTimeFormat('id-ID', { dateStyle: 'full' }).format(new Date(konten.created_at))
+                                        }
+                                    />
+                                    <pre className="lg:text-md line-clamp-5 font-sans text-xs break-words whitespace-pre-wrap text-black md:text-sm">
+                                        {konten.content}
+                                    </pre>
+                                    <div className="mt-5 flex gap-2">
+                                        <Link className="cursor-pointer font-semibold" href={route('konten.show', { id: konten.id })}>
+                                            ReadMore
+                                        </Link>
+                                        <ArrowRightIcon />
                                     </div>
                                 </div>
-                                <Heading className="mt-5" title={konten.slug} />
-                                <HeadingSmall
-                                    className="text-sm"
-                                    title={
-                                        'Pak Telang - Jember, ' +
-                                        Intl.DateTimeFormat('id-ID', { dateStyle: 'full' }).format(new Date(konten.created_at))
-                                    }
-                                />
-                                <pre className="lg:text-md line-clamp-5 text-xs break-words whitespace-pre-wrap text-black md:text-sm">
-                                    {konten.content}
-                                </pre>
-                                <div className="mt-5 flex gap-2">
-                                    <Link className="cursor-pointer font-semibold" href={route('konten.show', { id: konten.id })}>
-                                        ReadMore
-                                    </Link>
-                                    <ArrowRightIcon />
-                                </div>
-                            </div>
-                        )) : <Heading title="Hasil Pencarian Tidak Ditemukan" className="mx-auto w-fit" />
+                            ))
+                        ) : (
+                            <Heading title="Hasil Pencarian Tidak Ditemukan" className="mx-auto w-fit" />
+                        )
                     ) : (
                         <Heading title="Loading...." className="mx-auto w-fit" />
                     )}
