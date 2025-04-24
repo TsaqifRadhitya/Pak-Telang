@@ -20,7 +20,7 @@ export default function MouPending() {
     });
     const [mou, setMou] = useState<File | undefined>();
     const inputFile = useRef<HTMLInputElement>(null);
-    console.log(mitra)
+    console.log(mitra);
     useEffect(() => {
         mouEditor.replacer(mitra).then((ress) => {
             renderAsync(ress, document.getElementById('docpreview') as HTMLElement);
@@ -100,7 +100,8 @@ export default function MouPending() {
                             </Button>
                         </div>
                         <div className="max-h-screen w-full max-w-[72vw] overflow-y-auto sm:max-w-[82vw] md:max-w-[84vw] xl:max-w-full">
-                            <div id="docpreview" className='h-screen max-w-full overflow-x-auto'></div>
+                            <div id="docpreview" className={cn('h-screen max-w-full overflow-x-auto', mou && 'hidden')}></div>
+                            {mou && <iframe className="h-screen w-full" src={URL.createObjectURL(mou)}></iframe>}
                         </div>
                         <Input
                             type="file"
