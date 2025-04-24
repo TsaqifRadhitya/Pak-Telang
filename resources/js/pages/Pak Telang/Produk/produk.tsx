@@ -228,7 +228,7 @@ export default function ProductAdminPage({ products }: { products: productType[]
                                     onChange={(e) => setData('productDescription', e.target.value)}
                                     value={data.productDescription}
                                     placeholder="Deskripsi Produk"
-                                    className="border-0 bg-black text-[#3B387E] ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:ring-3 focus-visible:ring-[#B9BDFF]"
+                                    className="border-0 text-[#3B387E] ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:ring-3 focus-visible:ring-[#B9BDFF]"
                                 />
                                 {errors.productDescription && <p className="text-sm text-red-600">{errors.productDescription}</p>}
                             </div>
@@ -244,7 +244,7 @@ export default function ProductAdminPage({ products }: { products: productType[]
                                 )}
                                 <div className="flex flex-wrap gap-2.5">
                                     {data.productPhoto?.map((photo) => (
-                                        <img src={photo} className="aspect-square w-1/6 rounded-lg object-cover object-center shadow" />
+                                        <img src={photo} className="aspect-square w-1/6 ring ring-[#B9BDFF] rounded-lg object-cover object-center shadow" />
                                     ))}
                                 </div>
                                 <Button

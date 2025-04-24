@@ -30,7 +30,7 @@ const pengajuanMitraEditValidation = z.object({
     birthday: z.string({ message: 'Harap mengisi tanggal lahir' }).min(1, 'Harap mengisi tanggal lahir'),
     gender: z.string({ message: 'Harap mengisi jenis kelamin' }).min(1, 'Harap mengisi jenis kelamin'),
     phonenumber: z.string({ message: 'Harap mengisi Nomor Hp' }).regex(/^\d{1,13}$/, 'Nomor telepon hanya boleh berisi angka dan maksimal 13 digit'),
-    NIK: z.string({ message: 'Harap mengisi NIK' }).min(16, 'Jumlah digit NIK harus 16'),
+    NIK: z.string({ message: 'Harap mengisi NIK' }).min(16, 'Jumlah digit NIK harus 16').max(16,'Jumlah digit NIK harus 16'),
     province: z.string({ message: 'Harap mengisi provinsi' }).min(1, 'Harap mengisi provinsi'),
     cityName: z.string({ message: 'Harap mengisi kota' }),
     districtName: z.string({ message: 'Harap mengisi kecamatan' }),
@@ -281,7 +281,7 @@ export default function Create() {
                                 onChange={(e) => setData('address', e.target.value)}
                                 value={data.address}
                                 placeholder="Masukkan alamat lengkap usaha (nama jalan, dusun, dll)"
-                                className="min-h-20 border-0 bg-black text-[#3B387E] ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:ring-3 focus-visible:ring-[#B9BDFF]"
+                                className="min-h-20 border-0 text-[#3B387E] ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:ring-3 focus-visible:ring-[#B9BDFF]"
                             />
                             {errors.address && <InputError message={errors.address} />}
                         </div>
@@ -345,7 +345,7 @@ export default function Create() {
                                 onChange={(e) => setData('alasanPengajuan', e.target.value)}
                                 value={data.alasanPengajuan}
                                 placeholder="Masukkan alasan anda mengajukan diri menjadi mitra"
-                                className="min-h-20 border-0 bg-black text-[#3B387E] ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:ring-3 focus-visible:ring-[#B9BDFF]"
+                                className="min-h-20 border-0 text-[#3B387E] ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:ring-3 focus-visible:ring-[#B9BDFF]"
                             />
                             {errors.alasanPengajuan && <InputError message={errors.alasanPengajuan} />}
                         </div>
@@ -359,7 +359,7 @@ export default function Create() {
                                 accept="image/png, image/jpeg"
                                 onChange={handleChangeImage}
                             />
-                            <h2 className="text-lg font-semibold">Alasan Pengajuan</h2>
+                            <h2 className="text-lg font-semibold">Foto Dapur</h2>
                             <p className="mb-2">Anda dapat mengupload lebih dari 1 gambar</p>
                             {!data.fotoDapur.length && (
                                 <div

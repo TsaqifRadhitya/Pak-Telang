@@ -213,7 +213,7 @@ export default function CreateKonten() {
                             placeholder="Silahkan mengisi isi konten"
                             onChange={(e) => setData('content', e.target.value)}
                             value={data.content}
-                            className="h-[26.8vh] border-0 bg-black text-[#3B387E] ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:ring-3 focus-visible:ring-[#B9BDFF]"
+                            className="h-[26.8vh] border-0 text-[#3B387E] ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:ring-3 focus-visible:ring-[#B9BDFF]"
                         />
                         {errors.content && <p className="text-xs font-extralight text-red-600 italic">{errors.content}</p>}
                     </div>

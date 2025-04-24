@@ -24,7 +24,6 @@ class pengajuanMitraController extends Controller
     {
 
         $mitra = mitra::where('userId', '=', Auth::user()->id)->first();
-
         if ($mitra === null || $mitra->statusPengajuan === 'Formulir ditolak') {
             $address = $this->getFullAdress();
             return Inertia::render('Customer/Pengajuan Mitra/create', compact('address'));
@@ -52,7 +51,7 @@ class pengajuanMitraController extends Controller
 
     public function mou()
     {
-        $mitra = mitra::with('user')->where('userId', '=', Auth::user()->id)->where('statusPengajuan', '=', 'Formulir disetujui')->orWhere('statusPengajuan', '=', 'MOU ditolak')->first();
+        $mitra = mitra::with('user')->where ('userId', '=', Auth::user()->id)->whereIn('statusPengajuan', ['Formulir disetujui', 'MOU ditolak'])->first();
         if (!$mitra) return redirect(route('customer.pengajuanmitra.status'));
         $mitra = [...$mitra->toArray(), 'address' => $this->getMitraAddress($mitra), 'fotoDapur' => json_decode($mitra->fotoDapur)];
         return Inertia::render('Customer/Pengajuan Mitra/statusMouPending', compact('mitra'));

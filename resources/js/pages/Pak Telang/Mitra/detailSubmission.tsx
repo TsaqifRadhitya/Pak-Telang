@@ -11,14 +11,12 @@ import { useEffect, useRef, useState } from 'react';
 import Heading from '../../../components/heading';
 import HeadingSmall from '../../../components/heading-small';
 
-
 export default function DetailSubmission() {
     const { mitra } = usePage<{ mitra: mitra }>().props;
-    console.log(mitra.fotoDapur)
 
     useEffect(() => {
         document.querySelector('body')?.classList.add('overflow-y-hidden');
-        if(mitra.mou) return
+        if (mitra.mou) return;
         mouEditor.replacer(mitra).then((ress) => {
             renderAsync(ress, document.getElementById('docpreview') as HTMLElement);
         });
@@ -87,7 +85,7 @@ export default function DetailSubmission() {
                 </div>
             )}
             <AdminPageLayout page="Mitra">
-                <article className="flex-1 space-y-5 overflow-y-auto pb-16 max-h-[91.4vh]">
+                <article className="max-h-[91.4vh] flex-1 space-y-5 overflow-y-auto pb-16">
                     <article className="w-full flex-1 rounded-lg border border-[#AFB3FF] bg-[#FFFFFF] shadow-xl">
                         <div className="flex items-center justify-between border-b-[1px] border-[#AFB3FF] p-5 md:px-10 md:py-5">
                             <h1 className="text-xl font-semibold">Mitra</h1>
@@ -242,7 +240,7 @@ export default function DetailSubmission() {
                                             : 'Menunggu Persetujuan MoU'}
                                 </h1>
                             </div>
-                            <div className="max-h-screen w-full max-w-[87vw] mx-auto lg:max-w-[65vw] overflow-y-auto">
+                            <div className="mx-auto max-h-screen w-full max-w-[87vw] overflow-y-auto lg:max-w-[65vw]">
                                 {!mitra.mou && <div id="docpreview" className="h-screen w-full"></div>}
                                 {mitra.mou && <iframe className="h-screen w-full" src={mitra.mou}></iframe>}
                             </div>

@@ -20,28 +20,10 @@ export default function MouPending() {
     });
     const [mou, setMou] = useState<File | undefined>();
     const inputFile = useRef<HTMLInputElement>(null);
-
+    console.log(mitra)
     useEffect(() => {
         mouEditor.replacer(mitra).then((ress) => {
-            renderAsync(ress, document.getElementById('docpreview') as HTMLElement, undefined, {
-                inWrapper: true, //enables rendering of wrapper around document content
-                hideWrapperOnPrint: false, //disable wrapper styles on print
-                ignoreWidth: false, //disables rendering width of page
-                ignoreHeight: false, //disables rendering height of page
-                ignoreFonts: false, //disables fonts rendering
-                breakPages: true, //enables page breaking on page breaks
-                ignoreLastRenderedPageBreak: true, //disables page breaking on lastRenderedPageBreak elements
-                experimental: false, //enables experimental features (tab stops calculation)
-                trimXmlDeclaration: true, //if true, xml declaration will be removed from xml documents before parsing
-                useBase64URL: false, //if true, images, fonts, etc. will be converted to base 64 URL, otherwise URL.createObjectURL is used
-                renderChanges: false, //enables experimental rendering of document changes (inserions/deletions)
-                renderHeaders: true, //enables headers rendering
-                renderFooters: true, //enables footers rendering
-                renderFootnotes: true, //enables footnotes rendering
-                renderEndnotes: true, //enables endnotes rendering
-                renderComments: false, //enables experimental comments rendering
-                renderAltChunks: true, //enables altChunks (html parts) rendering
-            });
+            renderAsync(ress, document.getElementById('docpreview') as HTMLElement);
         });
     }, []);
 
@@ -117,9 +99,8 @@ export default function MouPending() {
                                 Unduh File Sekarang
                             </Button>
                         </div>
-                        <div className="max-h-screen w-full max-w-[72vw] sm:max-w-[82vw] md:max-w-[84vw] xl:max-w-full overflow-y-auto">
-                            <div id="docpreview" className={cn('h-screen max-w-full overflow-x-auto', mou && 'hidden')}></div>
-                            {mou && <iframe className="h-screen w-full" src={URL.createObjectURL(mou)}></iframe>}
+                        <div className="max-h-screen w-full max-w-[72vw] overflow-y-auto sm:max-w-[82vw] md:max-w-[84vw] xl:max-w-full">
+                            <div id="docpreview" className='h-screen max-w-full overflow-x-auto'></div>
                         </div>
                         <Input
                             type="file"
@@ -130,10 +111,10 @@ export default function MouPending() {
                             onChange={handleChangeInput}
                         />
                         <div className="w-full space-y-1">
-                            <div className="flex flex-col md:flex-row w-full items-center gap-5">
+                            <div className="flex w-full flex-col items-center gap-5 md:flex-row">
                                 <div
                                     onClick={handleOpen}
-                                    className="flex w-full md:w-auto flex-5/6 cursor-pointer items-center gap-5 rounded-lg border-2 border-[#B9BDFF] p-2.5"
+                                    className="flex w-full flex-5/6 cursor-pointer items-center gap-5 rounded-lg border-2 border-[#B9BDFF] p-2.5 md:w-auto"
                                 >
                                     <button className="cursor-pointer rounded-sm bg-[#B9BDFF] p-1 px-3 text-sm font-semibold text-[#3B387E] hover:bg-[#B9BDFF]">
                                         Choose File
@@ -142,7 +123,7 @@ export default function MouPending() {
                                 </div>
                                 <Button
                                     onClick={handleSubmit}
-                                    className="min-h-12 w-full md:w-auto flex-1/7 cursor-pointer bg-transparent font-semibold text-[#5961BE] ring ring-[#5961BE] hover:bg-[#5961BE] hover:font-normal hover:text-white md:flex-none"
+                                    className="min-h-12 w-full flex-1/7 cursor-pointer bg-transparent font-semibold text-[#5961BE] ring ring-[#5961BE] hover:bg-[#5961BE] hover:font-normal hover:text-white md:w-auto md:flex-none"
                                 >
                                     Unggah MoU
                                 </Button>
