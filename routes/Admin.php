@@ -1,11 +1,13 @@
 <?php
 
 use App\Http\Controllers\dashboardController;
+use App\Http\Controllers\ewalletController;
 use App\Http\Controllers\kontenController;
 use App\Http\Controllers\mitraController;
 use App\Http\Controllers\pengajuanMitraController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\profileController;
+use App\Http\Controllers\transaksiAdminController;
 use App\Http\Middleware\adminMidleware;
 use Illuminate\Support\Facades\Route;
 
@@ -31,8 +33,15 @@ Route::middleware(['auth', adminMidleware::class])->group(function () {
         Route::get('konten', [kontenController::class, 'index'])->name('admin.konten');
         Route::resource('konten', kontenController::class)->except('index')->names('admin.konten');
 
-        // Route::get('/stock', [ProductController::class,'showStock'])->name('admin.stock.index');
-        // Route::patch('/stock/{id}', [ProductController::class,'updateStock'])->name('admin.stock.update');
-        // Route::delete('/stock/{id}', [ProductController::class,'destroy'])->name('admin.stock.destroy');
+        Route::prefix('transaksi')->group(function () {
+            Route::get('/', [transaksiAdminController::class, 'index'])->name('admin.transaksi');
+            Route::get('{id}', [transaksiAdminController::class, 'show'])->name('admin.show');
+            Route::patch('{id}', [transaksiAdminController::class, 'update'])->name('admin.update');
+        });
+
+        Route::prefix('ewallet')->group(function () {
+            Route::get('/', [ewalletController::class, 'index'])->name('admin.ewallet');
+            Route::patch('{id}', [ewalletController::class, 'update'])->name('admin.ewallet.store');
+        });
     });
 });

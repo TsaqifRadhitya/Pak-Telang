@@ -1,9 +1,13 @@
 <?php
 
+use App\Http\Controllers\midtransController;
 use App\Http\Controllers\pengajuanMitraController;
 use App\Http\Controllers\profileController;
+use App\Http\Controllers\transaksiCustomerController;
 use App\Http\Middleware\customerMidleware;
 use Illuminate\Support\Facades\Route;
+
+Route::post('/midtrans/callback', [midtransController::class, 'callback'])->name('midtrans.callback');
 
 Route::middleware(['auth', customerMidleware::class])->group(function () {
     Route::prefix('profile')->group(function () {
@@ -18,5 +22,13 @@ Route::middleware(['auth', customerMidleware::class])->group(function () {
         Route::post('/store', [pengajuanMitraController::class, 'store'])->name('customer.pengajuanmitra.store');
         Route::get('/status', [pengajuanMitraController::class, 'statusCheck'])->name('customer.pengajuanmitra.status');
         Route::get('/mou', [pengajuanMitraController::class, 'mou'])->name('customer.mou.index');
+    });
+
+    Route::prefix('transaksi')->group(function () {
+        Route::get('/', [transaksiCustomerController::class, 'index'])->name('transaksi');
+        Route::get('create', [transaksiCustomerController::class, 'create'])->name('transaksi.create');
+        Route::get('{id}', [transaksiCustomerController::class, 'show'])->name('transaksi.show');
+        Route::post('store', [transaksiCustomerController::class, 'store'])->name('transaksi.store');
+        Route::patch('{id}', [transaksiCustomerController::class, 'update'])->name('transaksi.update');
     });
 });

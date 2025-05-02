@@ -48,6 +48,7 @@ export interface User {
     phonenumber: string;
     gender: gender
     birthday: string
+    saldo : number;
     profile_picture: string;
     created_at: string;
     updated_at: string; // This allows for additional properties...

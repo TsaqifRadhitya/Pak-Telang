@@ -24,6 +24,7 @@ return new class extends Migration
             $table->date('birthday')->nullable();
             // $table->timestamp('email_verified_at')->nullable();
             $table->text('address')->nullable();
+            $table->integer('saldo')->default(0);
             $table->string('postalCode')->nullable();
             $table->foreignUlid('districtId')->nullable()->constrained('districts');
             $table->rememberToken();
