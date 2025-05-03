@@ -81,10 +81,10 @@ class transaksiCustomerController extends Controller
     {
         Config::$serverKey = env("VITE_MIDTRANS_SERVER_KEY");
         Config::$isProduction = false;
-        $transaction = Transaksi::with(['detailTransaksis.product'])->where('id',$id)->where('status','Menunggu Pembayaran')->first();
+        $transaction = Transaksi::with(['detailTransaksis.product'])->where('id', $id)->where('status', 'Menunggu Pembayaran')->first();
         if ($transaction) {
             $transaction = [...$transaction->toArray(), 'Total' => DetailTransaksi::where('transaksiId', $transaction->id)->sum('subTotal')];
-            try {
+            if (!$transaction['snapToken']) {
                 $ress = Snap::createTransaction([
                     "transaction_details" => [
                         "order_id" => $transaction['id'],
@@ -92,9 +92,7 @@ class transaksiCustomerController extends Controller
                     ]
                 ]);
                 Transaksi::whereId($id)->update(['snapToken' => $ress->token]);
-                $transaction = [...$transaction,'snapToken' => $ress->token];
-            } catch (Exception $e) {
-
+                $transaction = [...$transaction, 'snapToken' => $ress->token];
             }
             return Inertia::render('Customer/Transaksi/payment', compact('transaction'));
         };
