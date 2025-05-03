@@ -81,7 +81,7 @@ class transaksiCustomerController extends Controller
     {
         Config::$serverKey = env("VITE_MIDTRANS_SERVER_KEY");
         Config::$isProduction = false;
-        $transaction = Transaksi::with(['detailTransaksis.product'])->find($id);
+        $transaction = Transaksi::with(['detailTransaksis.product'])->where('id',$id)->where('status','Menunggu Pembayaran')->first();
         if ($transaction) {
             $transaction = [...$transaction->toArray(), 'Total' => DetailTransaksi::where('transaksiId', $transaction->id)->sum('subTotal')];
             try {
