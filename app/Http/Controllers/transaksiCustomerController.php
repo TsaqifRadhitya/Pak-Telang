@@ -88,7 +88,7 @@ class transaksiCustomerController extends Controller
                 $ress = Snap::createTransaction([
                     "transaction_details" => [
                         "order_id" => $transaction['id'],
-                        "gross_amount" => $transaction['Total'] + ($transaction['ongkir'] ?? 0)
+                        "gross_amount" => $transaction['ongkir'] ? $transaction['Total']  + $transaction['ongkir'] : $transaction['Total']
                     ]
                 ]);
                 Transaksi::whereId($id)->update(['snapToken' => $ress->token]);
