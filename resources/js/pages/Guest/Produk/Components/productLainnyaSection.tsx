@@ -40,7 +40,7 @@ export default function ProductLainnyaSection() {
                                     {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.productPrice)}
                                 </h1>
                                 <Button
-                                    onClick={() => router.get(route('transaksi.create', { id: item.id }))}
+                                    onClick={() => router.get(route('customer.transaksi.create', { id: item.id }))}
                                     className="cursor-pointer rounded-full bg-transparent text-[#5961BE] ring-2 ring-[#5961BE] hover:bg-[#5961BE] hover:text-white"
                                 >
                                     Beli Sekarang

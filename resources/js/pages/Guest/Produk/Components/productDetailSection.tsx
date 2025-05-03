@@ -40,7 +40,7 @@ export default function ProductDetailSection() {
                         </p>
                     </section>
                     <Button
-                        onClick={() => router.get(route('transaksi.create', { id: productDetail.id }))}
+                        onClick={() => router.get(route('customer.transaksi.create', { id: productDetail.id }))}
                         className="absolute right-0 bottom-0 min-h-14 w-full cursor-pointer rounded-3xl bg-[#5961BE] text-2xl text-white hover:bg-[#424a9e] lg:w-1/4"
                     >
                         <p>Beli Sekarang</p>

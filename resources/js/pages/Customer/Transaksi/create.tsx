@@ -2,19 +2,22 @@ import { Button } from '@/components/ui/button';
 import LandingPageLayout from '@/layouts/landingPageLayout';
 import { cn } from '@/lib/utils';
 import { SharedData } from '@/types';
+import { addressType } from '@/types/address';
 import { detailTransactionType } from '@/types/detailTransaction';
 import { productType } from '@/types/product';
 import { router, usePage } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import Heading from '../../../components/heading';
+import HeadingSmall from '../../../components/heading-small';
 
 interface props extends SharedData {
     products: productType[];
     selectedProduct?: string;
+    address: addressType;
 }
 
 export default function TransactionCreate() {
-    const { products, selectedProduct } = usePage<props>().props;
+    const { products, selectedProduct, address } = usePage<props>().props;
     const [data, setData] = useState<detailTransactionType[]>();
     const [isSubmited, setSubmited] = useState<boolean>(false);
 
@@ -24,9 +27,8 @@ export default function TransactionCreate() {
 
     const handleSubmit = () => {
         if (data?.length) {
-            console.log(data);
             setSubmited(true);
-            router.post(route('transaksi.store'),{data : data});
+            router.post(route('customer.transaksi.store'), { data: data });
         }
     };
 
@@ -35,7 +37,6 @@ export default function TransactionCreate() {
             const existing = prev?.find((item) => item.productId === id);
             const product = products.find((p) => p.id === id);
             if (!product) return prev;
-
             if (!existing) {
                 return [
                     ...(prev ?? []),
@@ -85,7 +86,7 @@ export default function TransactionCreate() {
     }, [selectedProduct]);
     return (
         <LandingPageLayout>
-            <section className="flex flex-col bg-[#EBEFFF] p-5 py-20 text-[#3B387E] md:px-10 lg:min-h-screen">
+            <section className="flex flex-col bg-[#EBEFFF] p-5 pt-20 text-[#3B387E] md:px-10 lg:min-h-screen">
                 <Heading title="Transaksi" disableMb className="text-3xl" />
                 <div className="mt-5 flex flex-1 flex-col gap-16 px-5 lg:flex-row">
                     <article className="grid flex-2/3 gap-16 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
@@ -161,91 +162,136 @@ export default function TransactionCreate() {
                             </section>
                         ))}
                     </article>
-                    <div className="flex h-fit min-h-[80vh] flex-3/5 flex-col rounded-xl bg-white p-5 text-lg shadow-md">
-                        <table className="w-full">
-                            <thead className="flex w-full justify-between border-b-[1.8px] border-[#D9D9D9] px-5 pb-2">
-                                <tr className="grid w-full grid-cols-4 text-left">
-                                    <th className="text-center">Nama Produk</th>
-                                    <th className="text-center">Quantity</th>
-                                    <th className="text-center">Sub-total</th>
-                                    <th className="text-center"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {data?.map((item) => (
-                                    <tr
-                                        key={item.productId}
-                                        className="grid w-full grid-cols-4 items-center border-b-[1.8px] border-[#D9D9D9] px-5 py-5"
-                                    >
-                                        <td>
-                                            <p className="rounded px-2 py-1 text-center">{item.productName}</p>
-                                        </td>
-                                        <td className="text-center">
-                                            <div className="mx-auto flex w-2/3 items-center justify-between overflow-hidden rounded-full px-5 ring ring-[#3B387E]">
-                                                <Button
-                                                    className="cursor-pointer bg-transparent px-0 py-0 font-semibold disabled:cursor-default"
-                                                    onClick={() => handleChangeAmount('decrement', item.productId)}
-                                                    disabled={item.amount === 1 || isSubmited}
-                                                >
-                                                    -
-                                                </Button>
-                                                <p className="text-sm font-semibold">{item.amount}</p>
-                                                <Button
-                                                    className="cursor-pointer bg-transparent px-0 py-0 font-semibold disabled:cursor-default"
-                                                    onClick={() => handleChangeAmount('Increment', item.productId)}
-                                                    disabled={item.amount === products.find((items) => items.id === item.productId)?.productStock || isSubmited}
-                                                >
-                                                    +
-                                                </Button>
-                                            </div>
-                                        </td>
-                                        <td className="text-center">
-                                            {new Intl.NumberFormat('id-ID', {
-                                                style: 'currency',
-                                                currency: 'IDR',
-                                            }).format(item.subTotal)}
-                                        </td>
-                                        <td className="text-center">
-                                            <Button
-                                                disabled={isSubmited}
-                                                className="aspect-square cursor-pointer rounded-full bg-[#FFD6DA] px-3 py-0 text-xl font-black text-[#B71C1C] hover:bg-[#FFD6DAbedan] hover:ring hover:ring-[#B71C1C]"
-                                                onClick={() => handleDeleteTransactionItem(item.productId)}
-                                            >
-                                                x
-                                            </Button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                        <div className="mt-auto space-y-10">
+                    <div className="flex h-fit min-h-[80vh] flex-3/5 flex-col gap-7">
+                        <div className="flex gap-1.5 flex-col rounded-xl bg-white p-5 shadow-sm">
                             <div className="flex justify-between">
-                                <Heading title="Subtotal" />
-                                <Heading
-                                    title={
-                                        data
-                                            ? new Intl.NumberFormat('id-ID', { currency: 'IDR', style: 'currency' }).format(
-                                                  data!.map((item) => item.subTotal).reduce((total, current) => total + current, 0),
-                                              )
-                                            : new Intl.NumberFormat('id-ID', { currency: 'IDR', style: 'currency' }).format(0)
-                                    }
-                                />
+                                <HeadingSmall title="Alamat Tujuan" className="text-2xl font-semibold" />
+                                <svg
+                                    onClick={() => router.get(route('customer.profile.edit'))}
+                                    className="cursor-pointer"
+                                    width="20"
+                                    height="20"
+                                    viewBox="0 0 20 20"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path
+                                        d="M9.98985 2.64648H7.01111C4.56136 2.64648 3.02539 4.38112 3.02539 6.83686V13.4615C3.02539 15.9172 4.55419 17.6518 7.01111 17.6518H14.0409C16.4986 17.6518 18.0274 15.9172 18.0274 13.4615V10.2519"
+                                        stroke="#3B387E"
+                                        stroke-width="1.1952"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    />
+                                    <path
+                                        fill-rule="evenodd"
+                                        clip-rule="evenodd"
+                                        d="M7.86788 9.1255L13.8214 3.171C14.5631 2.42998 15.7652 2.42998 16.5069 3.171L17.4765 4.14071C18.2182 4.88253 18.2182 6.0857 17.4765 6.82673L11.4943 12.8099C11.1701 13.1342 10.7303 13.3167 10.2714 13.3167H7.28711L7.362 10.3048C7.37315 9.86174 7.55399 9.43944 7.86788 9.1255Z"
+                                        stroke="#3B387E"
+                                        stroke-width="1.1952"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    />
+                                    <path
+                                        d="M12.916 4.08984L16.5536 7.72804"
+                                        stroke="#3B387E"
+                                        stroke-width="1.1952"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    />
+                                </svg>
                             </div>
-                            <div className="flex justify-between gap-5">
-                                <Button
-                                    disabled={isSubmited}
-                                    onClick={() => router.get(route('produk'))}
-                                    className="flex-1 cursor-pointer bg-transparent font-semibold text-[#5961BE] ring ring-[#5961BE] hover:bg-[#5961BE] hover:font-normal hover:text-white"
-                                >
-                                    Batal
-                                </Button>
-                                <Button
-                                    disabled={isSubmited}
-                                    onClick={handleSubmit}
-                                    className="flex-1 cursor-pointer bg-[#5961BE] font-normal text-white ring ring-[#5961BE] hover:bg-transparent hover:font-semibold hover:text-[#5961BE]"
-                                >
-                                    Pesan Sekarang
-                                </Button>
+                            <h1>{`${address.address}, ${address.districtName}, ${address.cityName} ${address.province}, ${address.postalCode}`}</h1>
+                            <p className='text-[#FFA114]'>Note: Alamat dapat diubah melalui profil anda</p>
+                        </div>
+                        <div className="flex h-fit flex-6/7 flex-col rounded-xl bg-white p-5 text-lg">
+                            <table className="w-full">
+                                <thead className="flex w-full justify-between border-b-[1.8px] border-[#D9D9D9] px-5 pb-2">
+                                    <tr className="grid w-full grid-cols-4 text-left">
+                                        <th className="text-center">Nama Produk</th>
+                                        <th className="text-center">Quantity</th>
+                                        <th className="text-center">Sub-total</th>
+                                        <th className="text-center"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {data?.map((item) => (
+                                        <tr
+                                            key={item.productId}
+                                            className="grid w-full grid-cols-4 items-center border-b-[1.8px] border-[#D9D9D9] px-5 py-5"
+                                        >
+                                            <td>
+                                                <p className="rounded px-2 py-1 text-center">{item.productName}</p>
+                                            </td>
+                                            <td className="text-center">
+                                                <div className="mx-auto flex w-2/3 items-center justify-between overflow-hidden rounded-full px-5 ring ring-[#3B387E]">
+                                                    <Button
+                                                        className="cursor-pointer bg-transparent px-0 py-0 font-semibold disabled:cursor-default"
+                                                        onClick={() => handleChangeAmount('decrement', item.productId)}
+                                                        disabled={item.amount === 1 || isSubmited}
+                                                    >
+                                                        -
+                                                    </Button>
+                                                    <p className="text-sm font-semibold">{item.amount}</p>
+                                                    <Button
+                                                        className="cursor-pointer bg-transparent px-0 py-0 font-semibold disabled:cursor-default"
+                                                        onClick={() => handleChangeAmount('Increment', item.productId)}
+                                                        disabled={
+                                                            item.amount === products.find((items) => items.id === item.productId)?.productStock ||
+                                                            isSubmited
+                                                        }
+                                                    >
+                                                        +
+                                                    </Button>
+                                                </div>
+                                            </td>
+                                            <td className="text-center">
+                                                {new Intl.NumberFormat('id-ID', {
+                                                    style: 'currency',
+                                                    currency: 'IDR',
+                                                }).format(item.subTotal)}
+                                            </td>
+                                            <td className="text-center">
+                                                <Button
+                                                    disabled={isSubmited}
+                                                    className="aspect-square cursor-pointer rounded-full bg-[#FFD6DA] px-3 py-0 text-xl font-black text-[#B71C1C] hover:bg-[#FFD6DAbedan] hover:ring hover:ring-[#B71C1C]"
+                                                    onClick={() => handleDeleteTransactionItem(item.productId)}
+                                                >
+                                                    x
+                                                </Button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                            <div className="mt-auto space-y-10">
+                                <div className="flex justify-between">
+                                    <Heading title="Subtotal" />
+                                    <Heading
+                                        title={
+                                            data
+                                                ? new Intl.NumberFormat('id-ID', { currency: 'IDR', style: 'currency' }).format(
+                                                      data!.map((item) => item.subTotal).reduce((total, current) => total + current, 0),
+                                                  )
+                                                : new Intl.NumberFormat('id-ID', { currency: 'IDR', style: 'currency' }).format(0)
+                                        }
+                                    />
+                                </div>
+                                <div className="flex justify-between gap-5">
+                                    <Button
+                                        disabled={isSubmited}
+                                        onClick={() => router.get(route('produk'))}
+                                        className="flex-1 cursor-pointer bg-transparent font-semibold text-[#5961BE] ring ring-[#5961BE] hover:bg-[#5961BE] hover:font-normal hover:text-white"
+                                    >
+                                        Batal
+                                    </Button>
+                                    <Button
+                                        disabled={isSubmited}
+                                        onClick={handleSubmit}
+                                        className="flex-1 cursor-pointer bg-[#5961BE] font-normal text-white ring ring-[#5961BE] hover:bg-transparent hover:font-semibold hover:text-[#5961BE]"
+                                    >
+                                        Pesan Sekarang
+                                    </Button>
+                                </div>
                             </div>
                         </div>
                     </div>

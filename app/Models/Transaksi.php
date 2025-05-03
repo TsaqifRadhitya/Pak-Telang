@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Transaksi extends Model
 {
     use HasUlids;
-    protected $fillable = ['ongkir', 'resi', 'status', 'paymentId', 'customerId', 'providerId'];
+    protected $fillable = ['ongkir','snapToken', 'resi', 'type', 'status', 'address', 'postalCode', 'districtId', 'paymentId', 'customerId', 'providerId'];
 
     public function detailTransaksis()
     {
-        return $this->hasMany(DetailTransaksi::class, 'transaksi_id');
+        return $this->hasMany(DetailTransaksi::class, 'transaksiId');
     }
 
     public function paymentMethod()

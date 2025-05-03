@@ -10,11 +10,10 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    $product = Product::where('productType', '=', 'Barang jadi')->get()->each(function ($e) {
+    $product = Product::where('productType', '=', 'Barang jadi')->where('isdeleted',false)->get()->each(function ($e) {
         $e->productPhoto = json_decode($e->productPhoto);
     });
-    $kontent = konten::all();
-    return Inertia::render('Guest/LandingPage/landingPage', compact('product', 'kontent'));
+    return Inertia::render('Guest/LandingPage/landingPage', compact('product'));
 })->name('home');
 
 Route::prefix('konten')->group(function () {

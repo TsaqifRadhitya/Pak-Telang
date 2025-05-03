@@ -58,7 +58,7 @@ export default function Product() {
                                 {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(i.productPrice)}
                             </h1>
                             <Button
-                                onClick={() => router.get(route('transaksi.create', { id: i.id }))}
+                                onClick={() => router.get(route('customer.transaksi.create', { id: i.id }))}
                                 className="cursor-pointer rounded-full bg-transparent text-[#5961BE] ring-2 ring-[#5961BE] hover:bg-[#5961BE] hover:text-white"
                             >
                                 Beli Sekarang

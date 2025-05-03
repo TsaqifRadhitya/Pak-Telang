@@ -53,7 +53,7 @@ export default function CustomerPageLayout({ children, page }: { children: React
                         </li>
                         <li>
                             <Link
-                                href="#"
+                                href={route('customer.transaksi.index')}
                                 className={
                                     page === 'Riwayat'
                                         ? 'underline decoration-4 underline-offset-8'
@@ -118,7 +118,7 @@ export default function CustomerPageLayout({ children, page }: { children: React
                     <ul className="flex flex-col gap-y-4 text-lg font-medium text-[#3b387e]">
                         <li>
                             <Link
-                                href="#"
+                                href={route('dashboard')}
                                 className={
                                     page === 'Dashboard'
                                         ? 'underline decoration-4 underline-offset-8'
@@ -130,7 +130,7 @@ export default function CustomerPageLayout({ children, page }: { children: React
                         </li>
                         <li>
                             <Link
-                                href="#"
+                                href={route('customer.transaksi.index')}
                                 className={
                                     page === 'Riwayat'
                                         ? 'underline decoration-4 underline-offset-8'

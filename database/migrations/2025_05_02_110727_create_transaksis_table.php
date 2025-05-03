@@ -14,10 +14,15 @@ return new class extends Migration
     {
         Schema::create('transaksis', function (Blueprint $table) {
             $table->ulid('id')->primary();
+            $table->string('snapToken')->nullable();
             $table->integer('ongkir')->nullable();
             $table->string('resi')->nullable();
-            $table->enum('status',['Menunggu Konfirmasi','Menunggu Pembayaran','Pembayaran Gagal','Pembayaran Berhasil','Sedang DiProses','Dalam Pengiriman','Selesai']);
-            $table->foreignUlid('paymentId')->constrained('payments');
+            $table->enum('type',['Barang jadi','Bahan Baku']);
+            $table->enum('status',['Menunggu Konfirmasi','Menunggu Pembayaran',"Gagal Menemukan Provider",'Pembayaran Berhasil','Sedang DiProses','Dalam Pengiriman','Selesai']);
+            $table->string('address');
+            $table->string('postalCode');
+            $table->foreignUlid('districtId')->constrained('districts');
+            $table->foreignUlid('paymentId')->nullable()->constrained('payments');
             $table->foreignUuid('customerId')->constrained('users');
             $table->foreignUuid('providerId')->nullable()->constrained('users');
             $table->timestamps();
