@@ -1,3 +1,4 @@
+import SweetAlert from '@/components/sweatAlert';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import Contact from '@/pages/Guest/LandingPage/Components/contact';
@@ -9,8 +10,8 @@ import { useEffect, useState } from 'react';
 
 type navLocation = 'Home' | 'Konten' | 'Produk' | 'Donasi';
 
-export default function LandingPageLayout({ children, page }: { children: React.ReactNode; page: navLocation }) {
-    const { auth } = usePage<SharedData>().props;
+export default function LandingPageLayout({ children, page }: { children: React.ReactNode; page?: navLocation }) {
+    const { auth, flash } = usePage<SharedData>().props;
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const { scrollYProgress } = useScroll();
     const [scroll, setScroll] = useState<boolean>(false);
@@ -27,6 +28,10 @@ export default function LandingPageLayout({ children, page }: { children: React.
     return (
         <div className="relative min-h-screen w-full">
             <Head title={page} />
+            {flash.success && <SweetAlert type="Success" message={flash.success} />}
+            {flash.error && <SweetAlert type="Error" message={flash.error} />}
+            {flash.info && <SweetAlert type="Info" message={flash.info} />}
+            {flash.warning && <SweetAlert type="Warning" message={flash.warning} />}
             <nav
                 className={cn(
                     'top-0 z-50 hidden w-full flex-row items-center justify-between px-10 py-5 lg:fixed lg:flex',

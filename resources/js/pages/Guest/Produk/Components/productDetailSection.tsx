@@ -2,7 +2,7 @@ import Heading from '@/components/heading';
 import HeadingSmall from '@/components/heading-small';
 import { Button } from '@/components/ui/button';
 import { useCurrentMediaQuerry } from '@/hooks/useMediaQuery';
-import { usePage } from '@inertiajs/react';
+import { router, usePage } from '@inertiajs/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -17,7 +17,7 @@ export default function ProductDetailSection() {
         <section className="h-screen w-full bg-[#EBEFFF] p-5 pt-24 lg:px-10 lg:py-20 lg:pt-20 lg:pb-10">
             <main className="flex h-full w-full flex-col gap-5 rounded-lg border border-[#AFB3FF] bg-[#FFFFFF] p-7 shadow-md lg:flex-row lg:gap-20 lg:p-10">
                 <article className="relative flex aspect-8/9 flex-1/3 overflow-y-auto rounded-lg bg-[#AFB3FF] shadow lg:py-5">
-                    <Swiper navigation = {lg} loop modules={[Navigation]} className="h-auto w-full max-w-sm overflow-hidden">
+                    <Swiper navigation={lg} loop modules={[Navigation]} className="h-auto w-full max-w-sm overflow-hidden">
                         {productDetail.productPhoto.map((photo, index) => (
                             <SwiperSlide key={index} className="relative">
                                 <img src={photo} alt={`Product ${index + 1}`} className="h-full w-full object-cover" />
@@ -39,7 +39,10 @@ export default function ProductDetailSection() {
                             Netto: {productDetail.productNetto} {productDetail.productUnit}
                         </p>
                     </section>
-                    <Button className="absolute right-0 bottom-0 min-h-14 w-full cursor-pointer rounded-3xl bg-[#5961BE] text-2xl text-white hover:bg-[#424a9e] lg:w-1/4">
+                    <Button
+                        onClick={() => router.get(route('transaksi.create', { id: productDetail.id }))}
+                        className="absolute right-0 bottom-0 min-h-14 w-full cursor-pointer rounded-3xl bg-[#5961BE] text-2xl text-white hover:bg-[#424a9e] lg:w-1/4"
+                    >
                         <p>Beli Sekarang</p>
                     </Button>
                 </article>

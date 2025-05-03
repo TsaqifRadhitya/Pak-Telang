@@ -8,12 +8,12 @@ export default function ProductLainnyaSection() {
     const { products } = usePage<props>().props;
     return (
         <section className="min-h-screen w-full bg-[#EBEFFF] p-5 lg:px-10 lg:pt-10 lg:pb-20">
-            <main className="flex h-full w-full flex-col gap-y-10 rounded-lg border border-[#AFB3FF] bg-[#FFFFFF] p-7 lg:-10 shadow-lg">
+            <main className="lg:-10 flex h-full w-full flex-col gap-y-10 rounded-lg border border-[#AFB3FF] bg-[#FFFFFF] p-7 shadow-lg">
                 <header className="flex flex-col gap-y-1.5">
                     <Heading title="Produk Lainnya" disableMb className="text-4xl text-[#3B387E]" />
                     <HeadingSmall title="Mungkin anda suka" className="text-[#3B387E]" />
                 </header>
-                <article className="space-y-10 md:space-y-0 md:grid md:grid-cols-2 xl:grid-cols-3 md:gap-28">
+                <article className="space-y-10 md:grid md:grid-cols-2 md:gap-28 md:space-y-0 xl:grid-cols-3">
                     {products.map((item) => (
                         <section
                             onClick={(e) => {
@@ -21,7 +21,7 @@ export default function ProductLainnyaSection() {
                                     router.get(route('produk.detail', { id: item.id }));
                                 }
                             }}
-                            className="relative aspect-2/3 w-full rounded-lg bg-[#EBEFFF] shadow cursor-pointer pb-2.5"
+                            className="relative aspect-2/3 w-full cursor-pointer rounded-lg bg-[#EBEFFF] pb-2.5 shadow"
                         >
                             <div className="h-2/5 w-full rounded-t-lg bg-[#9A9FFF]"></div>
                             <div className="absolute top-0 left-1/2 h-1/2 w-4/5 -translate-x-1/2 rounded-b-full bg-linear-180 from-[#9A9FFF] to-[#7D85DE]">
@@ -39,7 +39,10 @@ export default function ProductLainnyaSection() {
                                 <h1 className="text-md font-bold text-[#5961BE] md:text-xl">
                                     {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.productPrice)}
                                 </h1>
-                                <Button className="cursor-pointer rounded-full bg-transparent text-[#5961BE] ring-2 ring-[#5961BE] hover:bg-[#5961BE] hover:text-white">
+                                <Button
+                                    onClick={() => router.get(route('transaksi.create', { id: item.id }))}
+                                    className="cursor-pointer rounded-full bg-transparent text-[#5961BE] ring-2 ring-[#5961BE] hover:bg-[#5961BE] hover:text-white"
+                                >
                                     Beli Sekarang
                                 </Button>
                             </div>

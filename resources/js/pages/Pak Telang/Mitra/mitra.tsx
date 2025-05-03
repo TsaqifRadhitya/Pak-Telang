@@ -111,7 +111,7 @@ export default function MitraAdminPage() {
                                     <div
                                         className={cn(
                                             'w-full self-start rounded-2xl py-1.5 text-center text-xs font-[570] text-white',
-                                            mitra.statusPengajuan !== 'Mou disetujui'
+                                            mitra.statusPengajuan !== 'MOU disetujui'
                                                 ? 'bg-[#FFAC31]'
                                                 : mitra.isOpen
                                                   ? 'bg-[#1BA536]'
@@ -119,7 +119,7 @@ export default function MitraAdminPage() {
                                         )}
                                     >
                                         <p>
-                                            {mitra.statusPengajuan !== 'Mou disetujui' ? mitra.statusPengajuan : mitra.isOpen ? 'Active' : 'Inactive'}
+                                            {mitra.statusPengajuan !== 'MOU disetujui' ? mitra.statusPengajuan : mitra.isOpen ? 'Active' : 'Inactive'}
                                         </p>
                                     </div>
                                 </article>

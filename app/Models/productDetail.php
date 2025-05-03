@@ -9,11 +9,16 @@ class productDetail extends Model
 {
     use HasUlids;
 
-    protected $fillable = ['stock', 'disable', 'userId','productId'];
+    protected $fillable = ['stock', 'disable', 'userId', 'productId'];
 
     public function user()
     {
         return $this->belongsTo(User::class, 'userId');
+    }
+
+    public function mitra()
+    {
+        return $this->hasOne(mitra::class, 'userId');
     }
 
     public function product()

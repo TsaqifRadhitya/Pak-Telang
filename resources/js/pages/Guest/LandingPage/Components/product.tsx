@@ -18,7 +18,7 @@ export default function Product() {
             <Heading title="Produk Kami" disableMb className="text-4xl font-bold text-[#3B387E]" />
             <HeadingSmall
                 title="Berbagai minuman herbal alami yang menyegarkan, dibuat dari bahan pilihan dan tanpa bahan pengawet. Temukan rasa yang pas untukmu di sini!"
-                className="font-semibold text-[#3B387E] text-sm md:text-md lg:text-lg xl:text-xl"
+                className="md:text-md text-sm font-semibold text-[#3B387E] lg:text-lg xl:text-xl"
             />
             <div className="max-w-9xl relative mx-auto flex w-full flex-col gap-y-10 px-4 md:grid md:grid-cols-2 md:gap-5 lg:gap-10 xl:grid xl:h-full xl:grid-cols-3 xl:gap-20 xl:px-0">
                 {product.map((i, index) => (
@@ -26,7 +26,7 @@ export default function Product() {
                         initial={{ scale: 0.5, opacity: 0 }}
                         whileInView={{ opacity: 1, scale: 1, transition: { duration: 1 } }}
                         viewport={{ amount: 0.2 }}
-                    key={index}
+                        key={index}
                         onClick={(e) => {
                             if (!(e.target as HTMLElement).closest('button')) {
                                 router.get(route('produk.detail', { id: i.id }));
@@ -57,7 +57,10 @@ export default function Product() {
                             <h1 className="text-md font-bold text-[#5961BE] md:text-xl">
                                 {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(i.productPrice)}
                             </h1>
-                            <Button className="cursor-pointer rounded-full bg-transparent text-[#5961BE] ring-2 ring-[#5961BE] hover:bg-[#5961BE] hover:text-white">
+                            <Button
+                                onClick={() => router.get(route('transaksi.create', { id: i.id }))}
+                                className="cursor-pointer rounded-full bg-transparent text-[#5961BE] ring-2 ring-[#5961BE] hover:bg-[#5961BE] hover:text-white"
+                            >
                                 Beli Sekarang
                             </Button>
                         </div>

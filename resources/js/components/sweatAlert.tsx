@@ -28,7 +28,7 @@ export default function SweetAlert({ message, type }: props) {
         const timeout = setTimeout(() => {
             setShow(false);
             router.reload({ only: ['flash'] });
-        }, 1500);
+        }, 2000);
         return () => {
             clearTimeout(timeout);
         };
@@ -41,7 +41,7 @@ export default function SweetAlert({ message, type }: props) {
                     animate={{ y: 0, transition: { duration: 0.4, ease: 'easeInOut' } }}
                     exit={{ y: -100, transition: { duration: 0.4, ease: 'easeInOut' } }}
                     className={cn(
-                        'fixed top-1 z-50 flex w-full gap-x-5 rounded-lg border p-5 py-2.5 shadow-xl md:right-5 md:max-w-96 md:min-w-72 lg:top-5',
+                        'fixed top-1 z-[999] flex w-full gap-x-5 rounded-lg border p-5 py-2.5 shadow-xl md:right-5 md:max-w-96 md:min-w-72 lg:top-5',
                         style,
                     )}
                 >
