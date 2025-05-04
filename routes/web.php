@@ -4,6 +4,7 @@ use App\Http\Controllers\dashboardController;
 use App\Http\Controllers\kontenController;
 use App\Http\Controllers\messageController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\rajaOngkirController;
 use App\Models\konten;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
@@ -36,6 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/chat/{id}', [messageController::class, 'getChatRoom'])->name('chat.create');
     Route::post('/chat/{id}', [messageController::class, 'pustChat'])->name('chat.store');
     Route::get('dashboard', [dashboardController::class, 'index'])->name('dashboard');
+    Route::get('/rajaongkir',[rajaOngkirController::class,'index'])->name('rajaongkir');
 });
 
 require __DIR__ . '/settings.php';
