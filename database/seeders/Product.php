@@ -24,7 +24,7 @@ class Product extends Seeder
                     'https://res.cloudinary.com/dk0z4ums3/image/upload/v1719881088/attached_image/teh-telang-inilah-7-manfaatnya-untuk-kesehatan-tubuh-0-alodokter.jpg'
                 ]),
                 'productPrice' => fake()->numberBetween(1000,1000000),
-                'productType' => 'Barang jadi',
+                'productType' => 'Bahan Baku',
                 'productDescription' => fake()->paragraph(),
                 'productNetto' => 1000,
                 'productUnit' => 'botol'

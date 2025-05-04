@@ -112,13 +112,18 @@ export default function ProductAdminPage({ products }: { products: productType[]
             {dialog.delete && (
                 <section id="alertDelete" className="fixed z-50 h-full w-full bg-black/50">
                     <article className="absolute top-1/2 left-1/2 flex w-full max-w-xl -translate-1/2 flex-col items-center gap-y-5 rounded-2xl border border-[#8A7300] bg-[#FFFDF1] p-5 pb-10">
-                        <div className='flex w-full items-center gap-x-4'>
-                            <img src="https://ybcvbaxalqwrvgemxdzc.supabase.co/storage/v1/object/public/paktelang/Asset/Icon/warningIcon.svg" alt="" />
-                            <h1 className='text-[#8A7300] font-bold text-xl'
-                            >Warning!!</h1>
+                        <div className="flex w-full items-center gap-x-4">
+                            <img
+                                src="https://ybcvbaxalqwrvgemxdzc.supabase.co/storage/v1/object/public/paktelang/Asset/Icon/warningIcon.svg"
+                                alt=""
+                            />
+                            <h1 className="text-xl font-bold text-[#8A7300]">Warning!!</h1>
                         </div>
                         <img src={productSelected?.productPhoto[0]} alt="" className="aspect-video w-1/3 object-cover object-center" />
-                        <Heading title="Apakah Anda yakin untuk menghapus produk ini ?" className="w-4/5 text-center mx-auto text-md line leading-5 font-medium text-[#8A7300]" />
+                        <Heading
+                            title="Apakah Anda yakin untuk menghapus produk ini ?"
+                            className="text-md line mx-auto w-4/5 text-center leading-5 font-medium text-[#8A7300]"
+                        />
                         <div className="flex w-1/2 justify-center gap-x-2.5">
                             <Button
                                 className="w-1/2 cursor-pointer bg-[#FFFDF1] font-semibold text-green-600 ring ring-green-600 hover:bg-green-600 hover:text-white"
@@ -200,8 +205,8 @@ export default function ProductAdminPage({ products }: { products: productType[]
                                         className="min-h-9 rounded-lg px-3 py-1 text-[#3B387E] ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:border-[#B9BDFF] focus-visible:ring-3"
                                     >
                                         <option value="">Pilih Satuan</option>
-                                        <option value="ml">ml</option>
-                                        <option value="liter">Liter</option>
+                                        {(data.productType === '' || data.productType === 'Barang jadi') && <option value="ml">ml</option>}
+                                        {(data.productType === '' || data.productType === 'Barang jadi') && <option value="liter">Liter</option>}
                                         <option value="gram">Gram</option>
                                         <option value="kg">Kg</option>
                                     </select>
@@ -216,15 +221,14 @@ export default function ProductAdminPage({ products }: { products: productType[]
                                     className="min-h-9 w-full rounded-lg px-3 py-1 text-[#3B387E] shadow ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:border-[#B9BDFF] focus-visible:ring-3"
                                 >
                                     <option value="">Pilih Tipe Produk</option>
-                                    <option value="Bahan baku">Bahan baku</option>
                                     <option value="Barang jadi">Barang jadi</option>
+                                    <option value="Bahan Baku">Bahan baku</option>
                                 </select>
                                 {errors.productType && <p className="text-sm text-red-600">{errors.productType}</p>}
                             </div>
                             <div className="col-span-2">
                                 <HeadingSmall title="Deskripsi Produk" className="text-[#3B387E]" />
                                 <Textarea
-
                                     onChange={(e) => setData('productDescription', e.target.value)}
                                     value={data.productDescription}
                                     placeholder="Deskripsi Produk"
@@ -244,12 +248,15 @@ export default function ProductAdminPage({ products }: { products: productType[]
                                 )}
                                 <div className="flex flex-wrap gap-2.5">
                                     {data.productPhoto?.map((photo) => (
-                                        <img src={photo} className="aspect-square w-1/6 ring ring-[#B9BDFF] rounded-lg object-cover object-center shadow" />
+                                        <img
+                                            src={photo}
+                                            className="aspect-square w-1/6 rounded-lg object-cover object-center shadow ring ring-[#B9BDFF]"
+                                        />
                                     ))}
                                 </div>
                                 <Button
                                     onClick={() => inputField.current?.click()}
-                                    className="cursor-pointer text-[#3B387E] bg-white ring ring-[#5961BE] hover:bg-[#5961BE] hover:text-white lg:w-1/6"
+                                    className="cursor-pointer bg-white text-[#3B387E] ring ring-[#5961BE] hover:bg-[#5961BE] hover:text-white lg:w-1/6"
                                 >
                                     Upload Foto
                                 </Button>
@@ -290,7 +297,10 @@ export default function ProductAdminPage({ products }: { products: productType[]
                     </div>
                     <section className="flex w-full flex-col gap-10 overflow-y-auto p-5 md:grid md:h-[82vh] md:grid-cols-2 lg:p-10">
                         {products.map((item, i) => (
-                            <div key={i} className="flex h-full min-h-[258px] w-full flex-col justify-between gap-y-2.5 rounded-lg p-5 shadow-lg ring ring-[#B9BDFF]">
+                            <div
+                                key={i}
+                                className="flex h-full min-h-[258px] w-full flex-col justify-between gap-y-2.5 rounded-lg p-5 shadow-lg ring ring-[#B9BDFF]"
+                            >
                                 <div className="flex w-full">
                                     <div className="flex flex-2/3 gap-x-2.5">
                                         {item.productPhoto.map((photo, i) =>

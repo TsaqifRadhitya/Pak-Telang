@@ -115,12 +115,12 @@ export default function RegisterPage() {
             <div className="relative flex h-12 flex-row justify-between gap-x-5 text-sm">
                 <Button
                     onClick={() => router.get(route('oauth.login'))}
-                    className="h-full w-full rounded-2xl border-1 border-[#666FD5] bg-transparent font-extralight text-[#3B387E] hover:cursor-pointer hover:bg-[#4e55a1]"
+                    className="h-full hover:text-white w-full rounded-2xl border-1 border-[#666FD5] bg-transparent font-extralight text-[#3B387E] hover:cursor-pointer hover:bg-[#4e55a1]"
                 >
                     <span>
                         <img className="w-8" src="Asset\Icon\Google.png" alt="" />
                     </span>
-                    register with <span className="font-black">google</span>
+                    register with <span className="font-black">Google</span>
                 </Button>
             </div>
         </AuthLayout>

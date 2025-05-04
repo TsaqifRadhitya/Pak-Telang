@@ -95,7 +95,7 @@ class ProductController extends Controller
             'stock' => $request->input('productStock')
         ]);
 
-        if ($productDetail === 0) {
+        if (!$productDetail) {
             productDetail::create([
                 'stock' => $request->input('productStock'),
                 'productId' => $product,
