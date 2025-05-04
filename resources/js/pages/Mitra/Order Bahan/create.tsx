@@ -2,7 +2,6 @@ import MitraPageLayout from '@/layouts/mitraPageLayout';
 import { addressType } from '@/types/address';
 import { productType } from '@/types/product';
 import { rajaOngkirIdFinder } from '@/utils/rajaOngkirIdFinder';
-import { router } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import { detailTransactionType } from '../../../types/detailTransaction';
 
@@ -21,15 +20,15 @@ export default function OrderBahanCreate({
     addressProvider: addressType;
 }) {
     const [transactionItem, setTransactionItem] = useState<detailTransactionType[]>();
-    const [isSubmited, setSubmited] = useState<boolean>(false);
-
+    // const [isSubmited, setSubmited] = useState<boolean>(false);
+    console.log(transactionItem)
     useEffect(() => {
         const fetchAddressIds = async () => {
             try {
                 const [providerRes, mitraRes] = await Promise.all([rajaOngkirIdFinder(addressProvider), rajaOngkirIdFinder(address)]);
                 mitraAddressId = mitraRes;
                 providerAddressId = providerRes;
-                console.log(mitraAddressId,providerAddressId)
+                console.log(mitraAddressId, providerAddressId);
             } catch (err) {
                 console.error('❌ Gagal ambil address ID:', err);
             }
@@ -50,62 +49,62 @@ export default function OrderBahanCreate({
         }
     }, []);
 
-    const handleDeleteTransactionItem = (params: string) => {
-        setTransactionItem((prev) => prev?.filter((item) => item.productId !== params));
-    };
+    // const handleDeleteTransactionItem = (params: string) => {
+    //     setTransactionItem((prev) => prev?.filter((item) => item.productId !== params));
+    // };
 
-    const handleSubmit = () => {
-        if (transactionItem?.length) {
-            setSubmited(true);
-            router.post(route('mitra.transaksi.store'), { data: transactionItem });
-        }
-    };
+    // const handleSubmit = () => {
+    //     if (transactionItem?.length) {
+    //         // setSubmited(true);
+    //         router.post(route('mitra.transaksi.store'), { data: transactionItem });
+    //     }
+    // };
 
-    const handleChangeAmount = (params: 'Increment' | 'decrement', id: string) => {
-        setTransactionItem((prev) => {
-            const existing = prev?.find((item) => item.productId === id);
-            const product = products.find((p) => p.id === id);
-            if (!product) return prev;
-            if (!existing) {
-                return [
-                    ...(prev ?? []),
-                    {
-                        productId: product.id,
-                        productName: product.productName,
-                        amount: 1,
-                        subTotal: product.productPrice,
-                    },
-                ];
-            }
+    // const handleChangeAmount = (params: 'Increment' | 'decrement', id: string) => {
+    //     setTransactionItem((prev) => {
+    //         const existing = prev?.find((item) => item.productId === id);
+    //         const product = products.find((p) => p.id === id);
+    //         if (!product) return prev;
+    //         if (!existing) {
+    //             return [
+    //                 ...(prev ?? []),
+    //                 {
+    //                     productId: product.id,
+    //                     productName: product.productName,
+    //                     amount: 1,
+    //                     subTotal: product.productPrice,
+    //                 },
+    //             ];
+    //         }
 
-            return prev?.map((item) => {
-                if (item.productId !== id) return item;
+    //         return prev?.map((item) => {
+    //             if (item.productId !== id) return item;
 
-                const currentAmount = item.amount;
-                const pricePerUnit = item.subTotal / currentAmount;
+    //             const currentAmount = item.amount;
+    //             const pricePerUnit = item.subTotal / currentAmount;
 
-                if (params === 'Increment' && currentAmount < product.productStock) {
-                    const newAmount = currentAmount + 1;
-                    return {
-                        ...item,
-                        amount: newAmount,
-                        subTotal: pricePerUnit * newAmount,
-                    };
-                }
+    //             if (params === 'Increment' && currentAmount < product.productStock) {
+    //                 const newAmount = currentAmount + 1;
+    //                 return {
+    //                     ...item,
+    //                     amount: newAmount,
+    //                     subTotal: pricePerUnit * newAmount,
+    //                 };
+    //             }
 
-                if (params === 'decrement' && currentAmount > 1) {
-                    const newAmount = currentAmount - 1;
-                    return {
-                        ...item,
-                        amount: newAmount,
-                        subTotal: pricePerUnit * newAmount,
-                    };
-                }
+    //             if (params === 'decrement' && currentAmount > 1) {
+    //                 const newAmount = currentAmount - 1;
+    //                 return {
+    //                     ...item,
+    //                     amount: newAmount,
+    //                     subTotal: pricePerUnit * newAmount,
+    //                 };
+    //             }
 
-                return item;
-            });
-        });
-    };
+    //             return item;
+    //         });
+    //     });
+    // };
 
     return (
         <MitraPageLayout page="Order Bahan">

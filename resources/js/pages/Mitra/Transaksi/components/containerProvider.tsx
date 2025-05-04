@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode } from 'react';
 
 export type sectionType = 'Pesanan Masuk' | 'Pesanan Diterima' | 'Dipesan' | 'Riwayat';
 
@@ -30,7 +30,9 @@ export default function ContainerProvider({
                     <li className="font-bold">|</li>
                     <li
                         onClick={() => handleChangeInnerSection('Pesanan Diterima')}
-                        className={section === 'Pesanan Diterima' ? 'underline decoration-[#5961BE] decoration-5 underline-offset-6' : 'cursor-pointer'}
+                        className={
+                            section === 'Pesanan Diterima' ? 'underline decoration-[#5961BE] decoration-5 underline-offset-6' : 'cursor-pointer'
+                        }
                     >
                         Pesanan Diterima
                     </li>
