@@ -28,7 +28,7 @@ Route::middleware(['auth', mitraMidleware::class])->group(function () {
             Route::get('create', [bahanBakuController::class, 'create'])->name('mitra.order bahan.create');
             Route::post('store', [bahanBakuController::class, 'store'])->name('mitra.order bahan.store');
             Route::patch('{id}', [bahanBakuController::class, 'update'])->name('mitra.order bahan.update');
-            Route::get('{id}', [bahanBakuController::class, 'show'])->name('mitra.order bahan.store');
+            Route::get('{id}', [bahanBakuController::class, 'show'])->name('mitra.order bahan.show');
         });
 
         Route::prefix('transaksi')->group(function () {
