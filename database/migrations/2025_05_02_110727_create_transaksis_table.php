@@ -16,6 +16,7 @@ return new class extends Migration
             $table->ulid('id')->primary();
             $table->string('snapToken')->nullable();
             $table->integer('ongkir')->nullable();
+            $table->string('metodePengiriman')->default('delivery');
             $table->string('resi')->nullable();
             $table->enum('type',['Barang jadi','Bahan Baku']);
             $table->enum('status',['Menunggu Konfirmasi','Menunggu Pembayaran',"Gagal Menemukan Provider",'Pembayaran Berhasil','Sedang DiProses','Dalam Pengiriman','Selesai']);

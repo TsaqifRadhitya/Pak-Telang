@@ -27,6 +27,7 @@ export default function OrderBahanCreate({
     const [isSubmited, setSubmited] = useState<boolean>(false);
     const [isFetching, setFetching] = useState<boolean>(false);
     const [outDated, setOutDated] = useState<boolean>(true);
+    const [selectedKurir, setSelectedKurir] = useState<rajaOngkirType>();
     const [ongkirProvider, setOngkirProvider] = useState<rajaOngkirType[]>();
     useEffect(() => {
         if (selectedProduct) {
@@ -70,19 +71,25 @@ export default function OrderBahanCreate({
     const handleDeleteTransactionItem = (params: string) => {
         setOutDated(true);
         setOngkirProvider(undefined);
+        setSelectedKurir(undefined);
         setTransactionItem((prev) => prev?.filter((item) => item.productId !== params));
     };
 
     const handleSubmit = () => {
         if (transactionItem?.length) {
             setSubmited(true);
-            router.post(route('mitra.transaksi.store'), { data: transactionItem });
+            router.post(route('mitra.order bahan.store'), {
+                ongkir: selectedKurir?.shipping_cost ?? 0,
+                metodePengiriman: `${selectedKurir?.shipping_name} (${selectedKurir?.service_name})`,
+            data: transactionItem,
+            });
         }
     };
 
     const handleChangeAmount = (params: 'Increment' | 'decrement', id: string) => {
         setOutDated(true);
         setOngkirProvider(undefined);
+        setSelectedKurir(undefined);
         setTransactionItem((prev) => {
             const existing = prev?.find((item) => item.productId === id);
             const product = products.find((p) => p.id === id);
@@ -353,10 +360,14 @@ export default function OrderBahanCreate({
                         <div className="rounded-lg bg-white p-5 ring ring-[#B9BDFF]">
                             <Heading title="Metode Pengiriman" />
                             <HeadingSmall title="Pilih Metode Pengiriman" />
-                            <select onClick={handleFetchKurir} className="w-full rounded-lg p-2 ring ring-[#B9BDFF] focus-visible:ring-3">
+                            <select
+                                onChange={(e) => setSelectedKurir(e.target.value ? ongkirProvider![parseInt(e.target.value)] : undefined)}
+                                onClick={handleFetchKurir}
+                                className="w-full rounded-lg p-2 ring ring-[#B9BDFF] focus-visible:ring-3"
+                            >
                                 <option value="">Pilih Kurir</option>
-                                {ongkirProvider?.map((provider) => (
-                                    <option className="flex w-full" value={provider.shipping_cost}>
+                                {ongkirProvider?.map((provider, index) => (
+                                    <option className="flex w-full" value={index}>
                                         {provider.shipping_name} - {provider.service_name} - {currencyConverter(provider.shipping_cost)}
                                     </option>
                                 ))}

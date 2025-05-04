@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Transaksi extends Model
 {
     use HasUlids;
-    protected $fillable = ['ongkir','snapToken', 'resi', 'type', 'status', 'address', 'postalCode', 'districtId', 'paymentId', 'customerId', 'providerId'];
+    protected $fillable = ['ongkir', 'snapToken', 'resi', 'metodePengiriman', 'type', 'status', 'address', 'postalCode', 'districtId', 'paymentId', 'customerId', 'providerId'];
 
     public function detailTransaksis()
     {
@@ -18,5 +18,10 @@ class Transaksi extends Model
     public function paymentMethod()
     {
         return $this->belongsTo(Payment::class, 'paymentId', 'id');
+    }
+
+    public function district()
+    {
+        return $this->belongsTo(District::class, 'districtId', 'id');
     }
 }

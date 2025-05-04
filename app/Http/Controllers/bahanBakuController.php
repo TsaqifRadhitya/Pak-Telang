@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DetailTransaksi;
 use App\Models\Product;
+use App\Models\Transaksi;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Midtrans\Config;
+use Midtrans\Snap;
 
 class bahanBakuController extends Controller
 {
@@ -31,6 +35,33 @@ class bahanBakuController extends Controller
         return Inertia::render('Mitra/Order Bahan/create', compact('products', 'selectedProduct', 'address', 'addressProvider'));
     }
 
+    public function payment($id)
+    {
+        $transaction = Transaksi::with('detailTransaksis.product')->where('id', $id)->where('status', 'Menunggu Pembayaran')->first();
+        if ($transaction) {
+            $transaction = [
+                ...$transaction->toArray(),
+                "Total" => DetailTransaksi::where('transaksiId', $transaction->id)->sum('subTotal'),
+                'address' => $this->getFullAdress(User::find($transaction->customerId)),
+            ];
+
+            if (!$transaction['snapToken']) {
+                Config::$serverKey = env("VITE_MIDTRANS_SERVER_KEY");
+                Config::$isProduction = false;
+                $ress = Snap::createTransaction([
+                    "transaction_details" => [
+                        "order_id" => $transaction['id'],
+                        "gross_amount" => $transaction['Total']  + $transaction['ongkir']
+                    ]
+                ]);
+                Transaksi::whereId($id)->update(['snapToken' => $ress->token]);
+                $transaction = [...$transaction, 'snapToken' => $ress->token];
+            }
+            return Inertia::render('Mitra/Order Bahan/payment', compact('transaction'));
+        }
+        abort(404);
+    }
+
     private function getFullAdress(User $user)
     {
 
@@ -46,9 +77,53 @@ class bahanBakuController extends Controller
         ];
     }
 
-    public function show($id) {}
+    public function show($id)
+    {
+        $transaction = Transaksi::with('detailTransaksis.product')->where('id', $id)->where('type','Bahan Baku')->first();
 
-    public function store(Request $request) {}
+        if ($transaction?->status === "Menunggu Pembayaran") {
+            return redirect(route('mitra.order bahan.payment', ["id" => $id]));
+        } else if ($transaction) {
+            $section = ($transaction->type === "Bahan Baku" && $transaction->status !== "Selesai") ? "Dipesan" : "Riwayat";
+            $transaction = [
+                ...$transaction->toArray(),
+                "Total" => DetailTransaksi::where('transaksiId', $transaction->id)->sum('subTotal'),
+            ];
+            return Inertia::render('Mitra/Transaksi/show',compact('section','transaction'));
+        }
+        abort(404);
+    }
+
+    public function store(Request $request)
+    {
+        $user = Auth::user();
+
+        $transaksi = Transaksi::create([
+            'customerId' => $user->id,
+            'status' => 'Menunggu Pembayaran',
+            'type' => 'Bahan Baku',
+            'address' => $user->address,
+            'postalCode' => $user->postalCode,
+            'districtId' => $user->districtId,
+            'ongkir' => $request->ongkir,
+            'metodePengiriman' => $request->metodePengiriman,
+            'providerId' => User::where('role', 'Pak Telang')->first()->id
+        ]);
+
+        $detailTransaksi = collect($request->input('data'))->map(function ($item) {
+            return [
+                'amount' => $item['amount'],
+                'subTotal' => $item['subTotal'],
+                'productId' => $item['productId'],
+            ];
+        });
+
+        $transaksi->detailTransaksis()->createMany($detailTransaksi->toArray());
+
+        return redirect()
+            ->route('mitra.order bahan.payment', ['id' => $transaksi->id])
+            ->with('success', 'Berhasil membuat pesanan');
+    }
 
     public function update($id) {}
 }
