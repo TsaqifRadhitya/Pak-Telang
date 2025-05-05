@@ -31,6 +31,6 @@ Route::middleware(['auth', customerMidleware::class])->group(function () {
         Route::get('{id}', [transaksiCustomerController::class, 'show'])->name('customer.transaksi.show');
         Route::post('store', [transaksiCustomerController::class, 'store'])->name('customer.transaksi.store');
         Route::patch('{id}', [transaksiCustomerController::class, 'update'])->name('customer.transaksi.update');
-        Route::get('{id}/payment',[transaksiCustomerController::class,'payment'])->name('customer.transaksi.payment');
+        // Route::get('{id}/payment',[transaksiCustomerController::class,'payment'])->name('customer.transaksi.payment');
     });
 });

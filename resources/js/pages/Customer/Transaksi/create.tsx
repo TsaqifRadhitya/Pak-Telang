@@ -89,7 +89,7 @@ export default function TransactionCreate() {
             <section className="flex flex-col bg-[#EBEFFF] p-5 pt-20 text-[#3B387E] md:px-10 lg:min-h-screen">
                 <Heading title="Transaksi" disableMb className="text-3xl" />
                 <div className="mt-5 flex flex-1 flex-col gap-16 px-5 lg:flex-row">
-                    <article className="grid flex-2/3 gap-16 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+                    <article className="grid flex-2/3 gap-16 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 scrollbar scrollbar-track-transparent pt-1 px-1 scrollbar-thumb-[#5961BE] lg:max-h-[70vh] overflow-y-auto">
                         {products.map((item) => (
                             <section
                                 onClick={(e) => {

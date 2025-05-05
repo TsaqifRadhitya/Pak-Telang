@@ -76,7 +76,7 @@ export default function OrderBahanCreate({
     };
 
     const handleSubmit = () => {
-        if (transactionItem?.length) {
+        if (transactionItem?.length && selectedKurir) {
             setSubmited(true);
             router.post(route('mitra.order bahan.store'), {
                 ongkir: selectedKurir?.shipping_cost ?? 0,

@@ -10,6 +10,7 @@ export type transactionType = {
     status : string
     metodePengiriman : string
     Total: number
+    type : string
     snapToken : string
     detail_transaksis : detailTransactionType[]
     user? : User

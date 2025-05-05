@@ -1,3 +1,4 @@
+import { router } from '@inertiajs/react';
 import { ReactNode } from 'react';
 
 export type sectionType = 'Pesanan Masuk' | 'Pesanan Diterima' | 'Dipesan' | 'Riwayat';
@@ -14,7 +15,13 @@ export default function ContainerProvider({
     const handleChangeInnerSection = (param: sectionType) => {
         if (onChange) {
             onChange(param);
+            return;
         }
+        router.get(
+            route('mitra.transaksi', {
+                q: param,
+            }),
+        );
     };
     return (
         <main className="flex h-full w-full flex-col rounded-t-lg border-[1px] border-b-0 border-[#AFB3FF] bg-[#FFFFFF] shadow-lg">
@@ -26,7 +33,7 @@ export default function ContainerProvider({
                         className={
                             section === 'Pesanan Masuk'
                                 ? 'underline decoration-[#5961BE] decoration-5 underline-offset-6'
-                                : onChange && 'cursor-pointer'
+                                : 'cursor-pointer hover:underline hover:decoration-[#5961be]/80 hover:decoration-5 hover:underline-offset-6'
                         }
                     >
                         Pesanan Masuk
@@ -37,7 +44,7 @@ export default function ContainerProvider({
                         className={
                             section === 'Pesanan Diterima'
                                 ? 'underline decoration-[#5961BE] decoration-5 underline-offset-6'
-                                : onChange && 'cursor-pointer'
+                                : 'cursor-pointer hover:underline hover:decoration-[#5961be]/80 hover:decoration-5 hover:underline-offset-6'
                         }
                     >
                         Pesanan Diterima
@@ -46,7 +53,9 @@ export default function ContainerProvider({
                     <li
                         onClick={() => handleChangeInnerSection('Dipesan')}
                         className={
-                            section === 'Dipesan' ? 'underline decoration-[#5961BE] decoration-5 underline-offset-6' : onChange && 'cursor-pointer'
+                            section === 'Dipesan'
+                                ? 'underline decoration-[#5961BE] decoration-5 underline-offset-6'
+                                : 'cursor-pointer hover:underline hover:decoration-[#5961be]/80 hover:decoration-5 hover:underline-offset-6'
                         }
                     >
                         Dipesan
@@ -55,7 +64,9 @@ export default function ContainerProvider({
                     <li
                         onClick={() => handleChangeInnerSection('Riwayat')}
                         className={
-                            section === 'Riwayat' ? 'underline decoration-[#5961BE] decoration-5 underline-offset-6' : onChange && 'cursor-pointer'
+                            section === 'Riwayat'
+                                ? 'underline decoration-[#5961BE] decoration-5 underline-offset-6'
+                                : 'cursor-pointer hover:underline hover:decoration-[#5961be]/80 hover:decoration-5 hover:underline-offset-6'
                         }
                     >
                         Riwayat

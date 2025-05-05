@@ -50,7 +50,7 @@ export default function OrderBahanIndex({ transaction }: { transaction: transact
                                     <th className="text-center">Sub-total</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody className='block max-h-64 overflow-y-auto'>
                                 {transaction.detail_transaksis.map((item) => (
                                     <tr
                                         key={item.productId}

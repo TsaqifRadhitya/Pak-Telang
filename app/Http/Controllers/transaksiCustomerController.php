@@ -70,17 +70,27 @@ class transaksiCustomerController extends Controller
             $transactions = [...$transactions->toArray(), 'Total' => DetailTransaksi::where('transaksiId', $transactions->id)->sum('subTotal')];
             if ($transactions['status'] === 'Selesai') {
                 return Inertia::render('Customer/Transaksi/riwayat', compact('transactions'));
-            } else {
-                return Inertia::render('Customer/Transaksi/show', compact('transactions'));
-            };
+            } else if ($transactions['status'] === 'Menunggu Pembayaran') {
+                if (!$transactions['snapToken']) {
+                    Config::$serverKey = env("VITE_MIDTRANS_SERVER_KEY");
+                    Config::$isProduction = false;
+                    $ress = Snap::createTransaction([
+                        "transaction_details" => [
+                            "order_id" => $transactions['id'],
+                            "gross_amount" => $transactions['ongkir'] ? $transactions['Total']  + $transactions['ongkir'] : $transactions['Total']
+                        ]
+                    ]);
+                    Transaksi::whereId($id)->update(['snapToken' => $ress->token]);
+                    $transaction = [...$transactions, 'snapToken' => $ress->token];
+                }
+            }
+            return Inertia::render('Customer/Transaksi/show', compact('transactions'));
         };
         abort(404);
     }
 
     public function payment($id)
     {
-        Config::$serverKey = env("VITE_MIDTRANS_SERVER_KEY");
-        Config::$isProduction = false;
         $transaction = Transaksi::with(['detailTransaksis.product'])->where('id', $id)->where('status', 'Menunggu Pembayaran')->first();
         if ($transaction) {
             $transaction = [...$transaction->toArray(), 'Total' => DetailTransaksi::where('transaksiId', $transaction->id)->sum('subTotal')];
@@ -128,5 +138,11 @@ class transaksiCustomerController extends Controller
     }
 
 
-    public function update($id) {}
+    public function update($id)
+    {
+        Transaksi::where('id', $id)->update(
+            ['status' => 'Selesai']
+        );
+        return back()->with('success', 'Berhasil Menyelesaikan Pesanan');
+    }
 }

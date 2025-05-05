@@ -1,6 +1,8 @@
 import { Button } from '@/components/ui/button';
 import CustomerPageLayout from '@/layouts/customerPagetLayout';
 import { transactionType } from '@/types/transaction';
+import { currencyConverter } from '@/utils/currencyConverter';
+import { dateFormaterUtils } from '@/utils/dateFormater';
 import { router } from '@inertiajs/react';
 
 export default function TransactionIndex({ transactions }: { transactions: transactionType[] }) {
@@ -11,7 +13,7 @@ export default function TransactionIndex({ transactions }: { transactions: trans
                 <div className="w-full rounded-3xl border border-[#AFB3FF] bg-[#FFFFFF] p-5 px-10 shadow lg:px-16">
                     <h1 className="font-bold">Riwayat Trasaksi</h1>
                 </div>
-                <div className="w-full flex-1 overflow-x-auto rounded-3xl border border-[#AFB3FF] bg-[#FFFFFF] p-10 shadow lg:px-16">
+                <div className="w-full flex-1 overflow-x-auto rounded-3xl border border-[#AFB3FF] bg-[#FFFFFF] p-10 pb-0 shadow lg:px-16">
                     <table className="w-full">
                         <thead className="flex w-full justify-between px-5 pb-5">
                             <tr className="grid w-full grid-cols-6 text-center text-lg font-semibold">
@@ -23,11 +25,11 @@ export default function TransactionIndex({ transactions }: { transactions: trans
                                 <td>Action</td>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody className='block overflow-y-auto p-1 max-h-[60vh]'>
                             {transactions.map((item) => (
                                 <tr
                                     key={item.id}
-                                    className="grid w-full grid-cols-6 items-center border-t-[1.8px] border-[#D9D9D9] px-5 py-5 text-center"
+                                    className="grid break-words w-full grid-cols-6 items-center border-t-[1.8px] border-[#D9D9D9] px-5 py-5 text-center"
                                 >
                                     <td>{item.id}</td>
                                     <td>
@@ -39,9 +41,9 @@ export default function TransactionIndex({ transactions }: { transactions: trans
                                             );
                                         })}
                                     </td>
-                                    <td>{new Intl.DateTimeFormat('id-ID').format(new Date(item.created_at))}</td>
-                                    <td>{item.status}</td>
-                                    <td>{new Intl.NumberFormat('id-ID', { currency: 'IDR', style: 'currency' }).format(item.Total)}</td>
+                                    <td>{dateFormaterUtils(item.created_at)}</td>
+                                    <td className={item.status === "Selesai" ? "text-[#048730] font-semibold" : "text-[#FFA114] font-semibold"}>{item.status}</td>
+                                    <td>{currencyConverter(item.ongkir ? item.Total +  item.ongkir : item.Total)}</td>
                                     <td>
                                         <Button
                                             onClick={() => router.get(route('customer.transaksi.show', { id: item.id }))}

@@ -1,7 +1,5 @@
 <?php
 
-use App\Models\Payment;
-use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,8 +16,10 @@ return new class extends Migration
             $table->integer('nominal');
             $table->boolean('finished')->default(false);
             $table->string('bukti')->nullable();
+            $table->enum('type', ['Pemasukan', 'Pengeluaran','Penarikan']);
             $table->foreignUuid('userId')->constrained('users');
-            $table->foreignUlid('paymentId')->constrained('payments');
+            $table->foreignUlid('transactionId')->nullable()->constrained('transaksis');
+            $table->foreignUlid('paymentId')->nullable()->constrained('payments');
             $table->timestamps();
         });
     }

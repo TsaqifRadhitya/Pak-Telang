@@ -11,20 +11,31 @@ use Inertia\Inertia;
 
 class transaksiMitraController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $pesananMasuk = [];
+        $pesananMasuk = Transaksi::with('detailTransaksis.product')->where('providerId',null)->get()->map(function ($item) {
+            return [...$item->toArray(), 'Total' => DetailTransaksi::where('transaksiId', $item->id)->sum('subTotal')];
+        });
         $Dipesan = Transaksi::with('detailTransaksis.product')->where('status', '!=', 'Selesai')->where('customerId', Auth::user()->id)->get()->map(function ($item) {
             return [...$item->toArray(), 'Total' => DetailTransaksi::where('transaksiId', $item->id)->sum('subTotal')];
         });
         $pesananDiterima = Transaksi::with('detailTransaksis.product')->where('providerId', Auth::user()->id)->get()->map(function ($item) {
 
-            return [...$item->toArray(), 'address' => $this->getFullAdress($item)];
+            return [...$item->toArray(), "user" => User::find($item->customerId), 'Total' => DetailTransaksi::where('transaksiId', $item->id)->sum('subTotal'), 'address' => $this->getFullAdress($item)];
         });
-        $Riwayat = Transaksi::with('detailTransaksis.product')->where('providerId', Auth::user()->id)->orWhere('customerId', Auth::user()->id)->where('status', 'Selesai')->get()->map(function ($item) {
-            return [...$item->toArray(), 'Total' => DetailTransaksi::where('transaksiId', $item->id)->sum('subTotal')];
-        });
-        return Inertia::render('Mitra/Transaksi/index', compact('pesananMasuk', 'Dipesan', 'pesananDiterima', 'Riwayat'));
+        $Riwayat = Transaksi::with('detailTransaksis.product')
+            ->where(function ($query) {
+                $query->where('providerId', Auth::user()->id)
+                    ->orWhere('customerId', Auth::user()->id);
+            })
+            ->where('status', 'Selesai')
+            ->get()
+            ->map(function ($item) {
+                return [...$item->toArray(), 'Total' => DetailTransaksi::where('transaksiId', $item->id)->sum('subTotal')];
+            });
+
+        $section = $request->q;
+        return Inertia::render('Mitra/Transaksi/index', compact('pesananMasuk', 'Dipesan', 'pesananDiterima', 'Riwayat', 'section'));
     }
 
     private function getFullAdress(Transaksi $transaksi)
@@ -46,27 +57,25 @@ class transaksiMitraController extends Controller
 
     public function show($id)
     {
-        $transaction = Transaksi::with('detailTransaksis.product')->where('id', $id)->where('type', 'Barang jadi')->first();
+        $transaction = Transaksi::with('detailTransaksis.product')->where('id', $id)->first();
 
-        if ($transaction?->status === "Menunggu Pembayaran") {
+        if ($transaction?->status === "Menunggu Pembayaran" && $transaction?->type === "Bahan Baku") {
             return redirect(route('mitra.order bahan.payment', ["id" => $id]));
         } else if ($transaction) {
-            if(!$transaction->providerId){
+            if (!$transaction->providerId) {
                 $section = "Pesanan Masuk";
-            }else if($transaction->status !== "Selesai"){
+            } else if ($transaction->status !== "Selesai") {
                 $section = "Pesanan Diterima";
-            }else {
+            } else {
                 $section = "Riwayat";
             }
             $transaction = [
                 ...$transaction->toArray(),
                 "Total" => DetailTransaksi::where('transaksiId', $transaction->id)->sum('subTotal'),
-                "user" => User::find($transaction->customerId),
             ];
             return Inertia::render('Mitra/Transaksi/show', compact('section', 'transaction'));
         }
         abort(404);
-        return Inertia::render('Mitra/Transaksi/show');
     }
 
     public function store(Request $request) {}

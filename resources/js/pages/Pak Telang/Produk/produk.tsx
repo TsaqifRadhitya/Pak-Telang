@@ -126,13 +126,13 @@ export default function ProductAdminPage({ products }: { products: productType[]
                         />
                         <div className="flex w-1/2 justify-center gap-x-2.5">
                             <Button
-                                className="w-1/2 cursor-pointer bg-[#FFFDF1] font-semibold text-green-600 ring ring-green-600 hover:bg-green-600 hover:text-white"
+                                className="w-1/2 cursor-pointer bg-[#FFFDF1] font-semibold text-[#8A7300] ring ring-[#8A7300] hover:bg-[#8A7300] hover:text-white"
                                 onClick={() => setDialog((prev) => ({ ...prev, delete: false }))}
                             >
                                 Batal
                             </Button>
                             <Button
-                                className="w-1/2 cursor-pointer bg-red-600 font-semibold text-white hover:bg-red-700"
+                                className="w-1/2 cursor-pointer bg-[#8A7300] text-white ring ring-[#8A7300] hover:bg-transparent hover:font-semibold hover:text-[#8A7300]"
                                 onClick={() => {
                                     setDialog((prev) => ({ ...prev, delete: false }));
                                     router.delete(route('admin.product.destroy', { product: productSelected?.id }));

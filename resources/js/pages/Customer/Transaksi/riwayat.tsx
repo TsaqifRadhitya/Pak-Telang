@@ -1,6 +1,7 @@
 import CustomerPageLayout from '@/layouts/customerPagetLayout';
 import { transactionType } from '@/types/transaction';
 import { currencyConverter } from '@/utils/currencyConverter';
+import { dateFormaterUtils } from '@/utils/dateFormater';
 
 export default function TransaksiShow({ transactions }: { transactions: transactionType }) {
     return (
@@ -13,7 +14,7 @@ export default function TransaksiShow({ transactions }: { transactions: transact
                     <div className='space-y-2.5'>
                         <div className='flex justify-between'>
                             <p>Transaksi ID : {transactions.id}</p>
-                            <p>Waktu : {new Intl.DateTimeFormat('id-ID',{dateStyle : "full",timeStyle : "medium"}).format(new Date(transactions.created_at))}</p>
+                            <p>Waktu : {dateFormaterUtils(transactions.created_at)}</p>
                         </div>
                         <p>Status : {transactions.status}</p>
                     </div>
@@ -26,7 +27,7 @@ export default function TransaksiShow({ transactions }: { transactions: transact
                                 <th className="text-end">Sub-total</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody className='block overflow-y-auto p-1 max-h-[60vh]'>
                             {transactions.detail_transaksis.map((item) => (
                                 <tr
                                     key={item.productId}

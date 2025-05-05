@@ -8,23 +8,27 @@ use Inertia\Inertia;
 
 class dashboardController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $role = Auth::user()->role;
-        if($role === 'Customer'){
+        if ($role === 'Customer') {
             return Inertia::render('Customer/Dashboard/dashboard');
             // return redirect(route('customer.profile'));
-        }else if($role === 'Mitra'){
+        } else if ($role === 'Mitra') {
             return redirect(route('mitra.dashboard'));
-        }else{
+        } else {
             return redirect(route('admin.dashboard'));
         }
     }
 
-    public function adminDashboard(){
+    public function adminDashboard()
+    {
         return Inertia::render('Pak Telang/Dashboard/dashboard');
     }
 
-    public function mitraDashboard(){
-        return Inertia::render('Mitra/Dashboard/dashboard');
+    public function mitraDashboard()
+    {
+        $statusToko = Auth::user()->mitra->isOpen;
+        return Inertia::render('Mitra/Dashboard/dashboard', compact('statusToko'));
     }
 }

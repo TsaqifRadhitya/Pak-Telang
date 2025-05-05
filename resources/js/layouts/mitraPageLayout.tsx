@@ -9,7 +9,7 @@ import Heading from '../components/heading';
 
 interface Props {
     children: ReactNode;
-    page: 'Dashboard' | 'Transaksi'| 'Produk' | 'Order Bahan' | 'Bantuan' |'Profile'
+    page?: 'Dashboard' | 'Transaksi'| 'Produk' | 'Order Bahan' | 'Bantuan' |'Profile'
 }
 
 export default function MitraPageLayout({ children, page }: Props) {

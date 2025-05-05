@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\mitra;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use phpDocumentor\Reflection\Types\Boolean;
 
 class mitraController extends Controller
 {
@@ -52,5 +54,14 @@ class mitraController extends Controller
             'cityName' => $city->cityName,
             'province' => $province->province,
         ];
+    }
+
+    public function updateStatusToko($status)
+    {
+        Auth::user()->mitra->update(
+            ['isOpen' => $status === "true" ? true : false]
+        );
+
+        return back()->with('success','Berhasil Mengubah Status Toko');
     }
 }

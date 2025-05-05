@@ -3,6 +3,7 @@
 use App\Http\Controllers\bahanBakuController;
 use App\Http\Controllers\dashboardController;
 use App\Http\Controllers\ewalletController;
+use App\Http\Controllers\mitraController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\profileController;
 use App\Http\Controllers\transaksiMitraController;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', mitraMidleware::class])->group(function () {
     Route::prefix('mitra')->group(function () {
+        Route::post('/status/{status}',[mitraController::class,'updateStatusToko'])->name('mitra.status.update');
         Route::get('dashboard', [dashboardController::class, 'mitraDashboard'])->name('mitra.dashboard');
 
         Route::prefix('profile')->group(function () {
