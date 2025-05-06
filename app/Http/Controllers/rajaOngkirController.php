@@ -11,7 +11,7 @@ class rajaOngkirController extends Controller
 {
     public function index(Request $request)
     {
-        $from = $this->getAddressId(User::where('role', 'Pak Telang')->first());
+        $from = $this->getAddressId(User::where('role', 'Pak Telang')->where('address','!=',null)->first());
         $destination = $this->getAddressId(Auth::user());
         $kurirOption = $this->getKurirOption($from, $destination, $request);
         return $kurirOption;
@@ -22,11 +22,9 @@ class rajaOngkirController extends Controller
         $address = $user->address;
         $postalCode = $user->postalCode;
         $district = $user->district()->first();
-        $city = $district->city()->first();
-        $province = $city->province()->first();
-
+        $city = $district?->city()->first();
+        $province = $city?->province()->first();
         $fullAddresss = $address . ', ' . $district->districtName . ", " . $city->cityName . ", " . $province->province . ", " . $postalCode;
-
         $response = Http::withHeaders([
             'Accept' => 'application/json',
             'key' => env('VITE_RAJAONGKIR_API_KEY_ID'), // sesuaikan jika key-nya beda

@@ -5,6 +5,7 @@ import MitraPageLayout from '@/layouts/mitraPageLayout';
 import { cn } from '@/lib/utils';
 import { SharedData } from '@/types';
 import { router, usePage } from '@inertiajs/react';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { useState } from 'react';
 import EWallet from '../../../components/ewallet';
 
@@ -48,7 +49,12 @@ export default function DashboardMitraPage({ statusToko }: { statusToko: boolean
                             </div>
                             <p className="flex-1/2 text-right text-xs text-[#8A7300]">Note : Status toko dapat diubah kapanpun</p>
                         </div>
-                        <img className='max-w-32 aspect-square' src={window.location.origin + '/Asset/Image/image.png'} alt="" />
+                        <DotLottieReact
+                            loop
+                            className="w-1/2"
+                            src="https://lottie.host/0d4d6ac7-6c39-410c-beae-8b835e7e6790/PrUVLgMZXE.lottie"
+                            autoplay
+                        />
                         <Heading
                             title={`Apakah anda yakin untuk ${statusToko ? 'menutup' : 'membuka'} toko?`}
                             className="text-md line mx-auto text-center leading-5 font-medium text-[#8A7300]"
@@ -77,9 +83,9 @@ export default function DashboardMitraPage({ statusToko }: { statusToko: boolean
                         <h1 className="text-xl font-semibold">Dashboard</h1>
                     </div>
                     <div className="flex-1 p-5 lg:px-10">
-                        <div className="flex w-full gap-10">
-                            <EWallet type="Mitra" saldo={saldo} className="flex-1/2" />
-                            <section className="flex-1/2 space-y-1 rounded-lg p-5 text-[#3B387E] ring ring-[#3B387E]">
+                        <div className="flex w-full flex-col gap-5 lg:flex-row lg:gap-10">
+                            <EWallet type="Mitra" saldo={saldo} className="lg:flex-1/2 w-full lg:w-fit" />
+                            <section className="space-y-1 rounded-lg p-5 text-[#3B387E] ring ring-[#3B387E] lg:flex-1/2">
                                 <Heading className="text-md font-semibold" title="Status Toko" />
                                 <div className="flex items-center justify-between">
                                     <h1 className={cn('text-2xl font-semibold', statusToko ? 'text-[#048730]' : 'text-red-500')}>

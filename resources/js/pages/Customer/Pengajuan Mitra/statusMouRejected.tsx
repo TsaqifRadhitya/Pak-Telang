@@ -20,6 +20,7 @@ export default function MouRejected() {
                             src="https://lottie.host/3bdb1646-ab46-4425-8064-0e6d286ae63e/h2freDTaU6.lottie"
                             className="max-w-md"
                             autoplay
+                            loop
                         />
                         <article className="flex flex-col items-center justify-center text-center">
                             <h3 className="text-xl font-semibold">

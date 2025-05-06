@@ -1,5 +1,5 @@
 export type WidrawEwalletType = {
-    OwneName : string
+    ownerName : string
     number : string
     provider : string
     type : string

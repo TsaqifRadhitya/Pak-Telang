@@ -28,7 +28,7 @@ class dashboardController extends Controller
 
     public function mitraDashboard()
     {
-        $statusToko = Auth::user()->mitra->isOpen;
+        $statusToko = Auth::user()->mitra?->isOpen;
         return Inertia::render('Mitra/Dashboard/dashboard', compact('statusToko'));
     }
 }

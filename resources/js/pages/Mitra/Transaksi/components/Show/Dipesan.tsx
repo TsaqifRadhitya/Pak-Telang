@@ -6,35 +6,39 @@ export default function Dipesan() {
     const { transaction } = usePage<{ transaction: transactionType }>().props;
     return (
         <section className="flex justify-between">
-            <div className='space-y-2.5'>
+            <div className="space-y-2.5">
                 <p>Transaksi ID : {transaction.id}</p>
                 <p>Waktu : {dateFormaterUtils(transaction.created_at)}</p>
-                <p className="text-[#048730]">Status : {transaction.status}</p>
+                <p className="">
+                    Status : <span className="font-semibold text-[#048730]">{transaction.status}</span>
+                </p>
             </div>
             <div className="text-right">
-                {transaction.resi && <div className="flex">
-                    <p>{transaction.resi}</p>
-                    <svg
-                        onClick={() => navigator.clipboard.writeText(transaction.resi as string)}
-                        width="13"
-                        height="15"
-                        viewBox="0 0 13 15"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
+                {transaction.resi && (
+                    <div className="flex">
+                        <p>{transaction.resi}</p>
+                        <svg
+                            onClick={() => navigator.clipboard.writeText(transaction.resi as string)}
+                            width="13"
+                            height="15"
+                            viewBox="0 0 13 15"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
                         <rect x="3.39474" y="0.394737" width="8.68421" height="11.7366" rx="1.18421" stroke="#3B387E" stroke-width="0.789474" />
-                        <rect
-                            x="0.394737"
-                            y="2.39474"
-                            width="8.68421"
-                            height="11.7366"
-                            rx="1.18421"
-                            fill="white"
-                            stroke="#3B387E"
-                            stroke-width="0.789474"
-                        />
-                    </svg>
-                </div>}
+                            <rect
+                                x="0.394737"
+                                y="2.39474"
+                                width="8.68421"
+                                height="11.7366"
+                                rx="1.18421"
+                                fill="white"
+                                stroke="#3B387E"
+                                stroke-width="0.789474"
+                            />
+                        </svg>
+                    </div>
+                )}
             </div>
         </section>
     );

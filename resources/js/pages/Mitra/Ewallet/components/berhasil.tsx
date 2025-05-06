@@ -34,7 +34,7 @@ export default function Berhasil() {
                             <Heading disableMb title="Pencairan Dana" className="text-md font-semibold" />
                             <p className="text-xs">{dateFormaterUtils(row.created_at)}</p>
                         </div>
-                        <div className="flex">
+                        <div className="flex gap-3 items-center">
                             <Heading className="text-md" title={currencyConverter(row.nominal)} />
                             <Button
                                 className="h-fit min-w-24 cursor-pointer rounded-sm bg-[#5961BE] py-1.5 text-xs text-white ring ring-[#5961BE] hover:bg-transparent hover:font-semibold hover:text-[#5961BE]"

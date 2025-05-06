@@ -12,14 +12,18 @@ import Heading from '../../../components/heading';
 import HeadingSmall from '../../../components/heading-small';
 
 export default function DetailSubmission() {
+
     const { mitra } = usePage<{ mitra: mitra }>().props;
 
-    useEffect(() => {
+    const loadMou = () => {
         document.querySelector('body')?.classList.add('overflow-y-hidden');
         if (mitra.mou) return;
         mouEditor.replacer(mitra).then((ress) => {
             renderAsync(ress, document.getElementById('docpreview') as HTMLElement);
         });
+    };
+    useEffect(() => {
+        loadMou();
     }, []);
 
     const [modal, setModal] = useState<boolean>(false);
@@ -45,7 +49,11 @@ export default function DetailSubmission() {
     };
 
     const handleSubmit = () => {
-        router.patch(route('admin.mitra.pengajuan.update', { id: mitra.id, status: typeStatus.current, pesanPersetujuan: inputText.current?.value }));
+        router.patch(
+            route('admin.mitra.pengajuan.update', { id: mitra.id, status: typeStatus.current, pesanPersetujuan: inputText.current?.value }),
+            {},
+            { onFinish: loadMou },
+        );
         setModal(false);
     };
     return (
@@ -60,7 +68,12 @@ export default function DetailSubmission() {
                             />
                             <HeadingSmall title="Warning!!!" className="font-black" />
                         </div>
-                        <DotLottieReact className="w-1/3" src="https://lottie.host/0d4d6ac7-6c39-410c-beae-8b835e7e6790/PrUVLgMZXE.lottie" autoplay />
+                        <DotLottieReact
+                            loop
+                            className="w-1/3"
+                            src="https://lottie.host/0d4d6ac7-6c39-410c-beae-8b835e7e6790/PrUVLgMZXE.lottie"
+                            autoplay
+                        />
                         <Heading title={headerModal as string} />
                         <p className="text-sm">Status Pengajuan tidak dapat diubah lagi ketika anda mengirim form ini.</p>
                         <div className="w-full space-y-2 px-5">

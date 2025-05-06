@@ -6,6 +6,7 @@ import { currencyConverter } from '@/utils/currencyConverter';
 import { router } from '@inertiajs/react';
 import { useState } from 'react';
 import Status, { statusComponent } from './component/status';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 export default function TransaksiShow({ transactions }: { transactions: transactionType }) {
     const handlePayment = () => {
@@ -49,7 +50,7 @@ export default function TransaksiShow({ transactions }: { transactions: transact
     return (
         <>
             {isOpen && (
-                <section id="alertDelete" className="z-[999] fixed h-full w-full bg-black/50">
+                <section id="alertDelete" className="fixed z-[999] h-full w-full bg-black/50">
                     <article className="absolute top-1/2 left-1/2 flex w-full max-w-xl -translate-1/2 flex-col items-center gap-y-5 rounded-2xl border border-[#8A7300] bg-[#FFFDF1] p-5 pb-10">
                         <div className="flex w-full flex-1/2 items-center gap-x-4">
                             <img
@@ -58,8 +59,12 @@ export default function TransaksiShow({ transactions }: { transactions: transact
                             />
                             <h1 className="text-xl font-bold text-[#8A7300]">Warning!!</h1>
                         </div>
-
-                        <img className="aspect-square max-w-32" src={window.location.origin + '/Asset/Image/image.png'} alt="" />
+                        <DotLottieReact
+                            loop
+                            className="w-1/2"
+                            src="https://lottie.host/0d4d6ac7-6c39-410c-beae-8b835e7e6790/PrUVLgMZXE.lottie"
+                            autoplay
+                        />
                         <Heading
                             title="Apakah Anda yakin telah menerima pesanan Anda?"
                             className="text-md line mx-auto text-center leading-5 font-medium text-[#8A7300]"

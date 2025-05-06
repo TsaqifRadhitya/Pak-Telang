@@ -15,6 +15,7 @@ export default function FormPending() {
                         <DotLottieReact
                             src="https://lottie.host/d3553a30-65fc-40db-8bb4-ee6833b42553/xx35T6hHKB.lottie"
                             className="max-w-md"
+                            loop
                             autoplay
                         />
                         <article className="flex flex-col items-center justify-center text-center">

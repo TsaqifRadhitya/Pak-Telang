@@ -16,7 +16,7 @@ export default function EwaletIndex() {
                 <div className="flex items-center border-b-[1px] border-[#AFB3FF] p-5 md:px-10 md:py-5">
                     <h1 className="text-xl font-semibold">E-Wallet</h1>
                 </div>
-                <div className="flex flex-1 gap-4 p-5 pb-0 lg:p-10 lg:pb-0">
+                <div className="flex flex-col lg:flex-row flex-1 gap-4 p-5 pb-0 lg:p-10 lg:pb-0">
                     <div className="flex flex-1/2 flex-col gap-4">
                         <Saldo />
                         <PencairanDana />

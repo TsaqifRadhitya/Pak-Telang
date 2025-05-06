@@ -26,7 +26,7 @@ export default function MoUWaitingApprovement() {
                     <div className="flex w-full flex-1 flex-col items-center gap-y-5 rounded-3xl border border-[#AFB3FF] bg-[#FFFFFF] p-10 shadow lg:px-16">
                         <article className="flex items-center gap-5 w-full">
                             <div className="aspect-square w-1/10">
-                                <DotLottieReact src="https://lottie.host/d3553a30-65fc-40db-8bb4-ee6833b42553/xx35T6hHKB.lottie" autoplay />
+                                <DotLottieReact loop src="https://lottie.host/d3553a30-65fc-40db-8bb4-ee6833b42553/xx35T6hHKB.lottie" autoplay />
                             </div>
                             <div>
                                 <Heading title="Dokumen Memorandum of Understanding (MOU)" className="text-4xl" />
