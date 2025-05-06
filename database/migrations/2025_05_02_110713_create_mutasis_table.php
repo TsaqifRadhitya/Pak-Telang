@@ -18,11 +18,11 @@ return new class extends Migration
             $table->string('bukti')->nullable();
             $table->enum('type', ['Pemasukan', 'Pengeluaran','Penarikan']);
             $table->foreignUuid('userId')->constrained('users');
-            $table->foreignUlid('transactionId')->nullable()->constrained('transaksis');
+            $table->foreignUlid('transaksiId')->nullable()->constrained('transaksis');
             $table->foreignUlid('paymentId')->nullable()->constrained('payments');
             $table->timestamps();
         });
-    }
+}
 
     /**
      * Reverse the migrations.

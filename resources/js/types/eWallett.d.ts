@@ -5,7 +5,7 @@ export type eWalletType = {
     finished: boolean
     type: eWalletAcivityType
     userId: string
-    transactionId: string
+    transaksiId: string
     paymentId: string
     created_at: Date
 }
