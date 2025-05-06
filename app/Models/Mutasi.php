@@ -14,4 +14,9 @@ class Mutasi extends Model
     {
         return $this->belongsTo(Payment::class, 'paymentId');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'userId', 'id');
+    }
 }

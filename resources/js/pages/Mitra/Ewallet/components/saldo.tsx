@@ -40,7 +40,6 @@ export default function Saldo() {
     const { data, setData, post, errors, setError, reset, clearErrors } = useForm<WidrawEwalletType>();
 
     const resetModal = () => {
-        setError('ownerName', '');
         clearErrors();
         reset();
         setModal(false);
@@ -79,7 +78,7 @@ export default function Saldo() {
     };
 
     useEffect(() => {
-        reset('ownerName', 'number', 'provider');
+        // reset('ownerName', 'number', 'provider');
         clearErrors('ownerName', 'number', 'provider');
     }, [data.type]);
     return (

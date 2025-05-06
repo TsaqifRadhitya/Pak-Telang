@@ -69,7 +69,7 @@ export default function ModalItemEwallet({
                     <Label className="text-md font-semibold">Nomor E-Wallet</Label>
                     <Input
                         onChange={(e) => setData('number', e.target.value)}
-                        value={data.number ?? 0}
+                        value={data.number?.toString() ?? "0"}
                         className="mt-0.5 border-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:border-0 focus-visible:ring-[#B9BDFF]"
                         placeholder="No. E-Wallet"
                         type="number"

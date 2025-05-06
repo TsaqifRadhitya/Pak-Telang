@@ -30,6 +30,12 @@ export class supabaseImage extends supabaseService {
         }
     }
 
+    public async uploadBuktiTf(param: File) {
+        const result = await this.supabaseConnection.storage.from('paktelang').update(`${this.basePath}bukti/${param.name}`, param, { contentType: param.type, upsert: true })
+        const url = await this.getUrl(result.data!.path)
+        return url
+    }
+
     public async upsertProfile(params: File) {
         const result = await this.supabaseConnection.storage.from('paktelang').update(`${this.basePath}profile/profile`, params, { contentType: params.type, upsert: true })
         const url = await this.getUrl(result.data!.path)

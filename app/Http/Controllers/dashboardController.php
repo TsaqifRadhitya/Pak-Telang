@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -23,7 +24,8 @@ class dashboardController extends Controller
 
     public function adminDashboard()
     {
-        return Inertia::render('Pak Telang/Dashboard/dashboard');
+        $saldo = User::sum('saldo');
+        return Inertia::render('Pak Telang/Dashboard/dashboard',compact('saldo'));
     }
 
     public function mitraDashboard()

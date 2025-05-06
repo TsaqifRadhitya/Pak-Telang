@@ -8,10 +8,11 @@ import { props } from '..';
 
 export default function Berhasil() {
     const { mutations } = usePage<props>().props;
+    console.log(mutations.filter((filter) => filter.finished));
     const [buktiTransfer, setButktiTransfer] = useState<string>();
 
     return (
-        <section className="max-h-86 overflow-y-auto">
+        <>
             {buktiTransfer && (
                 <section
                     onClick={() => setButktiTransfer(undefined)}
@@ -28,24 +29,30 @@ export default function Berhasil() {
                 </section>
             )}
             {mutations
-                .filter((item) => item.finished && item.type === 'Penarikan')
-                .map((row) => (
-                    <div key={row.id} className="flex items-center justify-between border-b-2 border-[#D9D9D9] p-5">
+                .filter((filter) => filter.finished)
+                .map((mutation) => (
+                    <section className="flex justify-between border-b-2 border-[#D9D9D9] p-5 px-7">
                         <div>
-                            <Heading disableMb title="Pencairan Dana" className="text-md font-semibold" />
-                            <p className="text-xs">{dateFormaterUtils(row.created_at)}</p>
+                            <h1 className="font-semibold">{mutation.user?.name}</h1>
+                            <h1 className="text-xs">
+                                {mutation.payment?.type === 'bank' ? 'Transfer Bank' : 'Transfer E-Wallet'} - {mutation.payment?.provider} -{' '}
+                                {mutation.payment?.number}
+                            </h1>
                         </div>
-                        <div className="flex items-center gap-3">
-                            <Heading className="text-md" title={currencyConverter(row.nominal)} />
+                        <div className="flex items-center gap-10">
+                            <div>
+                                <p className="text-xs">{dateFormaterUtils(mutation.created_at)}</p>
+                                <p className="text-right font-semibold">{currencyConverter(mutation.nominal)}</p>
+                            </div>
                             <Button
-                                className="h-fit min-w-24 cursor-pointer rounded-sm bg-[#5961BE] py-1.5 text-xs text-white ring ring-[#5961BE] hover:bg-transparent hover:font-semibold hover:text-[#5961BE]"
-                                onClick={() => setButktiTransfer(row.bukti)}
+                                onClick={() => setButktiTransfer(mutation.bukti)}
+                                className="h-fit w-20 cursor-pointer rounded-sm bg-[#5961BE] py-1 text-white ring ring-[#5961BE] hover:bg-transparent hover:font-semibold hover:text-[#5961BE]"
                             >
                                 Lihat
                             </Button>
                         </div>
-                    </div>
+                    </section>
                 ))}
-        </section>
+        </>
     );
 }

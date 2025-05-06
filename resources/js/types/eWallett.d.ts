@@ -1,3 +1,6 @@
+import { User } from "."
+import { paymentType } from "./payment"
+
 export type eWalletType = {
     id: string
     nominal: number
@@ -8,6 +11,8 @@ export type eWalletType = {
     transaksiId: string
     paymentId: string
     created_at: Date
+    user? : User
+    payment? : paymentType
 }
 
 export type eWalletAcivityType = 'Pemasukan' | 'Pengeluaran' | 'Penarikan'
