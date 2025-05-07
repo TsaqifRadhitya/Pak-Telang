@@ -1,3 +1,4 @@
+import Countdown from '@/components/countDown';
 import { Button } from '@/components/ui/button';
 import MitraPageLayout from '@/layouts/mitraPageLayout';
 import { transactionType } from '@/types/transaction';
@@ -28,8 +29,9 @@ export default function OrderBahanIndex({ transaction }: { transaction: transact
     return (
         <MitraPageLayout page="Order Bahan">
             <main className="flex h-full w-full flex-col rounded-t-lg border-[1px] border-b-0 border-[#AFB3FF] bg-[#FFFFFF] shadow-lg">
-                <div className="flex items-center border-b-[1px] border-[#AFB3FF] p-5 md:px-10 md:py-5">
+                <div className="flex items-center justify-between border-b-[1px] border-[#AFB3FF] p-5 md:px-10 md:py-5">
                     <h1 className="text-xl font-semibold">Order Bahan</h1>
+                    <Countdown updatedAt={transaction.updated_at} durationMinutes={720} className='text-lg'/>
                 </div>
                 <div className="flex flex-1 flex-col justify-between p-5 lg:px-10">
                     <div className='space-y-10'>

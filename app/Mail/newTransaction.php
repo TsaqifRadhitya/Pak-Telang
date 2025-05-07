@@ -16,19 +16,20 @@ class newTransaction extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct()
+
+    public $link;
+    public function __construct($link)
     {
-        //
+        $this->link = $link;
     }
 
     /**
      * Get the message envelope.
      */
-    public function envelope(string $email): Envelope
+    public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'New Transaction',
-
+            subject: 'Pesanan Baru Telah Masuk'
         );
     }
 
@@ -38,7 +39,7 @@ class newTransaction extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'mail',
         );
     }
 

@@ -84,7 +84,7 @@ export default function DashboardMitraPage({ statusToko }: { statusToko: boolean
                     </div>
                     <div className="flex-1 p-5 lg:px-10">
                         <div className="flex w-full flex-col gap-5 lg:flex-row lg:gap-10">
-                            <EWallet type="Mitra" saldo={saldo} className="lg:flex-1/2 w-full lg:w-fit" />
+                            <EWallet type="Mitra" saldo={saldo} className="w-full lg:w-fit lg:flex-1/2" />
                             <section className="space-y-1 rounded-lg p-5 text-[#3B387E] ring ring-[#3B387E] lg:flex-1/2">
                                 <Heading className="text-md font-semibold" title="Status Toko" />
                                 <div className="flex items-center justify-between">

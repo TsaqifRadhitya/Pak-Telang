@@ -3,12 +3,15 @@
 use App\Http\Controllers\dashboardController;
 use App\Http\Controllers\kontenController;
 use App\Http\Controllers\messageController;
+use App\Http\Controllers\midtransController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\rajaOngkirController;
 use App\Models\konten;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+
+Route::post('/midtrans/callback', [midtransController::class, 'callback'])->name('midtrans.callback');
 
 Route::get('/', function () {
     $product = Product::where('productType', '=', 'Barang jadi')->where('isdeleted',false)->get()->each(function ($e) {

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('metodePengiriman')->default('delivery');
             $table->string('resi')->nullable();
             $table->enum('type', ['Barang jadi', 'Bahan Baku']);
-            $table->enum('status', ['Menunggu Konfirmasi', 'Menunggu Pembayaran', "Gagal Menemukan Provider", 'Pembayaran Gagal', 'Sedang DiProses', 'Selesai']);
+            $table->enum('status', ['Menunggu Konfirmasi', 'Menunggu Pembayaran', "Gagal Menemukan Provider", 'Pembayaran Gagal', 'Sedang Diproses','Sedang Dikirim', 'Selesai']);
             $table->string('address');
             $table->string('postalCode');
             $table->foreignUlid('districtId')->constrained('districts');

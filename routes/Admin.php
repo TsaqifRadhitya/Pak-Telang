@@ -35,8 +35,8 @@ Route::middleware(['auth', adminMidleware::class])->group(function () {
 
         Route::prefix('transaksi')->group(function () {
             Route::get('/', [transaksiAdminController::class, 'index'])->name('admin.transaksi');
-            Route::get('{id}', [transaksiAdminController::class, 'show'])->name('admin.show');
-            Route::patch('{id}', [transaksiAdminController::class, 'update'])->name('admin.update');
+            Route::get('{id}', [transaksiAdminController::class, 'show'])->name('admin.transaksi.show');
+            Route::patch('{id}', [transaksiAdminController::class, 'update'])->name('admin.transaksi.update');
         });
 
         Route::prefix('ewallet')->group(function () {

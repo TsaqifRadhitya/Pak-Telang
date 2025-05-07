@@ -9,7 +9,7 @@ import Heading from '../components/heading';
 
 interface Props {
     children: ReactNode;
-    page?: 'Dashboard' | 'Mitra' | 'Produk' | 'Profile' | 'Konten';
+    page?: 'Dashboard' | 'Mitra' | 'Produk' | 'Profile' | 'Konten' | 'Transaksi';
 }
 
 export default function AdminPageLayout({ children, page }: Props) {

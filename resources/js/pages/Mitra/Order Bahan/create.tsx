@@ -82,6 +82,8 @@ export default function OrderBahanCreate({
                 ongkir: selectedKurir?.shipping_cost ?? 0,
                 metodePengiriman: `${selectedKurir?.shipping_name} (${selectedKurir?.service_name})`,
             data: transactionItem,
+            },{
+                onFinish : () => window.location.reload()
             });
         }
     };

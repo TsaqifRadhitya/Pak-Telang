@@ -20,6 +20,11 @@ class Transaksi extends Model
         return $this->belongsTo(Payment::class, 'paymentId', 'id');
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'customerId', 'id');
+    }
+
     public function district()
     {
         return $this->belongsTo(District::class, 'districtId', 'id');

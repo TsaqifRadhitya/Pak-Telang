@@ -23,7 +23,6 @@ export default function SweetAlert({ message, type }: props) {
 
     const { quote } = usePage<SharedData>().props;
     useEffect(() => {
-        console.log(quote.message);
         setShow(true);
         const timeout = setTimeout(() => {
             setShow(false);

@@ -81,7 +81,9 @@ export default function TransactionCreate() {
     useEffect(() => {
         if (selectedProduct) {
             const seletected = products.find((item) => item.id === selectedProduct);
-            setData([{ amount: 1, productId: selectedProduct, subTotal: seletected!.productPrice, productName: seletected!.productName }]);
+            if (seletected) {
+                setData([{ amount: 1, productId: selectedProduct, subTotal: seletected!.productPrice, productName: seletected!.productName }]);
+            }
         }
     }, [selectedProduct]);
     return (
@@ -89,7 +91,7 @@ export default function TransactionCreate() {
             <section className="flex flex-col bg-[#EBEFFF] p-5 pt-20 text-[#3B387E] md:px-10 lg:min-h-screen">
                 <Heading title="Transaksi" disableMb className="text-3xl" />
                 <div className="mt-5 flex flex-1 flex-col gap-16 px-5 lg:flex-row">
-                    <article className="grid flex-2/3 gap-16 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 scrollbar scrollbar-track-transparent pt-1 px-1 scrollbar-thumb-[#5961BE] lg:max-h-[70vh] overflow-y-auto">
+                    <article className="scrollbar scrollbar-track-transparent scrollbar-thumb-[#5961BE] grid flex-2/3 gap-16 overflow-y-auto px-1 pt-1 sm:grid-cols-2 lg:max-h-[70vh] lg:grid-cols-1 xl:grid-cols-2">
                         {products.map((item) => (
                             <section
                                 onClick={(e) => {
@@ -163,7 +165,7 @@ export default function TransactionCreate() {
                         ))}
                     </article>
                     <div className="flex h-fit min-h-[80vh] flex-3/5 flex-col gap-7">
-                        <div className="flex gap-1.5 flex-col rounded-xl bg-white p-5 shadow-sm">
+                        <div className="flex flex-col gap-1.5 rounded-xl bg-white p-5 shadow-sm">
                             <div className="flex justify-between">
                                 <HeadingSmall title="Alamat Tujuan" className="text-2xl font-semibold" />
                                 <svg
@@ -201,7 +203,7 @@ export default function TransactionCreate() {
                                 </svg>
                             </div>
                             <h1>{`${address.address}, ${address.districtName}, ${address.cityName} ${address.province}, ${address.postalCode}`}</h1>
-                            <p className='text-[#FFA114]'>Note: Alamat dapat diubah melalui profil anda</p>
+                            <p className="text-[#FFA114]">Note: Alamat dapat diubah melalui profil anda</p>
                         </div>
                         <div className="flex h-fit flex-6/7 flex-col rounded-xl bg-white p-5 text-lg">
                             <table className="w-full">

@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\newTransaction;
 use App\Models\DetailTransaksi;
 use App\Models\Mutasi;
 use App\Models\Product;
+use App\Models\productDetail;
 use App\Models\Transaksi;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 use Midtrans\Config;
 use Midtrans\Snap;
@@ -99,24 +102,44 @@ class bahanBakuController extends Controller
     {
         $user = Auth::user();
 
-        $user->update([
-            'saldo' => $user->saldo - $total
-        ]);
+        $data = collect($request->data);
 
+        // Ambil semua produk yang dibutuhkan sekaligus
+        $productDetails = productDetail::whereIn('productId', $data->pluck('productId'))
+            ->get()
+            ->keyBy('productId');
+
+        // Validasi stok
+        foreach ($data as $item) {
+            $product = $productDetails[$item['productId']] ?? null;
+            if (!$product || $item['amount'] > $product->stock) {
+                return redirect()->back()->with('error', 'Terdapat pemesanan yang tidak melebihi stock');
+            }
+        }
+
+        // Update saldo user
+        $user->decrement('saldo', $total);
+
+        // Buat transaksi
+        $provider = User::where('role', 'Pak Telang')->whereNotNull('address')->first();
+        if (!$provider) {
+            return redirect()->back()->withErrors(['Provider tidak ditemukan.']);
+        }
 
         $transaksi = Transaksi::create([
             'customerId' => $user->id,
-            'status' => 'Menunggu Konfirmasi',
+            'status' => 'Sedang Diproses',
             'type' => 'Bahan Baku',
             'address' => $user->address,
             'postalCode' => $user->postalCode,
             'districtId' => $user->districtId,
             'ongkir' => $request->ongkir,
             'metodePengiriman' => $request->metodePengiriman,
-            'providerId' => User::where('role', 'Pak Telang')->first()->id
+            'providerId' => $provider->id
         ]);
 
-        $detailTransaksi = collect($request->input('data'))->map(function ($item) {
+        // Buat detail transaksi
+        $detailTransaksi = $data->map(function ($item) {
             return [
                 'amount' => $item['amount'],
                 'subTotal' => $item['subTotal'],
@@ -126,6 +149,13 @@ class bahanBakuController extends Controller
 
         $transaksi->detailTransaksis()->createMany($detailTransaksi->toArray());
 
+        // Update stok produk
+        foreach ($data as $item) {
+            $product = $productDetails[$item['productId']];
+            $product->decrement('stock', $item['amount']);
+        }
+
+        // Catat mutasi
         Mutasi::create([
             'finished' => true,
             'type' => 'Pengeluaran',
@@ -134,18 +164,44 @@ class bahanBakuController extends Controller
             'transaksiId' => $transaksi->id
         ]);
 
+        Mail::to(User::find($transaksi->providerId)->email)->send(new newTransaction(route('admin.transaksi.show', ['id' => $transaksi->id])));
+
         return redirect()
             ->route('mitra.order bahan.show', ['id' => $transaksi->id])
             ->with('success', 'Berhasil membuat pesanan dengan metode pembayaran E-Wallet');
     }
 
+
     public function store(Request $request)
     {
         $user = Auth::user();
-        $total = array_sum(array_column($request->input('data'), 'subTotal')) + $request->ongkir;
+
+        $data = collect($request->data);
+
+        // Ambil semua product detail yang dibutuhkan dalam satu query
+        $productDetails = productDetail::whereIn('productId', $data->pluck('productId'))->get()->keyBy('productId');
+
+        // Validasi stok
+        foreach ($data as $item) {
+            $product = $productDetails[$item['productId']] ?? null;
+            if (!$product || $item['amount'] > $product->stock) {
+                return redirect()->back()->with('error', 'Terdapat pemesanan yang tidak melebihi stock');
+            }
+        }
+
+        $total = $data->sum('subTotal') + $request->ongkir;
+
+        // Jika saldo cukup, langsung proses lewat e-wallet
         if ($user->saldo >= $total) {
             return $this->storeWithEwallet($request, $total);
         }
+
+        // Buat transaksi
+        $provider = User::where('role', 'Pak Telang')->whereNotNull('address')->first();
+        if (!$provider) {
+            return redirect()->back()->withErrors(['Tidak ada provider yang tersedia saat ini.']);
+        }
+
         $transaksi = Transaksi::create([
             'customerId' => $user->id,
             'status' => 'Menunggu Pembayaran',
@@ -155,10 +211,11 @@ class bahanBakuController extends Controller
             'districtId' => $user->districtId,
             'ongkir' => $request->ongkir,
             'metodePengiriman' => $request->metodePengiriman,
-            'providerId' => User::where('role', 'Pak Telang')->first()->id
+            'providerId' => $provider->id
         ]);
 
-        $detailTransaksi = collect($request->input('data'))->map(function ($item) {
+        // Tambahkan detail transaksi
+        $detailTransaksi = $data->map(function ($item) {
             return [
                 'amount' => $item['amount'],
                 'subTotal' => $item['subTotal'],
@@ -168,10 +225,25 @@ class bahanBakuController extends Controller
 
         $transaksi->detailTransaksis()->createMany($detailTransaksi->toArray());
 
+        // Update stok setelah transaksi berhasil dibuat
+        foreach ($data as $item) {
+            $product = $productDetails[$item['productId']];
+            $product->decrement('stock', $item['amount']);
+        }
+
         return redirect()
             ->route('mitra.order bahan.payment', ['id' => $transaksi->id])
             ->with('success', 'Berhasil membuat pesanan');
     }
 
-    public function update($id) {}
+
+    public function update(Transaksi $id)
+    {
+
+        $id->update([
+            'status' => 'Selesai'
+        ]);
+
+        return back()->with('success', 'Berhasil menyelesaikan trannsaksi');
+    }
 }

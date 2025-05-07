@@ -1,12 +1,13 @@
+import Countdown from '@/components/countDown';
 import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
 import LandingPageLayout from '@/layouts/landingPageLayout';
 import { transactionType } from '@/types/transaction';
 import { currencyConverter } from '@/utils/currencyConverter';
 import { router } from '@inertiajs/react';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { useState } from 'react';
 import Status, { statusComponent } from './component/status';
-import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 export default function TransaksiShow({ transactions }: { transactions: transactionType }) {
     const handlePayment = () => {
@@ -88,8 +89,19 @@ export default function TransaksiShow({ transactions }: { transactions: transact
                 </section>
             )}
             <LandingPageLayout>
-                <section className="flex flex-col bg-[#EBEFFF] p-5 py-20 text-[#3B387E] md:px-10 lg:min-h-screen">
-                    <Heading title="Transaksi" disableMb className="text-3xl" />
+                <section className="flex flex-col bg-[#EBEFFF] p-5 py-20 text-[#3B387E] lg:min-h-screen">
+                    <div className="flex items-center justify-between px-5">
+                        <Heading title="Transaksi" disableMb className="w-fit text-3xl" />
+                        {transactions.status !== 'Selesai' &&
+                            transactions.status !== 'Sedang Dikirim' &&
+                            transactions.status !== 'Sedang Diproses' && transactions.status !== "Gagal Menemukan Provider" && (
+                                <Countdown
+                                    className="text-lg font-semibold"
+                                    updatedAt={transactions.updated_at}
+                                    durationMinutes={transactions.status === 'Menunggu Konfirmasi' ? 20 : 720}
+                                />
+                            )}
+                    </div>
                     <div className="p1 mt-5 flex flex-1 flex-col-reverse gap-10 px-5 lg:flex-row">
                         <div className="flex flex-3/5 flex-col justify-between gap-20 rounded-xl bg-white p-5 shadow-sm">
                             <table className="w-full">
@@ -142,7 +154,7 @@ export default function TransaksiShow({ transactions }: { transactions: transact
                                         </Button>
                                     </div>
                                 )}
-                                {transactions.status === 'Sedang DiProses' && (
+                                {transactions.status === 'Sedang Dikirim' && (
                                     <div className="flex justify-end pt-2.5">
                                         <Button
                                             disabled={isSubmited}

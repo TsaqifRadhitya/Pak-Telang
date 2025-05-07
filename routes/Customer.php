@@ -7,9 +7,6 @@ use App\Http\Controllers\transaksiCustomerController;
 use App\Http\Middleware\customerMidleware;
 use Illuminate\Support\Facades\Route;
 
-Route::post('/midtrans/callback', [midtransController::class, 'callback'])->name('midtrans.callback');
-
-
 Route::middleware(['auth', customerMidleware::class])->group(function () {
     Route::prefix('profile')->group(function () {
         Route::get('/', [ProfileController::class, 'index'])->name('customer.profile');
