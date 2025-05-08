@@ -104,7 +104,7 @@ export default function CustomerPageLayout({ children, page }: { children: React
                     !isMenuOpen && 'rounded-b-3xl',
                 )}
             >
-                <h1 className="text-2xl font-bold text-[#3b387e]">Pak Telang</h1>
+                <h1 onClick={()=>router.get('/')} className="text-2xl font-bold text-[#3b387e]">Pak Telang</h1>
 
                 {/* Mobile Menu Button */}
                 <button className="ml-auto cursor-pointer lg:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>

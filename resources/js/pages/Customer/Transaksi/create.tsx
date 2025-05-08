@@ -155,7 +155,7 @@ export default function TransactionCreate() {
                                 <div className="mt-20 w-3/5 rounded-r-full bg-[#5961BE] px-6 py-2 shadow-md">
                                     <h1 className="text-md w-fit pr-4 font-medium text-white md:text-xl 2xl:text-xl">{item.productName}</h1>
                                 </div>
-                                <p className="line-clamp-5 px-6 py-6 text-sm font-medium text-[#5961BE]">{item.productDescription}</p>
+                                <p className="line-clamp-4 px-6 py-6 text-sm font-medium text-[#5961BE]">{item.productDescription}</p>
                                 <div className="mt-auto flex w-full items-center justify-between px-6">
                                     <h1 className="text-md font-bold text-[#5961BE] md:text-xl">
                                         {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.productPrice)}
@@ -169,7 +169,7 @@ export default function TransactionCreate() {
                             <div className="flex justify-between">
                                 <HeadingSmall title="Alamat Tujuan" className="text-2xl font-semibold" />
                                 <svg
-                                    onClick={() => router.get(route('customer.profile.edit'))}
+                                    onClick={() => router.get(route('customer.profile.edit'),{fts : true})}
                                     className="cursor-pointer"
                                     width="20"
                                     height="20"

@@ -245,7 +245,7 @@ export default function OrderBahanCreate({
                             <div className="flex justify-between">
                                 <HeadingSmall title="Alamat Tujuan" className="text-2xl font-semibold" />
                                 <svg
-                                    onClick={() => router.get(route('mitra.profile.edit'))}
+                                    onClick={() => router.get(route('mitra.profile.edit'),{fts : true})}
                                     className="cursor-pointer"
                                     width="20"
                                     height="20"

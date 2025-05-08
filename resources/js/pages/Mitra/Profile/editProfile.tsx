@@ -47,10 +47,11 @@ const profileEditValidation = z.object({
 
 interface props extends SharedData {
     address: addressType;
+    fts: boolean;
 }
 
 export default function EditProfileMitraPage() {
-    const { auth, address } = usePage<props>().props;
+    const { auth, address, fts } = usePage<props>().props;
     const { data, setData, errors, setError, post } = useForm({
         ...auth.user,
         ...address,
@@ -121,9 +122,9 @@ export default function EditProfileMitraPage() {
         if (image) {
             const imageProvider = new supabaseImage(auth.user.email, 'Image');
             const profileUrl = await imageProvider.upsertProfile(image);
-            router.post(route('mitra.profile.update'), { ...data, profile_picture: profileUrl as string });
+            router.post(route('mitra.profile.update'), { ...data, profile_picture: profileUrl as string, fts: fts });
         } else {
-            post(route('mitra.profile.update'));
+            post(route('mitra.profile.update', { fts: fts }));
         }
     };
     return (
@@ -141,7 +142,7 @@ export default function EditProfileMitraPage() {
                         />
                         <Button
                             onClick={() => inputFile.current?.click()}
-                            className="cursor-pointer border-2 bg-white border-[#5961BE] text-[#3B387E] hover:bg-[#5961BE] hover:text-white"
+                            className="cursor-pointer border-2 border-[#5961BE] bg-white text-[#3B387E] hover:bg-[#5961BE] hover:text-white"
                         >
                             Pilih Foto
                         </Button>
@@ -267,7 +268,7 @@ export default function EditProfileMitraPage() {
                         <div className="flex justify-end gap-4 lg:col-span-2">
                             <Button
                                 onClick={() => router.get(route('mitra.profile'))}
-                                className="w-32 cursor-pointer bg-white border border-[#5961BE] text-[#5961BE] hover:bg-[#5961BE] hover:text-white"
+                                className="w-32 cursor-pointer border border-[#5961BE] bg-white text-[#5961BE] hover:bg-[#5961BE] hover:text-white"
                             >
                                 Batal
                             </Button>

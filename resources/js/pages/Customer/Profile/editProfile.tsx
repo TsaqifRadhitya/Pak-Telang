@@ -4,13 +4,12 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import CustomerPageLayout from '@/layouts/customerPagetLayout';
 import { supabaseImage } from '@/services/imageStorage';
-import { SharedData } from '@/types';
+import { gender, SharedData } from '@/types';
 import { router, useForm, usePage } from '@inertiajs/react';
 import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import z from 'zod';
 import { addressType } from '../../../types/address';
-import { gender } from '@/types';
 interface Province {
     id: string;
     name: string;
@@ -35,23 +34,24 @@ interface AddressApiType {
 }
 
 const profileEditValidation = z.object({
-    name: z.string({message : 'Harap mengisi nama'}).min(1, 'Harap mengisi nama'),
+    name: z.string({ message: 'Harap mengisi nama' }).min(1, 'Harap mengisi nama'),
     birthday: z.string({ message: 'Harap mengisi tanggal lahir' }).min(1, 'Harap mengisi tanggal lahir'),
     gender: z.string({ message: 'Harap mengisi jenis kelamin' }).min(1, 'Harap mengisi jenis kelamin'),
     phonenumber: z.string({ message: 'Harap mengisi Nomor Hp' }).regex(/^\d{1,13}$/, 'Nomor telepon hanya boleh berisi angka dan maksimal 13 digit'),
     province: z.string({ message: 'Harap mengisi provinsi' }).min(1, 'Harap mengisi provinsi'),
     cityName: z.string({ message: 'Harap mengisi kota' }),
     districtName: z.string({ message: 'Harap mengisi kecamatan' }),
-    address: z.string({message : 'Harap mengisi alamat'}).min(1, 'Harap mengisi alamat'),
+    address: z.string({ message: 'Harap mengisi alamat' }).min(1, 'Harap mengisi alamat'),
     postalCode: z.string({ message: 'Harap mengisi kode pos' }).regex(/^\d{5}$/, 'Kode pos memiliki 5 karakter'),
 });
 
 interface props extends SharedData {
     address: addressType;
+    fts: string;
 }
 
 export default function EditProfileCustomer() {
-    const { auth, address } = usePage<props>().props;
+    const { auth, address, fts } = usePage<props>().props;
     const { data, setData, errors, setError, post } = useForm({
         ...auth.user,
         ...address,
@@ -122,9 +122,9 @@ export default function EditProfileCustomer() {
         if (image) {
             const imageProvider = new supabaseImage(auth.user.email, 'Image');
             const profileUrl = await imageProvider.upsertProfile(image);
-            router.post(route('customer.profile.update'), { ...data, profile_picture: profileUrl as string });
+            router.post(route('customer.profile.update'), { ...data, profile_picture: profileUrl as string, fts: 'fts' });
         } else {
-            post(route('customer.profile.update'));
+            post(route('customer.profile.update', { fts: fts }));
         }
     };
     return (
@@ -143,7 +143,7 @@ export default function EditProfileCustomer() {
                             />
                             <Button
                                 onClick={() => inputFile.current?.click()}
-                                className="bg-white cursor-pointer border-2 border-[#5961BE] text-[#3B387E] hover:bg-[#5961BE] hover:text-white"
+                                className="cursor-pointer border-2 border-[#5961BE] bg-white text-[#3B387E] hover:bg-[#5961BE] hover:text-white"
                             >
                                 Pilih Foto
                             </Button>
@@ -274,7 +274,7 @@ export default function EditProfileCustomer() {
                             <div className="flex justify-end gap-4 lg:col-span-2">
                                 <Button
                                     onClick={() => router.get(route('customer.profile'))}
-                                    className="w-32 bg-white cursor-pointer border border-[#5961BE] text-[#5961BE] hover:bg-[#5961BE] hover:text-white"
+                                    className="w-32 cursor-pointer border border-[#5961BE] bg-white text-[#5961BE] hover:bg-[#5961BE] hover:text-white"
                                 >
                                     Batal
                                 </Button>

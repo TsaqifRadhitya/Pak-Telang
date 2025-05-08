@@ -29,16 +29,17 @@ class profileController extends Controller
         }
     }
 
-    public function edit()
+    public function edit(Request $request)
     {
+        $fts = $request->fts;
         $role = Auth::user()->role;
         $address = $this->getFullAdress();
         if ($role === 'Pak Telang') {
             return Inertia::render('Pak Telang/Profile/editProfile', compact('address'));
         } else if ($role === 'Customer') {
-            return Inertia::render('Customer/Profile/editProfile', compact('address'));
+            return Inertia::render('Customer/Profile/editProfile', compact('address', 'fts'));
         } else {
-            return Inertia::render('Mitra/Profile/editProfile', compact('address'));
+            return Inertia::render('Mitra/Profile/editProfile', compact('address', 'fts'));
         }
     }
 
@@ -46,7 +47,6 @@ class profileController extends Controller
     {
         $request->validate(['phonenumber' => ['required', 'unique:' . User::class . ',phonenumber,' . auth()->id()]], ['phonenumber.unique' => "Nomor Hp Sudah Terdaftar"]);
         $role = Auth::user()->role;
-
         $profilePicture = Str::contains($request->input('profile_picture'), '?q=') ? $request->input('profile_picture') : $request->input('profile_picture') . '?q=' . Ulid::generate(now());
         User::whereId(Auth::user()->id)->update(
             [
@@ -59,9 +59,15 @@ class profileController extends Controller
         );
         $this->updateAdress($request);
         if (Auth::user()->role === 'Mitra') {
+            if ($request->fts) {
+                return redirect()->route('mitra.order bahan.create')->with('success', 'Berhasil mengubah alamat');
+            }
             return redirect(route('mitra.profile'))->with('success', 'Profile Berhasil Diperbarui !');
         }
         if (Auth::user()->role === 'Customer') {
+            if ($request->fts) {
+                return redirect()->route('customer.transaksi.create')->with('success', 'Berhasil mengubah alamat');
+            }
             return redirect(route('customer.profile'))->with('success', 'Profile Berhasil Diperbarui !');
         }
         return redirect(route('admin.profile'))->with('success', 'Profile Berhasil Diperbarui !');
