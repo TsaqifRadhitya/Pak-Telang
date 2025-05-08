@@ -98,6 +98,8 @@ class transaksiAdminController extends Controller
         if ($transaction) {
             if (!$transaction->providerId || $transaction->providerId != Auth::user()->id) {
                 $section = "Pesanan Masuk";
+            } else if ($transaction->status === "Gagal menemukan provider") {
+                return redirect()->route('admin.transaksi')->with('error', 'transaksi sudah tidak tersedia');
             } else if ($transaction->status !== "Selesai" && $transaction->status !==  "Pembayaran Gagal") {
                 $section = "Pesanan Diterima";
             } else {
