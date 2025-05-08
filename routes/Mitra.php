@@ -36,7 +36,7 @@ Route::middleware(['auth', mitraMidleware::class])->group(function () {
 
         Route::prefix('transaksi')->group(function () {
             Route::get('/', [transaksiMitraController::class, 'index'])->name('mitra.transaksi');
-            Route::get('{id}', [transaksiMitraController::class, 'show'])->name('mitra.transaksi.show');
+            Route::get('{id}', [transaksiMitraController::class, 'show'])->name('mitra.transaksi.show')->withoutMiddleware(mitraMidleware::class);
             Route::patch('{id}', [transaksiMitraController::class, 'update'])->name('mitra.transaksi.update');
         });
 

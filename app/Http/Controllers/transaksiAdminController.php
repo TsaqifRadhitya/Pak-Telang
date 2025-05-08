@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use Midtrans\Config;
+use Midtrans\Snap;
 
 class transaksiAdminController extends Controller
 {
@@ -40,7 +42,6 @@ class transaksiAdminController extends Controller
     }
     private function getFullAdressProvider()
     {
-
         $district = Auth::user()->district()->first();
         $city = $district->city()->first();
         $province = $city->province()->first();
@@ -68,7 +69,7 @@ class transaksiAdminController extends Controller
 
     private function loadIndexPesananDiterima()
     {
-        $pesananDiterima = Transaksi::with('detailTransaksis.product')->where('status', '!=', 'Selesai')->where('providerId', Auth::user()->id)->get()->map(function ($item) {
+        $pesananDiterima = Transaksi::with('detailTransaksis.product')->whereNotIn('status', ['Selesai', 'Pembayaran Gagal'])->where('providerId', Auth::user()->id)->get()->map(function ($item) {
 
             return [...$item->toArray(), 'Total' => DetailTransaksi::where('transaksiId', $item->id)->sum('subTotal'), 'address' => $this->getFullAdress($item)];
         });
@@ -90,7 +91,6 @@ class transaksiAdminController extends Controller
             'province' => $province->province,
         ];
     }
-
 
     public function show($id)
     {
@@ -148,6 +148,32 @@ class transaksiAdminController extends Controller
                 ]);
 
                 DB::commit();
+
+                Config::$serverKey = env("VITE_MIDTRANS_SERVER_KEY");
+                Config::$isProduction = false;
+                $time = now();
+                $ress = Snap::createTransaction([
+                    "transaction_details" => [
+                        "order_id" => $id->id,
+                        "gross_amount" => $request->ongkir + DetailTransaksi::where('transaksiId', $id->id)->sum('subTotal')
+                    ],
+                    "callbacks" => [
+                        "finish" => route('customer.transaksi.show', ["id" => $id]),
+                        "error" => route('customer.transaksi.show', ["id" => $id])
+                    ],
+                    "expiry" =>  [
+                        "start_time" => $time->format('Y-m-d H:i:s O'),
+                        "unit" => "hour",
+                        "duration" => 12
+                    ]
+                ]);
+                $id->update([
+                    'providerId' => Auth::user()->id,
+                    'status' => 'Menunggu Pembayaran',
+                    'ongkir' => $request->ongkir,
+                    'snapToken' => $ress->token,
+                    'updated_at' => $time
+                ]);
                 return back()->with('success', 'Berhasil mengkonfirmasi pesanan');
             } catch (\Exception $e) {
                 DB::rollBack();

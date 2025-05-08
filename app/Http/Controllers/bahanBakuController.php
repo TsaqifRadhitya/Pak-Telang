@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\productDetail;
 use App\Models\Transaksi;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -41,8 +42,8 @@ class bahanBakuController extends Controller
 
     public function payment($id)
     {
-        $transaction = Transaksi::with('detailTransaksis.product')->where('id', $id)->where('status', 'Menunggu Pembayaran')->first();
-        if ($transaction) {
+        $transaction = Transaksi::with('detailTransaksis.product')->where('id', $id)->first();
+        if ($transaction->status === "Menunggu Pembayaran") {
             $transaction = [
                 ...$transaction->toArray(),
                 "Total" => DetailTransaksi::where('transaksiId', $transaction->id)->sum('subTotal'),
@@ -52,16 +53,29 @@ class bahanBakuController extends Controller
             if (!$transaction['snapToken']) {
                 Config::$serverKey = env("VITE_MIDTRANS_SERVER_KEY");
                 Config::$isProduction = false;
+                $time = now();
                 $ress = Snap::createTransaction([
                     "transaction_details" => [
                         "order_id" => $transaction['id'],
                         "gross_amount" => $transaction['Total']  + $transaction['ongkir']
+                    ],
+                    "callbacks" => [
+                        "finish" => route('mitra.transaksi.show', ["id" => $id]),
+                        "error" => route('mitra.transaksi.show', ["id" => $id])
+
+                    ],
+                    "expiry" =>  [
+                        "start_time" => $time->format('Y-m-d H:i:s O'),
+                        "unit" => "hour",
+                        "duration" => 12
                     ]
                 ]);
-                Transaksi::whereId($id)->update(['snapToken' => $ress->token]);
+                Transaksi::whereId($id)->update(['snapToken' => $ress->token, 'updated_at' => $time]);
                 $transaction = [...$transaction, 'snapToken' => $ress->token];
             }
             return Inertia::render('Mitra/Order Bahan/payment', compact('transaction'));
+        } else if ($transaction) {
+            return redirect()->route('mitra.order bahan.show', ['id' => $id]);
         }
         abort(404);
     }
@@ -164,7 +178,7 @@ class bahanBakuController extends Controller
             'transaksiId' => $transaksi->id
         ]);
 
-        Mail::to(User::find($transaksi->providerId)->email)->send(new newTransaction(route('admin.transaksi.show', ['id' => $transaksi->id])));
+        Mail::to($provider->email)->send(new newTransaction(route('admin.transaksi.show', ['id' => $transaksi->id])));
 
         return redirect()
             ->route('mitra.order bahan.show', ['id' => $transaksi->id])

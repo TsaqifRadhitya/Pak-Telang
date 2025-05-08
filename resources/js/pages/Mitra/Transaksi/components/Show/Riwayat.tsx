@@ -2,7 +2,7 @@ import { transactionType } from '@/types/transaction';
 import { dateFormaterUtils } from '@/utils/dateFormater';
 import { usePage } from '@inertiajs/react';
 
-export default function Riwayat() {
+export default function Riwayat({role = "Mitra"} : {role : "Admin" | "Mitra"}) {
     const { transaction } = usePage<{ transaction: transactionType }>().props;
     return (
         <section className="flex justify-between">
@@ -16,7 +16,7 @@ export default function Riwayat() {
                 )}
             </div>
             <div className="flex-1/2">
-                {transaction.type === 'Barang jadi' && (
+                {transaction.type === 'Barang jadi' && role === "Mitra" && (
                     <p>
                         Kategori : <span className="text-[#048730] font-semibold">Pesanan Masuk</span>
                     </p>

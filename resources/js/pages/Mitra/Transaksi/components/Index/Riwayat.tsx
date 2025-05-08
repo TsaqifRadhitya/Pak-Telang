@@ -45,7 +45,7 @@ export default function RiwayatComponent({ role }: { role: 'admin' | 'mitra' }) 
                                     {item.type === 'Barang jadi' ? 'Pesanan Masuk' : 'Pesanan Keluar'}
                                 </td>
                             )}
-                            <td>{currencyConverter(item.Total)}</td>
+                            <td>{currencyConverter(item.Total + (item.ongkir ?? 0))}</td>
                             <td>
                                 <Button
                                     onClick={() => router.get(route(role === "mitra" ? 'mitra.transaksi.show' : 'admin.transaksi.show', { id: item.id }))}

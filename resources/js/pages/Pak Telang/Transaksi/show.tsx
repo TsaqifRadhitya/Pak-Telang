@@ -1,5 +1,7 @@
 import Heading from '@/components/heading';
+import HeadingSmall from '@/components/heading-small';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import AdminPageLayout from '@/layouts/adminPageLayout';
 import { cn } from '@/lib/utils';
 import { sectionType } from '@/pages/Mitra/Transaksi/components/Index/containerProvider';
@@ -12,7 +14,7 @@ import { transactionType } from '@/types/transaction';
 import { currencyConverter } from '@/utils/currencyConverter';
 import { router } from '@inertiajs/react';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ContainerProvider from './components/containerProvider';
 
 export default function TransactionShow({
@@ -25,17 +27,28 @@ export default function TransactionShow({
     providerAddress: addressType;
 }) {
     const [resi, setResi] = useState<string>();
-    const [err, setErr] = useState<boolean>();
-    console.log(err)
+    const [err, setErr] = useState<string>();
     const [submit, setSubmit] = useState<boolean>(false);
     const [modal, setModal] = useState<boolean>(false);
+    useEffect(() => {
+        if (!!resi?.length && err) {
+            setErr(undefined);
+        }
+    }, [resi]);
     const handleSubmit = async () => {
         const routeName = 'admin.transaksi.update';
         if (transaction.type === 'Bahan Baku') {
-            setErr(!resi || !resi.length);
-            setResi(undefined)
-            return;
+            if (!resi?.length) {
+                setErr('Harap mengisi nomor resi');
+                return;
+            }
+
+            if (resi && resi.length < 10) {
+                setErr('Harap memasukkan resi dengan benar');
+                return;
+            }
         }
+
         if (!transaction.providerId) {
             const price = await distaceCalculationService({ from: transaction.address as addressType, to: providerAddress });
             setSubmit(true);
@@ -73,8 +86,25 @@ export default function TransactionShow({
                                         ? 'Apakah Anda Yakin Mau Mengubah Status Pesanan Menjadi Dikirim ?'
                                         : 'Apakah Anda Yakin Mau Mengambil Pesanan ?'
                                 }
-                                className="text-md line mx-auto text-center leading-5 font-medium text-[#8A7300]"
+                                className={cn(
+                                    'text-md line mx-auto w-2/3 text-center leading-5 font-medium text-[#8A7300]',
+                                    transaction.type === 'Bahan Baku' && 'font-bold',
+                                )}
                             />
+
+                            {transaction.type === 'Bahan Baku' && (
+                                <div className="w-full">
+                                    <HeadingSmall title="No. Resi" className="text-lg font-semibold text-[#8A7300]" />
+                                    <Input
+                                        onChange={(e) => setResi(e.target.value)}
+                                        value={resi ?? ''}
+                                        type="number"
+                                        placeholder="Stok Produk"
+                                        className="border-0 text-[#8A7300] ring ring-[#8A7300] placeholder:text-[#8A7300]/50 focus-visible:ring-3 focus-visible:ring-[#8A7300]"
+                                    />
+                                    {err && <p className="text-sm text-red-500">{err}</p>}
+                                </div>
+                            )}
 
                             <div className={cn('flex w-1/2 justify-center gap-x-2.5', transaction.type === 'Bahan Baku' && 'ml-auto justify-end')}>
                                 <Button
@@ -96,7 +126,7 @@ export default function TransactionShow({
                 <div className="space-y-10">
                     {section === 'Pesanan Diterima' && <PesananDiterima />}
                     {section === 'Pesanan Masuk' && <PesananMasuk />}
-                    {section === 'Riwayat' && <Riwayat />}
+                    {section === 'Riwayat' && <Riwayat role="Admin" />}
                     <table className="p w-full">
                         <thead className="flex w-full justify-between border-b-[1.8px] border-[#D9D9D9] px-5 pb-2">
                             <tr className="grid w-full grid-cols-4 text-left">

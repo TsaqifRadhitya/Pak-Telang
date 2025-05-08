@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\productDetail;
 use App\Models\Transaksi;
 use App\Models\User;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -73,20 +74,8 @@ class transaksiCustomerController extends Controller
             $transactions = [...$transactions->toArray(), 'Total' => DetailTransaksi::where('transaksiId', $transactions->id)->sum('subTotal')];
             if ($transactions['status'] === 'Selesai') {
                 return Inertia::render('Customer/Transaksi/riwayat', compact('transactions'));
-            } else if ($transactions['status'] === 'Menunggu Pembayaran') {
-                if (!$transactions['snapToken']) {
-                    Config::$serverKey = env("VITE_MIDTRANS_SERVER_KEY");
-                    Config::$isProduction = false;
-                    $ress = Snap::createTransaction([
-                        "transaction_details" => [
-                            "order_id" => $transactions['id'],
-                            "gross_amount" => $transactions['ongkir'] ? $transactions['Total']  + $transactions['ongkir'] : $transactions['Total']
-                        ]
-                    ]);
-                    Transaksi::whereId($id)->update(['snapToken' => $ress->token]);
-                    $transactions = [...$transactions, 'snapToken' => $ress->token];
-                }
-            }
+            };
+
             return Inertia::render('Customer/Transaksi/show', compact('transactions'));
         };
         abort(404);
@@ -102,7 +91,7 @@ class transaksiCustomerController extends Controller
                     "transaction_details" => [
                         "order_id" => $transaction['id'],
                         "gross_amount" => $transaction['ongkir'] ? $transaction['Total']  + $transaction['ongkir'] : $transaction['Total']
-                    ]
+                    ],
                 ]);
                 Transaksi::whereId($id)->update(['snapToken' => $ress->token]);
                 $transaction = [...$transaction, 'snapToken' => $ress->token];

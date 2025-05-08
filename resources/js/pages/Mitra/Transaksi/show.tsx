@@ -97,7 +97,7 @@ export default function TransactionShow({
                     {section === 'Dipesan' && <Dipesan />}
                     {section === 'Pesanan Diterima' && <PesananDiterima />}
                     {section === 'Pesanan Masuk' && <PesananMasuk />}
-                    {section === 'Riwayat' && <Riwayat />}
+                    {section === 'Riwayat' && <Riwayat role='Mitra'/>}
                     <table className="p w-full">
                         <thead className="flex w-full justify-between border-b-[1.8px] border-[#D9D9D9] px-5 pb-2">
                             <tr className="grid w-full grid-cols-4 text-left">

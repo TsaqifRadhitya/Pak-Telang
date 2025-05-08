@@ -37,7 +37,7 @@ export default function DipesanComponent() {
                             </td>
                             <td>{dateFormaterUtils(item.created_at)}</td>
                             <td>{item.status}</td>
-                            <td>{currencyConverter(item.Total)}</td>
+                            <td>{currencyConverter(item.Total + (item.ongkir ?? 0))}</td>
                             <td>
                                 <Button
                                     onClick={() => router.get(route('mitra.order bahan.show', { id: item.id }))}

@@ -34,10 +34,10 @@ export default function PesananDiterimaComponent({ role }: { role: 'admin' | 'mi
                                 })}
                             </td>
                             <td className="text-sm">{addressFormater(item.address as addressType)}</td>
-                            <td className="text-sm">{currencyConverter(item.Total)}</td>
+                            <td className="text-sm">{currencyConverter(item.Total + (item.ongkir ?? 0))}</td>
                             <td>
                                 <Button
-                                    onClick={() => router.get(route(role === "mitra" ? 'mitra.transaksi.show' : 'admin.transaksi.show', { id: item.id }))}
+                                    onClick={() => router.get(route(role === "mitra" ? 'mitra.transaksi.show' : 'mitra.transaksi.show', { id: item.id }))}
                                     className="w-1/2 cursor-pointer bg-white px-0 py-0 text-xs font-semibold text-[#5961BE] ring ring-[#5961BE] hover:bg-[#5961BE] hover:font-normal hover:text-white"
                                 >
                                     Lihat

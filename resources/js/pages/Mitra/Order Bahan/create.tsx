@@ -13,6 +13,7 @@ import { router } from '@inertiajs/react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { detailTransactionType } from '../../../types/detailTransaction';
+import InputError from '@/components/input-error';
 
 export default function OrderBahanCreate({
     products,
@@ -27,6 +28,7 @@ export default function OrderBahanCreate({
     const [isSubmited, setSubmited] = useState<boolean>(false);
     const [isFetching, setFetching] = useState<boolean>(false);
     const [outDated, setOutDated] = useState<boolean>(true);
+    const [err, setErr] = useState<boolean>();
     const [selectedKurir, setSelectedKurir] = useState<rajaOngkirType>();
     const [ongkirProvider, setOngkirProvider] = useState<rajaOngkirType[]>();
     useEffect(() => {
@@ -43,6 +45,12 @@ export default function OrderBahanCreate({
             handleFetchKurir();
         }
     }, []);
+
+    useEffect(() => {
+        if (selectedKurir && err) {
+            setErr(false);
+        }
+    }, [selectedKurir]);
 
     const handleFetchKurir = async () => {
         if (transactionItem && outDated && !isFetching) {
@@ -78,14 +86,19 @@ export default function OrderBahanCreate({
     const handleSubmit = () => {
         if (transactionItem?.length && selectedKurir) {
             setSubmited(true);
-            router.post(route('mitra.order bahan.store'), {
-                ongkir: selectedKurir?.shipping_cost ?? 0,
-                metodePengiriman: `${selectedKurir?.shipping_name} (${selectedKurir?.service_name})`,
-            data: transactionItem,
-            },{
-                onFinish : () => window.location.reload()
-            });
+            router.post(
+                route('mitra.order bahan.store'),
+                {
+                    ongkir: selectedKurir?.shipping_cost ?? 0,
+                    metodePengiriman: `${selectedKurir?.shipping_name} (${selectedKurir?.service_name})`,
+                    data: transactionItem,
+                },
+                {
+                    onFinish: () => window.location.reload(),
+                },
+            );
         }
+        setErr(true)
     };
 
     const handleChangeAmount = (params: 'Increment' | 'decrement', id: string) => {
@@ -374,6 +387,7 @@ export default function OrderBahanCreate({
                                     </option>
                                 ))}
                             </select>
+                            {err && <InputError className='mt-1' message='Harap memilih metode pengiriman'/>}
                         </div>
                     </div>
                 </div>
