@@ -1,10 +1,10 @@
+import { Button } from '@/components/ui/button';
 import AdminPageLayout from '@/layouts/adminPageLayout';
 import { SharedData } from '@/types';
 import { router, usePage } from '@inertiajs/react';
-import { address } from '../../../types/address';
-import { Button } from '@/components/ui/button';
+import { addressType } from '../../../types/address';
 interface props extends SharedData {
-    address?: address;
+    address?: addressType;
 }
 
 export default function ProfileAdminPage() {
@@ -32,7 +32,7 @@ export default function ProfileAdminPage() {
                 <div className="flex w-full flex-col gap-y-5 p-5 lg:gap-20 lg:p-10">
                     <div className="flex flex-col gap-y-5 lg:flex-row lg:items-center lg:gap-x-16">
                         <img
-                            src={auth.user.profile_picture || '/Asset/Icon/Profile.svg'}
+                            src={auth.user.profile_picture || window.location.origin + '/Asset/Icon/Profile.svg'}
                             alt=""
                             className="mx-auto aspect-square w-1/3 max-w-36 rounded-full shadow md:w-1/4 lg:mx-0"
                         />

@@ -162,11 +162,12 @@ class transaksiCustomerController extends Controller
                 ->whereRelation('product', 'productType', 'Barang jadi')
                 ->get();
 
-            $products = $stock->map(function ($item) {
+            $products = Product::where('productType', 'Barang jadi')->get()->map(function ($item) use ($provider) {
+                $stockProduct = productDetail::where('userId', $provider->id)->where('productId', $item->id)->first()?->stock;
                 return [
-                    ...$item->product->toArray(),
-                    'productPhoto' => json_decode($item->product->productPhoto),
-                    'productStock' => $item->stock,
+                    ...$item->toArray(),
+                    'productPhoto' => json_decode($item->productPhoto),
+                    'productStock' => $stockProduct ?? 0,
                 ];
             });
 
