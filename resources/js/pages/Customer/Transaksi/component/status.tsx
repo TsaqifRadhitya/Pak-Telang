@@ -6,7 +6,6 @@ import MenungguPembayaran from './statusMenungguPembayara';
 export type statusComponent = 'Menunggu Konfirmasi' | 'Menunggu Pembayaran' | 'Gagal Menemukan Provider' | 'Sedang Diproses' | 'Dalam Pengiriman';
 
 export default function Status({ params }: { params: statusComponent }) {
-    console.log(params);
     if (params === 'Gagal Menemukan Provider') {
         return <Gagal />;
     } else if (params === 'Menunggu Konfirmasi') {
