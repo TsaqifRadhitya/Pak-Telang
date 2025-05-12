@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 use Midtrans\Config;
+use Illuminate\Support\Facades\DB;
 use Midtrans\Snap;
 
 class transaksiCustomerController extends Controller
@@ -44,28 +45,137 @@ class transaksiCustomerController extends Controller
         ];
     }
 
+
     public function create(Request $request)
     {
         if (Auth::user()->role !== 'Customer') {
             return back()->with('info', 'Pemesanan product hanya tersedia untuk customer');
         }
-        $selectedProduct = $request->id;
+
         if (!Auth::user()->address) {
-            return redirect(route('customer.profile.edit'))->with('error', 'Harap melengkapi alamat sebelum melakuakan pemesanan');
+            return redirect(route('customer.profile.edit'))
+                ->with('error', 'Harap melengkapi alamat sebelum melakuakan pemesanan');
         }
-        $provider = productDetail::whereRelation('user.mitra.district', 'cityId', Auth::user()->district()->first()->cityId)->whereRelation('user.mitra', 'isOpen', true)->whereRelation('user.mitra', 'disable', false)->orderBy('stock', 'desc')->first()?->user;
-        if ($provider) {
+
+        $cityId = Auth::user()->district()->first()->cityId;
+        $selectedProduct = $request->id;
+
+        // Bisa diubah nanti jadi array kalau mau support keranjang
+        $productIds = Product::where('productType', 'Barang jadi')->pluck('id')->toArray();
+
+        // Step 1: Ambil rata-rata stok semua produk yg dicari, hanya dari penyedia sesuai wilayah dan tipe 'Barang jadi'
+        $avgStokRows = productDetail::select('productId', DB::raw('AVG(stock) as avg_stock'))
+            ->whereIn('productId', Product::where('productType', 'Barang jadi')->get()->map(function ($item) {
+                return $item->id;
+            }))
+            ->whereRelation('product', 'productType', 'Barang jadi')
+            ->whereHas('user', function ($q) use ($cityId) {
+                $q->where(function ($q) use ($cityId) {
+                    $q->where('role', 'Pak Telang')
+                        ->whereHas('district', fn($dq) => $dq->where('cityId', $cityId));
+                })->orWhere(function ($q) use ($cityId) {
+                    $q->where('role', 'Mitra')
+                        ->whereHas('mitra', function ($q) use ($cityId) {
+                            $q->where('isOpen', true)
+                                ->where('disable', false)
+                                ->whereHas('district', fn($dq) => $dq->where('cityId', $cityId));
+                        });
+                });
+            })
+            ->groupBy('productId')
+            ->get()
+            ->keyBy('productId');
+
+        $avgStok = $avgStokRows->map(fn($row) => $row->avg_stock);
+
+        // Step 2: Ambil semua penyedia yg cocok (dengan eager loading biar efisien)
+        $details = productDetail::with(['user.mitra.district', 'user.district', 'product'])
+            ->whereIn('productId', Product::where('productType', 'Barang jadi')->get()->map(function ($item) {
+                return $item->id;
+            }))
+            ->where('stock', '>', 0)
+            ->whereHas('user', function ($q) use ($cityId) {
+                $q->where(function ($q) use ($cityId) {
+                    $q->where('role', 'Pak Telang')
+                        ->whereHas('district', fn($dq) => $dq->where('cityId', $cityId));
+                })->orWhere(function ($q) use ($cityId) {
+                    $q->where('role', 'Mitra')
+                        ->whereHas('mitra', function ($q) use ($cityId) {
+                            $q->where('isOpen', true)
+                                ->where('disable', false)
+                                ->whereHas('district', fn($dq) => $dq->where('cityId', $cityId));
+                        });
+                });
+            })
+            ->get();
+
+        // Step 3: Group berdasarkan user dan cari penyedia yang punya semua produk dengan stok ≥ rata-rata
+        $grouped = $details->groupBy('userId');
+
+        // Step 1: Cari provider ideal (stok semua produk >= rata-rata)
+        $validProvider = $grouped->first(function ($items) use ($avgStok, $productIds) {
+            $stocks = $items->keyBy('productId');
+
+            foreach ($productIds as $pid) {
+                if (!isset($stocks[$pid]) || $stocks[$pid]->stock < $avgStok[$pid]) {
+                    return false;
+                }
+            }
+
+            return true;
+        });
+
+        // Step 2: Kalau gak ada yang ideal, cari yang punya semua produk (stok berapapun)
+        if (!$validProvider) {
+            $validProvider = $grouped->first(function ($items) use ($productIds) {
+                $stocks = $items->keyBy('productId');
+
+                foreach ($productIds as $pid) {
+                    if (!isset($stocks[$pid])) {
+                        return false;
+                    }
+                }
+
+                return true;
+            });
+        }
+
+        // Step 3: Kalau masih gak ada, cari yang punya produk paling banyak
+        if (!$validProvider) {
+            $validProvider = $grouped->sortByDesc(function ($items) use ($productIds) {
+                return $items->whereIn('productId', $productIds)->count();
+            })->first();
+        }
+
+        $validProviderId = $validProvider?->first()?->userId;
+
+
+        // Step 4: Jika ditemukan, siapkan produk dan tampilkan
+        if ($validProviderId) {
+            $provider = $details->firstWhere('userId', $validProviderId)->user;
+
             $address = $this->getFullAdress();
-            $stock = productDetail::with('product')->where('userId', '=', $provider->id)->get();
+
+            $stock = productDetail::with('product')
+                ->where('userId', $provider->id)
+                ->where('stock', '>', 0)
+                ->whereRelation('product', 'productType', 'Barang jadi')
+                ->get();
 
             $products = $stock->map(function ($item) {
-                return [...$item->product->toArray(), 'productPhoto' => json_decode($item->product->productPhoto), 'productStock' => $item->stock];
+                return [
+                    ...$item->product->toArray(),
+                    'productPhoto' => json_decode($item->product->productPhoto),
+                    'productStock' => $item->stock,
+                ];
             });
 
             return Inertia::render('Customer/Transaksi/create', compact('products', 'address', 'selectedProduct'));
-        };
+        }
+
         return back()->with('info', 'Saat ini pemasaran product belum tersedia di daerah anda');
     }
+
 
     public function show($id)
     {
