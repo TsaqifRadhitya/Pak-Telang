@@ -97,7 +97,7 @@ export default function TransactionCreate() {
                 <div className="mt-5 flex flex-1 flex-col gap-16 px-5 lg:flex-row">
                     {err && (
                         <SweetAlert
-                            message={`Stock Prodcut ${products.find((item) => item.id === selectedProduct)?.productName} Tidak Tersedia`}
+                            message={`Stock Product ${products.find((item) => item.id === selectedProduct)?.productName} Tidak Tersedia`}
                             type="Error"
                         />
                     )}

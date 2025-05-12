@@ -3,7 +3,7 @@ import Gagal from './statusGagal';
 import MenungguKonfirmasi from './statusMenungguKonfirmasi';
 import MenungguPembayaran from './statusMenungguPembayara';
 
-export type statusComponent = 'Menunggu Konfirmasi' | 'Menunggu Pembayaran' | 'Gagal Menemukan Provider' | 'Sedang DiProses' | 'Dalam Pengiriman';
+export type statusComponent = 'Menunggu Konfirmasi' | 'Menunggu Pembayaran' | 'Gagal Menemukan Provider' | 'Sedang Diproses' | 'Dalam Pengiriman';
 
 export default function Status({ params }: { params: statusComponent }) {
     console.log(params);
@@ -13,7 +13,7 @@ export default function Status({ params }: { params: statusComponent }) {
         return <MenungguKonfirmasi />;
     } else if (params === 'Menunggu Pembayaran') {
         return <MenungguPembayaran />;
-    } else if (params === 'Sedang DiProses') {
+    } else if (params === 'Sedang Diproses') {
         return <Diproses />;
     }
 }

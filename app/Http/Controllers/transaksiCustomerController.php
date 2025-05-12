@@ -253,7 +253,6 @@ class transaksiCustomerController extends Controller
         ]);
 
         $transaksi->detailTransaksis()->createMany($detailTransaksi->toArray());
-
         Mail::bcc($emails)->send(new newTransaction(route('mitra.transaksi.show', ['id' => $transaksi->id])));
 
         return redirect()

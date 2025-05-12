@@ -102,7 +102,7 @@ class pengajuanMitraController extends Controller
                 ['statusPengajuan' => $updateStatus, 'pesanPersetujuan' => $request->input('pesanPersetujuan') ?? "",]
             );
             $alertTyple = $status === "accept" ? 'menyetujui' : 'menolak';
-            return back()->with('success', 'Anda berhasil ' . $alertTyple . ' pengajuan' . $mitra->user->name.'.');
+            return back()->with('success', 'Anda berhasil ' . $alertTyple . ' pengajuan ' . $mitra->user->name.'.');
         }
         abort(404);
     }
