@@ -66,7 +66,7 @@ export default function MitraPageLayout({ children, page }: Props) {
                 {/* Sidebar */}
                 <aside className="hidden flex-col gap-y-7 rounded-t-xl border border-b-0 border-[#AFB3FF] bg-white pt-5 pl-5 shadow-lg lg:flex lg:w-72">
                     <div className="flex items-center gap-x-3 mr-5">
-                        <img src={auth.user.profile_picture} alt="Profile" className="aspect-square w-1/5 rounded-full shadow" />
+                        <img src={auth.user.profile_picture || window.location.origin + '/Asset/Icon/Profile.svg'} alt="Profile" className="aspect-square w-1/5 rounded-full shadow" />
                         <div>
                             <h2 className="text-md font-semibold">{auth.user.name}</h2>
                             <p className="text-xs">{auth.user.email}</p>
