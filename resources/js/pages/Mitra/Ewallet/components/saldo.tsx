@@ -25,7 +25,8 @@ const validation = (data: WidrawEwalletType, saldo: number) => {
         provider: z.string({ message: `Harap memilih ${data.type}` }).min(1, `Harap memilih ${data.type}`),
         number: z
             .string({ message: `harap mengisi nomor ${data.type}` })
-            .min(data.type === 'bank' ? 10 : 12, `harap mengisi nomor ${data.type} dengan benar`),
+            .min(data.type === 'bank' ? 10 : 12, `harap mengisi nomor ${data.type} dengan benar`)
+            .max(data.type === 'bank' ? 16 : 13, `Nomor ${data.type.toLowerCase()} tidak boleh lebih dari ${data.type === 'bank' ? 16 : 13} digit`),
     });
 
     const validition = formValidition.safeParse(data);
@@ -70,7 +71,7 @@ export default function Saldo() {
         post(route('mitra.ewallet.store'), {
             onStart: () => {
                 setSubmit(true);
-                setKonfirmasi(false)
+                setKonfirmasi(false);
                 resetModal();
             },
             onFinish: () => setSubmit(false),
@@ -108,7 +109,8 @@ export default function Saldo() {
                             <Button
                                 className="w-1/2 cursor-pointer bg-[#FFFDF1] font-semibold text-[#8A7300] ring ring-[#8A7300] hover:bg-[#8A7300] hover:text-white"
                                 onClick={() => {
-                                    setModal(true); setKonfirmasi(false);
+                                    setModal(true);
+                                    setKonfirmasi(false);
                                 }}
                             >
                                 Batal
