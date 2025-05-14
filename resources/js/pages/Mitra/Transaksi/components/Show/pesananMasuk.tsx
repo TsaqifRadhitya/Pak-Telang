@@ -1,4 +1,6 @@
+import { addressType } from '@/types/address';
 import { transactionType } from '@/types/transaction';
+import { addressFormater } from '@/utils/addressFormater';
 import { dateFormaterUtils } from '@/utils/dateFormater';
 import { usePage } from '@inertiajs/react';
 
@@ -7,12 +9,18 @@ export default function PesananMasuk() {
 
     return (
         <section className="flex justify-between">
-            <div className="space-y-2.5">
-                <p>Transaksi ID : {transaction.id}</p>
-                <p>Waktu : {dateFormaterUtils(transaction.created_at)}</p>
+            <div className="flex-1/2 space-y-2.5">
+                <p>
+                    <span className="font-semibold">Transaksi ID</span> : {transaction.id}
+                </p>
+                <p>
+                    <span className="font-semibold">Waktu</span> : {dateFormaterUtils(transaction.created_at)}
+                </p>
             </div>
-            <div className="text-right">
-                <p>Status : <span className='text-[#FFA114] font-semibold'>{transaction.status}</span></p>
+            <div className="flex-1/2">
+                <p>
+                    <span className="font-semibold">Alamat</span> : {addressFormater(transaction.address as addressType)}
+                </p>
             </div>
         </section>
     );

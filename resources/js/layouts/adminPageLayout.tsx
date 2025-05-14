@@ -23,7 +23,7 @@ export default function AdminPageLayout({ children, page }: Props) {
             {flash.error && <SweetAlert type="Error" message={flash.error} />}
             {flash.info && <SweetAlert type="Info" message={flash.info} />}
             {flash.warning && <SweetAlert type="Warning" message={flash.warning} />}
-            <Head title={page} />
+            <Head title={page ?? "E-Wallet"} />
             {/* Mobile Sidebar Overlay */}
             {hamburgerMenu && (
                 <div className="fixed inset-0 z-50 bg-black/50 lg:hidden" onClick={() => setHamburgerMenu(false)}>

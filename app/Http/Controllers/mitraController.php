@@ -62,6 +62,6 @@ class mitraController extends Controller
             ['isOpen' => $status === "true" ? true : false]
         );
 
-        return back()->with('success','Berhasil Mengubah Status Toko');
+        return back()->with('success','Status toko berhasil diperbarui');
     }
 }

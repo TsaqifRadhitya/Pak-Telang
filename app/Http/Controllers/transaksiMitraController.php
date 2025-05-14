@@ -77,10 +77,9 @@ class transaksiMitraController extends Controller
 
     private function getFullAdressProvider()
     {
-
-        $district = Auth::user()->district()->first();
-        $city = $district->city()->first();
-        $province = $city->province()->first();
+        $district = Auth::user()->mitra->district;
+        $city = $district->city;
+        $province = $city->province;
         return [
             'address' => Auth::user()->address,
             'postalCode' =>  Auth::user()->postalCode,
@@ -129,7 +128,7 @@ class transaksiMitraController extends Controller
                 $section = "Riwayat";
             }
 
-            $transaction = [
+        $transaction = [
                 ...$transaction->toArray(),
                 "address" => $this->getFullAdress($transaction),
                 "Total" => DetailTransaksi::where('transaksiId', $transaction->id)->sum('subTotal'),
@@ -193,7 +192,7 @@ class transaksiMitraController extends Controller
                         'snapToken' => $ress->token,
                         'updated_at' => $time
                     ]);
-                return back()->with('success', 'Berhasil mengkonfirmasi pesanan');
+                return back()->with('success', 'Pesanan  berhasil diterima. Segera proses pesanan ini');
             } catch (\Exception $e) {
                 DB::rollBack();
                 return back()->with('error', 'Gagal memproses pesanan: ' . $e->getMessage());
@@ -204,7 +203,7 @@ class transaksiMitraController extends Controller
             $id->update([
                 'status' => 'Sedang Dikirim'
             ]);
-            return back()->with('success', 'Berhasil mengubah status transaksi');
+            return back()->with('success', 'Status pengiriman berhasil diperbarui');
         }
 
         return back()->with('error', 'Pesanan sudah diambil penyedia lain');

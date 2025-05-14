@@ -1,4 +1,6 @@
+import { addressType } from '@/types/address';
 import { transactionType } from '@/types/transaction';
+import { addressFormater } from '@/utils/addressFormater';
 import { dateFormaterUtils } from '@/utils/dateFormater';
 import { usePage } from '@inertiajs/react';
 
@@ -7,10 +9,17 @@ export default function Dipesan() {
     return (
         <section className="flex justify-between">
             <div className="space-y-2.5">
-                <p>Transaksi ID : {transaction.id}</p>
-                <p>Waktu : {dateFormaterUtils(transaction.created_at)}</p>
-                <p className="">
-                    Status : <span className="font-semibold text-[#048730]">{transaction.status}</span>
+                <p>
+                    <span className="font-semibold">Transaksi ID</span> : {transaction.id}
+                </p>
+                <p>
+                    <span className="font-semibold">Waktu</span> : {dateFormaterUtils(transaction.created_at)}
+                </p>
+                <p>
+                    <span className="font-semibold">Status</span> : <span className="font-semibold text-[#048730]">{transaction.status}</span>
+                </p>
+                <p>
+                    <span className="font-semibold">Alamat</span> : {addressFormater(transaction.address as addressType)}
                 </p>
             </div>
             <div className="text-right">

@@ -32,7 +32,6 @@ class transaksiCustomerController extends Controller
 
     private function getFullAdress()
     {
-
         $district = Auth::user()->district()->first();
         $city = $district->city()->first();
         $province = $city->province()->first();
@@ -53,7 +52,7 @@ class transaksiCustomerController extends Controller
         }
 
         if (!Auth::user()->address) {
-            return redirect(route('customer.profile.edit'))
+            return redirect(route('customer.profile.edit', ['fts' => true]))
                 ->with('error', 'Harap melengkapi alamat sebelum melakuakan pemesanan');
         }
 
@@ -182,7 +181,16 @@ class transaksiCustomerController extends Controller
     {
         $transactions = Transaksi::with(['detailTransaksis.product'])->find($id);
         if ($transactions) {
-            $transactions = [...$transactions->toArray(), 'Total' => DetailTransaksi::where('transaksiId', $transactions->id)->sum('subTotal')];
+            $district = $transactions->district;
+            $city = $district->city;
+            $province = $city->province;
+            $transactions = [...$transactions->toArray(), 'address' => [
+                'address' => $transactions->address,
+                'postalCode' => $transactions->postalCode,
+                'districtName' => $district?->districtName,
+                'cityName' => $city->cityName,
+                'province' => $province->province,
+            ], 'Total' => DetailTransaksi::where('transaksiId', $transactions->id)->sum('subTotal')];
             if ($transactions['status'] === 'Selesai') {
                 return Inertia::render('Customer/Transaksi/riwayat', compact('transactions'));
             };
@@ -283,6 +291,6 @@ class transaksiCustomerController extends Controller
 
         $provider->increment('saldo', $total);
 
-        return back()->with('success', 'Berhasil Menyelesaikan Pesanan');
+        return back()->with('success', 'Pesanan berhasil diselesaikan');
     }
 }

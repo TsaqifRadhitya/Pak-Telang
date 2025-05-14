@@ -19,7 +19,7 @@ const validation = (data: WidrawEwalletType, saldo: number) => {
         nominal: z
             .number({ message: 'Harap memasukkan nominal pencairan' })
             .min(1000, `Minimum nominal penarikan adalah ${currencyConverter(1000)}`)
-            .max(saldo, 'Nominal penarikan melebihi saldo anda'),
+            .max(saldo, 'Nominal penarikan tidak boleh lebih besar dari saldo'),
         ownerName: z.string({ message: 'Harap memasukkan nama pemilik ' + data.type }).min(1, 'Harap memasukkan nama pemilik ' + data.type),
         type: z.enum(['bank', 'e-Wallet'], { message: 'Harap memilih metode penarikan' }),
         provider: z.string({ message: `Harap memilih ${data.type}` }).min(1, `Harap memilih ${data.type}`),
@@ -128,7 +128,7 @@ export default function Saldo() {
                     <div className="flex flex-col items-center space-y-2 rounded-lg bg-white p-10 pt-5 shadow lg:w-1/2">
                         <Heading title="Form Claim E-Wallet" className="underline decoration-[#B9BDFF] decoration-4 underline-offset-8" />
                         <div className="mt-3 w-full">
-                            <Label className="text-md font-semibold">Nominal Withdraw</Label>
+                            <Label className="text-md font-semibold">Nominal penarikan saldo</Label>
                             <Input
                                 className="mt-0.5 border-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:border-0 focus-visible:ring-[#B9BDFF]"
                                 placeholder="Nominal Withdraw"

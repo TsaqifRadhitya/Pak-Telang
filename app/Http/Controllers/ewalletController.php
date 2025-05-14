@@ -46,15 +46,15 @@ class ewalletController extends Controller
             'paymentId' => $payment->id,
         ]);
 
-        return back()->with('success', 'Berhasil membuat pengajuan pencarian dana');
+        return back()->with('success', 'Penarikan saldo berhasil diajukan');
     }
 
     public function update(Request $request,$id) {
-        Mutasi::whereId($id)->update([
+        $mutasi = Mutasi::find($id);
+        $mutasi->update([
             'finished' => true,
             'bukti' => $request->bukti
         ]);
-
-        return back()->with('success','Berhasil mentransfer pencairan dana');
+        return back()->with('success',"Pengajuan claim e-wallet ".$mutasi->user->name.' telah dikonfirmasi');
     }
 }

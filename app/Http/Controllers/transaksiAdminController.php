@@ -176,7 +176,7 @@ class transaksiAdminController extends Controller
                     'snapToken' => $ress->token,
                     'updated_at' => $time
                 ]);
-                return back()->with('success', 'Berhasil mengkonfirmasi pesanan');
+                return back()->with('success', 'Pesanan  berhasil diterima. Segera proses pesanan ini');
             } catch (\Exception $e) {
                 DB::rollBack();
                 return back()->with('error', 'Gagal memproses pesanan: ' . $e->getMessage());
@@ -188,7 +188,9 @@ class transaksiAdminController extends Controller
                 'status' => 'Sedang Dikirim',
                 'resi' => $request->resi
             ]);
-            return back()->with('success', 'Berhasil mengubah status transaksi');
+            return back()->with('success', 'Status pengiriman berhasil diperbarui');
         }
+
+        return back()->with('error', 'Pesanan sudah diambil penyedia lain');
     }
 }

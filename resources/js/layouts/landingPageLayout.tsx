@@ -27,7 +27,7 @@ export default function LandingPageLayout({ children, page }: { children: React.
     }, []);
     return (
         <div className="relative min-h-screen w-full">
-            <Head title={page} />
+            <Head title={page ?? "Transaksi"} />
             {flash.success && <SweetAlert type="Success" message={flash.success} />}
             {flash.error && <SweetAlert type="Error" message={flash.error} />}
             {flash.info && <SweetAlert type="Info" message={flash.info} />}

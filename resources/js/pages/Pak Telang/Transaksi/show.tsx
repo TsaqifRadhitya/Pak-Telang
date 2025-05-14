@@ -43,8 +43,8 @@ export default function TransactionShow({
                 return;
             }
 
-            if (resi && resi.length < 10) {
-                setErr('Harap memasukkan resi dengan benar');
+            if (resi && resi.length < 10 && resi.length > 16) {
+                setErr('No Resi terdiri dari 10-16 digit');
                 return;
             }
         }
@@ -99,7 +99,7 @@ export default function TransactionShow({
                                         onChange={(e) => setResi(e.target.value)}
                                         value={resi ?? ''}
                                         type="number"
-                                        placeholder="Stok Produk"
+                                        placeholder="Nomor resi"
                                         className="border-0 text-[#8A7300] ring ring-[#8A7300] placeholder:text-[#8A7300]/50 focus-visible:ring-3 focus-visible:ring-[#8A7300]"
                                     />
                                     {err && <p className="text-sm text-red-500">{err}</p>}
