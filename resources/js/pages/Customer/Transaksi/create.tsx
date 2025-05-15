@@ -109,7 +109,7 @@ export default function TransactionCreate() {
             if (selectedProduct) {
                 const seletected = products.find((item) => item.id === selectedProduct);
                 if (seletected && seletected.productStock > 0) {
-                    setData((preve) => [...filterdSavedData]);
+                    setData([...filterdSavedData]);
                     handleChangeAmount('Increment', seletected.id);
                     return;
                 } else if (seletected && seletected.productStock < 0) {
@@ -123,9 +123,7 @@ export default function TransactionCreate() {
         if (selectedProduct) {
             const seletected = products.find((item) => item.id === selectedProduct);
             if (seletected && seletected.productStock > 0) {
-                setData((preve) => [
-                    { amount: 1, productId: selectedProduct, subTotal: seletected!.productPrice, productName: seletected!.productName },
-                ]);
+                setData([{ amount: 1, productId: selectedProduct, subTotal: seletected!.productPrice, productName: seletected!.productName }]);
                 return;
             } else if (seletected && seletected.productStock < 0) {
                 setErr(true);
