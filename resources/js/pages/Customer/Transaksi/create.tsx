@@ -15,10 +15,11 @@ interface props extends SharedData {
     products: productType[];
     selectedProduct?: string;
     address: addressType;
+    reset: boolean;
 }
 
 export default function TransactionCreate() {
-    const { products, selectedProduct, address } = usePage<props>().props;
+    const { products, selectedProduct, address, reset } = usePage<props>().props;
     const [data, setData] = useState<detailTransactionType[]>();
     const [isSubmited, setSubmited] = useState<boolean>(false);
     const [err, setErr] = useState<boolean>(false);
@@ -81,15 +82,56 @@ export default function TransactionCreate() {
     };
 
     useEffect(() => {
+        if (data?.length && data.length > 0) {
+            window.localStorage.setItem('transactionItem', JSON.stringify(data));
+        }
+    }, [data]);
+
+    useEffect(() => {
+        if (reset) {
+            window.localStorage.removeItem('transactionItem');
+        }
+        const transactionItemSaved = window.localStorage.getItem('transactionItem');
+        if (transactionItemSaved) {
+            const savedData: detailTransactionType[] = JSON.parse(transactionItemSaved);
+            const filterdSavedData = savedData
+                .map((saved) => {
+                    const checkProductStock = products.find((i) => i.id === saved.productId);
+                    if (checkProductStock!.productStock < saved.amount) {
+                        return { ...saved, amount: checkProductStock!.productStock };
+                    }
+                    return saved;
+                })
+                .filter((fill) => fill.amount > 0);
+
+            window.localStorage.setItem('transactionItem', JSON.stringify(filterdSavedData));
+
+            if (selectedProduct) {
+                const seletected = products.find((item) => item.id === selectedProduct);
+                if (seletected && seletected.productStock > 0) {
+                    setData((preve) => [...filterdSavedData]);
+                    handleChangeAmount('Increment', seletected.id);
+                    return;
+                } else if (seletected && seletected.productStock < 0) {
+                    setErr(true);
+                }
+            }
+            setData(filterdSavedData);
+            return;
+        }
+
         if (selectedProduct) {
             const seletected = products.find((item) => item.id === selectedProduct);
             if (seletected && seletected.productStock > 0) {
-                setData([{ amount: 1, productId: selectedProduct, subTotal: seletected!.productPrice, productName: seletected!.productName }]);
-            } else {
+                setData((preve) => [
+                    { amount: 1, productId: selectedProduct, subTotal: seletected!.productPrice, productName: seletected!.productName },
+                ]);
+                return;
+            } else if (seletected && seletected.productStock < 0) {
                 setErr(true);
             }
         }
-    }, [selectedProduct]);
+    }, []);
     return (
         <LandingPageLayout>
             <section className="flex flex-col bg-[#EBEFFF] p-5 pt-20 text-[#3B387E] md:px-10 lg:min-h-screen">
@@ -116,7 +158,7 @@ export default function TransactionCreate() {
                                         'relative aspect-2/3 w-full cursor-pointer rounded-lg bg-[#EBEFFF] pb-2.5 shadow',
                                         data?.find((data) => data.productId === item.id)
                                             ? 'ring-3 ring-[#5961BE]'
-                                            : item.productStock === 0 && 'opacity-70 cursor-not-allowed',
+                                            : item.productStock === 0 && 'cursor-not-allowed opacity-70',
                                     )}
                                 >
                                     {data?.find((data) => data.productId === item.id) && (

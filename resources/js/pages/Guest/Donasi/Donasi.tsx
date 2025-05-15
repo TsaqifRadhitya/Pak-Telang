@@ -1,9 +1,14 @@
-import LandingPageLayout from "@/layouts/landingPageLayout";
+import LandingPageLayout from '@/layouts/landingPageLayout';
+import Banner from './Components/banner';
+import MainContent from './Components/donasiSection';
+import Penyaluran from './Components/penyaluran';
 
-export default function donasiPage(){
-    return(
+export default function donasiPage() {
+    return (
         <LandingPageLayout page="Donasi">
-            <h1 className="absolute top-1/2 left-1/2 -translate-1/2">Donasi</h1>
+            <Banner />
+            <Penyaluran />
+            <MainContent />
         </LandingPageLayout>
-    )
+    );
 }

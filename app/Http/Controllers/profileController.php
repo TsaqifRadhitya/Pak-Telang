@@ -9,6 +9,7 @@ use App\Models\Province;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 use Symfony\Component\Uid\Ulid;
 use Illuminate\Support\Str;
@@ -48,7 +49,8 @@ class profileController extends Controller
         $request->validate(['phonenumber' => ['required', 'unique:' . User::class . ',phonenumber,' . auth()->id()]], ['phonenumber.unique' => "Nomor Hp Sudah Terdaftar"]);
         $role = Auth::user()->role;
         $profilePicture = Str::contains($request->input('profile_picture'), '?q=') ? $request->input('profile_picture') : $request->input('profile_picture') . '?q=' . Ulid::generate(now());
-        User::whereId(Auth::user()->id)->update(
+        $user = User::find(Auth::user()->id);
+        $user->update(
             [
                 'name' => $request->input('name'),
                 'birthday' => $request->input('birthday'),
@@ -66,6 +68,9 @@ class profileController extends Controller
         }
         if (Auth::user()->role === 'Customer') {
             if ($request->fts) {
+                if($request->input('cityName') !== $user->district->city->cityName){
+                    Session::put('reset',true);
+                }
                 return redirect()->route('customer.transaksi.create')->with('success', 'Berhasil mengubah alamat');
             }
             return redirect(route('customer.profile'))->with('success', 'Profile Berhasil Diperbarui !');

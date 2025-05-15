@@ -169,7 +169,7 @@ class kontenController extends Controller
     public function destroy($konten)
     {
         konten::destroy($konten);
-        return redirect('admin.konten')->with('success', 'Berhasil Menghapus Konten');
+        return redirect()->route('admin.konten' )->with('success', 'Berhasil Menghapus Konten');
     }
 
     public function create()

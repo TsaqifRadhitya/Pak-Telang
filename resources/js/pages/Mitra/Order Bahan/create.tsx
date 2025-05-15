@@ -1,5 +1,6 @@
 import Heading from '@/components/heading';
 import HeadingSmall from '@/components/heading-small';
+import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import MitraPageLayout from '@/layouts/mitraPageLayout';
 import { cn } from '@/lib/utils';
@@ -13,7 +14,6 @@ import { router } from '@inertiajs/react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { detailTransactionType } from '../../../types/detailTransaction';
-import InputError from '@/components/input-error';
 
 export default function OrderBahanCreate({
     products,
@@ -32,17 +32,22 @@ export default function OrderBahanCreate({
     const [selectedKurir, setSelectedKurir] = useState<rajaOngkirType>();
     const [ongkirProvider, setOngkirProvider] = useState<rajaOngkirType[]>();
     useEffect(() => {
+        const transactionItemSaved = window.localStorage.getItem('transactionItem');
+        if (transactionItemSaved && selectedProduct) {
+            setTransactionItem(JSON.parse(transactionItemSaved));
+            handleChangeAmount('Increment', selectedProduct);
+            return;
+        }
+
         if (selectedProduct) {
-            const { id, productName, productPrice } = products.find((item) => item.id === selectedProduct) as productType;
-            setTransactionItem([
-                {
-                    amount: 1,
-                    productId: id,
-                    productName: productName,
-                    subTotal: productPrice,
-                },
-            ]);
+            handleChangeAmount('Increment', selectedProduct);
             handleFetchKurir();
+            return;
+        }
+
+        if (transactionItemSaved) {
+            setTransactionItem(JSON.parse(transactionItemSaved));
+            return;
         }
     }, []);
 
@@ -51,6 +56,12 @@ export default function OrderBahanCreate({
             setErr(false);
         }
     }, [selectedKurir]);
+
+    useEffect(() => {
+        if (transactionItem?.length) {
+            window.localStorage.setItem('transactionItem', JSON.stringify(transactionItem));
+        }
+    }, [transactionItem]);
 
     const handleFetchKurir = async () => {
         if (transactionItem && outDated && !isFetching) {
@@ -98,7 +109,7 @@ export default function OrderBahanCreate({
                 },
             );
         }
-        setErr(true)
+        setErr(true);
     };
 
     const handleChangeAmount = (params: 'Increment' | 'decrement', id: string) => {
@@ -245,7 +256,7 @@ export default function OrderBahanCreate({
                             <div className="flex justify-between">
                                 <HeadingSmall title="Alamat Tujuan" className="text-2xl font-semibold" />
                                 <svg
-                                    onClick={() => router.get(route('mitra.profile.edit'),{fts : true})}
+                                    onClick={() => router.get(route('mitra.profile.edit'), { fts: true })}
                                     className="cursor-pointer"
                                     width="20"
                                     height="20"
@@ -387,7 +398,7 @@ export default function OrderBahanCreate({
                                     </option>
                                 ))}
                             </select>
-                            {err && <InputError className='mt-1' message='Harap memilih metode pengiriman'/>}
+                            {err && <InputError className="mt-1" message="Harap memilih metode pengiriman" />}
                         </div>
                     </div>
                 </div>

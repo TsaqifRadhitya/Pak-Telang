@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 use Midtrans\Config;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use Midtrans\Snap;
 
 class transaksiCustomerController extends Controller
@@ -169,8 +170,9 @@ class transaksiCustomerController extends Controller
                     'productStock' => $stockProduct ?? 0,
                 ];
             });
-
-            return Inertia::render('Customer/Transaksi/create', compact('products', 'address', 'selectedProduct'));
+            $reset = Session::get('reset');
+            Session::remove('reset');
+            return Inertia::render('Customer/Transaksi/create', compact('products', 'address', 'selectedProduct','reset'));
         }
 
         return back()->with('info', 'Saat ini pemasaran product belum tersedia di daerah anda');
