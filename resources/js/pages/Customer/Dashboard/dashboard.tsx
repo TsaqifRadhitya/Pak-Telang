@@ -15,11 +15,11 @@ export default function dashboardCustomerPage({ latestContent, popularProduct }:
                 <div className="w-full rounded-3xl border border-[#AFB3FF] bg-[#FFFFFF] p-5 px-10 shadow lg:px-16">
                     <h1 className="text-xl font-bold">Dashboard</h1>
                 </div>
-                <div className="flex w-full flex-col-reverse items-center gap-x-48 gap-y-10 rounded-3xl border border-[#AFB3FF] bg-[#FFFFFF] p-5 px-10 shadow md:flex-row lg:px-16">
+                <div className="flex w-full flex-col-reverse items-center md:gap-x-10 xl:gap-x-48 gap-y-10 rounded-3xl border border-[#AFB3FF] bg-[#FFFFFF] p-5 px-10 shadow lg:flex-row lg:px-16">
                     <article className="space-y-5 text-justify">
                         <Heading
                             title="Buka Peluang Baru: Ajukan Kemitraan dan Jadilah Bagian dari Perjalanan Kami!"
-                            className="font-black md:text-4xl"
+                            className="font-black md:text-2xl lg:text-3xl xl:text-4xl"
                         />
                         <p className="md:text-xl">
                             Pilihan minuman berkualitas untuk hari-harimu yang lebih sehat. Pilihan minuman berkualitas untuk hari-harimu yang lebih
@@ -46,14 +46,14 @@ export default function dashboardCustomerPage({ latestContent, popularProduct }:
                         </div>
                         <Button
                             onClick={() => router.get(route('customer.transaksi.create'), { id: popularProduct.id })}
-                            className="hidden cursor-pointer bg-[#5961BE] text-white ring ring-[#5961BE] hover:bg-transparent hover:font-semibold hover:text-[#5961BE] md:block"
+                            className="hidden cursor-pointer bg-[#5961BE] text-white ring ring-[#5961BE] hover:bg-transparent hover:font-semibold hover:text-[#5961BE] lg:block"
                         >
                             Beli Sekarang
                         </Button>
                     </div>
                     <Button
                         onClick={() => router.get(route('customer.transaksi.create'), { id: popularProduct.id })}
-                        className="w-full cursor-pointer bg-[#5961BE] text-white ring ring-[#5961BE] hover:bg-transparent hover:font-semibold hover:text-[#5961BE] md:hidden"
+                        className="w-full cursor-pointer bg-[#5961BE] text-white ring ring-[#5961BE] hover:bg-transparent hover:font-semibold hover:text-[#5961BE] lg:hidden"
                     >
                         Beli Sekarang
                     </Button>
