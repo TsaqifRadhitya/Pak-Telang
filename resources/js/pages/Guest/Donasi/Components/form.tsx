@@ -20,7 +20,7 @@ interface props extends SharedData {
 
 export default function Form() {
     const { auth, snapToken } = usePage<props>().props;
-    const { data, errors, setData, setError, clearErrors } = useForm<donasiType>();
+    const { data, errors, setData, setError} = useForm<donasiType>();
     const [isAnonym, setAnonym] = useState<boolean>(false);
 
     useEffect(() => {
