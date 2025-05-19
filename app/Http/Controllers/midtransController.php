@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\newTransaction;
+use App\Models\donasi;
 use App\Models\productDetail;
 use App\Models\Transaksi;
 use App\Models\User;
@@ -24,9 +25,19 @@ class midtransController extends Controller
                 ['status' => 'Sedang Diproses']
             );
             $transaksi = Transaksi::where('id', $request->order_id)->first();
-            if ($transaksi->type === "Bahan Baku") {
+            if ($transaksi?->type === "Bahan Baku") {
                 Mail::to(User::find($transaksi->providerId)->email)->send(new newTransaction(route('admin.transaksi.show', ['id' => $transaksi->id])));
             }
+
+            donasi::where('id', $request->order_id)->update(
+                ['status' => 'paid']
+            );
+        }
+
+        if ($request->transaction_status === "expired") {
+            donasi::where('id', $request->order_id)->update(
+                ['status' => 'failed']
+            );
         }
         return response()->json(['message' => 'Callback received successfully']);
     }

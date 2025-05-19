@@ -12,9 +12,11 @@ export default function NewKontenItemComponent({ data, first = false }: { data: 
                 <div className="w-1 flex-1 bg-[#5961BE]"></div>
                 <div className="aspect-square rounded-full bg-[#5961BE] p-2.5"></div>
             </div>
-            <section className={cn('flex w-full flex-col items-center justify-between lg:flex-row md:gap-x-40 gap-y-5', first ? 'my-7.5' : 'mt-4 mb-7.5')}>
+            <section
+                className={cn('flex w-full flex-col items-center justify-between gap-y-5 md:gap-x-40 lg:flex-row', first ? 'my-7.5' : 'mt-4 mb-7.5')}
+            >
                 <div className="flex flex-col items-center gap-5 md:flex-row">
-                    <img src={data.imageCover} alt="" className="aspect-square h-fit w-full max-w-xs lg:w-32 rounded-2xl" />
+                    <img src={data.imageCover} alt="" className="aspect-square h-fit w-full max-w-xs rounded-2xl lg:w-32" />
                     <div className="flex flex-col justify-center">
                         <Heading title={data.slug} />
                         <p className="line-clamp-3 text-justify text-sm">{data.content}</p>

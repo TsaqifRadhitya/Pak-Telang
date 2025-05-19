@@ -68,19 +68,20 @@ class donasiController extends Controller
     public function show($id)
     {
         $donasi = donasi::find($id);
-
         if ($donasi->status === 'paid') {
-            return Inertia::render('Guest/Donasi/Donasi', ['snapToken' => $donasi->snapToken])->with('success', 'Nominal Donasi Berhasil Diterima');
+            session()->flash('success', 'Nominal Donasi Berhasil Diterima');
+            return Inertia::render('Guest/Donasi/Donasi');
         }
         return Inertia::render('Guest/Donasi/Donasi', ['snapToken' => $donasi->snapToken]);
     }
 
-    public function penyaluranDonasi(Request $request){
+    public function penyaluranDonasi(Request $request)
+    {
         penyaluranDonasi::create([
             'jumlahProduk' => $request->jumlahProduk,
             'nominal' => $request->nominal
         ]);
 
-        return back()->with('success','Berhasil Menyalurkan Donasi dengan Nominal '.Number::format($request->nominal).".");
+        return back()->with('success', 'Berhasil Menyalurkan Donasi dengan Nominal ' . Number::format($request->nominal) . ".");
     }
 }

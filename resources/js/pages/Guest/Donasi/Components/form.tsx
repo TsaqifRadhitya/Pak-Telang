@@ -2,25 +2,93 @@ import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { SharedData } from '@/types';
 import { donasiType } from '@/types/donasi';
-import { useForm } from '@inertiajs/react';
+import { currencyConverter } from '@/utils/currencyConverter';
+import { router, useForm, usePage } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
 import { z } from 'zod';
 
 const inputValidation = z.object({
-    nominal: z.number().min(10000),
+    nominal: z.number({ message: 'Harap Memasukkan Nominal Donasi' }).min(10000, `Minimum Donasi adalah ${currencyConverter(10000)}`),
+    email: z.string({ message: 'Harap Memasukkan Email' }).email('Harap Memasukkan Email'),
 });
 
+interface props extends SharedData {
+    snapToken?: string;
+}
+
 export default function Form() {
-    const { data, errors, setData, setError, post } = useForm<donasiType>();
+    const { auth, snapToken } = usePage<props>().props;
+    const { data, errors, setData, setError, clearErrors } = useForm<donasiType>();
+    const [isAnonym, setAnonym] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (auth.user) {
+            const userData = auth.user;
+            setData({
+                name: userData.name,
+                email: userData.email,
+                nominal: undefined,
+            });
+        }
+    }, [auth.user]);
+
+    useEffect(()=> {
+        if(snapToken){
+            handlePayment()
+        }
+    },[snapToken])
+
+    const handlePayment = () => {
+        const script = document.createElement('script');
+        const snapSrcUrl = 'https://app.sandbox.midtrans.com/snap/snap.js';
+        script.src = snapSrcUrl;
+        script.setAttribute('data-client-key', import.meta.env.VITE_MIDTRANS_CLIENT_ID);
+        script.async = true;
+
+        script.onload = () => {
+            if (window.snap) {
+                window.snap.pay(snapToken as string, {
+                    onClose: () => script.remove(),
+                    onSuccess: () => router.reload(),
+                });
+            } else {
+                console.error('Midtrans snap not loaded properly');
+            }
+        };
+
+        document.body.appendChild(script);
+    };
 
     const handleSubmit = () => {
         const validate = inputValidation.safeParse(data);
         if (!validate.success) {
             const err = validate.error.format();
             setError('nominal', err.nominal?._errors[0] as string);
+            setError('email', err.email?._errors[0] as string);
+            if (!isAnonym) {
+                if (!(data.name?.length > 0)) {
+                    setError('name', 'Harap Memasukkan Nama');
+                }
+            }
             return;
         }
-        post('donasi.store');
+
+        if (!isAnonym) {
+            if (!(data.name?.length > 0)) {
+                setError('name', 'Harap Memasukkan Nama');
+                return;
+            }
+        }
+        router.post(
+            route('donasi.store'),
+            {
+                ...data,
+                name: isAnonym ? null : data.name,
+            },
+            { preserveScroll: true },
+        );
     };
     return (
         <div className="flex w-full flex-col justify-center space-y-5 rounded-xl bg-white p-10 shadow-sm">
@@ -66,16 +134,28 @@ export default function Form() {
                         </Button>
                     </div>
                 </div>
-                <div className="w-full">
-                    <Heading title="Nama" className="text-md text-[#3B387E]" />
-                    <Input
-                        onChange={(e) => setData('name', e.target.value)}
-                        value={data.name}
-                        type="text"
-                        placeholder="Nama Lengkap"
-                        className="mt-1 w-full rounded-sm border-0 p-2.5 py-1 text-[#3B387E] ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:ring-3 focus-visible:ring-[#B9BDFF]"
-                    />
-                    {errors.name && <p className="text-sm text-red-600">{errors.name}</p>}
+                {!isAnonym && (
+                    <div className="w-full">
+                        <Heading title="Nama" className="text-md text-[#3B387E]" />
+                        <Input
+                            onChange={(e) => setData('name', e.target.value)}
+                            value={data.name ?? ''}
+                            type="text"
+                            placeholder="Nama Lengkap"
+                            className="mt-1 w-full rounded-sm border-0 p-2.5 py-1 text-[#3B387E] ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:ring-3 focus-visible:ring-[#B9BDFF]"
+                        />
+                        {errors.name && <p className="text-sm text-red-600">{errors.name}</p>}
+                    </div>
+                )}
+                <div className="flex gap-10">
+                    <div className="flex items-center gap-2.5">
+                        <Input checked={!isAnonym} onChange={() => setAnonym(false)} type="radio" name="type" className="h-fit w-fit cursor-pointer" />
+                        <label htmlFor="wallet">Tampilkan Nama</label>
+                    </div>
+                    <div className="flex items-center gap-2.5">
+                        <Input checked={isAnonym} onChange={() => setAnonym(true)} type="radio" name="type" className="h-fit w-fit cursor-pointer" />
+                        <label htmlFor="wallet">Anonim</label>
+                    </div>
                 </div>
                 <div className="w-full">
                     <Heading title="Email" className="text-md text-[#3B387E]" />
