@@ -4,23 +4,24 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { donasiType } from '@/types/donasi';
 import { useForm } from '@inertiajs/react';
-import {z} from 'zod'
+import { z } from 'zod';
 
 const inputValidation = z.object({
-    nominal : z.number().min(10000),
-})
+    nominal: z.number().min(10000),
+});
 
 export default function Form() {
     const { data, errors, setData, setError, post } = useForm<donasiType>();
 
     const handleSubmit = () => {
-        const validate = inputValidation.safeParse(data)
-        if(!validate.success){
-            const err = validate.error.format()
-            setError("nominal",err.nominal?._errors[0] as string)
-            return
+        const validate = inputValidation.safeParse(data);
+        if (!validate.success) {
+            const err = validate.error.format();
+            setError('nominal', err.nominal?._errors[0] as string);
+            return;
         }
-
+        post('donasi.store');
+    };
     return (
         <div className="flex w-full flex-col justify-center space-y-5 rounded-xl bg-white p-10 shadow-sm">
             <div className="mx-auto max-w-xs">
@@ -98,7 +99,10 @@ export default function Form() {
                     {errors.pesan && <p className="text-sm text-red-600">{errors.pesan}</p>}
                 </div>
             </div>
-            <Button className="mx-auto mt-5 w-64 cursor-pointer bg-[#5961BE] text-white shadow-md ring ring-[#5961BE] hover:bg-transparent hover:font-semibold hover:text-[#5961BE]">
+            <Button
+                onClick={handleSubmit}
+                className="mx-auto mt-5 w-64 cursor-pointer bg-[#5961BE] text-white shadow-md ring ring-[#5961BE] hover:bg-transparent hover:font-semibold hover:text-[#5961BE]"
+            >
                 Kirim Donasi
             </Button>
         </div>
