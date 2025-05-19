@@ -31,11 +31,6 @@ export class chatServices extends supabaseService {
         chanel.subscribe()
     }
 
-    public async getUserList(user: string) {
-        const users = await this.supabaseConnection.from('users').select().not('id', 'like', user)
-        return users
-    }
-
     public async sendSignal(sender: string,type : 'typing' | 'leave') {
         await this.chanel?.send({ type: 'broadcast', event: 'Broadcast', payload: { event : type ,id : sender } })
     }

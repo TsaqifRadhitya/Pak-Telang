@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\bahanBakuController;
+use App\Http\Controllers\bantuaController;
 use App\Http\Controllers\dashboardController;
 use App\Http\Controllers\ewalletController;
+use App\Http\Controllers\messageController;
 use App\Http\Controllers\mitraController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\profileController;
@@ -13,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', mitraMidleware::class])->group(function () {
     Route::prefix('mitra')->group(function () {
-        Route::post('/status/{status}',[mitraController::class,'updateStatusToko'])->name('mitra.status.update');
+        Route::post('/status/{status}', [mitraController::class, 'updateStatusToko'])->name('mitra.status.update');
         Route::get('dashboard', [dashboardController::class, 'mitraDashboard'])->name('mitra.dashboard');
 
         Route::prefix('profile')->group(function () {
@@ -32,6 +34,14 @@ Route::middleware(['auth', mitraMidleware::class])->group(function () {
             Route::patch('{id}', [bahanBakuController::class, 'update'])->name('mitra.order bahan.update');
             Route::get('{id}/payment', [bahanBakuController::class, 'payment'])->name('mitra.order bahan.payment');
             Route::get('{id}', [bahanBakuController::class, 'show'])->name('mitra.order bahan.show');
+        });
+
+        Route::get('/bantuan', [bantuaController::class, 'index'])->name('mitra.bantuan');
+
+        Route::prefix('/chat')->group(function () {
+            Route::get('/', [messageController::class, 'indexMitra'])->name('mitra.chat.index');
+            Route::post('/', [messageController::class, 'pustChat'])->name('mitra.chat.store');
+            Route::delete('{id}', [messageController::class, 'destroy'])->name('mitra.chat.delete');
         });
 
         Route::prefix('transaksi')->group(function () {

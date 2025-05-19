@@ -43,11 +43,32 @@ class messageController extends Controller
         // return response()->json(['message' => 'success']);
     }
 
-    public function index(){
+    public function index()
+    {
         $personChatRoom = Message::with('sender')->get()->groupBy('from');
     }
 
-    public function destroy($id){
+    public function indexMitra()
+    {
+        $user = Auth::user();
+        $receiver = User::where('role', 'Pak Telang')->first();
+
+        Message::where('from',$receiver->id)->where('to', $user->id)->update(
+            ['isReaded' => true]
+        );
+        $messages = Message::where(function ($e) use ($receiver, $user) {
+            $e->where('from', $receiver->id)->where('to', $user->id);
+        })->orWhere(
+            function ($e) use ($receiver, $user) {
+                $e->where('to', $receiver->id)->where('from', $user->id);
+            }
+        )->orderBy('created_at', 'desc')->get();
+
+        return Inertia::render('Mitra/Chat/create', compact('messages', 'receiver'));
+    }
+
+    public function destroy($id)
+    {
         Message::destroy($id);
     }
 }

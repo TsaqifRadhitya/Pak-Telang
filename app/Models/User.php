@@ -12,7 +12,7 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable,HasUuids;
+    use HasFactory, Notifiable, HasUuids;
 
     /**
      * The attributes that are mass assignable.
@@ -57,15 +57,28 @@ class User extends Authenticatable
         ];
     }
 
-    public function productStocks(){
-        return $this->hasMany(productDetail::class,'userId');
+    public function productStocks()
+    {
+        return $this->hasMany(productDetail::class, 'userId');
     }
 
-    public function mitra(){
-        return $this->hasOne(mitra::class,'userId');
+    public function mitra()
+    {
+        return $this->hasOne(mitra::class, 'userId');
     }
 
-    public function district(){
-        return $this->belongsTo(District::class,'districtId');
+    public function district()
+    {
+        return $this->belongsTo(District::class, 'districtId');
+    }
+
+    public function messageSend()
+    {
+        return $this->hasMany(Message::class, 'from', 'id');
+    }
+
+    public function messageReceives()
+    {
+        return $this->hasMany(Message::class, 'to', 'id');
     }
 }
