@@ -69,7 +69,7 @@ class donasiController extends Controller
     {
         $donasi = donasi::find($id);
         if ($donasi->status === 'paid') {
-            return Inertia::render('Guest/Donasi/Donasi',['snapToken' => $donasi->snapToken]);
+            return Inertia::render('Guest/Donasi/Donasi');
         }
         return Inertia::render('Guest/Donasi/Donasi', ['snapToken' => $donasi->snapToken]);
     }
