@@ -4,14 +4,28 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { donasiType } from '@/types/donasi';
 import { useForm } from '@inertiajs/react';
+import {z} from 'zod'
+
+const inputValidation = z.object({
+    nominal : z.number().min(10000),
+})
 
 export default function Form() {
-    const { data, errors, reset, setData, setError, post } = useForm<donasiType>();
+    const { data, errors, setData, setError, post } = useForm<donasiType>();
+
+    const handleSubmit = () => {
+        const validate = inputValidation.safeParse(data)
+        if(!validate.success){
+            const err = validate.error.format()
+            setError("nominal",err.nominal?._errors[0] as string)
+            return
+        }
+
     return (
         <div className="flex w-full flex-col justify-center space-y-5 rounded-xl bg-white p-10 shadow-sm">
             <div className="mx-auto max-w-xs">
-                <Heading title="Form Donasi" className="self-center text-center text-3xl font-black px-5" />
-                <div className="h-1.5 mt-1 rounded-full bg-[#B9BDFF]"></div>
+                <Heading title="Form Donasi" className="self-center px-5 text-center text-3xl font-black" />
+                <div className="mt-1 h-1.5 rounded-full bg-[#B9BDFF]"></div>
             </div>
             <div className="w-full space-y-5">
                 <div className="w-full">
@@ -79,7 +93,7 @@ export default function Form() {
                         onChange={(e) => setData('pesan', e.target.value)}
                         value={data.pesan}
                         placeholder="Pesan"
-                        className="mt-1 w-full h-24 rounded-sm border-0 p-2.5 py-1 text-[#3B387E] ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:ring-3 focus-visible:ring-[#B9BDFF]"
+                        className="mt-1 h-24 w-full rounded-sm border-0 p-2.5 py-1 text-[#3B387E] ring ring-[#B9BDFF] placeholder:text-[#B9BDFF] focus-visible:ring-3 focus-visible:ring-[#B9BDFF]"
                     />
                     {errors.pesan && <p className="text-sm text-red-600">{errors.pesan}</p>}
                 </div>

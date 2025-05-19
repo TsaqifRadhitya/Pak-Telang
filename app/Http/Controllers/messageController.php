@@ -46,4 +46,8 @@ class messageController extends Controller
     public function index(){
         $personChatRoom = Message::with('sender')->get()->groupBy('from');
     }
+
+    public function destroy($id){
+        Message::destroy($id);
+    }
 }

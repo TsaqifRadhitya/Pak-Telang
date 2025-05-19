@@ -33,7 +33,11 @@ Route::prefix('produk')->group(function () {
     Route::get('{id}', [ProductController::class, 'customerProductDetail'])->name('produk.detail');
 });
 
-Route::get('donasi', [donasiController::class, 'index'])->name('donasi');
+Route::prefix('donasi')->group(function () {
+    Route::get('/', [donasiController::class, 'index'])->name('donasi');
+    Route::post('/', [donasiController::class, 'store'])->name('donasi.store');
+    Route::get('{id}', [donasiController::class, 'show'])->name('donasi.show');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/chat', [messageController::class, 'allPerson'])->name('chat.index');

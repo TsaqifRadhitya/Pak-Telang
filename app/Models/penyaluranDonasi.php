@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
 
-class donasi extends Model
+class penyaluranDonasi extends Model
 {
     use HasUlids;
-    protected $fillable = ['nominal','name','email','pesan','status','snapToken'];
 
+    protected $fillable = ['nominal','jumlahProduk'];
 
 }

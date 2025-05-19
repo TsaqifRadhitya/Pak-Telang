@@ -11,14 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('donasis', function (Blueprint $table) {
+        Schema::create('penyaluran_donasis', function (Blueprint $table) {
             $table->ulid('id')->primary();
             $table->integer('nominal');
-            $table->string('name')->nullable();
-            $table->string('email')->nullable();
-            $table->string('pesan')->nullable();
-            $table->enum('status', ['pending', 'paid', 'failed'])->default('pending');
-            $table->string('snapToken')->nullable();
+            $table->integer('jumlahProduk');
             $table->timestamps();
         });
     }
@@ -28,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('donasis');
+        Schema::dropIfExists('penyaluran_donasis');
     }
 };
