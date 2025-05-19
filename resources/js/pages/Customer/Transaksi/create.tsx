@@ -123,7 +123,7 @@ export default function TransactionCreate() {
         if (selectedProduct) {
             const seletected = products.find((item) => item.id === selectedProduct);
             if (seletected && seletected.productStock > 0) {
-                setData([{ amount: 1, productId: selectedProduct, subTotal: seletected!.productPrice, productName: seletected!.productName }]);
+                handleChangeAmount('Increment', seletected.id);
                 return;
             } else if (seletected && seletected.productStock < 0) {
                 setErr(true);

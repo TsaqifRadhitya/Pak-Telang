@@ -42,4 +42,8 @@ class messageController extends Controller
         Message::create(['message' => $request->input('message'), 'from' => Auth::user()->id, 'to' => $id]);
         // return response()->json(['message' => 'success']);
     }
+
+    public function index(){
+        $personChatRoom = Message::with('sender')->get()->groupBy('from');
+    }
 }

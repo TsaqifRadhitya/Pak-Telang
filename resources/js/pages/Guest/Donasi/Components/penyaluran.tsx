@@ -1,8 +1,10 @@
+import Heading from '../../../../components/heading';
 export default function Penyaluran() {
     return (
-        <section className="min-h-screen bg-[#EBEFFF]">
-            <h1 className="text-center">Penyaluran Donasi</h1>
-            <div className="grid min-h-screen w-full grid-cols-3 bg-[#EBEFFF]"></div>;
+        <section className="flex min-h-screen flex-col bg-[#EBEFFF] text-center px-5 lg:px-20 text-[#3B387E]">
+            <Heading title="Penyaluran Donasi" className="text-4xl" />
+            <p className="mt-5 text-xl">Pilihan minuman berkualitas untuk hari-harimu yang lebih sehat</p>
+            <div className="w-fu flex-1 grid-cols-2 lg:grid xl:grid-cols-3"></div>
         </section>
     );
 }

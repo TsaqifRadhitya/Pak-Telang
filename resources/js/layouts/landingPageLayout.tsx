@@ -48,8 +48,8 @@ export default function LandingPageLayout({ children, page }: { children: React.
                                 href={route('home')}
                                 className={
                                     page === 'Home'
-                                        ? 'underline decoration-4 underline-offset-8'
-                                        : 'hover:underline hover:decoration-4 hover:underline-offset-8'
+                                        ? 'underline decoration-4 underline-offset-8 decoration-[#5961BE]'
+                                        : 'hover:underline hover:decoration-4 hover:underline-offset-8 decoration-[#5961BE]'
                                 }
                             >
                                 Home
@@ -60,8 +60,8 @@ export default function LandingPageLayout({ children, page }: { children: React.
                                 href={route('konten')}
                                 className={
                                     page === 'Konten'
-                                        ? 'underline decoration-4 underline-offset-8'
-                                        : 'hover:underline hover:decoration-4 hover:underline-offset-8'
+                                        ? 'underline decoration-4 underline-offset-8 decoration-[#5961BE]'
+                                        : 'hover:underline hover:decoration-4 hover:underline-offset-8 decoration-[#5961BE]'
                                 }
                             >
                                 Konten
@@ -72,8 +72,8 @@ export default function LandingPageLayout({ children, page }: { children: React.
                                 href={route('produk')}
                                 className={
                                     page === 'Produk'
-                                        ? 'underline decoration-4 underline-offset-8'
-                                        : 'hover:underline hover:decoration-4 hover:underline-offset-8'
+                                        ? 'underline decoration-4 underline-offset-8 decoration-[#5961BE]'
+                                        : 'hover:underline hover:decoration-4 hover:underline-offset-8 decoration-[#5961BE]'
                                 }
                             >
                                 Produk
@@ -84,8 +84,8 @@ export default function LandingPageLayout({ children, page }: { children: React.
                                 href={route('donasi')}
                                 className={
                                     page === 'Donasi'
-                                        ? 'underline decoration-4 underline-offset-8'
-                                        : 'hover:underline hover:decoration-4 hover:underline-offset-8'
+                                        ? 'underline decoration-4 underline-offset-8 decoration-[#5961BE]'
+                                        : 'hover:underline hover:decoration-4 hover:underline-offset-8 decoration-[#5961BE]'
                                 }
                             >
                                 Donasi

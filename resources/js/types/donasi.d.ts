@@ -1,4 +1,4 @@
-export type donasiTye = {
+export type donasiType = {
     id : string,
     nominal : number,
     name : string,

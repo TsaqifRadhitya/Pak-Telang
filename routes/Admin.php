@@ -43,5 +43,12 @@ Route::middleware(['auth', adminMidleware::class])->group(function () {
             Route::get('/', [ewalletController::class, 'index'])->name('admin.ewallet');
             Route::patch('{id}', [ewalletController::class, 'update'])->name('admin.ewallet.store');
         });
+
+        // Route::prefix('/chat')->group(function(){
+        //     Route::get('/',[])->name('admin.chat');
+        //     Route::get('{id}')->name('admin.chat.show');
+        //     Route::post('{id}')->name('admin.chat.store');
+        //     Route::delete('{id}')->name('admin.chat.delete');
+        // });
     });
 });

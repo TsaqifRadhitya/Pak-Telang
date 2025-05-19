@@ -9,5 +9,9 @@ class Message extends Model
 {
     use HasUlids;
 
-    protected $fillable = ['message','isReaded','from','to'];
+    protected $fillable = ['message','isReaded','from','to','isReaded'];
+
+    public function sender(){
+        return $this->belongsTo(User::class,'from');
+    }
 }
