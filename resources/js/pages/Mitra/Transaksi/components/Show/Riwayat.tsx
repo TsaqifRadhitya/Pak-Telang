@@ -15,7 +15,7 @@ export default function Riwayat({ role = 'Mitra' }: { role: 'Admin' | 'Mitra' })
                 <p>
                     <span className="font-semibold">Waktu</span> : {dateFormaterUtils(transaction.created_at)}
                 </p>
-                {transaction.type === 'Bahan Baku' && (
+                {transaction.type === 'Bahan Baku' && role === 'Mitra' && (
                     <p>
                         <span className="font-semibold">Kategori</span> : <span className="font-semibold text-[#FFA114]">Pesanan Keluar</span>
                     </p>

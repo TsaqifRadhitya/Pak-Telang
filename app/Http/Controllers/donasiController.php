@@ -20,6 +20,11 @@ class donasiController extends Controller
         if (Auth::check()) {
             $role = Auth::user()->role;
             if ($role === "Pak Telang") {
+                $donasiMasuk = donasi::where('status','paid')->orderBy('created_at','desc')->get();
+                $Disalurkan = penyaluranDonasi::orderBy('created_at','desc')->get();
+                $danaTersalur = $Disalurkan->sum('nominal');
+                $totalDonasi = $donasiMasuk->sum('nominal') - $danaTersalur;
+                return Inertia::render('Pak Telang/Donasi/index',compact('donasiMasuk','Disalurkan','danaTersalur','totalDonasi'));
             } else {
                 return Inertia::render('Guest/Donasi/Donasi');
             }

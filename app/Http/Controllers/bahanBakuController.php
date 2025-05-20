@@ -80,6 +80,21 @@ class bahanBakuController extends Controller
         abort(404);
     }
 
+     private function getFullTransactionAdress(Transaksi $transaksi)
+    {
+
+        $district = $transaksi->district;
+        $city = $district->city;
+        $province = $city->province;
+        return [
+            'address' => $transaksi->address,
+            'postalCode' =>  $transaksi->postalCode,
+            'districtName' => $district?->districtName,
+            'cityName' => $city->cityName,
+            'province' => $province->province,
+        ];
+    }
+
     private function getFullAdress(User $user)
     {
         $district = $user->district()->first();
@@ -105,6 +120,7 @@ class bahanBakuController extends Controller
             $section = ($transaction->type === "Bahan Baku" && $transaction->status !== "Selesai") ? "Dipesan" : "Riwayat";
             $transaction = [
                 ...$transaction->toArray(),
+                'address' => $this->getFullTransactionAdress($transaction),
                 "Total" => DetailTransaksi::where('transaksiId', $transaction->id)->sum('subTotal'),
             ];
             return Inertia::render('Mitra/Transaksi/show', compact('section', 'transaction'));

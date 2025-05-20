@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('penyaluran_donasis', function (Blueprint $table) {
             $table->ulid('id')->primary();
+            $table->string('namaPenyaluran');
             $table->integer('nominal');
             $table->integer('jumlahProduk');
             $table->timestamps();

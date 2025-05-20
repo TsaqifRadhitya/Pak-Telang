@@ -6,6 +6,7 @@ use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class messageController extends Controller
@@ -25,6 +26,10 @@ class messageController extends Controller
         }) // Eager load relationships if needed
             ->orderBy('created_at', 'asc')
             ->get();
+
+        Message::where('from', $id)->update(
+            ['isReaded' => true]
+        );
         return Inertia::render('chat/roomChat', compact('messages', 'target'));
     }
 
@@ -39,13 +44,45 @@ class messageController extends Controller
 
     public function pustChat(Request $request, $id)
     {
-        Message::create(['message' => $request->input('message'), 'from' => Auth::user()->id, 'to' => $id]);
+        Message::create(['message' => $request->input('message'), 'from' => Auth::user()->id, 'to' => $id, 'image' => $request->image]);
         // return response()->json(['message' => 'success']);
     }
 
     public function index()
     {
-        $personChatRoom = Message::with('sender')->get()->groupBy('from');
+        $chatPerson = User::whereNot('role', 'Pak Telang')->where(function ($e) {
+            $e->whereHas('messageSend')->orWhereHas('messageReceives');
+        })->get();
+
+        $messages = $chatPerson->map(function ($user) {
+            return [
+                'senderProfile' => $user->toArray(),
+                ...Message::where(function ($i) use ($user) {
+                    $i->where('from', $user->id)->orWhere('to', $user->id);
+                })->orderBy('created_at', 'desc')->first()->toArray(),
+                'unreaded' => Message::where('from', $user->id)->where('isReaded', false)->count()
+            ];
+        })->sortByDesc('created_at')->values();
+        return Inertia::render('Pak Telang/chat/index', compact('messages'));
+    }
+
+    public function swr()
+    {
+        $chatPerson = User::whereNot('role', 'Pak Telang')->where(function ($e) {
+            $e->whereHas('messageSend')->orWhereHas('messageReceives');
+        })->get();
+
+        $messages = $chatPerson->map(function ($user) {
+            return [
+                'senderProfile' => $user->toArray(),
+                ...Message::where(function ($i) use ($user) {
+                    $i->where('from', $user->id)->orWhere('to', $user->id);
+                })->orderBy('created_at', 'desc')->first()->toArray(),
+                'unreaded' => Message::where('from', $user->id)->where('isReaded', false)->count()
+            ];
+        })->sortByDesc('created_at')->values();
+
+        return response()->json($messages);
     }
 
     public function indexMitra()
@@ -53,7 +90,7 @@ class messageController extends Controller
         $user = Auth::user();
         $receiver = User::where('role', 'Pak Telang')->first();
 
-        Message::where('from',$receiver->id)->where('to', $user->id)->update(
+        Message::where('from', $receiver->id)->where('to', $user->id)->update(
             ['isReaded' => true]
         );
         $messages = Message::where(function ($e) use ($receiver, $user) {

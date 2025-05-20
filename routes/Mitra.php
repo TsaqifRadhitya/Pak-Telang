@@ -40,7 +40,7 @@ Route::middleware(['auth', mitraMidleware::class])->group(function () {
 
         Route::prefix('/chat')->group(function () {
             Route::get('/', [messageController::class, 'indexMitra'])->name('mitra.chat.index');
-            Route::post('/', [messageController::class, 'pustChat'])->name('mitra.chat.store');
+            Route::post('{id}', [messageController::class, 'pustChat'])->name('mitra.chat.store');
             Route::delete('{id}', [messageController::class, 'destroy'])->name('mitra.chat.delete');
         });
 

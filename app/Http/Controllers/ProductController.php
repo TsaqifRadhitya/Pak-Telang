@@ -18,6 +18,7 @@ class ProductController extends Controller
         $product = Product::where('productType', 'like', 'Barang jadi')->where('isdeleted',false)->get()->each(function ($e) {
             $e->productPhoto = json_decode($e->productPhoto);
         });
+
         return Inertia::render('Guest/Produk/Produk', compact('product'));
     }
 

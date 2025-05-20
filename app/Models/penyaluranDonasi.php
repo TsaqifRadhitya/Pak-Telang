@@ -9,6 +9,6 @@ class penyaluranDonasi extends Model
 {
     use HasUlids;
 
-    protected $fillable = ['nominal','jumlahProduk'];
+    protected $fillable = ['nominal','jumlahProduk','namaPenyaluran'];
 
 }

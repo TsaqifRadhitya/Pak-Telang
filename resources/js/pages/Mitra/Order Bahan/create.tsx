@@ -108,6 +108,7 @@ export default function OrderBahanCreate({
                     onFinish: () => window.location.reload(),
                 },
             );
+            return
         }
         setErr(true);
     };

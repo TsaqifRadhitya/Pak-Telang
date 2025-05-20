@@ -20,7 +20,7 @@ interface props extends SharedData {
 
 export default function Form() {
     const { auth, snapToken } = usePage<props>().props;
-    const { data, errors, setData, setError} = useForm<donasiType>();
+    const { data, errors, setData, setError, clearErrors } = useForm<donasiType>();
     const [isAnonym, setAnonym] = useState<boolean>(false);
 
     useEffect(() => {
@@ -34,11 +34,11 @@ export default function Form() {
         }
     }, [auth.user]);
 
-    useEffect(()=> {
-        if(snapToken){
-            handlePayment()
+    useEffect(() => {
+        if (snapToken) {
+            handlePayment();
         }
-    },[snapToken])
+    }, [snapToken]);
 
     const handlePayment = () => {
         const script = document.createElement('script');
@@ -62,6 +62,7 @@ export default function Form() {
     };
 
     const handleSubmit = () => {
+        clearErrors()
         const validate = inputValidation.safeParse(data);
         if (!validate.success) {
             const err = validate.error.format();
@@ -149,7 +150,13 @@ export default function Form() {
                 )}
                 <div className="flex gap-10">
                     <div className="flex items-center gap-2.5">
-                        <Input checked={!isAnonym} onChange={() => setAnonym(false)} type="radio" name="type" className="h-fit w-fit cursor-pointer" />
+                        <Input
+                            checked={!isAnonym}
+                            onChange={() => setAnonym(false)}
+                            type="radio"
+                            name="type"
+                            className="h-fit w-fit cursor-pointer"
+                        />
                         <label htmlFor="wallet">Tampilkan Nama</label>
                     </div>
                     <div className="flex items-center gap-2.5">

@@ -6,6 +6,7 @@ import { usePage } from '@inertiajs/react';
 
 export default function Dipesan() {
     const { transaction } = usePage<{ transaction: transactionType }>().props;
+    console.log(transaction);
     return (
         <section className="flex justify-between">
             <div className="space-y-2.5">

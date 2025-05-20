@@ -93,9 +93,9 @@ class transaksiMitraController extends Controller
     private function getFullAdress(Transaksi $transaksi)
     {
 
-        $district = $transaksi->district()->first();
-        $city = $district->city()->first();
-        $province = $city->province()->first();
+        $district = $transaksi->district;
+        $city = $district->city;
+        $province = $city->province;
         return [
             'address' => $transaksi->address,
             'postalCode' =>  $transaksi->postalCode,

@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\dashboardController;
+use App\Http\Controllers\donasiController;
 use App\Http\Controllers\ewalletController;
 use App\Http\Controllers\kontenController;
+use App\Http\Controllers\messageController;
 use App\Http\Controllers\mitraController;
 use App\Http\Controllers\pengajuanMitraController;
 use App\Http\Controllers\ProductController;
@@ -44,16 +46,17 @@ Route::middleware(['auth', adminMidleware::class])->group(function () {
             Route::patch('{id}', [ewalletController::class, 'update'])->name('admin.ewallet.store');
         });
 
-        Route::prefix('donasi')->group(function(){
-            Route::get('/')->name('admin.donasi');
+        Route::prefix('donasi')->group(function () {
+            Route::get('/', [donasiController::class, 'index'])->name('admin.donasi');
             Route::post('/')->name('admin.store');
         });
 
-        // Route::prefix('/chat')->group(function(){
-        //     Route::get('/',[])->name('admin.chat');
-        //     Route::get('{id}')->name('admin.chat.show');
-        //     Route::post('{id}')->name('admin.chat.store');
-        //     Route::delete('{id}')->name('admin.chat.delete');
-    // });
+        Route::prefix('/chat')->group(function () {
+            Route::get('/', [messageController::class, 'index'])->name('admin.chat');
+            Route::get('/swr', [messageController::class, 'swr'])->name('admin.chat.swr');
+            Route::get('{id}', [messageController::class, 'getChatRoom'])->name('admin.chat.show');
+            Route::post('{id}', [messageController::class, 'pushChat'])->name('admin.chat.store');
+            Route::delete('{id}', [messageController::class, 'destroy'])->name('admin.chat.delete');
+        });
     });
 });

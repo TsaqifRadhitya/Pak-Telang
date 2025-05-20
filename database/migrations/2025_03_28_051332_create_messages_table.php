@@ -15,6 +15,7 @@ return new class extends Migration
             $table->ulid('id')->primary();
             $table->timestamps();
             $table->string('message');
+            $table->string('image')->nullable();
             $table->boolean('isReaded')->default(false);
             $table->foreignUuid('from')->constrained('users')->onDelete('cascade');
             $table->foreignUuid('to')->constrained('users')->onDelete('cascade');
