@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 import { kontenType } from '@/types/koten';
 import { router, useForm } from '@inertiajs/react';
 import { LucideTrash2, Plus } from 'lucide-react';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import z from 'zod';
 import { supabaseImage } from '../../../services/imageStorage';
 
@@ -58,6 +58,14 @@ export default function CreateKonten() {
             e.target.value = '';
         }
     };
+
+    useEffect(() => {
+        const slug = new URLSearchParams(window.location.search).get('slug');
+        if (slug) {
+            setData('slug', slug);
+            setData('category', 'Penyaluran Donasi');
+        }
+    });
 
     const handleRemoveImage = (id: number) => {
         const newListUrl = data.imageContent?.filter((data, index) => index != id);

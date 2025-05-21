@@ -5,7 +5,7 @@ export type donasiType = {
     email : string,
     pesan? : string,
     status? : donasiStatusType
-    created_at? : string
+    created_at? : Date
     updated_at? : string
 }
 
