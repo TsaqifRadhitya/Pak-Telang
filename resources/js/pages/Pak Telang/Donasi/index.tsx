@@ -14,6 +14,7 @@ export default function Index({
     danaTersalur: number;
     totalDonasi: number;
 }) {
+    console.log(donasiMasuk,Disalurkan)
     return (
         <AdminPageLayout page="Donasi">
             <main className="relative z-0 flex h-full w-full flex-col rounded-t-lg border-[1px] border-b-0 border-[#AFB3FF] bg-[#FFFFFF] shadow-lg">
