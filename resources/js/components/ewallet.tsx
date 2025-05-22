@@ -18,7 +18,7 @@ export default function EWallet({ saldo, type, className }: { className?: string
                     Lihat E-Wallet
                 </Button>
             </div>
-            <HeadingSmall className="text-sm" title={type === 'Admin' ? 'Saldo Mitra' : 'Saldo Mitra & Pembeli'} />
+            <HeadingSmall className="text-sm font-semibold" title={type === 'Admin' ? 'Saldo Mitra' : 'Saldo Anda'} />
         </section>
     );
 }
