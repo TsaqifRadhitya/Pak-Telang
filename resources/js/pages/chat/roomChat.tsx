@@ -11,6 +11,8 @@ export type messageType = {
     from: string;
     to: string;
     message: string;
+    isReaded?: boolean;
+    image?: string;
     created_at?: string;
 };
 
@@ -42,7 +44,9 @@ export default function ChatRoom() {
     }, [auth.user.id, target.id]);
 
     useEffect(() => {
-        return () => {chatService.sendSignal(auth.user.id.toString(), 'typing')};
+        return () => {
+            chatService.sendSignal(auth.user.id.toString(), 'typing');
+        };
     }, []);
 
     const handelSignal = (type: 'typing' | 'leave') => {
@@ -62,12 +66,11 @@ export default function ChatRoom() {
                 from: auth.user.id.toString(),
             };
             setInputMessage('');
-            inputRef.current?.blur()
+            inputRef.current?.blur();
             router.post(
                 route('chat.store', { id: target.id }),
                 { message: inputMessage },
                 {
-
                     async: true,
                 },
             );

@@ -86,7 +86,6 @@ export default function ProductAdminPage({ products }: { products: productType[]
 
     const handleChangeImage = () => {
         if (inputField.current?.files?.length) {
-            console.log('hit');
             setData(
                 'productPhoto',
                 Object.values(inputField.current?.files as FileList).map((obj) => URL.createObjectURL(obj)),

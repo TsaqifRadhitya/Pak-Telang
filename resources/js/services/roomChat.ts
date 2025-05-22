@@ -6,14 +6,16 @@ export class chatServices extends supabaseService {
 
     private chanel: RealtimeChannel | undefined;
 
-    public async activeRoomChat(source: string, target: string, setter: (params: messageType) => void,handleSignal : (params:'typing' | 'leave')=>void) {
+    public async activeRoomChat(source: string, target: string, setter: (params: messageType) => void, handleSignal: (params: 'typing' | 'leave') => void) {
         const chanel = this.supabaseConnection.channel('chat')
         this.chanel = chanel
         chanel.on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, (payload) => {
             const newMessage = payload.new
+            console.log(newMessage);
             const sender = newMessage.from
             const receiver = newMessage.to
             if (sender === target && receiver === source) {
+                this.supabaseConnection.from('messages').update({ isReaded: true }).eq('id', newMessage.id)
                 setter({
                     from: sender,
                     to: receiver,
@@ -24,14 +26,14 @@ export class chatServices extends supabaseService {
 
         chanel.on('broadcast', { event: 'Broadcast' }, (payload) => {
             console.log(payload)
-            if(payload.payload.id === target){
+            if (payload.payload.id === target) {
                 handleSignal(payload.payload.event)
             }
         })
         chanel.subscribe()
     }
 
-    public async sendSignal(sender: string,type : 'typing' | 'leave') {
-        await this.chanel?.send({ type: 'broadcast', event: 'Broadcast', payload: { event : type ,id : sender } })
+    public async sendSignal(sender: string, type: 'typing' | 'leave') {
+        await this.chanel?.send({ type: 'broadcast', event: 'Broadcast', payload: { event: type, id: sender } })
     }
 }

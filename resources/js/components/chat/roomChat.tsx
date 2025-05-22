@@ -1,39 +1,71 @@
 import { messageType } from '@/pages/chat/roomChat';
+import { chatServices } from '@/services/roomChat';
 import { User } from '@/types';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Heading from '../heading';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
 
 export default function RoomChat({ user, target, messages }: { user: User; target: User; messages: messageType[] }) {
-    // const [messagesState, setMessages] = useState<messageType[]>(messages);
+    const [messagesState, setMessages] = useState<messageType[]>(messages);
     const [image, setImage] = useState<File>();
+    const [connected, setConnected] = useState<boolean>(false);
     const inputFile = useRef<HTMLInputElement>(null);
+    const [isTyping, setTyping] = useState<boolean>(false);
+    const [inputMessage, setInputMessage] = useState<string>();
 
     const handleChangeInputImage = (param: FileList | null) => {
         if (param?.length && param.length > 0) {
             setImage(Object.values(param)[0]);
         }
     };
-    // const handleSendMessage = () => {
 
-    // }
+    const handleNewChat = (params: messageType) => {
+        setMessages((prev) => [...prev, params]);
+    };
 
-    // const newMessage = (data:messageType) => {
-    //     if(messages){
-    //         setMessages([...messagesState,data])
-    //         return
-    //     }
+    const handelSignal = (type: 'typing' | 'leave') => {
+        if (type === 'typing') {
+            setTyping(true);
+        } else {
+            setTyping(false);
+        }
+    };
 
-    //     setMessages([data])
-    // }
+    useEffect(() => {
+        if (!connected) {
+            const chatService = new chatServices();
+            chatService.activeRoomChat(user.id, target.id, handleNewChat, handelSignal);
+            setConnected(true);
+        }
+    }, [user, target]);
 
-    // const removeMessage = (id:string) => {
-    //     const newMessages = [...messagesState].filter((message) => message.id != id)
-    //     setMessages(newMessages)
-    // }
-    console.log(user,messages)
+    const newMessage = () => {
+        if (inputMessage) {
+            const message: messageType = {
+                from: user.id,
+                to: target.id,
+                message: inputMessage,
+                created_at: new Date().toISOString(),
+                image: image && URL.createObjectURL(image),
+            };
+            if (messages) {
+                setMessages([...messagesState, message]);
+                return;
+            }
+
+            setMessages([message]);
+        }
+    };
+
+    // const removeMessage = (id: string) => {
+    //     const newMessages = [...messagesState].filter((message) => message.id != id);
+    //     setMessages(newMessages);
+    // };
+
+    console.log(user, messages, isTyping);
+
     return (
         <section className="flex flex-1 flex-col p-10 pb-5">
             <div className="flex items-center gap-5 border-b-2 border-[#D9D9D9] px-2 pb-2.5">
@@ -41,10 +73,12 @@ export default function RoomChat({ user, target, messages }: { user: User; targe
                 <Heading title={target.name} />
             </div>
             <div className="flex-1">{image && <img alt="" src={image && URL.createObjectURL(image)} />}</div>
-            <form action="" className="relative mt-1 flex gap-2.5">
+            <form onSubmit={newMessage} className="relative mt-1 flex gap-2.5">
                 <Textarea
                     placeholder="Ketikan pesan...."
                     className="h-10 min-h-0 flex-1 border-0 pr-7 text-[#3B387E] ring ring-[#3B387E] placeholder:text-[#3B387E] focus-visible:ring-3 focus-visible:ring-[#3B387E]"
+                    value={inputMessage}
+                    onChange={(e) => setInputMessage(e.target.value)}
                 />
                 <Input
                     type="file"
