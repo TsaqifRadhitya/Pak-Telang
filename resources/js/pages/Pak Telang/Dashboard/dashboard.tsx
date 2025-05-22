@@ -8,13 +8,13 @@ import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YA
 import EWallet from '../../../components/ewallet';
 import Heading from '../../../components/heading';
 
-type chartType = {
+export type chartType = {
     bulan: string;
     "Produk Jadi": number;
     "Bahan Baku": number;
 };
 
-type periodicType = {
+export type periodicType = {
     thisMonth: number;
     lastMonth: number;
 };

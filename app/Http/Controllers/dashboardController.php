@@ -68,8 +68,8 @@ class dashboardController extends Controller
         $thisMonth = Carbon::now()->format('m');
 
         $productSold = [
-            'thisMonth' => Transaksi::with('detailTransaksis')->where('providerId', Auth::user()->id)->whereRaw("TO_CHAR(transaksis.created_at, 'MM') = ?", [$thisMonth])->get()->flatMap->detailTransaksis->sum('amount'),
-            'lastMonth' => Transaksi::with('detailTransaksis')->where('providerId', Auth::user()->id)->whereRaw("TO_CHAR(transaksis.created_at, 'MM') = ?", [$lastMonth])->get()->flatMap->detailTransaksis->sum('amount')
+            'thisMonth' => Transaksi::with('detailTransaksis')->where('providerId', Auth::user()->id)->where('status', 'Selesai')->whereRaw("TO_CHAR(transaksis.created_at, 'MM') = ?", [$thisMonth])->get()->flatMap->detailTransaksis->sum('amount'),
+            'lastMonth' => Transaksi::with('detailTransaksis')->where('providerId', Auth::user()->id)->where('status', 'Selesai')->whereRaw("TO_CHAR(transaksis.created_at, 'MM') = ?", [$lastMonth])->get()->flatMap->detailTransaksis->sum('amount')
         ];
 
         $mitra = [
@@ -79,12 +79,37 @@ class dashboardController extends Controller
             $m->district->city->cityName)->toArray()))
         ];
 
-        return Inertia::render('Pak Telang/Dashboard/dashboard', compact('saldo', 'chart', 'productSold','mitra'));
+        return Inertia::render('Pak Telang/Dashboard/dashboard', compact('saldo', 'chart', 'productSold', 'mitra'));
     }
 
     public function mitraDashboard()
     {
         $statusToko = Auth::user()->mitra?->isOpen;
-        return Inertia::render('Mitra/Dashboard/dashboard', compact('statusToko'));
+        $months = collect(range(0, 5))->map(function ($i) {
+            return Carbon::now()->subMonths($i)->startOfMonth()->format('Y-m');
+        })->reverse()->values();
+
+        $chart = $months->map(function ($month) {
+            $produkJadi = Transaksi::with('detailTransaksis')
+                ->where('providerId', Auth::user()->id)
+                ->where('status', 'Selesai')
+                ->where('type', 'Barang jadi')
+                ->whereRaw("TO_CHAR(transaksis.created_at, 'YYYY-MM') = ?", [$month])
+                ->get();
+            return [
+                'bulan' => Carbon::createFromFormat('Y-m', $month)->translatedFormat('F'),
+                'Produk Jadi' => $produkJadi->flatMap->detailTransaksis->sum('subTotal') ?? 0 + $produkJadi->ongkir ?? 0,
+            ];
+        });
+
+        $lastMonth = Carbon::now()->subMonth()->startOfMonth()->format('m');
+        $thisMonth = Carbon::now()->format('m');
+
+        $productBought = [
+            'thisMonth' => Transaksi::with('detailTransaksis')->where('status', 'Selesai')->where('customerId', Auth::user()->id)->whereRaw("TO_CHAR(transaksis.created_at, 'MM') = ?", [$thisMonth])->get()->flatMap->detailTransaksis->sum('subTotal'),
+            'lastMonth' => Transaksi::with('detailTransaksis')->where('status', 'Selesai')->where('customerId', Auth::user()->id)->whereRaw("TO_CHAR(transaksis.created_at, 'MM') = ?", [$lastMonth])->get()->flatMap->detailTransaksis->sum('subTotal')
+        ];
+
+        return Inertia::render('Mitra/Dashboard/dashboard', compact('statusToko', 'chart', 'productBought'));
     }
 }
