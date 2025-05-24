@@ -11,6 +11,7 @@ type props = {
     images: File[];
     newMessage: () => void;
     inputFile: React.RefObject<HTMLInputElement | null>;
+    isTyping: boolean;
 };
 
 export default function ChatAreaWithPhotos(param: props) {
@@ -44,7 +45,7 @@ export default function ChatAreaWithPhotos(param: props) {
             </div>
             <div className="mt-auto mb-2.5 flex justify-center gap-2.5">
                 {images.map((image, index) => (
-                    <div className="relative">
+                    <div className="relative" key={index}>
                         <img
                             onClick={() => setSelected(index)}
                             className={cn(
@@ -79,7 +80,7 @@ export default function ChatAreaWithPhotos(param: props) {
                 <section className="relative mt-1 flex gap-2.5">
                     <Textarea
                         placeholder="Tambahkan keterangan....."
-                        className="h-10 min-h-0 flex-1 border-0 pr-7 text-[#3B387E] ring ring-[#3B387E] placeholder:text-[#3B387E] focus-visible:ring-3 focus-visible:ring-[#3B387E]"
+                        className="min-10 h-fit flex-1 border-0 pr-7 text-[#3B387E] ring ring-[#3B387E] placeholder:text-[#3B387E] focus-visible:ring-3 focus-visible:ring-[#3B387E]"
                         value={inputMessage}
                         onChange={(e) => setInputMessage(e.target.value)}
                     />

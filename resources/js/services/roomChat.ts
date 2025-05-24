@@ -36,19 +36,22 @@ export class chatServices extends supabaseService {
 
         chanel.on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'messages' }, (payload) => {
             const deletedMessage = payload.old
-            deleteMesage(deletedMessage.id)
+            const sender = deletedMessage.from
+            const receiver = deletedMessage.to
+            if ((sender === target && receiver === source) || (sender === source && receiver === target)) {
+                deleteMesage(deletedMessage.id)
+            }
         })
 
         chanel.on('broadcast', { event: 'Broadcast' }, (payload) => {
-            console.log(payload)
-            if (payload.payload.id === target) {
+            if (payload.payload.sender === target && payload.payload.receiver === source) {
                 handleSignal(payload.payload.event)
             }
         })
         chanel.subscribe()
     }
 
-    public async sendSignal(sender: string, type: 'typing' | 'leave') {
-        await this.chanel?.send({ type: 'broadcast', event: 'Broadcast', payload: { event: type, id: sender } })
+    public async sendSignal(sender: string, receiver: string, type: 'typing' | 'leave') {
+        await this.chanel?.send({ type: 'broadcast', event: 'Broadcast', payload: { event: type, sender: sender, receiver: receiver } })
     }
 }

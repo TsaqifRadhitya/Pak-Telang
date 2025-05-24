@@ -45,7 +45,7 @@ export default function ChatRoom() {
 
     useEffect(() => {
         return () => {
-            chatService.sendSignal(auth.user.id.toString(), 'typing');
+            chatService.sendSignal(auth.user.id.toString(), target.id, 'typing');
         };
     }, []);
 
@@ -115,8 +115,8 @@ export default function ChatRoom() {
                             onKeyDown={(e) => {
                                 if (e.key === 'Enter') handleSubmit(e);
                             }}
-                            onFocus={() => chatService.sendSignal(auth.user.id.toString(), 'typing')}
-                            onBlur={() => chatService.sendSignal(auth.user.id.toString(), 'leave')}
+                            onFocus={() => chatService.sendSignal(auth.user.id.toString(), target.id, 'typing')}
+                            onBlur={() => chatService.sendSignal(auth.user.id.toString(), target.id, 'leave')}
                         />
                         <Button onClick={handleSubmit} className="bg-green-500 text-white">
                             Send
