@@ -63,4 +63,12 @@ export class supabaseImage extends supabaseService {
         return url
     }
 
+    public async uploadChatImages(params: File[]) {
+        const promise = (params as File[]).map(async (item) => {
+            const compressedPhoto = await imageCompresstionUtlis(item)
+            return this.supabaseConnection.storage.from('paktelang').upload(`${this.basePath}/chat/${item.name}`, compressedPhoto, { contentType: item.type, upsert: true })
+        })
+        return await this.getUrl((await Promise.all(promise)).map((item) => (item.data?.path)) as string[])
+    }
+
 }

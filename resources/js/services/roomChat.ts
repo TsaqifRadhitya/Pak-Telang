@@ -18,18 +18,19 @@ export class chatServices extends supabaseService {
                 setter({
                     id: newMessage.id,
                     from: sender,
-                    image: newMessage.image,
                     to: receiver,
-                    message: newMessage.message
+                    message: newMessage.message,
+                    image: newMessage.image?.map((img: string) => decodeURIComponent(img))
+
                 });
             }
             if (sender === source && receiver === target) {
-                await this.supabaseConnection.from('messages').update({ isReaded: true }).eq('id', newMessage.id)
                 setter({
                     id: newMessage.id,
                     from: sender,
                     to: receiver,
-                    message: newMessage.message
+                    message: newMessage.message,
+                    image: newMessage.image?.map((img: string) => decodeURIComponent(img))
                 });
             }
         })
@@ -38,6 +39,7 @@ export class chatServices extends supabaseService {
             const deletedMessage = payload.old
             const sender = deletedMessage.from
             const receiver = deletedMessage.to
+
             if ((sender === target && receiver === source) || (sender === source && receiver === target)) {
                 deleteMesage(deletedMessage.id)
             }

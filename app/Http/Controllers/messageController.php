@@ -13,24 +13,27 @@ class messageController extends Controller
 {
     public function getChatRoom($id)
     {
-        $target = User::whereId($id)->first();
+        $receiver = User::find($id);
         $currentUser = Auth::user();
         $messages = Message::where(function ($query) use ($id, $currentUser) {
-            // Messages sent to current user from target
             $query->where('from', $id)
                 ->where('to', $currentUser->id);
         })->orWhere(function ($query) use ($id, $currentUser) {
-            // Messages sent from current user to target
             $query->where('from', $currentUser->id)
                 ->where('to', $id);
-        }) // Eager load relationships if needed
+        })
             ->orderBy('created_at', 'asc')
-            ->get();
+            ->get()->map(function ($msg) {
+                if ($msg->image != null) {
+                    $msg->image = json_decode($msg->image);
+                }
+                return $msg;
+            });
 
-        Message::where('from', $id)->update(
+        Message::where('from', $id)->where('to', $currentUser->id)->update(
             ['isReaded' => true]
         );
-        return Inertia::render('chat/roomChat', compact('messages', 'target'));
+        return Inertia::render('Pak Telang/chat/show', compact('messages', 'receiver'));
     }
 
     public function allPerson()
@@ -42,9 +45,9 @@ class messageController extends Controller
         return Inertia::render('chat/allPerson', compact('persons'));
     }
 
-    public function pustChat(Request $request, $id)
+    public function pushChat(Request $request, $id)
     {
-        Message::create(['message' => $request->input('message'), 'from' => Auth::user()->id, 'to' => $id, 'image' => $request->image]);
+        Message::create(['message' => $request->input('message'), 'from' => Auth::user()->id, 'to' => $id, 'isReaded' => false, 'image' => json_encode($request->image)]);
         // return response()->json(['message' => 'success']);
     }
 
@@ -99,8 +102,12 @@ class messageController extends Controller
             function ($e) use ($receiver, $user) {
                 $e->where('to', $receiver->id)->where('from', $user->id);
             }
-        )->orderBy('created_at', 'asc')->get();
-
+        )->orderBy('created_at', 'asc')->get()->map(function ($msg) {
+            if ($msg->image != null) {
+                $msg->image = json_decode($msg->image);
+            }
+            return $msg;
+        });
         return Inertia::render('Mitra/Chat/create', compact('messages', 'receiver'));
     }
 

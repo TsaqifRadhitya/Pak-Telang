@@ -2,7 +2,7 @@ import { cn } from '@/lib/utils';
 import { messageType } from '@/pages/chat/roomChat';
 import { chatServices } from '@/services/roomChat';
 import { User } from '@/types';
-import { useForm } from '@inertiajs/react';
+import { router } from '@inertiajs/react';
 import { useEffect, useRef, useState } from 'react';
 import Heading from '../heading';
 import { Button } from '../ui/button';
@@ -22,11 +22,8 @@ export default function RoomChat({ user, target, messages }: { user: User; targe
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const [isTyping, setTyping] = useState<boolean>(false);
     const inputArea = useRef<HTMLTextAreaElement>(null);
-    const { data, setData, post, processing, reset } = useForm<messageType>({
-        from: user.id,
-        to: target.id,
-        message: '',
-    });
+    const [inputMessage, setInputMessage] = useState<string>();
+    const [isSending, setSending] = useState<boolean>(false);
 
     const handleChangeInputImage = (param: FileList | null) => {
         if (param?.length && param.length > 0) {
@@ -58,20 +55,30 @@ export default function RoomChat({ user, target, messages }: { user: User; targe
     }, [user, target]);
 
     const newMessage = () => {
-        if (data.message) {
+        if (inputMessage) {
             if (user.role === 'Pak Telang') {
                 inputArea.current?.blur();
-                post(route('admin.chat.store', { id: target.id }), {
+                setSending(true);
+                const payloadData: messageType = { from: user.id, to: target.id, message: inputMessage };
+                router.post(route('admin.chat.store', { id: target.id }), payloadData, {
+                    onFinish: () => {
+                        setInputMessage('');
+                        setSending(false);
+                    },
                     async: true,
-                    onFinish: () => reset(),
                 });
             }
 
             if (user.role === 'Mitra') {
                 inputArea.current?.blur();
-                post(route('mitra.chat.store', { id: target.id }), {
+                setSending(true);
+                const payloadData: messageType = { from: user.id, to: target.id, message: inputMessage };
+                router.post(route('mitra.chat.store', { id: target.id }), payloadData, {
+                    onFinish: () => {
+                        setInputMessage('');
+                        setSending(false);
+                    },
                     async: true,
-                    onFinish: () => reset(),
                 });
             }
         }
@@ -89,6 +96,7 @@ export default function RoomChat({ user, target, messages }: { user: User; targe
                 <Input
                     type="file"
                     className="hidden"
+                    max={4}
                     ref={inputFile}
                     multiple
                     accept="image/png, image/jpeg"
@@ -98,19 +106,19 @@ export default function RoomChat({ user, target, messages }: { user: User; targe
             {images && (
                 <ChatAreaWithPhotos
                     setImage={setImages}
-                    inputMessage={data.message}
-                    setInputMessage={(param: string) => setData('message', param)}
+                    inputMessage={inputMessage as string}
+                    setInputMessage={(param: string) => setInputMessage(param)}
                     images={images}
-                    newMessage={newMessage}
                     inputFile={inputFile}
                     isTyping={isTyping}
+                    target={target}
                 />
             )}
             {!images && (
                 <>
                     <div className="flex h-[55vh] flex-col gap-5 overflow-y-auto px-1 py-5">
-                        {messagesState.map((message, index) => (
-                            <BubbleChat key={index} message={message} />
+                        {messagesState.map((message) => (
+                            <BubbleChat key={message.id} message={message} />
                         ))}
                         <div ref={messagesEndRef} />
                     </div>
@@ -118,7 +126,7 @@ export default function RoomChat({ user, target, messages }: { user: User; targe
                         {isTyping && <IsTypingComponent person={target} />}
                         <div onSubmit={newMessage} className="relative mt-1 flex items-end gap-2.5">
                             <Textarea
-                                disabled={processing}
+                                disabled={isSending}
                                 placeholder="Ketikan pesan...."
                                 onKeyDown={(e) => {
                                     if (e.key === 'Enter' && !e.shiftKey) {
@@ -130,16 +138,16 @@ export default function RoomChat({ user, target, messages }: { user: User; targe
                                 onFocus={() => chatService.sendSignal(user.id.toString(), target.id, 'typing')}
                                 onBlur={() => chatService.sendSignal(user.id.toString(), target.id, 'leave')}
                                 className="max-h-20 min-h-10 flex-1 border-0 py-2.5 pr-10 text-[#3B387E] ring ring-[#3B387E] placeholder:text-[#3B387E] focus-visible:ring-3 focus-visible:ring-[#3B387E]"
-                                value={data.message}
-                                onChange={(e) => setData('message', e.target.value)}
+                                value={inputMessage}
+                                onChange={(e) => setInputMessage(e.target.value)}
                             />
                             <svg
-                                className={cn('absolute right-16 bottom-2.5 cursor-pointer', processing && 'cursor-default')}
+                                className={cn('absolute right-16 bottom-2.5 cursor-pointer', isSending && 'cursor-default')}
                                 width="24"
                                 height="24"
                                 viewBox="0 0 24 24"
                                 fill="none"
-                                onClick={() => !processing && inputFile.current?.click()}
+                                onClick={() => !isSending && inputFile.current?.click()}
                                 xmlns="http://www.w3.org/2000/svg"
                             >
                                 <g clipPath="url(#clip0_1378_6370)">
@@ -156,7 +164,7 @@ export default function RoomChat({ user, target, messages }: { user: User; targe
                             </svg>
                             <Button
                                 onClick={newMessage}
-                                disabled={processing}
+                                disabled={isSending}
                                 className="group h-11 cursor-pointer ring ring-[#3B387E] hover:bg-[#3B387E] md:h-10"
                             >
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

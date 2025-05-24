@@ -13,6 +13,7 @@ export default function BubbleChat({ message }: { message: messageType }) {
 
     const [isOpen, setOpen] = useState<boolean>(false);
     const [isdeleting, setDeleting] = useState<boolean>(false);
+    const [indexPhoto, setIndexPhoto] = useState<number>(0);
 
     const handelDeleteMessage = () => {
         if (user.role === 'Pak Telang') {
@@ -33,6 +34,66 @@ export default function BubbleChat({ message }: { message: messageType }) {
 
     return (
         <section className={cn('flex w-full justify-start px-5 text-[#3B387E]', message.from === user.id && 'justify-end')}>
+            {!!indexPhoto && (
+                <div className="fixed top-0 left-0 z-[999] flex h-full w-full flex-col bg-black/50 p-10 lg:absolute">
+                    <img src={message.image![indexPhoto - 1]} alt="" className="mx-auto my-auto max-h-96" />
+                    <h1
+                        onClick={() => setIndexPhoto(0)}
+                        className="absolute top-5 left-5 aspect-square h-fit rotate-45 cursor-pointer rounded-full bg-[#3B387E] px-2 text-xl text-white ring ring-[#3B387E] hover:hover:bg-white hover:font-semibold hover:text-[#3B387E]"
+                    >
+                        +
+                    </h1>
+                    {message.image!.length > 1 && (
+                        <div className="absolute top-1/2 left-1/2 hidden w-[95%] -translate-1/2 justify-between lg:flex">
+                            <Button
+                                className="h-10 min-h-0 cursor-pointer rounded-full px-4 ring ring-[#3B387E] hover:bg-[#3B387E] hover:text-white disabled:cursor-default disabled:opacity-50"
+                                onClick={() => setIndexPhoto((prev) => prev - 1)}
+                                disabled={indexPhoto === 1}
+                            >
+                                {'<'}
+                            </Button>
+                            <Button
+                                className="h-10 min-h-0 cursor-pointer rounded-full px-4 ring ring-[#3B387E] hover:bg-[#3B387E] hover:text-white disabled:cursor-default disabled:opacity-50"
+                                onClick={() => setIndexPhoto((prev) => prev + 1)}
+                                disabled={indexPhoto === message.image!.length}
+                            >
+                                {'>'}
+                            </Button>
+                        </div>
+                    )}
+                    {message.image!.length > 1 && (
+                        <div className="mt-auto mb-2.5 flex items-center justify-center gap-2.5">
+                            <Button
+                                className="h-10 min-h-0 cursor-pointer rounded-full px-4 ring ring-[#3B387E] hover:bg-[#3B387E] hover:text-white disabled:cursor-default disabled:opacity-50"
+                                onClick={() => setIndexPhoto((prev) => prev - 1)}
+                                disabled={indexPhoto === 1}
+                            >
+                                {'<'}
+                            </Button>
+                            {message.image!.map((image, index) => (
+                                <div className="relative" key={index}>
+                                    <img
+                                        onClick={() => setIndexPhoto(index + 1)}
+                                        className={cn(
+                                            'aspect-square h-16 cursor-pointer rounded-lg object-cover object-center',
+                                            index + 1 === indexPhoto && 'scale-110 cursor-default border border-white',
+                                        )}
+                                        src={image}
+                                        key={index}
+                                    />
+                                </div>
+                            ))}
+                            <Button
+                                className="h-10 min-h-0 cursor-pointer rounded-full px-4 ring ring-[#3B387E] hover:bg-[#3B387E] hover:text-white disabled:cursor-default disabled:opacity-50"
+                                onClick={() => setIndexPhoto((prev) => prev + 1)}
+                                disabled={indexPhoto === message.image!.length}
+                            >
+                                {'>'}
+                            </Button>
+                        </div>
+                    )}
+                </div>
+            )}
             {isOpen && (
                 <section id="alertDelete" className="fixed top-0 left-0 z-[999] h-screen w-screen bg-black/50">
                     <article className="absolute top-1/2 left-1/2 flex w-full max-w-xl -translate-1/2 flex-col items-center gap-y-5 rounded-2xl border border-[#8A7300] bg-[#FFFDF1] p-5 pb-10">
@@ -56,13 +117,13 @@ export default function BubbleChat({ message }: { message: messageType }) {
 
                         <div className="flex w-1/2 justify-center gap-x-2.5">
                             <Button
-                                className="w-1/2 cursor-pointer bg-[#FFFDF1] font-semibold text-[#8A7300] ring ring-[#8A7300] hover:bg-[#8A7300] hover:text-white"
+                                className="w-1/2 cursor-pointer border border-[#8A7300] bg-[#FFFDF1] font-semibold text-[#8A7300] hover:bg-[#8A7300] hover:text-white"
                                 onClick={() => setOpen(false)}
                             >
                                 Batal
                             </Button>
                             <Button
-                                className="w-1/2 cursor-pointer bg-[#8A7300] text-white ring ring-[#8A7300] hover:bg-transparent hover:font-semibold hover:text-[#8A7300]"
+                                className="w-1/2 cursor-pointer border border-[#8A7300] bg-[#8A7300] text-white hover:bg-transparent hover:font-semibold hover:text-[#8A7300]"
                                 onClick={handelDeleteMessage}
                             >
                                 Yakin
@@ -87,10 +148,32 @@ export default function BubbleChat({ message }: { message: messageType }) {
                         Hapus Pesan
                     </Button>
                 )}
+                {message.image && (
+                    <div
+                        onClick={() => setIndexPhoto(1)}
+                        className={cn(
+                            'relative mt-2.5 w-full cursor-pointer rounded-t-lg border border-[#AFB3FF] p-2.5',
+                            message.from === user.id && 'border-[#048730]/33',
+                        )}
+                    >
+                        <img src={message.image[0]} className="w-full" />
+                        {message.image.length > 1 && (
+                            <h1
+                                className={cn(
+                                    'absolute top-1/2 left-1/2 -translate-1/2 text-5xl font-black text-[#AFB3FF]',
+                                    message.from === user.id && 'text-[#05521e]',
+                                )}
+                            >
+                                +{message.image.length - 1}
+                            </h1>
+                        )}
+                    </div>
+                )}
                 <pre
                     className={cn(
-                        'lg:text-md w-full rounded-2xl bg-[#AFB3FF]/24 px-5 py-4 font-sans text-xs break-words whitespace-pre-wrap ring ring-[#AFB3FF] md:text-sm',
-                        message.from === user.id && 'mt-2.5 bg-[#A0D9A0]/37 ring-[#048730]/33',
+                        'lg:text-md w-full rounded-2xl border border-[#AFB3FF] bg-[#AFB3FF]/24 px-5 py-4 font-sans text-xs break-words whitespace-pre-wrap md:text-sm',
+                        message.from === user.id && 'mt-2.5 border-[#048730]/33 bg-[#A0D9A0]/37',
+                        message.image && 'mt-0 rounded-t-none border-t-0',
                     )}
                 >
                     {message.message}

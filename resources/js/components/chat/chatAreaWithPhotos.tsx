@@ -1,21 +1,33 @@
 import { cn } from '@/lib/utils';
+import { messageType } from '@/pages/chat/roomChat';
+import { supabaseImage } from '@/services/imageStorage';
+import { SharedData, User } from '@/types';
+import { router, usePage } from '@inertiajs/react';
 import { Plus, Trash2Icon } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { Button } from '../ui/button';
 import { Textarea } from '../ui/textarea';
+import { chatService } from './roomChat';
 
 type props = {
     setImage: (param: File[] | undefined) => void;
     inputMessage: string;
     setInputMessage: (param: string) => void;
     images: File[];
-    newMessage: () => void;
     inputFile: React.RefObject<HTMLInputElement | null>;
     isTyping: boolean;
+    target: User;
 };
 
 export default function ChatAreaWithPhotos(param: props) {
-    const { setImage, inputMessage, images, newMessage, setInputMessage, inputFile } = param;
+    const { setImage, inputMessage, images, setInputMessage, inputFile, target } = param;
+    const [isSending, setSending] = useState<boolean>(false);
+    const inputArea = useRef<HTMLTextAreaElement>(null);
+    const imageUrl = useMemo(() => images.map((img) => URL.createObjectURL(img)), [images]);
+    const {
+        auth: { user },
+    } = usePage<SharedData>().props;
+
     const handleDeleteImage = (params: number) => {
         const newImages = [...images].filter((images, index) => index != params);
         if (params !== 0) {
@@ -23,10 +35,47 @@ export default function ChatAreaWithPhotos(param: props) {
         }
         setImage(newImages.length > 0 ? newImages : undefined);
     };
+
     const [selected, setSelected] = useState<number>(0);
+
+    const handleSubmit = async () => {
+        if (images) {
+            if (user.role === 'Pak Telang') {
+                inputArea.current?.blur();
+                setSending(true);
+                const supabaseImageServices = new supabaseImage(user.email, 'Image');
+                const ress = await supabaseImageServices.uploadChatImages(images);
+                const payloadData: messageType = { from: user.id, to: target.id, message: inputMessage, image: ress as string[] };
+                router.post(route('admin.chat.store', { id: target.id }), payloadData, {
+                    onFinish: () => {
+                        setInputMessage('');
+                        setSending(false);
+                        setImage(undefined);
+                    },
+                    async: true,
+                });
+            }
+
+            if (user.role === 'Mitra') {
+                inputArea.current?.blur();
+                setSending(true);
+                const supabaseImageServices = new supabaseImage(user.email, 'Image');
+                const ress = await supabaseImageServices.uploadChatImages(images);
+                const payloadData: messageType = { from: user.id, to: target.id, message: inputMessage, image: ress as string[] };
+                router.post(route('mitra.chat.store', { id: target.id }), payloadData, {
+                    onFinish: () => {
+                        setInputMessage('');
+                        setSending(false);
+                        setImage(undefined);
+                    },
+                    async: true,
+                });
+            }
+        }
+    };
     return (
         <div className="relative mt-5 flex flex-1 flex-col rounded-t-2xl bg-black/50 p-5 ring">
-            <img src={URL.createObjectURL(images[selected])} alt="" className="mx-auto mt-auto max-h-52" />
+            <img src={imageUrl[selected]} alt="" className="mx-auto mt-auto max-h-52" />
             <div className="absolute top-1/2 left-1/2 flex w-[95%] -translate-1/2 justify-between">
                 <Button
                     className="h-10 min-h-0 cursor-pointer rounded-full px-4 ring ring-[#3B387E] hover:bg-[#3B387E] hover:text-white disabled:cursor-default disabled:opacity-50"
@@ -44,7 +93,7 @@ export default function ChatAreaWithPhotos(param: props) {
                 </Button>
             </div>
             <div className="mt-auto mb-2.5 flex justify-center gap-2.5">
-                {images.map((image, index) => (
+                {imageUrl.map((image, index) => (
                     <div className="relative" key={index}>
                         <img
                             onClick={() => setSelected(index)}
@@ -52,19 +101,19 @@ export default function ChatAreaWithPhotos(param: props) {
                                 'aspect-square h-14 cursor-pointer rounded-lg object-cover object-center',
                                 index === selected && 'scale-110 cursor-default border border-white',
                             )}
-                            src={URL.createObjectURL(image)}
+                            src={image}
                             key={index}
                         />
                         {selected === index && (
                             <Trash2Icon
-                                onClick={() => handleDeleteImage(index)}
-                                className="absolute top-1/2 left-1/2 -translate-1/2 cursor-pointer text-white"
+                                onClick={() => !isSending && handleDeleteImage(index)}
+                                className={cn('absolute top-1/2 left-1/2 -translate-1/2 cursor-pointer text-white', isSending && 'cursor-default')}
                             />
                         )}
                     </div>
                 ))}
                 <div
-                    onClick={() => inputFile.current?.click()}
+                    onClick={() => !isSending && inputFile.current?.click()}
                     className="flex aspect-square h-14 cursor-pointer items-center justify-center rounded-lg ring"
                 >
                     <Plus />
@@ -80,12 +129,20 @@ export default function ChatAreaWithPhotos(param: props) {
                 <section className="relative mt-1 flex gap-2.5">
                     <Textarea
                         placeholder="Tambahkan keterangan....."
-                        className="min-10 h-fit flex-1 border-0 pr-7 text-[#3B387E] ring ring-[#3B387E] placeholder:text-[#3B387E] focus-visible:ring-3 focus-visible:ring-[#3B387E]"
+                        className="h-fit min-h-10 flex-1 border-0 bg-white pr-7 text-[#3B387E] ring ring-[#3B387E] placeholder:text-[#3B387E] focus-visible:ring-3 focus-visible:ring-[#3B387E]"
+                        disabled={isSending}
                         value={inputMessage}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter' && !e.shiftKey) {
+                                handleSubmit();
+                            }
+                        }}
                         onChange={(e) => setInputMessage(e.target.value)}
+                        onFocus={() => chatService.sendSignal(user.id.toString(), target.id, 'typing')}
+                        onBlur={() => chatService.sendSignal(user.id.toString(), target.id, 'leave')}
                     />
 
-                    <Button onClick={newMessage} className="group h-10 cursor-pointer ring ring-[#3B387E] hover:bg-[#3B387E]">
+                    <Button disabled={isSending} onClick={handleSubmit} className="group h-10 cursor-pointer ring ring-[#3B387E] hover:bg-[#3B387E]">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g clipPath="url(#clip0_1378_6373)">
                                 <path d="M15.5 5H11L16 12L11 19H15.5L20.5 12L15.5 5Z" className="fill-[#3B387E] group-hover:fill-white" />
