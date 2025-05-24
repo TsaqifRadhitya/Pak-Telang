@@ -12,7 +12,7 @@ export type messageType = {
     to: string;
     message: string;
     isReaded?: boolean;
-    image?: string;
+    image?: string[];
     created_at?: string;
 };
 
@@ -38,7 +38,7 @@ export default function ChatRoom() {
 
     useEffect(() => {
         if (!onetime) {
-            chatService.activeRoomChat(auth.user.id, target.id, handleNewChat, handelSignal);
+            chatService.activeRoomChat(auth.user.id, target.id, handleDelete, handleNewChat, handelSignal);
             setOnetime(true);
         }
     }, [auth.user.id, target.id]);
@@ -60,11 +60,6 @@ export default function ChatRoom() {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (inputMessage.trim()) {
-            const newMessage: messageType = {
-                message: inputMessage,
-                to: target.id.toString(),
-                from: auth.user.id.toString(),
-            };
             setInputMessage('');
             inputRef.current?.blur();
             router.post(
@@ -74,12 +69,15 @@ export default function ChatRoom() {
                     async: true,
                 },
             );
-            setMessages((prev) => [...prev, newMessage]);
         }
     };
 
     const handleNewChat = (params: messageType) => {
         setMessages((prev) => [...prev, params]);
+    };
+
+    const handleDelete = (id: string) => {
+        setMessages((prev) => [...prev].filter((mes) => mes.id != id));
     };
 
     return (

@@ -122,7 +122,7 @@ export default function EditProfileCustomer() {
         if (image) {
             const imageProvider = new supabaseImage(auth.user.email, 'Image');
             const profileUrl = await imageProvider.upsertProfile(image);
-            router.post(route('customer.profile.update'), { ...data, profile_picture: profileUrl as string, fts: 'fts' });
+            router.post(route('customer.profile.update'), { ...data, profile_picture: profileUrl as string, fts: fts });
         } else {
             post(route('customer.profile.update', { fts: fts }));
         }

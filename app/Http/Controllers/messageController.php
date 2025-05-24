@@ -99,7 +99,7 @@ class messageController extends Controller
             function ($e) use ($receiver, $user) {
                 $e->where('to', $receiver->id)->where('from', $user->id);
             }
-        )->orderBy('created_at', 'desc')->get();
+        )->orderBy('created_at', 'asc')->get();
 
         return Inertia::render('Mitra/Chat/create', compact('messages', 'receiver'));
     }

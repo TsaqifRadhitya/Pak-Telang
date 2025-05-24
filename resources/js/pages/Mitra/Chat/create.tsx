@@ -11,7 +11,6 @@ interface props extends SharedData {
 
 export default function Create() {
     const { auth, receiver, messages } = usePage<props>().props;
-    console.log(messages);
     return (
         <MitraPageLayout page="Bantuan">
             <main className="flex h-full w-full flex-col rounded-t-lg border-[1px] border-b-0 border-[#AFB3FF] bg-[#FFFFFF] shadow-lg">
