@@ -20,7 +20,6 @@ export default function MouPending() {
     });
     const [mou, setMou] = useState<File | undefined>();
     const inputFile = useRef<HTMLInputElement>(null);
-    console.log(mitra);
     useEffect(() => {
         mouEditor.replacer(mitra).then((ress) => {
             renderAsync(ress, document.getElementById('docpreview') as HTMLElement);
