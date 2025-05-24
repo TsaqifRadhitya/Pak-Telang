@@ -20,7 +20,6 @@ export default function MitraAdminPage() {
         category: category ?? 'default',
         search: search ?? '',
     });
-    console.log(data.category);
     const handleFilterSearch = (param?: string) => {
         if (param) {
             setData((prev) => ({ ...prev, category: param }));

@@ -22,7 +22,6 @@ const loginSchema = z.object({
 
 export default function LoginPage() {
     const { post, data, errors, setData, setError, reset } = useForm<LoginForm>();
-    console.log(Object.values(errors).filter((e) => typeof e === 'string')[0]);
     const handleSubmit = () => {
         const result = loginSchema.safeParse(data);
         if (!result.success) {

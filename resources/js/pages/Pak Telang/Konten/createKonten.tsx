@@ -91,7 +91,6 @@ export default function CreateKonten() {
             const urlImageCover = imageUploader.uploadKonten(sampul as FileList);
             const urlImageContent = imageUploader.uploadKonten(imageBag as File[]);
             const allUrl = await Promise.all([urlImageContent, urlImageCover]);
-            console.log(allUrl);
             router.post(route('admin.konten.store'), {
                 ...data,
                 imageCover: allUrl[1]![0],

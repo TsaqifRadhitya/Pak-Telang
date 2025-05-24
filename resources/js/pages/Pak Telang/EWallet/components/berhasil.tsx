@@ -8,7 +8,6 @@ import { props } from '..';
 
 export default function Berhasil() {
     const { mutations } = usePage<props>().props;
-    console.log(mutations.filter((filter) => filter.finished));
     const [buktiTransfer, setButktiTransfer] = useState<string>();
 
     return (

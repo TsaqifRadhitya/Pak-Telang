@@ -6,7 +6,6 @@ import { dateFormaterUtils } from '@/utils/dateFormater';
 import { router } from '@inertiajs/react';
 
 export default function TransactionIndex({ transactions }: { transactions: transactionType[] }) {
-    console.log(transactions);
     return (
         <CustomerPageLayout page="Riwayat">
             <section className="flex flex-col gap-5 bg-[#EBEFFF] p-5 pt-20 text-[#3B387E] md:px-10 lg:min-h-screen">

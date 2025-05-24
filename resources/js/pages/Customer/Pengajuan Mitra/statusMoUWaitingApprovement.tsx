@@ -9,7 +9,6 @@ import HeadingSmall from '../../../components/heading-small';
 
 export default function MoUWaitingApprovement() {
     const { mitra } = usePage<{ mitra: mitra }>().props;
-    console.log(mitra);
     useEffect(() => {
         fetch(mitra.mou).then((ress) => {
             renderAsync(ress.arrayBuffer(), document.getElementById('docpreview') as HTMLElement);

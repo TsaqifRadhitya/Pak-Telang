@@ -7,7 +7,6 @@ import mitra from '@/types/mitra';
 
 export default function FormRejected() {
     const { mitra } = usePage<{ mitra: mitra }>().props;
-    console.log(mitra.pesanPersetujuan)
     return (
         <CustomerPageLayout page="Pengajuan Mitra">
             <section className="flex h-fit w-full bg-[#EBEFFF] p-5 pt-20 lg:p-10 lg:pt-20">

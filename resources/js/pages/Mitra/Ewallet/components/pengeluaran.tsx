@@ -6,7 +6,6 @@ import { props } from '..';
 
 export default function Pengeluaran() {
     const { mutations } = usePage<props>().props;
-    console.log(mutations)
     return (
         <section className="max-h-[65vh] overflow-y-auto">
             {mutations

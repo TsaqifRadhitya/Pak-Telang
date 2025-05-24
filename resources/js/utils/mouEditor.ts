@@ -89,7 +89,6 @@ export class mouEditor extends supabaseService {
 
     static async replacer(data: mitra): Promise<Blob> {
         const response = await fetch(import.meta.env.VITE_TEMPLATE_MOU)
-        console.log(response)
         const zip = new PizZip(await response.arrayBuffer());
         const doc = new Docxtemplater(zip, {
             delimiters: {

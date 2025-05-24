@@ -13,7 +13,6 @@ interface props extends SharedData {
 
 export default function AllPerson() {
     const { persons } = usePage<props>().props;
-    console.log(persons);
     return (
         <div className="min-h-screen w-full bg-white p-5">
             <h1 className="text-2xl font-bold text-black">Daftar User</h1>
