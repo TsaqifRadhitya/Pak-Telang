@@ -5,6 +5,7 @@ import { detailTransactionType } from "./detailTransaction"
 export type transactionType = {
     created_at: Date
     id: string
+    displayId : string
     ongkir?: number
     resi?: string
     status: string

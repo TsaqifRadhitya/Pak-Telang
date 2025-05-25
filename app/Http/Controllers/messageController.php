@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\broadcastMail;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 
 class messageController extends Controller
@@ -122,5 +124,11 @@ class messageController extends Controller
     public function destroy($id)
     {
         Message::destroy($id);
+    }
+
+    public function broadcast(Request $request){
+        $mitra = User::whereHas('mitra')->get('email')->map(fn($mitra) => $mitra->email)->toArray();
+        Mail::bcc($mitra)->send(new broadcastMail($request->title,$request->pesan));
+        return back()->with('success','Berhasil Mengirimkan Pesan Broadcast');
     }
 }

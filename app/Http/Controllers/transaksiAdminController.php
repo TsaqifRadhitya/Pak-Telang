@@ -94,7 +94,7 @@ class transaksiAdminController extends Controller
 
     public function show($id)
     {
-        $transaction = Transaksi::with('detailTransaksis.product')->where('id', $id)->first();
+        $transaction = Transaksi::with(['detailTransaksis.product', 'user'])->where('id', $id)->first();
         if ($transaction) {
             if (!$transaction->providerId || $transaction->providerId != Auth::user()->id) {
                 $section = "Pesanan Masuk";

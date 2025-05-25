@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\donasi;
+use App\Models\konten;
 use App\Models\penyaluranDonasi;
 use Carbon\Carbon;
 use Inertia\Inertia;
@@ -26,10 +27,13 @@ class donasiController extends Controller
                 $totalDonasi = $donasiMasuk->sum('nominal') - $danaTersalur;
                 return Inertia::render('Pak Telang/Donasi/index', compact('donasiMasuk', 'Disalurkan', 'danaTersalur', 'totalDonasi'));
             } else {
-                return Inertia::render('Guest/Donasi/Donasi');
+                $kontenDonasi = konten::where('category', 'Penyaluran Donasi')->orderBy('created_at', 'desc')->limit(3)->get();
+                return Inertia::render('Guest/Donasi/Donasi', compact('kontenDonasi'));
             }
         }
-        return Inertia::render('Guest/Donasi/Donasi');
+        $kontenDonasi = konten::where('category', 'Penyaluran Donasi')->orderBy('created_at', 'desc')->limit(3)->get();
+
+        return Inertia::render('Guest/Donasi/Donasi', compact('kontenDonasi'));
     }
 
     public function store(Request $request)
@@ -79,16 +83,17 @@ class donasiController extends Controller
             ]
         );
 
-        return back()->with('success','Berhasil menambah data penyaluran donasi');
+        return back()->with('success', 'Berhasil menambah data penyaluran donasi');
     }
 
     public function show($id)
     {
         $donasi = donasi::find($id);
+        $kontenDonasi = konten::where('category', 'Penyaluran Donasi')->orderBy('created_at', 'desc')->limit(3)->get();
         if ($donasi->status === 'paid') {
-            return Inertia::render('Guest/Donasi/Donasi');
+            return Inertia::render('Guest/Donasi/Donasi', compact('kontenDonasi'));
         }
-        return Inertia::render('Guest/Donasi/Donasi', ['snapToken' => $donasi->snapToken]);
+        return Inertia::render('Guest/Donasi/Donasi', ['snapToken' => $donasi->snapToken, 'kontenDonasi' => $kontenDonasi]);
     }
 
     public function penyaluranDonasi(Request $request)
@@ -97,7 +102,6 @@ class donasiController extends Controller
             'jumlahProduk' => $request->jumlahProduk,
             'nominal' => $request->nominal
         ]);
-
         return back()->with('success', 'Berhasil Menyalurkan Donasi dengan Nominal ' . Number::format($request->nominal) . ".");
     }
 }

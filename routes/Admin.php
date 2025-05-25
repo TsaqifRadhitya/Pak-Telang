@@ -58,5 +58,7 @@ Route::middleware(['auth', adminMidleware::class])->group(function () {
             Route::post('{id}', [messageController::class, 'pushChat'])->name('admin.chat.store');
             Route::delete('{id}', [messageController::class, 'destroy'])->name('admin.chat.delete');
         });
+
+        Route::post('/broadcast',[messageController::class,'broadcast'])->name('broadcast.store');
     });
 });

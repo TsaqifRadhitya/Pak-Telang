@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('messages', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->timestamps();
-            $table->string('message')->nullable();
+            $table->text('message')->nullable();
             $table->json('image')->nullable();
             $table->boolean('isReaded')->default(false);
             $table->foreignUuid('from')->constrained('users')->onDelete('cascade');

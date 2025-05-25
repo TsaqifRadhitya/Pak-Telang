@@ -154,12 +154,12 @@ export default function BubbleChat({ message, removeMessage }: { message: messag
                             message.from === user.id && 'border-[#048730]/33',
                         )}
                     >
-                        <img src={message.image[0]} className="w-full" />
+                        <img src={message.image[0]} className="w-full max-h-96 mx-auto" />
                         {message.image.length > 1 && (
                             <h1
                                 className={cn(
-                                    'absolute top-1/2 left-1/2 -translate-1/2 text-5xl font-black text-[#AFB3FF]',
-                                    message.from === user.id && 'text-[#05521e]',
+                                    'absolute top-1/2 left-1/2 aspect-square -translate-1/2 rounded-full border border-[#AFB3FF] bg-[#AFB3FF]/24 p-3 px-4 text-2xl font-black text-[#AFB3FF]',
+                                    message.from === user.id && 'border-[#05521e] bg-[#A0D9A0]/37 text-[#05521e]',
                                 )}
                             >
                                 +{message.image.length - 1}

@@ -44,7 +44,7 @@ export default function DashboardAdminPage({
             persentage: new Intl.NumberFormat('id-Id', { style: 'percent' }).format(percentageCalculation(thisMonthIncome, lastMonthIncome)),
             omsetPersentage: {
                 value: currencyConverter(thisMonthIncome - lastMonthIncome),
-                profit: thisMonthIncome > lastMonthIncome,
+                profit: thisMonthIncome >= lastMonthIncome,
             },
         };
     }, [chart]);
@@ -56,7 +56,7 @@ export default function DashboardAdminPage({
             ),
             productSoldPersentage: {
                 value: (productSold.thisMonth - productSold.lastMonth).toString() + ' Produk',
-                profit: productSold.thisMonth > productSold.lastMonth,
+                profit: productSold.thisMonth >= productSold.lastMonth,
             },
         };
     }, [productSold]);
@@ -66,7 +66,7 @@ export default function DashboardAdminPage({
             persentage: new Intl.NumberFormat('id-Id', { style: 'percent' }).format(percentageCalculation(mitra.thisMonth, mitra.lastMonth)),
             mitraPersentage: {
                 value: (mitra.thisMonth - mitra.lastMonth).toString() + ' Kota',
-                profit: mitra.thisMonth > mitra.lastMonth,
+                profit: mitra.thisMonth >= mitra.lastMonth,
             },
         };
     }, [mitra]);

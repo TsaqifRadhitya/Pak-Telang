@@ -48,7 +48,7 @@ class transaksiMitraController extends Controller
 
     private function loadIndexPesananDiterima()
     {
-        $pesananDiterima = Transaksi::with('detailTransaksis.product')->whereIn('status',['Menunggu Konfirmasi','Menunggu Pembayaran'])->where('providerId', Auth::user()->id)->get()->map(function ($item) {
+        $pesananDiterima = Transaksi::with('detailTransaksis.product')->whereIn('status', ['Menunggu Konfirmasi', 'Menunggu Pembayaran'])->where('providerId', Auth::user()->id)->get()->map(function ($item) {
 
             return [...$item->toArray(), 'Total' => DetailTransaksi::where('transaksiId', $item->id)->sum('subTotal'), 'address' => $this->getFullAdress($item)];
         });
@@ -58,7 +58,7 @@ class transaksiMitraController extends Controller
 
     private function loadIndexDipesan()
     {
-        $Dipesan = Transaksi::with('detailTransaksis.product')->whereIn('status',['Menunggu Pembayaran','Sedang Diproses','Sedang Dikirim'])->where('customerId', Auth::user()->id)->get()->map(function ($item) {
+        $Dipesan = Transaksi::with('detailTransaksis.product')->whereIn('status', ['Menunggu Pembayaran', 'Sedang Diproses', 'Sedang Dikirim'])->where('customerId', Auth::user()->id)->get()->map(function ($item) {
             return [...$item->toArray(), 'Total' => DetailTransaksi::where('transaksiId', $item->id)->sum('subTotal')];
         });
 
@@ -67,7 +67,9 @@ class transaksiMitraController extends Controller
 
     private function loadIndexRiwayat()
     {
-        $Riwayat = Transaksi::with('detailTransaksis.product')->whereIn('status',['Selesai','Pembayaran Gagal'])->where('providerId', Auth::user()->id)->orWhere('customerId', Auth::user()->id)->get()->map(function ($item) {
+        $Riwayat = Transaksi::with('detailTransaksis.product')->whereIn('status', ['Selesai', 'Pembayaran Gagal'])->where(function ($t) {
+            $t->where('providerId', Auth::user()->id)->orWhere('customerId', Auth::user()->id);
+        })->get()->map(function ($item) {
 
             return [...$item->toArray(), 'Total' => DetailTransaksi::where('transaksiId', $item->id)->sum('subTotal')];
         });
@@ -107,12 +109,12 @@ class transaksiMitraController extends Controller
 
     public function show($id)
     {
-        $transaction = Transaksi::with('detailTransaksis.product')->where('id', $id)->first();
+        $transaction = Transaksi::with(['detailTransaksis.product','user'])->where('id', $id)->first();
         $role = Auth::user()->role;
-        if($role === "Pak Telang"){
-            return redirect()->route('admin.transaksi.show',['id' => $id]);
+        if ($role === "Pak Telang") {
+            return redirect()->route('admin.transaksi.show', ['id' => $id]);
         }
-        if($role === "Customer"){
+        if ($role === "Customer") {
             abort(403);
         }
         if ($transaction?->status === "Menunggu Pembayaran" && $transaction?->type === "Bahan Baku") {
@@ -120,15 +122,15 @@ class transaksiMitraController extends Controller
         } else if ($transaction) {
             if (!$transaction->providerId || $transaction->providerId != Auth::user()->id && $transaction->customerId != Auth::user()->id) {
                 $section = "Pesanan Masuk";
-            }else if($transaction->status === "Gagal menemukan provider"){
-                return redirect()->route('mitra.transaksi')->with('error','transaksi sudah tidak tersedia');
+            } else if ($transaction->status === "Gagal menemukan provider") {
+                return redirect()->route('mitra.transaksi')->with('error', 'transaksi sudah tidak tersedia');
             } else if ($transaction->status !== "Selesai" && $transaction->status !==  "Pembayaran Gagal") {
                 $section = "Pesanan Diterima";
             } else {
                 $section = "Riwayat";
             }
 
-        $transaction = [
+            $transaction = [
                 ...$transaction->toArray(),
                 "address" => $this->getFullAdress($transaction),
                 "Total" => DetailTransaksi::where('transaksiId', $transaction->id)->sum('subTotal'),
@@ -173,7 +175,7 @@ class transaksiMitraController extends Controller
                 $ress = Snap::createTransaction([
                     "transaction_details" => [
                         "order_id" => $id->id,
-                        "gross_amount" => $request->ongkir + DetailTransaksi::where('transaksiId',$id->id)->sum('subTotal')
+                        "gross_amount" => $request->ongkir + DetailTransaksi::where('transaksiId', $id->id)->sum('subTotal')
                     ],
                     "callbacks" => [
                         "finish" => route('customer.transaksi.show', ["id" => $id]),
@@ -183,15 +185,15 @@ class transaksiMitraController extends Controller
                         "start_time" => $time->format('Y-m-d H:i:s O'),
                         "unit" => "hour",
                         "duration" => 12
-                        ]
-                    ]);
-                    $id->update([
-                        'providerId' => Auth::user()->id,
-                        'status' => 'Menunggu Pembayaran',
-                        'ongkir' => $request->ongkir,
-                        'snapToken' => $ress->token,
-                        'updated_at' => $time
-                    ]);
+                    ]
+                ]);
+                $id->update([
+                    'providerId' => Auth::user()->id,
+                    'status' => 'Menunggu Pembayaran',
+                    'ongkir' => $request->ongkir,
+                    'snapToken' => $ress->token,
+                    'updated_at' => $time
+                ]);
                 return back()->with('success', 'Pesanan  berhasil diterima. Segera proses pesanan ini');
             } catch (\Exception $e) {
                 DB::rollBack();

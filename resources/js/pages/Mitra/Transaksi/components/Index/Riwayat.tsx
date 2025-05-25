@@ -23,13 +23,13 @@ export default function RiwayatComponent({ role }: { role: 'admin' | 'mitra' }) 
                 <tbody className="block max-h-[70vh] overflow-y-auto">
                     {Riwayat?.map((item) => (
                         <tr
-                            key={item.id}
+                            key={item.displayId}
                             className={cn(
                                 'grid w-full grid-cols-6 items-center border-t-[1.8px] border-[#D9D9D9] px-5 py-5 text-center text-sm',
                                 role === 'admin' && 'grid-cols-5',
                             )}
                         >
-                            <td className="break-words">{item.id}</td>
+                            <td className="break-words">{item.displayId}</td>
                             <td>
                                 {item.detail_transaksis.map((detail) => {
                                     return (

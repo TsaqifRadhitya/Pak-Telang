@@ -11,7 +11,7 @@ export default function PesananMasuk() {
         <section className="flex justify-between">
             <div className="flex-1/2 space-y-2.5">
                 <p>
-                    <span className="font-semibold">Transaksi ID</span> : {transaction.id}
+                    <span className="font-semibold">Transaksi ID</span> : {transaction.displayId}
                 </p>
                 <p>
                     <span className="font-semibold">Waktu</span> : {dateFormaterUtils(transaction.created_at)}

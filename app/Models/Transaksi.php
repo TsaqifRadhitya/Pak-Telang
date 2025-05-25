@@ -29,8 +29,10 @@ class Transaksi extends Model
                     $nextNumber = 1;
                 }
 
+                $sufix = $model->type === "Bahan Baku" ? "BHN" : "PRD";
+
                 $urut = str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
-                $model->displayId = "$prefix-$tanggal-$urut";
+                $model->displayId = "$prefix-$tanggal-$urut-$sufix";
             }
         });
     }

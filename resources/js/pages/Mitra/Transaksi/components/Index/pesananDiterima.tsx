@@ -22,8 +22,8 @@ export default function PesananDiterimaComponent({ role }: { role: 'admin' | 'mi
             <Deferred data={'pesananDiterima'} fallback={<h1>Loading</h1>}>
                 <tbody className="block max-h-[70vh] overflow-y-auto">
                     {pesananDiterima?.map((item) => (
-                        <tr key={item.id} className="grid w-full grid-cols-5 items-center border-t-[1.8px] border-[#D9D9D9] px-5 py-5 text-center">
-                            <td className="text-sm break-words">{item.id}</td>
+                        <tr key={item.displayId} className="grid w-full grid-cols-5 items-center border-t-[1.8px] border-[#D9D9D9] px-5 py-5 text-center">
+                            <td className="text-sm break-words">{item.displayId}</td>
                             <td className="text-sm">
                                 {item.detail_transaksis.map((detail) => {
                                     return (

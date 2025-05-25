@@ -16,7 +16,7 @@ export default function AllKonten({ kontens }: { kontens: kontenType[] }) {
                     {kontens.map((konten) => (
                         <div className="h-full min-h-[80vh] w-full rounded-xl bg-white p-5 shadow ring ring-[#AFB3FF] lg:min-h-[475px]">
                             <div className="relative flex w-full overflow-hidden rounded-xl">
-                                <img src={konten.imageCover} alt="" className="z-0 aspect-3/2 object-cover object-center" />
+                                <img src={konten.imageCover} alt="" className="z-0 aspect-3/3 object-cover object-center" />
                                 <div className="absolute top-0 z-10 flex h-full w-full flex-1 flex-col justify-between bg-black/30 p-5 py-3">
                                     <h1 className="z-10 text-xl font-semibold text-white">{konten.category}</h1>
                                 </div>

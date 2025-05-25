@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\donasiMail;
 use App\Mail\newTransaction;
 use App\Models\donasi;
 use App\Models\productDetail;
@@ -29,9 +30,14 @@ class midtransController extends Controller
                 Mail::to(User::find($transaksi->providerId)->email)->send(new newTransaction(route('admin.transaksi.show', ['id' => $transaksi->id])));
             }
 
-            donasi::where('id', $request->order_id)->update(
-                ['status' => 'paid']
-            );
+            $donasiData =  donasi::find($request->order_id);
+
+            if ($donasiData) {
+                $donasiData->update(
+                    ['status' => 'paid']
+                );
+                Mail::to($donasiData->email)->send(new donasiMail());
+            }
         }
 
         if ($request->transaction_status === "expired") {
