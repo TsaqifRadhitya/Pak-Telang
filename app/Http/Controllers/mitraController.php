@@ -21,7 +21,7 @@ class mitraController extends Controller
             $query->where('statusPengajuan', '!=', 'MOU disetujui');
         } elseif ($category === 'aktif') {
             $query->where('statusPengajuan', 'MOU disetujui')->where('isOpen', true);
-        } elseif ($category === 'nonaktif') {
+        } elseif ($category === 'tidak aktif') {
             $query->where('statusPengajuan', 'MOU disetujui')->where('isOpen', false);
         }
 
@@ -62,6 +62,6 @@ class mitraController extends Controller
             ['isOpen' => $status === "true" ? true : false]
         );
 
-        return back()->with('success','Status toko berhasil diperbarui');
+        return back()->with('success', 'Status toko berhasil diperbarui');
     }
 }
