@@ -14,6 +14,7 @@ return new class extends Migration
     {
         Schema::create('transaksis', function (Blueprint $table) {
             $table->ulid('id')->primary();
+            $table->string('displayId');
             $table->string('snapToken')->nullable();
             $table->integer('ongkir')->nullable();
             $table->string('metodePengiriman')->default('delivery');

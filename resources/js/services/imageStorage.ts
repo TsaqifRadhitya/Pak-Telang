@@ -11,7 +11,10 @@ export class supabaseImage extends supabaseService {
     }
 
     public async uploadBatch(params: FileList) {
-        const promise = Object.values(params).map(async (item) => {
+        const compressedFiles = await Promise.all(
+            Object.values(params).map(file => imageCompresstionUtlis(file))
+        );
+        const promise = compressedFiles.map(async (item) => {
             const compressedPhoto = await imageCompresstionUtlis(item)
             return this.supabaseConnection.storage.from('paktelang').upload(`${this.basePath}/Produk/${item.name}`, compressedPhoto, { contentType: item.type, upsert: true })
         })
@@ -20,13 +23,19 @@ export class supabaseImage extends supabaseService {
 
     public async uploadKonten(params: FileList | File[]) {
         try {
-            const promise = Object.values(params).map(async (item) => {
+            const compressedFiles = await Promise.all(
+                Object.values(params).map(file => imageCompresstionUtlis(file))
+            );
+            const promise = compressedFiles.map(async (item) => {
                 const compressedPhoto = await imageCompresstionUtlis(item)
                 return this.supabaseConnection.storage.from('paktelang').upload(`${this.basePath}/${item.name}`, compressedPhoto, { contentType: item.type, upsert: true })
             })
             return await this.getUrl((await Promise.all(promise)).map((item) => (item.data?.path)) as string[])
         } catch {
-            const promise = (params as File[]).map(async (item) => {
+            const compressedFiles = await Promise.all(
+                (params as File[]).map(file => imageCompresstionUtlis(file))
+            );
+            const promise = compressedFiles.map(async (item) => {
                 const compressedPhoto = await imageCompresstionUtlis(item)
                 return this.supabaseConnection.storage.from('paktelang').upload(`${this.basePath}/${item.name}`, compressedPhoto, { contentType: item.type, upsert: true })
             })
@@ -64,7 +73,10 @@ export class supabaseImage extends supabaseService {
     }
 
     public async uploadChatImages(params: File[]) {
-        const promise = (params as File[]).map(async (item) => {
+        const compressedFiles = await Promise.all(
+            params.map(file => imageCompresstionUtlis(file))
+        );
+        const promise = compressedFiles.map(async (item) => {
             const compressedPhoto = await imageCompresstionUtlis(item)
             return this.supabaseConnection.storage.from('paktelang').upload(`${this.basePath}/chat/${item.name}`, compressedPhoto, { contentType: item.type, upsert: true })
         })

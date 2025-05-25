@@ -9,10 +9,11 @@ import { useEffect, useRef, useState } from 'react';
 export type messageType = {
     id?: string;
     from: string;
-    to: string;
+to: string;
     message: string;
     isReaded?: boolean;
     image?: string[];
+    isSending? : boolean
     created_at?: string;
 };
 

@@ -47,7 +47,15 @@ class messageController extends Controller
 
     public function pushChat(Request $request, $id)
     {
-        Message::create(['message' => $request->input('message'), 'from' => Auth::user()->id, 'to' => $id, 'isReaded' => false, 'image' => json_encode($request->image)]);
+        Message::create([
+            'id' => $request->id,
+            'message' => $request->input('message'),
+            'from' => Auth::user()->id,
+            'to' => $id,
+            'isReaded' => false,
+            'created_at' => $request->created_at,
+            'image' => json_encode($request->image)
+        ]);
         // return response()->json(['message' => 'success']);
     }
 

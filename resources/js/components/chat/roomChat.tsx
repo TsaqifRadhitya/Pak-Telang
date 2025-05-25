@@ -4,6 +4,7 @@ import { chatServices } from '@/services/roomChat';
 import { User } from '@/types';
 import { router } from '@inertiajs/react';
 import { useEffect, useRef, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import Heading from '../heading';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
@@ -23,7 +24,6 @@ export default function RoomChat({ user, target, messages }: { user: User; targe
     const [isTyping, setTyping] = useState<boolean>(false);
     const inputArea = useRef<HTMLTextAreaElement>(null);
     const [inputMessage, setInputMessage] = useState<string>();
-    const [isSending, setSending] = useState<boolean>(false);
 
     const handleChangeInputImage = (param: FileList | null) => {
         if (param?.length && param.length > 0) {
@@ -32,7 +32,16 @@ export default function RoomChat({ user, target, messages }: { user: User; targe
     };
 
     const handleNewChat = (params: messageType) => {
-        setMessages((prev) => [...prev, params]);
+        setMessages((prev) => {
+            const oldMessage = [...prev];
+            const chatAvailable = !!oldMessage.find((data) => data.id === params.id);
+            if (chatAvailable) {
+                const newMessage = oldMessage.map((old) => (old.id === params.id ? { ...old, isSending: false } : old));
+                return newMessage.sort((a, b) => new Date(a.created_at as string).getTime() - new Date(b.created_at as string).getTime());
+            } else {
+                return [...prev, params].sort((a, b) => new Date(a.created_at as string).getTime() - new Date(b.created_at as string).getTime());
+            }
+        });
     };
 
     const handelSignal = (type: 'typing' | 'leave') => {
@@ -56,31 +65,31 @@ export default function RoomChat({ user, target, messages }: { user: User; targe
 
     const newMessage = () => {
         if (inputMessage) {
+            const payloadData: messageType = {
+                id: uuidv4(),
+                from: user.id,
+                to: target.id,
+                message: inputMessage,
+                created_at: new Date().toISOString(),
+            };
+            inputArea.current?.blur();
             if (user.role === 'Pak Telang') {
-                inputArea.current?.blur();
-                setSending(true);
-                const payloadData: messageType = { from: user.id, to: target.id, message: inputMessage };
                 router.post(route('admin.chat.store', { id: target.id }), payloadData, {
                     onFinish: () => {
                         setInputMessage('');
-                        setSending(false);
                     },
                     async: true,
                 });
-            }
-
-            if (user.role === 'Mitra') {
-                inputArea.current?.blur();
-                setSending(true);
-                const payloadData: messageType = { from: user.id, to: target.id, message: inputMessage };
+                setMessages((prev) => [...prev]);
+            } else {
                 router.post(route('mitra.chat.store', { id: target.id }), payloadData, {
                     onFinish: () => {
                         setInputMessage('');
-                        setSending(false);
                     },
                     async: true,
                 });
             }
+            setMessages((prev) => [...prev, { ...payloadData, isSending: true }]);
         }
     };
 
@@ -105,6 +114,7 @@ export default function RoomChat({ user, target, messages }: { user: User; targe
             </div>
             {images && (
                 <ChatAreaWithPhotos
+                    handleNewChat={handleNewChat}
                     setImage={setImages}
                     inputMessage={inputMessage as string}
                     setInputMessage={(param: string) => setInputMessage(param)}
@@ -118,7 +128,7 @@ export default function RoomChat({ user, target, messages }: { user: User; targe
                 <>
                     <div className="flex h-[55vh] flex-col gap-5 overflow-y-auto px-1 py-5">
                         {messagesState.map((message) => (
-                            <BubbleChat key={message.id} message={message} />
+                            <BubbleChat key={message.id} message={message} removeMessage={removeMessage} />
                         ))}
                         <div ref={messagesEndRef} />
                     </div>
@@ -126,7 +136,6 @@ export default function RoomChat({ user, target, messages }: { user: User; targe
                         {isTyping && <IsTypingComponent person={target} />}
                         <div onSubmit={newMessage} className="relative mt-1 flex items-end gap-2.5">
                             <Textarea
-                                disabled={isSending}
                                 placeholder="Ketikan pesan...."
                                 onKeyDown={(e) => {
                                     if (e.key === 'Enter' && !e.shiftKey) {
@@ -142,12 +151,12 @@ export default function RoomChat({ user, target, messages }: { user: User; targe
                                 onChange={(e) => setInputMessage(e.target.value)}
                             />
                             <svg
-                                className={cn('absolute right-16 bottom-2.5 cursor-pointer', isSending && 'cursor-default')}
+                                className={cn('absolute right-16 bottom-2.5 cursor-pointer')}
                                 width="24"
                                 height="24"
                                 viewBox="0 0 24 24"
                                 fill="none"
-                                onClick={() => !isSending && inputFile.current?.click()}
+                                onClick={() => inputFile.current?.click()}
                                 xmlns="http://www.w3.org/2000/svg"
                             >
                                 <g clipPath="url(#clip0_1378_6370)">
@@ -162,11 +171,7 @@ export default function RoomChat({ user, target, messages }: { user: User; targe
                                     </clipPath>
                                 </defs>
                             </svg>
-                            <Button
-                                onClick={newMessage}
-                                disabled={isSending}
-                                className="group h-11 cursor-pointer ring ring-[#3B387E] hover:bg-[#3B387E] md:h-10"
-                            >
+                            <Button onClick={newMessage} className="group h-11 cursor-pointer ring ring-[#3B387E] hover:bg-[#3B387E] md:h-10">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <g clipPath="url(#clip0_1378_6373)">
                                         <path d="M15.5 5H11L16 12L11 19H15.5L20.5 12L15.5 5Z" className="fill-[#3B387E] group-hover:fill-white" />

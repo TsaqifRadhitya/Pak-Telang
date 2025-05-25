@@ -6,29 +6,27 @@ import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { useState } from 'react';
 import Heading from '../heading';
 import { Button } from '../ui/button';
-export default function BubbleChat({ message }: { message: messageType }) {
+export default function BubbleChat({ message, removeMessage }: { message: messageType; removeMessage: (id: string) => void }) {
     const {
         auth: { user },
     } = usePage<SharedData>().props;
 
     const [isOpen, setOpen] = useState<boolean>(false);
-    const [isdeleting, setDeleting] = useState<boolean>(false);
     const [indexPhoto, setIndexPhoto] = useState<number>(0);
 
     const handelDeleteMessage = () => {
         if (user.role === 'Pak Telang') {
-            setDeleting(true);
             router.delete(route('admin.chat.delete', { id: message.id }), {
                 async: true,
             });
         }
 
         if (user.role === 'Mitra') {
-            setDeleting(true);
             router.delete(route('mitra.chat.delete', { id: message.id }), {
                 async: true,
             });
         }
+        removeMessage(message.id as string);
         setOpen(false);
     };
 
@@ -75,7 +73,7 @@ export default function BubbleChat({ message }: { message: messageType }) {
                                     <img
                                         onClick={() => setIndexPhoto(index + 1)}
                                         className={cn(
-                                            'aspect-square h-16 cursor-pointer rounded-lg object-cover object-center',
+                                            'aspect-square h-16 cursor-pointer rounded-lg object-contain',
                                             index + 1 === indexPhoto && 'scale-110 cursor-default border border-white',
                                         )}
                                         src={image}
@@ -135,7 +133,7 @@ export default function BubbleChat({ message }: { message: messageType }) {
             <div className={cn('flex w-fit max-w-1/2 flex-col', message.from === user.id ? 'items-end' : 'items-start')}>
                 {message.from === user.id && (
                     <Button
-                        disabled={isdeleting}
+                        disabled={message.isSending}
                         onClick={() => setOpen(true)}
                         className="cursor-pointer rounded-xl border-2 border-[#5961BE] bg-[#B9BDFF] disabled:cursor-default disabled:opacity-50"
                     >

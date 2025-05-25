@@ -10,7 +10,7 @@ class Message extends Model
 {
     use HasUuids;
 
-    protected $fillable = ['message', 'isReaded', 'from', 'to', 'image'];
+    protected $fillable = ['id', 'message', 'isReaded', 'from', 'to', 'image', 'created_at'];
 
     public function sender()
     {
