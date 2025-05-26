@@ -6,7 +6,7 @@ import Pengeluaran from './pengeluaran';
 export default function Mutasi() {
     const [section, setSection] = useState<'Pengeluaran' | 'Pemasukan'>('Pengeluaran');
     return (
-        <div className="flex-1/2 rounded-t-lg border border-b-0 border-[#3B387E] p-5 pb-0">
+        <div className="flex-1/2 rounded-lg border border-[#3B387E] p-5 pb-0 lg:border-b-0">
             <div className="mt-2.5 flex w-auto gap-10 border-b-2 border-[#D9D9D9] pb-1.5">
                 <p
                     onClick={() => setSection('Pengeluaran')}

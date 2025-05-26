@@ -1,17 +1,19 @@
 import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 import { currencyConverter } from '@/utils/currencyConverter';
 import { dateFormaterUtils } from '@/utils/dateFormater';
 import { usePage } from '@inertiajs/react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { props } from '..';
 
 export default function Berhasil() {
     const { mutations } = usePage<props>().props;
     const [buktiTransfer, setButktiTransfer] = useState<string>();
+    const mutasiBerhasil = useMemo(() => mutations.filter((item) => item.finished && item.type === 'Penarikan'), [mutations]);
 
     return (
-        <section className="max-h-86 overflow-y-auto">
+        <section className={cn('h-86 overflow-y-auto', mutasiBerhasil.length === 0 && 'flex items-center justify-center')}>
             {buktiTransfer && (
                 <section
                     onClick={() => setButktiTransfer(undefined)}
@@ -20,16 +22,15 @@ export default function Berhasil() {
                     <div className="flex flex-col items-center space-y-6 rounded-lg bg-white p-10 pt-5 shadow">
                         <Heading title="Bukti Transfer" className="underline decoration-[#B9BDFF] decoration-4 underline-offset-8" />
                         <img
-                            className="aspect-auto max-h-[60vh] rounded-lg ring-[1.5px] ring-[#3B387E]"
+                            className="aspect-auto max-h-[60vh] max-w-2/3 rounded-lg ring-[1.5px] ring-[#3B387E] lg:max-w-max"
                             src={buktiTransfer}
                             alt=""
                         />
                     </div>
                 </section>
             )}
-            {mutations
-                .filter((item) => item.finished && item.type === 'Penarikan')
-                .map((row) => (
+            {mutasiBerhasil.length > 0 ? (
+                mutasiBerhasil.map((row) => (
                     <div key={row.id} className="flex items-center justify-between border-b-2 border-[#D9D9D9] p-5">
                         <div>
                             <Heading disableMb title="Pencairan Dana" className="text-md font-semibold" />
@@ -45,7 +46,10 @@ export default function Berhasil() {
                             </Button>
                         </div>
                     </div>
-                ))}
+                ))
+            ) : (
+                <h1 className="mx-auto my-auto w-fit">Data riwayat pencairan dana tidak tersedia</h1>
+            )}
         </section>
     );
 }

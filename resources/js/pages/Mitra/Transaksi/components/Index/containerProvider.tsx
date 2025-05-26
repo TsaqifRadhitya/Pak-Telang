@@ -1,3 +1,4 @@
+import { cn } from '@/lib/utils';
 import { router } from '@inertiajs/react';
 import { ReactNode } from 'react';
 
@@ -25,15 +26,15 @@ export default function ContainerProvider({
     };
     return (
         <main className="flex h-full w-full flex-col rounded-t-lg border-[1px] border-b-0 border-[#AFB3FF] bg-[#FFFFFF] shadow-lg">
-            <div className="flex items-center justify-between border-b-[1px] border-[#AFB3FF] p-5 md:px-10 md:py-5">
-                <h1 className="text-xl font-semibold">Transaksi</h1>
-                <ul className="flex gap-4 font-semibold">
+            <div className="flex flex-col gap-y-2.5 xl:flex-row items-center justify-between border-b-[1px] border-[#AFB3FF] p-5 md:px-10 md:py-5">
+                <h1 className="text-xl font-semibold text-left w-full xl:w-fit">Transaksi</h1>
+                <ul className="flex flex-wrap xl:flex-nowrap gap-x-4 font-semibold w-full xl:w-fit">
                     <li
                         onClick={() => handleChangeInnerSection('Pesanan Masuk')}
                         className={
-                            section === 'Pesanan Masuk'
+                            cn("text-sm lg:text-[1rem]",section === 'Pesanan Masuk'
                                 ? 'underline decoration-[#5961BE] decoration-5 underline-offset-6'
-                                : 'cursor-pointer hover:underline hover:decoration-[#5961be]/80 hover:decoration-5 hover:underline-offset-6'
+                                : 'cursor-pointer hover:underline hover:decoration-[#5961be]/80 hover:decoration-5 hover:underline-offset-6')
                         }
                     >
                         Pesanan Masuk
@@ -42,9 +43,9 @@ export default function ContainerProvider({
                     <li
                         onClick={() => handleChangeInnerSection('Pesanan Diterima')}
                         className={
-                            section === 'Pesanan Diterima'
+                            cn("text-sm lg:text-[1rem]",section === 'Pesanan Diterima'
                                 ? 'underline decoration-[#5961BE] decoration-5 underline-offset-6'
-                                : 'cursor-pointer hover:underline hover:decoration-[#5961be]/80 hover:decoration-5 hover:underline-offset-6'
+                                : 'cursor-pointer hover:underline hover:decoration-[#5961be]/80 hover:decoration-5 hover:underline-offset-6')
                         }
                     >
                         Pesanan Diterima
@@ -53,20 +54,20 @@ export default function ContainerProvider({
                     <li
                         onClick={() => handleChangeInnerSection('Dipesan')}
                         className={
-                            section === 'Dipesan'
+                            cn("text-sm lg:text-[1rem]",section === 'Dipesan'
                                 ? 'underline decoration-[#5961BE] decoration-5 underline-offset-6'
-                                : 'cursor-pointer hover:underline hover:decoration-[#5961be]/80 hover:decoration-5 hover:underline-offset-6'
+                                : 'cursor-pointer hover:underline hover:decoration-[#5961be]/80 hover:decoration-5 hover:underline-offset-6')
                         }
                     >
                         Dipesan
                     </li>
-                    <li className="font-bold">|</li>
+                    <li className="font-bold ">|</li>
                     <li
                         onClick={() => handleChangeInnerSection('Riwayat')}
                         className={
-                            section === 'Riwayat'
+                            cn("text-sm lg:text-[1rem]",section === 'Riwayat'
                                 ? 'underline decoration-[#5961BE] decoration-5 underline-offset-6'
-                                : 'cursor-pointer hover:underline hover:decoration-[#5961be]/80 hover:decoration-5 hover:underline-offset-6'
+                                : 'cursor-pointer hover:underline hover:decoration-[#5961be]/80 hover:decoration-5 hover:underline-offset-6')
                         }
                     >
                         Riwayat

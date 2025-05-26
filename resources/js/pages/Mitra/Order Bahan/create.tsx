@@ -108,7 +108,7 @@ export default function OrderBahanCreate({
                     onFinish: () => window.location.reload(),
                 },
             );
-            return
+            return;
         }
         setErr(true);
     };
@@ -168,7 +168,7 @@ export default function OrderBahanCreate({
                 <div className="flex items-center border-b-[1px] border-[#AFB3FF] p-5 md:px-10 md:py-5">
                     <h1 className="text-xl font-semibold">Order Bahan</h1>
                 </div>
-                <div className="flex flex-1 gap-5 p-5 px-7 pt-5 lg:pb-0">
+                <div className="flex flex-col lg:flex-row flex-1 gap-5 p-5 px-7 pt-5 lg:pb-0">
                     <div className="max-h-[79vh] flex-1/2 space-y-5 overflow-y-auto px-1 pt-0.5 pb-5">
                         {products.map((item, i) => (
                             <div
@@ -252,7 +252,7 @@ export default function OrderBahanCreate({
                             </div>
                         ))}
                     </div>
-                    <div className="max-h-[79vh] flex-1/2 space-y-5 overflow-y-auto px-0.5 pt-0.5 pb-5">
+                    <div className="max-h-[79vh] lg:flex-1/2 space-y-5 overflow-y-auto px-0.5 pt-0.5 pb-5">
                         <div className="flex flex-col gap-1.5 rounded-xl bg-white p-5 shadow-sm ring ring-[#B9BDFF]">
                             <div className="flex justify-between">
                                 <HeadingSmall title="Alamat Tujuan" className="text-2xl font-semibold" />

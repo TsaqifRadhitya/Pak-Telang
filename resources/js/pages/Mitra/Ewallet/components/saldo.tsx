@@ -86,7 +86,7 @@ export default function Saldo() {
         <div className="space-y-1 rounded-lg border border-[#3B387E] p-5 py-2.5">
             {konfirmasi && (
                 <section id="alertDelete" className="fixed top-0 left-0 z-[999] h-full w-full bg-black/50">
-                    <article className="absolute top-1/2 left-1/2 flex w-full max-w-xl -translate-1/2 flex-col items-center gap-y-5 rounded-2xl border border-[#8A7300] bg-[#FFFDF1] p-5 pb-10">
+                    <article className="absolute top-1/2 left-1/2 flex w-full max-w-sm -translate-1/2 flex-col items-center gap-y-5 rounded-2xl border border-[#8A7300] bg-[#FFFDF1] p-5 pb-10 lg:max-w-xl">
                         <div className="flex w-full flex-1/2 items-center gap-x-4">
                             <img
                                 src="https://ybcvbaxalqwrvgemxdzc.supabase.co/storage/v1/object/public/paktelang/Asset/Icon/warningIcon.svg"
@@ -105,7 +105,7 @@ export default function Saldo() {
                             className="text-md line mx-auto text-center leading-5 font-medium text-[#8A7300]"
                         />
 
-                        <div className="flex w-1/2 justify-center gap-x-2.5">
+                        <div className="flex w-2/3 justify-center gap-x-2.5 lg:w-1/2">
                             <Button
                                 className="w-1/2 cursor-pointer bg-[#FFFDF1] font-semibold text-[#8A7300] ring ring-[#8A7300] hover:bg-[#8A7300] hover:text-white"
                                 onClick={() => {

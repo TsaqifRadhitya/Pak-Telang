@@ -7,30 +7,30 @@ import { usePage } from '@inertiajs/react';
 export default function Dipesan() {
     const { transaction } = usePage<{ transaction: transactionType }>().props;
     return (
-        <section className="flex justify-between">
+        <section className="flex flex-col justify-between lg:flex-row">
             <div className="space-y-2.5">
-                <p>
+                <p className="text-xs lg:text-base">
                     <span className="font-semibold">Transaksi ID</span> : {transaction.displayId}
                 </p>
-                <p>
+                <p className="text-xs lg:text-base">
                     <span className="font-semibold">Waktu</span> : {dateFormaterUtils(transaction.created_at)}
                 </p>
-                <p>
+                <p className="text-xs lg:text-base">
                     <span className="font-semibold">Status</span> : <span className="font-semibold text-[#048730]">{transaction.status}</span>
                 </p>
-                <p>
+                <p className="text-xs lg:text-base">
                     <span className="font-semibold">Alamat</span> : {addressFormater(transaction.address as addressType)}
                 </p>
             </div>
-            <div className="text-right">
+            <div className="text-right text-xs lg:text-base">
                 {transaction.resi && (
-                    <div className="flex items-center justify-end gap-10">
-                        <h1>No. Resi</h1>
+                    <div className="flex flex-col items-center justify-end gap-10 lg:flex-row">
+                        <h1 className="text-xs lg:text-base">No. Resi</h1>
                         <div
                             onClick={() => navigator.clipboard.writeText(transaction.resi as string)}
                             className="flex cursor-pointer items-center justify-end gap-1"
                         >
-                            <p>: {transaction.resi}</p>
+                            <p className="text-xs lg:text-base">: {transaction.resi}</p>
                             <svg
                                 onClick={() => navigator.clipboard.writeText(transaction.resi as string)}
                                 width="13"

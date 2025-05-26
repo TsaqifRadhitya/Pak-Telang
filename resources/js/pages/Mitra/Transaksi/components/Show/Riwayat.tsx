@@ -7,44 +7,44 @@ import { usePage } from '@inertiajs/react';
 export default function Riwayat({ role = 'Mitra' }: { role: 'Admin' | 'Mitra' }) {
     const { transaction } = usePage<{ transaction: transactionType }>().props;
     return (
-        <section className="flex justify-between">
+        <section className="flex flex-col justify-between lg:flex-row">
             <div className="flex-1/2 space-y-2.5">
-                <p>
+                <p className="text-xs lg:text-base">
                     <span className="font-semibold">Transaksi ID</span> : {transaction.displayId}
                 </p>
-                <p>
+                <p className="text-xs lg:text-base">
                     <span className="font-semibold">Waktu</span> : {dateFormaterUtils(transaction.created_at)}
                 </p>
                 {transaction.type === 'Bahan Baku' && role === 'Mitra' && (
-                    <p>
+                    <p className="text-xs lg:text-base">
                         <span className="font-semibold">Kategori</span> : <span className="font-semibold text-[#FFA114]">Pesanan Keluar</span>
                     </p>
                 )}
                 {transaction.type === 'Bahan Baku' && transaction.resi && (
-                    <p>
+                    <p className="text-xs lg:text-base">
                         <span className="font-semibold">Alamat</span> : {addressFormater(transaction.address as addressType)}
                     </p>
                 )}
             </div>
             <div className="flex-1/2">
                 {transaction.type === 'Barang jadi' && role === 'Mitra' && (
-                    <p>
+                    <p className="text-xs lg:text-base">
                         <span className="font-semibold">Kategori</span> : <span className="font-semibold text-[#048730]">Pesanan Masuk</span>
                     </p>
                 )}
                 {transaction.type === 'Barang jadi' && (
-                    <p>
+                    <p className="text-xs lg:text-base">
                         <span className="font-semibold">Alamat</span> : {addressFormater(transaction.address as addressType)}
                     </p>
                 )}
                 {transaction.type === 'Bahan Baku' && transaction.resi && (
                     <div className="flex items-center justify-end gap-10">
-                        <h1 className="font-semibold">No. Resi</h1>
+                        <h1 className="text-xs font-semibold lg:text-base">No. Resi</h1>
                         <div
                             onClick={() => navigator.clipboard.writeText(transaction.resi as string)}
                             className="flex cursor-pointer items-center justify-end gap-1"
                         >
-                            <p>: {transaction.resi}</p>
+                            <p className="text-xs lg:text-base">: {transaction.resi}</p>
                             <svg
                                 onClick={() => navigator.clipboard.writeText(transaction.resi as string)}
                                 width="13"

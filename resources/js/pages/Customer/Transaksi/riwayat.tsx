@@ -41,7 +41,7 @@ export default function TransaksiShow({ transactions }: { transactions: transact
                                 <th className="text-end">Sub-total</th>
                             </tr>
                         </thead>
-                        <tbody className="block max-h-[60vh] overflow-y-auto p-1">
+                        {<tbody className="block max-h-[60vh] overflow-y-auto p-1">
                             {transactions.detail_transaksis.map((item) => (
                                 <tr
                                     key={item.productId}
@@ -53,7 +53,7 @@ export default function TransaksiShow({ transactions }: { transactions: transact
                                     <td className="text-end">{currencyConverter(item.subTotal)}</td>
                                 </tr>
                             ))}
-                        </tbody>
+                        </tbody>}
                     </table>
                     <div className="space-y-5 font-semibold">
                         <div className="flex justify-between px-10">

@@ -27,7 +27,9 @@ class dashboardController extends Controller
                 ->orderByRaw('COUNT(*) DESC')
                 ->limit(1)
                 ->first();
-            $popularProduct->productPhoto = json_decode($popularProduct->productPhoto);
+            if ($popularProduct) {
+                $popularProduct->productPhoto = json_decode($popularProduct->productPhoto);
+            }
             return Inertia::render('Customer/Dashboard/dashboard', compact('latestContent', 'popularProduct'));
         } else if ($role === 'Mitra') {
             return redirect(route('mitra.dashboard'));

@@ -133,7 +133,7 @@ export default function TransactionCreate() {
     return (
         <LandingPageLayout>
             <section className="flex flex-col bg-[#EBEFFF] p-5 pt-20 text-[#3B387E] md:px-10 lg:min-h-screen">
-                <Heading title="Transaksi" disableMb className="text-3xl" />
+                <Heading title="Transaksi" disableMb className="text-2xl lg:text-3xl" />
                 <div className="mt-5 flex flex-1 flex-col gap-16 px-5 lg:flex-row">
                     {err && (
                         <SweetAlert
@@ -141,7 +141,7 @@ export default function TransactionCreate() {
                             type="Error"
                         />
                     )}
-                    <article className="scrollbar scrollbar-track-transparent scrollbar-thumb-[#5961BE] grid flex-2/3 gap-16 overflow-y-auto px-1 pt-1 sm:grid-cols-2 lg:max-h-[70vh] lg:grid-cols-1 xl:grid-cols-2">
+                    <article className="scrollbar scrollbar-track-transparent scrollbar-thumb-[#5961BE] max-h-screen grid flex-2/3 gap-16 overflow-y-auto px-1 pt-2 sm:grid-cols-2 lg:max-h-[70vh] lg:grid-cols-1 xl:grid-cols-2">
                         {products
                             .sort((a, b) => b.productStock - a.productStock)
                             .map((item) => (
