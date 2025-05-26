@@ -5,7 +5,7 @@ import { supabaseImage } from '@/services/imageStorage';
 import { currencyConverter } from '@/utils/currencyConverter';
 import { dateFormaterUtils } from '@/utils/dateFormater';
 import { router, usePage } from '@inertiajs/react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { props } from '..';
 import InputError from '../../../../components/input-error';
 
@@ -15,6 +15,7 @@ export default function Pending() {
     const [err, setErr] = useState<boolean>(false);
     const [image, setImage] = useState<File>();
     const [isSubmited, setSubmited] = useState<boolean>();
+    const pendingMutations = useMemo(() => mutations.filter((filter) => !filter.finished), [mutations]);
 
     const handleSubmit = async () => {
         if (!image) {
@@ -33,14 +34,14 @@ export default function Pending() {
         );
     };
 
-    useEffect(()=> {
-        setErr(false)
-    },[image])
+    useEffect(() => {
+        setErr(false);
+    }, [image]);
 
     const handleCancel = () => {
         setErr(false);
         setImage(undefined);
-        setSubmited(false)
+        setSubmited(false);
         setId(undefined);
     };
 
@@ -96,9 +97,8 @@ export default function Pending() {
                     </div>
                 </section>
             )}
-            {mutations
-                .filter((filter) => !filter.finished)
-                .map((mutation) => (
+            {pendingMutations.length > 0 ? (
+                pendingMutations.map((mutation) => (
                     <section className="flex justify-between border-b-2 border-[#D9D9D9] p-5 px-7">
                         <div>
                             <h1 className="font-semibold">{mutation.user?.name}</h1>
@@ -121,7 +121,10 @@ export default function Pending() {
                             </Button>
                         </div>
                     </section>
-                ))}
+                ))
+            ) : (
+                <h1 className="mx-auto my-auto w-fit">Permintaan pencairan dana tidak tersedia</h1>
+            )}
         </>
     );
 }

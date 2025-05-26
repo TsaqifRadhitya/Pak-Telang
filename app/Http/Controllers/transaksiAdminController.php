@@ -58,7 +58,7 @@ class transaksiAdminController extends Controller
     {
         $Riwayat = Transaksi::with('detailTransaksis.product')
             ->where('providerId', Auth::user()->id)
-            ->whereIn('status', ['Selesai', 'Pembayaran Gagal'])
+            ->where('status', 'Selesai')
             ->get()
             ->map(function ($item) {
                 return [...$item->toArray(), 'Total' => DetailTransaksi::where('transaksiId', $item->id)->sum('subTotal')];

@@ -91,7 +91,7 @@ export default function AdminPageLayout({ children, page }: Props) {
                     </ul>
                 </aside>
                 {/* Main Content */}
-                <main className="flex flex-1 flex-col lg:flex-4/5">{children}</main>
+                <main className="w-full lg:w-4/5">{children}</main>
             </div>
         </div>
     );

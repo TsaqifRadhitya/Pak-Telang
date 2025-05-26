@@ -11,9 +11,11 @@ export default function TransactionIndex({ section }: { section?: sectionType })
     return (
         <AdminPageLayout page="Transaksi">
             <ContainerProvider section={sectionPage} onChange={setSectionPage}>
-                {sectionPage === 'Pesanan Diterima' && <PesananDiterimaComponent role="admin" />}
-                {sectionPage === 'Pesanan Masuk' && <PesananMasukComponent role="admin" />}
-                {sectionPage === 'Riwayat' && <RiwayatComponent role="admin" />}
+                <div className="overflow-x-auto">
+                    {sectionPage === 'Pesanan Diterima' && <PesananDiterimaComponent role="admin" />}
+                    {sectionPage === 'Pesanan Masuk' && <PesananMasukComponent role="admin" />}
+                    {sectionPage === 'Riwayat' && <RiwayatComponent role="admin" />}
+                </div>
             </ContainerProvider>
         </AdminPageLayout>
     );

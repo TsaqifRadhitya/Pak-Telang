@@ -67,10 +67,12 @@ class transaksiMitraController extends Controller
 
     private function loadIndexRiwayat()
     {
-        $Riwayat = Transaksi::with('detailTransaksis.product')->whereIn('status', ['Selesai', 'Pembayaran Gagal'])->where(function ($t) {
-            $t->where('providerId', Auth::user()->id)->orWhere('customerId', Auth::user()->id);
+        $user = Auth::user()->id;
+        $Riwayat = Transaksi::with('detailTransaksis.product')->where(function ($e) use ($user) {
+            $e->where('status', 'Pembayaran Gagal')->where('customerId', $user);
+        })->whereIn('status', ['Selesai', 'Pembayaran Gagal'])->where(function ($t) use ($user) {
+            $t->where('providerId', Auth::user()->id)->orWhere('customerId', $user);
         })->get()->map(function ($item) {
-
             return [...$item->toArray(), 'Total' => DetailTransaksi::where('transaksiId', $item->id)->sum('subTotal')];
         });
 
@@ -109,7 +111,7 @@ class transaksiMitraController extends Controller
 
     public function show($id)
     {
-        $transaction = Transaksi::with(['detailTransaksis.product','user'])->where('id', $id)->first();
+        $transaction = Transaksi::with(['detailTransaksis.product', 'user'])->where('id', $id)->first();
         $role = Auth::user()->role;
         if ($role === "Pak Telang") {
             return redirect()->route('admin.transaksi.show', ['id' => $id]);

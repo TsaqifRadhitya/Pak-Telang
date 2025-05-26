@@ -3,12 +3,13 @@ import { Button } from '@/components/ui/button';
 import { currencyConverter } from '@/utils/currencyConverter';
 import { dateFormaterUtils } from '@/utils/dateFormater';
 import { usePage } from '@inertiajs/react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { props } from '..';
 
 export default function Berhasil() {
     const { mutations } = usePage<props>().props;
     const [buktiTransfer, setButktiTransfer] = useState<string>();
+    const finished = useMemo(() => mutations.filter((filter) => filter.finished), []);
 
     return (
         <>
@@ -19,17 +20,12 @@ export default function Berhasil() {
                 >
                     <div className="flex flex-col items-center space-y-6 rounded-lg bg-white p-10 pt-5 shadow">
                         <Heading title="Bukti Transfer" className="underline decoration-[#B9BDFF] decoration-4 underline-offset-8" />
-                        <img
-                            className="aspect-auto max-h-[60vh] rounded-lg ring-[1.5px] ring-[#3B387E]"
-                            src={buktiTransfer}
-                            alt=""
-                        />
+                        <img className="aspect-auto max-h-[60vh] rounded-lg ring-[1.5px] ring-[#3B387E]" src={buktiTransfer} alt="" />
                     </div>
                 </section>
             )}
-            {mutations
-                .filter((filter) => filter.finished)
-                .map((mutation) => (
+            {finished.length > 0 ? (
+                finished.map((mutation) => (
                     <section className="flex justify-between border-b-2 border-[#D9D9D9] p-5 px-7">
                         <div>
                             <h1 className="font-semibold">{mutation.user?.name}</h1>
@@ -51,7 +47,10 @@ export default function Berhasil() {
                             </Button>
                         </div>
                     </section>
-                ))}
+                ))
+            ) : (
+                <h1 className="mx-auto my-auto w-fit">Riwayat pencairan dana tidak tersedia</h1>
+            )}
         </>
     );
 }

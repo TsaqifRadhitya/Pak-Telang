@@ -66,7 +66,7 @@ export default function TransactionShow({
             <ContainerProvider section={section}>
                 {modal && (
                     <section id="alertDelete" className="fixed top-0 left-0 z-[999] h-full w-full bg-black/50">
-                        <article className="absolute top-1/2 left-1/2 flex w-full max-w-xl -translate-1/2 flex-col items-center gap-y-5 rounded-2xl border border-[#8A7300] bg-[#FFFDF1] p-5 pb-10">
+                        <article className="absolute top-1/2 left-1/2 flex w-full max-w-sm -translate-1/2 flex-col items-center gap-y-5 rounded-2xl border border-[#8A7300] bg-[#FFFDF1] p-5 pb-10 lg:max-w-xl">
                             <div className="flex w-full flex-1/2 items-center gap-x-4">
                                 <img
                                     src="https://ybcvbaxalqwrvgemxdzc.supabase.co/storage/v1/object/public/paktelang/Asset/Icon/warningIcon.svg"
@@ -106,7 +106,12 @@ export default function TransactionShow({
                                 </div>
                             )}
 
-                            <div className={cn('flex w-1/2 justify-center gap-x-2.5', transaction.type === 'Bahan Baku' && 'ml-auto justify-end')}>
+                            <div
+                                className={cn(
+                                    'flex w-2/3 justify-center gap-x-2.5 lg:w-1/2',
+                                    transaction.type === 'Bahan Baku' && 'ml-auto justify-end',
+                                )}
+                            >
                                 <Button
                                     className="w-1/2 cursor-pointer bg-[#FFFDF1] font-semibold text-[#8A7300] ring ring-[#8A7300] hover:bg-[#8A7300] hover:text-white"
                                     onClick={() => setModal(false)}
@@ -130,10 +135,10 @@ export default function TransactionShow({
                     <table className="p w-full">
                         <thead className="flex w-full justify-between border-b-[1.8px] border-[#D9D9D9] px-5 pb-2">
                             <tr className="grid w-full grid-cols-4 text-left">
-                                <th className="text-center">Nama Produk</th>
-                                <th className="text-center">Quantity</th>
-                                <th className="text-center">Harga</th>
-                                <th className="text-center">Sub-total</th>
+                                <th className="text-center text-sm lg:text-base">Nama Produk</th>
+                                <th className="text-center text-sm lg:text-base">Quantity</th>
+                                <th className="text-center text-sm lg:text-base">Harga</th>
+                                <th className="text-center text-sm lg:text-base">Sub-total</th>
                             </tr>
                         </thead>
                         <tbody className="block max-h-56 overflow-y-auto">
@@ -142,10 +147,10 @@ export default function TransactionShow({
                                     key={item.productId}
                                     className="grid w-full grid-cols-4 items-center border-b-[1.8px] border-[#D9D9D9] px-5 py-7 text-center"
                                 >
-                                    <td>{item.product?.productName}</td>
-                                    <td>{item.amount}</td>
-                                    <td>{currencyConverter(item.subTotal / item.amount)}</td>
-                                    <td>{currencyConverter(item.subTotal)}</td>
+                                    <td className="text-xs lg:text-sm">{item.product?.productName}</td>
+                                    <td className="text-xs lg:text-sm">{item.amount}</td>
+                                    <td className="text-xs lg:text-sm">{currencyConverter(item.subTotal / item.amount)}</td>
+                                    <td className="text-xs lg:text-sm">{currencyConverter(item.subTotal)}</td>
                                 </tr>
                             ))}
                         </tbody>
@@ -153,16 +158,16 @@ export default function TransactionShow({
                 </div>
                 <div className="mt-10 space-y-5 font-semibold">
                     <div className="flex justify-between px-2.5">
-                        <p>Subtotal</p>
-                        <p>{currencyConverter(transaction.Total)}</p>
+                        <p className="text-sm lg:text-lg">Subtotal</p>
+                        <p className="text-sm lg:text-lg">{currencyConverter(transaction.Total)}</p>
                     </div>
                     <div className="flex justify-between px-2.5">
-                        <p>Ongkir</p>
-                        <p>{currencyConverter(transaction.ongkir ?? 0)}</p>
+                        <p className="text-sm lg:text-lg">Ongkir</p>
+                        <p className="text-sm lg:text-lg">{currencyConverter(transaction.ongkir ?? 0)}</p>
                     </div>
                     <div className="flex justify-between border-t-2 border-[#D9D9D9] px-2.5 pt-5 text-xl font-bold">
-                        <p>Total</p>
-                        <p>{currencyConverter(transaction.Total + (transaction.ongkir ?? 0))}</p>
+                        <p className="text-sm lg:text-xl">Total</p>
+                        <p className="text-sm lg:text-xl">{currencyConverter(transaction.Total + (transaction.ongkir ?? 0))}</p>
                     </div>
                     <div className="flex justify-end pt-2.5">
                         {section === 'Pesanan Diterima' && transaction.status === 'Sedang Diproses' && (

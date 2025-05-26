@@ -21,17 +21,17 @@ export default function EwaletIndex() {
     const [section, setSection] = useState<sectionType>('Pending');
     return (
         <AdminPageLayout>
-            <main className="flex lg:h-full w-full flex-col rounded-t-lg border-[1px] border-b-0 border-[#AFB3FF] bg-[#FFFFFF] shadow-lg">
+            <main className="flex w-full flex-col rounded-t-lg border-[1px] border-b-0 border-[#AFB3FF] bg-[#FFFFFF] shadow-lg lg:h-full">
                 <div className="flex items-center border-b-[1px] border-[#AFB3FF] p-5 md:px-10 md:py-5">
                     <h1 className="text-xl font-semibold">E-Wallet</h1>
                 </div>
-                <div className="w-ful flex flex-1 flex-col gap-4 p-5 pb-0 lg:p-10 lg:pt-7 lg:pb-0">
+                <div className="w-ful flex flex-1 flex-col gap-4 p-5 lg:p-10 lg:pt-7 lg:pb-0">
                     <div className="h-fit w-full space-y-2.5 rounded-lg p-2.5 px-5 ring ring-[#3B387E]">
                         <Heading className="text-md" title="E-Wallet Mitra" />
                         <Heading className="text-2xl font-semibold" title={currencyConverter(saldo)} />
                         <Heading className="text-xs font-semibold" title="Saldo Mitra" />
                     </div>
-                    <div className="flex-1 rounded-t-lg p-5 ring ring-[#3B387E]">
+                    <div className="flex-1 rounded-lg p-5 ring ring-[#3B387E] lg:rounded-b-none">
                         <Heading className="text-xl" title="Pencairan Dana" />
                         <div className="mt-5 w-full">
                             <div className="flex gap-5 border-b-2 border-[#D9D9D9] py-1.5 font-extralight">
@@ -54,7 +54,7 @@ export default function EwaletIndex() {
                                     Berhasil
                                 </p>
                             </div>
-                            <div className="max-h-80 overflow-y-auto">{section === 'Berhasil' ? <Berhasil /> : <Pending />}</div>
+                            <div className="h-80 overflow-y-auto">{section === 'Berhasil' ? <Berhasil /> : <Pending />}</div>
                         </div>
                     </div>
                 </div>
