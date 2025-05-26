@@ -1,4 +1,3 @@
-import { SharedData } from '@/types';
 import { addressType } from '@/types/address';
 import { transactionType } from '@/types/transaction';
 import { addressFormater } from '@/utils/addressFormater';
@@ -6,10 +5,7 @@ import { dateFormaterUtils } from '@/utils/dateFormater';
 import { usePage } from '@inertiajs/react';
 
 export default function PesananDiterima() {
-    const {
-        transaction,
-        auth: { user },
-    } = usePage<{ transaction: transactionType } & SharedData>().props;
+    const { transaction } = usePage<{ transaction: transactionType }>().props;
 
     return (
         <section className="flex flex-col justify-between lg:flex-row">
