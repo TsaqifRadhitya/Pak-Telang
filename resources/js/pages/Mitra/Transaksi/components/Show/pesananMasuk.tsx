@@ -14,10 +14,16 @@ export default function PesananMasuk() {
                     <span className="font-semibold">Transaksi ID</span> : {transaction.displayId}
                 </p>
                 <p className="text-xs lg:text-base">
+                    <span className="font-semibold">Nama</span> : {transaction.user?.name}
+                </p>
+                <p className="text-xs lg:text-base">
                     <span className="font-semibold">Waktu</span> : {dateFormaterUtils(transaction.created_at)}
                 </p>
             </div>
             <div className="flex-1/2">
+                <p className="text-xs lg:text-base">
+                    <span className="font-semibold">No Hp</span> : {transaction.user?.phonenumber}
+                </p>
                 <p className="text-xs lg:text-base">
                     <span className="font-semibold">Alamat</span> : {addressFormater(transaction.address as addressType)}
                 </p>

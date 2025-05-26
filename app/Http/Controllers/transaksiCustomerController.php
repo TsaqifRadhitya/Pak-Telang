@@ -24,9 +24,16 @@ class transaksiCustomerController extends Controller
 {
     public function index()
     {
-        $transactions = Transaksi::with(['detailTransaksis.product'])->where('customerId', Auth::user()->id)->orderBy('created_at', 'desc')->get();
-        $transactions = $transactions->map(function ($item) {
-            return [...$item->toArray(), 'Total' => DetailTransaksi::where('transaksiId', $item->id)->sum('subTotal')];
+        $transactions = Transaksi::with(['detailTransaksis.product'])
+            ->where('customerId', Auth::user()->id)
+            ->orderBy('created_at', 'desc')
+            ->simplePaginate(5);
+
+        // Tambahkan 'Total' ke setiap item dalam paginator
+        $transactions->getCollection()->transform(function ($item) {
+            $itemArray = $item->toArray();
+            $itemArray['Total'] = $item->detailTransaksis->sum('subTotal');
+            return $itemArray;
         });
         return Inertia::render('Customer/Transaksi/index', compact('transactions'));
     }
@@ -172,7 +179,7 @@ class transaksiCustomerController extends Controller
             });
             $reset = Session::get('reset');
             Session::remove('reset');
-            return Inertia::render('Customer/Transaksi/create', compact('products', 'address', 'selectedProduct','reset'));
+            return Inertia::render('Customer/Transaksi/create', compact('products', 'address', 'selectedProduct', 'reset'));
         }
 
         return back()->with('info', 'Saat ini pemasaran product belum tersedia di daerah anda');

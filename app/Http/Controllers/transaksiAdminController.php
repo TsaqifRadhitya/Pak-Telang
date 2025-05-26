@@ -29,17 +29,6 @@ class transaksiAdminController extends Controller
         ]);
     }
 
-    private function loadIndexPesananMasuk()
-    {
-        $pesananMasuk = Transaksi::with(['detailTransaksis.product', 'user.district.city'])
-            ->whereNull('providerId')
-            ->get()
-            ->map(function ($item) {
-                $total = $item->detailTransaksis->sum('subTotal');
-                return [...$item->toArray(), 'Total' => $total, 'address' => $this->getFullAdress($item)];
-            });
-        return $pesananMasuk;
-    }
     private function getFullAdressProvider()
     {
         $district = Auth::user()->district()->first();
@@ -53,29 +42,42 @@ class transaksiAdminController extends Controller
             'province' => $province->province,
         ];
     }
-
-    private function loadIndexRiwayat()
+    private function loadIndexPesananMasuk()
     {
-        $Riwayat = Transaksi::with('detailTransaksis.product')
-            ->where('providerId', Auth::user()->id)
-            ->where('status', 'Selesai')
-            ->get()
-            ->map(function ($item) {
-                return [...$item->toArray(), 'Total' => DetailTransaksi::where('transaksiId', $item->id)->sum('subTotal')];
+        return Transaksi::with(['detailTransaksis.product', 'user.district.city'])
+            ->whereNull('providerId')
+            ->orderBy('created_at', 'desc')
+            ->simplePaginate(5)
+            ->through(function ($item) {
+                $total = $item->detailTransaksis->sum('subTotal');
+                return [...$item->toArray(), 'Total' => $total, 'address' => $this->getFullAdress($item)];
             });
-
-        return $Riwayat;
     }
 
     private function loadIndexPesananDiterima()
     {
-        $pesananDiterima = Transaksi::with('detailTransaksis.product')->whereNotIn('status', ['Selesai', 'Pembayaran Gagal'])->where('providerId', Auth::user()->id)->get()->map(function ($item) {
-
-            return [...$item->toArray(), 'Total' => DetailTransaksi::where('transaksiId', $item->id)->sum('subTotal'), 'address' => $this->getFullAdress($item)];
-        });
-
-        return $pesananDiterima;
+        return Transaksi::with('detailTransaksis.product')
+            ->whereNotIn('status', ['Selesai', 'Pembayaran Gagal'])
+            ->where('providerId', Auth::user()->id)
+            ->orderBy('created_at', 'desc')
+            ->simplePaginate(5)
+            ->through(function ($item) {
+                return [...$item->toArray(), 'Total' => DetailTransaksi::where('transaksiId', $item->id)->sum('subTotal'), 'address' => $this->getFullAdress($item)];
+            });
     }
+
+    private function loadIndexRiwayat()
+    {
+        return Transaksi::with('detailTransaksis.product')
+            ->where('providerId', Auth::user()->id)
+            ->where('status', 'Selesai')
+            ->orderBy('created_at', 'desc')
+            ->simplePaginate(5)
+            ->through(function ($item) {
+                return [...$item->toArray(), 'Total' => DetailTransaksi::where('transaksiId', $item->id)->sum('subTotal')];
+            });
+    }
+
 
 
     private function getFullAdress(Transaksi $transaksi)

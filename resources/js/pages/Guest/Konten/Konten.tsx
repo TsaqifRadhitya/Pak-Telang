@@ -1,19 +1,25 @@
 import HeadingSmall from '@/components/heading-small';
+import SinglePaginate from '@/components/singlePaginate';
 import { Input } from '@/components/ui/input';
 import LandingPageLayout from '@/layouts/landingPageLayout';
 import { cn } from '@/lib/utils';
 import { SharedData } from '@/types';
 import { kontenType } from '@/types/koten';
+import { paginateType } from '@/types/paginate';
 import { Link, router, usePage } from '@inertiajs/react';
 import { ArrowRightIcon } from 'lucide-react';
 import { useState } from 'react';
 import Heading from '../../../components/heading';
 
 interface props extends SharedData {
-    kontens: kontenType[];
+    kontens: paginateKonten;
     category: string;
     search: string;
 }
+
+type paginateKonten = {
+    data: kontenType[];
+} & paginateType;
 
 export default function KontenPage() {
     const [isloading, setIsloading] = useState<boolean>(false);
@@ -81,10 +87,10 @@ export default function KontenPage() {
                         onChange={(e) => setData((prev) => ({ ...prev, search: e.target.value }))}
                     />
                 </form>
-                <article className={cn('mt-5 w-full gap-10 px-2.5 md:grid-cols-2 xl:grid-cols-3', !isloading && kontens.length && 'grid')}>
+                <article className={cn('mt-5 w-full gap-10 px-2.5 md:grid-cols-2 xl:grid-cols-3', !isloading && kontens.data.length && 'grid')}>
                     {!isloading ? (
-                        kontens.length > 0 ? (
-                            kontens.map((konten: kontenType) => (
+                        kontens.data.length > 0 ? (
+                            kontens.data.map((konten: kontenType) => (
                                 <div className="flex w-full flex-col gap-1.5 rounded-xl bg-white p-10 shadow">
                                     <div className="relative flex w-full overflow-hidden rounded-xl">
                                         <img src={konten.imageCover} alt="" className="z-0 aspect-3/3 object-cover object-center" />
@@ -118,6 +124,7 @@ export default function KontenPage() {
                         <Heading title="Loading...." className="mx-auto w-fit" />
                     )}
                 </article>
+                <SinglePaginate data={kontens} className='mt-5' value="kontens"/>
             </section>
         </LandingPageLayout>
     );

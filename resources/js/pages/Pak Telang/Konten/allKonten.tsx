@@ -1,11 +1,19 @@
 import Heading from '@/components/heading';
 import HeadingSmall from '@/components/heading-small';
+import SinglePaginate from '@/components/singlePaginate';
 import AdminPageLayout from '@/layouts/adminPageLayout';
+import { cn } from '@/lib/utils';
 import { kontenType } from '@/types/koten';
+import { paginateType } from '@/types/paginate';
 import { Link, router } from '@inertiajs/react';
 import { ArrowRightIcon, Plus } from 'lucide-react';
 
-export default function AllKonten({ kontens }: { kontens: kontenType[] }) {
+type paginateKonten = {
+    data: kontenType[];
+} & paginateType;
+
+export default function AllKonten({ kontens }: { kontens: paginateKonten }) {
+    console.log(kontens);
     return (
         <AdminPageLayout page="Konten">
             <main className="relative flex h-full w-full flex-col rounded-t-lg border-[1px] border-b-0 border-[#AFB3FF] bg-[#FFFFFF] shadow-lg">
@@ -13,8 +21,8 @@ export default function AllKonten({ kontens }: { kontens: kontenType[] }) {
                     <h1 className="text-xl font-semibold">Konten</h1>
                 </div>
                 <div className="flex max-h-[82.6vh] flex-1 flex-col gap-5 overflow-y-auto p-10 md:grid md:grid-cols-2 lg:relative xl:grid-cols-3">
-                    {kontens.map((konten) => (
-                        <div className="h-full min-h-[80vh] w-full rounded-xl bg-white p-5 shadow ring ring-[#AFB3FF] lg:min-h-[475px]">
+                    {kontens.data.map((konten) => (
+                        <div className={cn('h-full w-full rounded-xl bg-white p-5 shadow ring ring-[#AFB3FF] lg:max-h-96 lg:min-h-[475px]')}>
                             <div className="relative flex w-full overflow-hidden rounded-xl">
                                 <img src={konten.imageCover} alt="" className="z-0 aspect-3/3 object-cover object-center" />
                                 <div className="absolute top-0 z-10 flex h-full w-full flex-1 flex-col justify-between bg-black/30 p-5 py-3">
@@ -24,9 +32,7 @@ export default function AllKonten({ kontens }: { kontens: kontenType[] }) {
                             <Heading className="mt-5" title={konten.slug} />
                             <HeadingSmall
                                 className="text-sm"
-                                title={
-                                    'Pak Telang - ' + Intl.DateTimeFormat('id-ID', { dateStyle: 'full' }).format(new Date(konten.created_at))
-                                }
+                                title={'Pak Telang - ' + Intl.DateTimeFormat('id-ID', { dateStyle: 'full' }).format(new Date(konten.created_at))}
                             />
                             <pre className="lg:text-md line-clamp-5 font-sans text-xs break-words whitespace-pre-wrap text-black md:text-sm">
                                 {konten.content}
@@ -48,6 +54,7 @@ export default function AllKonten({ kontens }: { kontens: kontenType[] }) {
                 >
                     <Plus size={40} />
                 </button>
+                <SinglePaginate data={kontens} className='mb-5' value="kontens" />
             </main>
         </AdminPageLayout>
     );

@@ -6,8 +6,9 @@ import { SharedData } from '@/types';
 import { addressType } from '@/types/address';
 import { detailTransactionType } from '@/types/detailTransaction';
 import { productType } from '@/types/product';
+import { currencyConverter } from '@/utils/currencyConverter';
 import { router, usePage } from '@inertiajs/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Heading from '../../../components/heading';
 import HeadingSmall from '../../../components/heading-small';
 
@@ -23,6 +24,9 @@ export default function TransactionCreate() {
     const [data, setData] = useState<detailTransactionType[]>();
     const [isSubmited, setSubmited] = useState<boolean>(false);
     const [err, setErr] = useState<boolean>(false);
+    const [open, setOpen] = useState<boolean>();
+
+    const subTotal = useMemo(() => data?.map((item) => item.subTotal).reduce((total, current) => total + current, 0) || 0, [data]);
 
     const handleDeleteTransactionItem = (params: string) => {
         setData((prev) => prev?.filter((item) => item.productId !== params));
@@ -134,14 +138,102 @@ export default function TransactionCreate() {
         <LandingPageLayout>
             <section className="flex flex-col bg-[#EBEFFF] p-5 pt-20 text-[#3B387E] md:px-10 lg:min-h-screen">
                 <Heading title="Transaksi" disableMb className="text-2xl lg:text-3xl" />
-                <div className="mt-5 flex flex-1 flex-col gap-16 px-5 lg:flex-row">
+                <div className="mt-5 flex flex-1 flex-col-reverse gap-5 lg:gap-16 px-5 lg:flex-row">
                     {err && (
                         <SweetAlert
                             message={`Stock Product ${products.find((item) => item.id === selectedProduct)?.productName} Tidak Tersedia`}
                             type="Error"
                         />
                     )}
-                    <article className="scrollbar scrollbar-track-transparent scrollbar-thumb-[#5961BE] max-h-screen grid flex-2/3 gap-16 overflow-y-auto px-1 pt-2 sm:grid-cols-2 lg:max-h-[70vh] lg:grid-cols-1 xl:grid-cols-2">
+                    <section
+                        className={cn(
+                            'fixed bottom-0 shadow left-1/2 z-[999] flex w-[95%] -translate-x-1/2 flex-col justify-between rounded-t-2xl border-2 border-b-0 border-[#5961BE] bg-white p-5 lg:hidden',
+                            open && 'h-2/3',
+                        )}
+                    >
+                        <div
+                            onClick={() => setOpen(!open)}
+                            className="absolute left-1/2 mx-auto h-1 w-1/10 -translate-x-1/2 -translate-y-3 cursor-pointer rounded-full bg-gray-400"
+                        ></div>
+                        {open && (
+                            <div className="space-y-5">
+                                <Heading title="Daftar Produk Pesanan" className="text-center" />
+                                <table className="w-full">
+                                    <thead className="flex w-full justify-between border-b-[1.8px] border-[#D9D9D9] px-5 pb-2">
+                                        <tr className="grid w-full grid-cols-4 text-left">
+                                            <th className="text-center text-sm">Nama Produk</th>
+                                            <th className="text-center text-sm">Quantity</th>
+                                            <th className="text-center text-sm">Sub-total</th>
+                                            <th className="text-center text-sm"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {data?.map((item) => (
+                                            <tr
+                                                key={item.productId}
+                                                className="grid w-full grid-cols-4 items-center border-b-[1.8px] border-[#D9D9D9] px-5 py-5 pr-0"
+                                            >
+                                                <td>
+                                                    <p className="rounded px-2 py-1 text-center text-xs">{item.productName}</p>
+                                                </td>
+                                                <td className="text-center">
+                                                    <div className="mx-auto flex items-center justify-between overflow-hidden rounded-full px-5 ring ring-[#3B387E]">
+                                                        <Button
+                                                            className="cursor-pointer bg-transparent px-0 py-0 font-semibold disabled:cursor-default"
+                                                            onClick={() => handleChangeAmount('decrement', item.productId)}
+                                                            disabled={item.amount === 1 || isSubmited}
+                                                        >
+                                                            -
+                                                        </Button>
+                                                        <p className="text-xs font-semibold">{item.amount}</p>
+                                                        <Button
+                                                            className="cursor-pointer bg-transparent px-0 py-0 font-semibold disabled:cursor-default"
+                                                            onClick={() => handleChangeAmount('Increment', item.productId)}
+                                                            disabled={
+                                                                item.amount === products.find((items) => items.id === item.productId)?.productStock ||
+                                                                isSubmited
+                                                            }
+                                                        >
+                                                            +
+                                                        </Button>
+                                                    </div>
+                                                </td>
+                                                <td className="text-center text-xs">
+                                                    {new Intl.NumberFormat('id-ID', {
+                                                        style: 'currency',
+                                                        currency: 'IDR',
+                                                    }).format(item.subTotal)}
+                                                </td>
+                                                <td className="text-center">
+                                                    <Button
+                                                        disabled={isSubmited}
+                                                        className="text-sn aspect-square cursor-pointer rounded-full bg-[#FFD6DA] px-3 py-0 font-black text-[#B71C1C] hover:bg-[#FFD6DAbedan] hover:ring hover:ring-[#B71C1C]"
+                                                        onClick={() => handleDeleteTransactionItem(item.productId)}
+                                                    >
+                                                        x
+                                                    </Button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        )}
+                        <div className="flex items-center justify-between">
+                            <div className="">
+                                <Heading title="Subtotal" />
+                                <p className="font-semibold">{currencyConverter(subTotal)}</p>
+                            </div>
+                            <Button
+                                disabled={isSubmited}
+                                onClick={handleSubmit}
+                                className="cursor-pointer bg-[#5961BE] font-normal text-white ring ring-[#5961BE] hover:bg-transparent hover:font-semibold hover:text-[#5961BE]"
+                            >
+                                Pesan Sekarang
+                            </Button>
+                        </div>
+                    </section>
+                    <article className="scrollbar scrollbar-track-transparent scrollbar-thumb-[#5961BE] grid max-h-screen flex-2/3 gap-16 overflow-y-auto px-1 py-2 sm:grid-cols-2 lg:max-h-[70vh] lg:grid-cols-1 xl:grid-cols-2">
                         {products
                             .sort((a, b) => b.productStock - a.productStock)
                             .map((item) => (
@@ -219,10 +311,10 @@ export default function TransactionCreate() {
                                 </section>
                             ))}
                     </article>
-                    <div className="flex h-fit min-h-[80vh] flex-3/5 flex-col gap-7">
+                    <div className="flex h-fit flex-3/5 flex-col gap-7 lg:min-h-[80vh]">
                         <div className="flex flex-col gap-1.5 rounded-xl bg-white p-5 shadow-sm">
                             <div className="flex justify-between">
-                                <HeadingSmall title="Alamat Tujuan" className="text-2xl font-semibold" />
+                                <HeadingSmall title="Alamat Tujuan" className="lg:text-2xl font-semibold" />
                                 <svg
                                     onClick={() => router.get(route('customer.profile.edit'), { fts: true })}
                                     className="cursor-pointer"
@@ -257,10 +349,10 @@ export default function TransactionCreate() {
                                     />
                                 </svg>
                             </div>
-                            <h1>{`${address.address}, ${address.districtName}, ${address.cityName} ${address.province}, ${address.postalCode}`}</h1>
-                            <p className="text-[#FFA114]">Note: Alamat dapat diubah melalui profil anda</p>
+                            <h1 className='text-xs lg:text-base'>{`${address.address}, ${address.districtName}, ${address.cityName} ${address.province}, ${address.postalCode}`}</h1>
+                            <p className="text-[#FFA114] text-sm lg:text-base">Note: Alamat dapat diubah melalui profil anda</p>
                         </div>
-                        <div className="flex h-fit flex-6/7 flex-col rounded-xl bg-white p-5 text-lg">
+                        <div className="hidden h-fit flex-6/7 flex-col rounded-xl bg-white p-5 text-lg lg:flex">
                             <table className="w-full">
                                 <thead className="flex w-full justify-between border-b-[1.8px] border-[#D9D9D9] px-5 pb-2">
                                     <tr className="grid w-full grid-cols-4 text-left">
@@ -323,15 +415,7 @@ export default function TransactionCreate() {
                             <div className="mt-auto space-y-10">
                                 <div className="flex justify-between">
                                     <Heading title="Subtotal" />
-                                    <Heading
-                                        title={
-                                            data
-                                                ? new Intl.NumberFormat('id-ID', { currency: 'IDR', style: 'currency' }).format(
-                                                      data!.map((item) => item.subTotal).reduce((total, current) => total + current, 0),
-                                                  )
-                                                : new Intl.NumberFormat('id-ID', { currency: 'IDR', style: 'currency' }).format(0)
-                                        }
-                                    />
+                                    <Heading title={currencyConverter(subTotal)} />
                                 </div>
                                 <div className="flex justify-between gap-5">
                                     <Button

@@ -1,6 +1,7 @@
 import MitraPageLayout from '@/layouts/mitraPageLayout';
 import { SharedData } from '@/types';
 import { addressType } from '@/types/address';
+import { paginateType } from '@/types/paginate';
 import { productDetailType } from '@/types/productDetail';
 import { transactionType } from '@/types/transaction';
 import { usePage } from '@inertiajs/react';
@@ -11,11 +12,14 @@ import PesananDiterimaComponent from './components/Index/pesananDiterima';
 import PesananMasukComponent from './components/Index/pesananMasuk';
 import RiwayatComponent from './components/Index/Riwayat';
 
+type paginate<T> = {
+    data: T[];
+} & paginateType;
 export interface props extends SharedData {
-    pesananMasuk: transactionType[];
-    Riwayat: transactionType[];
-    pesananDiterima: transactionType[];
-    Dipesan: transactionType[];
+    pesananMasuk?: paginate<transactionType>;
+    Riwayat?: paginate<transactionType>;
+    pesananDiterima?: paginate<transactionType>;
+    Dipesan?: paginate<transactionType>;
     providerAddress: addressType;
     section?: sectionType;
     stock: productDetailType[];

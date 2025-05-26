@@ -168,8 +168,8 @@ export default function OrderBahanCreate({
                 <div className="flex items-center border-b-[1px] border-[#AFB3FF] p-5 md:px-10 md:py-5">
                     <h1 className="text-xl font-semibold">Order Bahan</h1>
                 </div>
-                <div className="flex flex-col lg:flex-row flex-1 gap-5 p-5 px-7 pt-5 lg:pb-0">
-                    <div className="max-h-[79vh] flex-1/2 space-y-5 overflow-y-auto px-1 pt-0.5 pb-5">
+                <div className="flex flex-1 flex-col gap-5 p-5 px-7 pt-5 lg:flex-row lg:pb-0">
+                    <div className="max-h-[50vh] flex-1/2 space-y-5 overflow-y-auto px-1 pt-0.5 pb-5 lg:max-h-[79vh]">
                         {products.map((item, i) => (
                             <div
                                 onClick={() => handleChangeAmount('Increment', item.id)}
@@ -252,10 +252,10 @@ export default function OrderBahanCreate({
                             </div>
                         ))}
                     </div>
-                    <div className="max-h-[79vh] lg:flex-1/2 space-y-5 overflow-y-auto px-0.5 pt-0.5 pb-5">
+                    <div className="space-y-5 px-0.5 pt-0.5 pb-5 lg:max-h-[79vh] lg:flex-1/2 lg:overflow-y-auto">
                         <div className="flex flex-col gap-1.5 rounded-xl bg-white p-5 shadow-sm ring ring-[#B9BDFF]">
                             <div className="flex justify-between">
-                                <HeadingSmall title="Alamat Tujuan" className="text-2xl font-semibold" />
+                                <HeadingSmall title="Alamat Tujuan" className="text-lg font-semibold lg:text-2xl" />
                                 <svg
                                     onClick={() => router.get(route('mitra.profile.edit'), { fts: true })}
                                     className="cursor-pointer"
@@ -290,17 +290,17 @@ export default function OrderBahanCreate({
                                     />
                                 </svg>
                             </div>
-                            <h1>{`${address.address}, ${address.districtName}, ${address.cityName} ${address.province}, ${address.postalCode}`}</h1>
-                            <p className="text-[#FFA114]">Note: Alamat dapat diubah melalui profil anda</p>
+                            <h1 className="text-xs lg:text-base">{`${address.address}, ${address.districtName}, ${address.cityName} ${address.province}, ${address.postalCode}`}</h1>
+                            <p className="text-sm text-[#FFA114] lg:text-base">Note: Alamat dapat diubah melalui profil anda</p>
                         </div>
                         <div className="flex h-fit flex-6/7 flex-col rounded-xl bg-white p-5 text-lg ring ring-[#B9BDFF]">
                             <table className="w-full">
                                 <thead className="flex w-full justify-between border-b-[1.8px] border-[#D9D9D9] px-5 pb-2">
                                     <tr className="grid w-full grid-cols-10 text-left">
-                                        <th className="col-span-3 text-center">Nama Produk</th>
-                                        <th className="col-span-3 text-center">Quantity</th>
-                                        <th className="col-span-3 text-center">Sub-total</th>
-                                        <th className="text-center"></th>
+                                        <th className="col-span-3 text-center text-sm lg:text-base">Nama Produk</th>
+                                        <th className="col-span-3 text-center text-sm lg:text-base">Quantity</th>
+                                        <th className="col-span-3 text-center text-sm lg:text-base">Sub-total</th>
+                                        <th className="text-center text-sm lg:text-base"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -310,10 +310,10 @@ export default function OrderBahanCreate({
                                             className="grid w-full grid-cols-10 items-center border-b-[1.8px] border-[#D9D9D9] px-5 py-5"
                                         >
                                             <td className="col-span-3">
-                                                <p className="rounded px-2 py-1 text-center">{item.productName}</p>
+                                                <p className="rounded px-2 py-1 text-center text-xs lg:text-base">{item.productName}</p>
                                             </td>
                                             <td className="col-span-3 text-center">
-                                                <div className="mx-auto flex w-2/3 items-center justify-between overflow-hidden rounded-full px-5 ring ring-[#3B387E]">
+                                                <div className="mx-auto flex lg:w-2/3 items-center justify-between overflow-hidden rounded-full px-5 ring ring-[#3B387E]">
                                                     <Button
                                                         className="cursor-pointer bg-transparent px-0 py-0 font-semibold disabled:cursor-default"
                                                         onClick={() => handleChangeAmount('decrement', item.productId)}
@@ -321,7 +321,7 @@ export default function OrderBahanCreate({
                                                     >
                                                         -
                                                     </Button>
-                                                    <p className="text-sm font-semibold">{item.amount}</p>
+                                                    <p className="text-xs font-semibold lg:text-base">{item.amount}</p>
                                                     <Button
                                                         className="cursor-pointer bg-transparent px-0 py-0 font-semibold disabled:cursor-default"
                                                         onClick={() => handleChangeAmount('Increment', item.productId)}
@@ -334,7 +334,7 @@ export default function OrderBahanCreate({
                                                     </Button>
                                                 </div>
                                             </td>
-                                            <td className="col-span-3 text-center">
+                                            <td className="col-span-3 text-center text-xs lg:text-base">
                                                 {new Intl.NumberFormat('id-ID', {
                                                     style: 'currency',
                                                     currency: 'IDR',
@@ -343,7 +343,7 @@ export default function OrderBahanCreate({
                                             <td className="ml-auto w-fit text-center">
                                                 <Button
                                                     disabled={isSubmited}
-                                                    className="aspect-square cursor-pointer rounded-full bg-[#FFD6DA] px-3 py-0 text-xl font-black text-[#B71C1C] hover:bg-[#FFD6DAbedan] hover:ring hover:ring-[#B71C1C]"
+                                                    className="aspect-square cursor-pointer rounded-full bg-[#FFD6DA] px-3 py-0 text-xs font-black text-[#B71C1C] hover:bg-[#FFD6DAbedan] hover:ring hover:ring-[#B71C1C] lg:text-base"
                                                     onClick={() => handleDeleteTransactionItem(item.productId)}
                                                 >
                                                     x
@@ -385,8 +385,8 @@ export default function OrderBahanCreate({
                             </div>
                         </div>
                         <div className="rounded-lg bg-white p-5 ring ring-[#B9BDFF]">
-                            <Heading title="Metode Pengiriman" />
-                            <HeadingSmall title="Pilih Metode Pengiriman" />
+                            <Heading className="text-base lg:text-xl" title="Metode Pengiriman" />
+                            <HeadingSmall className="text-sm lg:text-base" title="Pilih Metode Pengiriman" />
                             <select
                                 onChange={(e) => setSelectedKurir(e.target.value ? ongkirProvider![parseInt(e.target.value)] : undefined)}
                                 onClick={handleFetchKurir}

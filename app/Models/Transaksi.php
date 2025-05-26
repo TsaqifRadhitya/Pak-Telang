@@ -13,26 +13,28 @@ class Transaksi extends Model
     protected static function booted()
     {
         static::creating(function ($model) {
-            if (!$model->displayId) {
+            if (!$model->getAttribute('displayId')) {
                 $prefix = 'TRX';
                 $tanggal = now()->format('Ymd');
+                $type = $model->type === "Bahan Baku" ? "BHN" : "PRD";
 
-                // Ambil transaksi terakhir dengan prefix dan tanggal yang sama
-                $last = static::where('displayId', 'like', "$prefix-$tanggal-%")
+                // Cari transaksi terakhir dengan format ID yang sama di hari yang sama
+                $last = static::query()
+                    ->where('displayId', 'like', "$prefix-$tanggal-%-$type")
                     ->orderByDesc('displayId')
                     ->first();
 
                 if ($last) {
-                    $lastNumber = (int) substr($last->displayId, -3);
+                    // Ambil angka urut terakhir dari ID
+                    $parts = explode('-', $last->displayId);
+                    $lastNumber = isset($parts[2]) ? (int) $parts[2] : 0;
                     $nextNumber = $lastNumber + 1;
                 } else {
                     $nextNumber = 1;
                 }
 
-                $sufix = $model->type === "Bahan Baku" ? "BHN" : "PRD";
-
                 $urut = str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
-                $model->displayId = "$prefix-$tanggal-$urut-$sufix";
+                $model->displayId = "$prefix-$tanggal-$urut-$type";
             }
         });
     }

@@ -36,48 +36,60 @@ class transaksiMitraController extends Controller
         if (!Auth::user()->mitra->isOpen) {
             return null;
         }
-        $pesananMasuk = Transaksi::with(['detailTransaksis.product', 'user.district.city'])
+
+        return Transaksi::with(['detailTransaksis.product', 'user.district.city'])
             ->whereNull('providerId')
-            ->get()
-            ->map(function ($item) {
+            ->orderBy('created_at', 'desc')
+            ->simplePaginate(5)
+            ->through(function ($item) {
                 $total = $item->detailTransaksis->sum('subTotal');
                 return [...$item->toArray(), 'Total' => $total, 'address' => $this->getFullAdress($item)];
             });
-        return $pesananMasuk;
     }
 
     private function loadIndexPesananDiterima()
     {
-        $pesananDiterima = Transaksi::with('detailTransaksis.product')->whereIn('status', ['Menunggu Konfirmasi', 'Menunggu Pembayaran'])->where('providerId', Auth::user()->id)->get()->map(function ($item) {
-
-            return [...$item->toArray(), 'Total' => DetailTransaksi::where('transaksiId', $item->id)->sum('subTotal'), 'address' => $this->getFullAdress($item)];
-        });
-
-        return $pesananDiterima;
+        return Transaksi::with('detailTransaksis.product')
+            ->whereIn('status', ['Menunggu Konfirmasi', 'Menunggu Pembayaran'])
+            ->where('providerId', Auth::user()->id)
+            ->orderBy('created_at', 'desc')
+            ->simplePaginate(5)
+            ->through(function ($item) {
+                return [...$item->toArray(), 'Total' => DetailTransaksi::where('transaksiId', $item->id)->sum('subTotal'), 'address' => $this->getFullAdress($item)];
+            });
     }
 
     private function loadIndexDipesan()
     {
-        $Dipesan = Transaksi::with('detailTransaksis.product')->whereIn('status', ['Menunggu Pembayaran', 'Sedang Diproses', 'Sedang Dikirim'])->where('customerId', Auth::user()->id)->get()->map(function ($item) {
-            return [...$item->toArray(), 'Total' => DetailTransaksi::where('transaksiId', $item->id)->sum('subTotal')];
-        });
-
-        return $Dipesan;
+        return Transaksi::with('detailTransaksis.product')
+            ->whereIn('status', ['Menunggu Pembayaran', 'Sedang Diproses', 'Sedang Dikirim'])
+            ->where('customerId', Auth::user()->id)
+            ->orderBy('created_at', 'desc')
+            ->simplePaginate(5)
+            ->through(function ($item) {
+                return [...$item->toArray(), 'Total' => DetailTransaksi::where('transaksiId', $item->id)->sum('subTotal')];
+            });
     }
 
     private function loadIndexRiwayat()
     {
         $user = Auth::user()->id;
-        $Riwayat = Transaksi::with('detailTransaksis.product')->where(function ($e) use ($user) {
-            $e->where('status', 'Pembayaran Gagal')->where('customerId', $user);
-        })->whereIn('status', ['Selesai', 'Pembayaran Gagal'])->where(function ($t) use ($user) {
-            $t->where('providerId', Auth::user()->id)->orWhere('customerId', $user);
-        })->get()->map(function ($item) {
-            return [...$item->toArray(), 'Total' => DetailTransaksi::where('transaksiId', $item->id)->sum('subTotal')];
-        });
 
-        return $Riwayat;
+        return Transaksi::with('detailTransaksis.product')
+            ->where(function ($e) use ($user) {
+                $e->where('status', 'Pembayaran Gagal')->where('customerId', $user);
+            })
+            ->orWhere(function ($t) use ($user) {
+                $t->where('status', 'Selesai')
+                    ->where('providerId', $user);
+            })
+            ->orderBy('created_at', 'desc')
+            ->simplePaginate(5)
+            ->through(function ($item) {
+                return [...$item->toArray(), 'Total' => DetailTransaksi::where('transaksiId', $item->id)->sum('subTotal')];
+            });
     }
+
 
     private function getFullAdressProvider()
     {
@@ -126,8 +138,10 @@ class transaksiMitraController extends Controller
                 $section = "Pesanan Masuk";
             } else if ($transaction->status === "Gagal menemukan provider") {
                 return redirect()->route('mitra.transaksi')->with('error', 'transaksi sudah tidak tersedia');
-            } else if ($transaction->status !== "Selesai" && $transaction->status !==  "Pembayaran Gagal") {
+            } else if ($transaction->providerId === Auth::user()->id && $transaction->status !== "Selesai" && $transaction->status !==  "Pembayaran Gagal") {
                 $section = "Pesanan Diterima";
+            } else if ($transaction?->type === "Bahan Baku" && $transaction->status !== "Pembayaran Gagal") {
+                $section = "Dipesan";
             } else {
                 $section = "Riwayat";
             }

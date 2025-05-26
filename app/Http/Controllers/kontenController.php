@@ -14,23 +14,32 @@ class kontenController extends Controller
     {
         $category = $request->category;
         $search = $request->search;
-        if ($category && $search) {
-            $kontens = konten::where('category', '=', $category)->whereRaw('lower(slug) like ?', ["%" . $search . "%"])->orderBy('created_at', 'asc')->get();
-        } else if ($category) {
-            $kontens = konten::where('category', '=', $category)->orderBy('created_at', 'asc')->get();
-        } else if ($search) {
-            $kontens = konten::whereRaw('lower(slug) like ?', ["%" . $search . "%"])->orderBy('created_at', 'asc')->get();
-        } else {
-            $kontens = konten::orderBy('created_at', 'asc')->get();
+
+        $query = konten::query()->orderBy('created_at', 'asc');
+
+        if ($category) {
+            $query->where('category', '=', $category);
         }
 
-        $kontens->map(function ($data) {
+        if ($search) {
+            $query->whereRaw('lower(slug) like ?', ["%" . strtolower($search) . "%"]);
+        }
+
+        $kontens = $query->simplePaginate(6); // ← Simple pagination here
+
+        // Convert imageContent to JSON if not null
+        $kontens->getCollection()->transform(function ($data) {
             if ($data->imageContent !== null) {
                 $data->imageContent = json_encode($data->imageContent);
             }
             return $data;
         });
-        return Inertia::render('Guest/Konten/Konten', compact('kontens', 'category', 'search'));
+
+        return Inertia::render('Guest/Konten/Konten', [
+            'kontens' => $kontens,
+            'category' => $category,
+            'search' => $search,
+        ]);
     }
 
     public function viewShow($id)
@@ -45,14 +54,19 @@ class kontenController extends Controller
 
     public function index()
     {
-        $kontens = konten::orderBy('created_at', 'asc')->get();
-        $kontens->map(function ($konten) {
+        $kontens = konten::orderBy('created_at', 'asc')->simplePaginate(6);
+
+        // Decode imageContent untuk setiap item
+        $kontens->getCollection()->transform(function ($konten) {
             if ($konten->imageContent !== null) {
                 $konten->imageContent = json_decode($konten->imageContent);
             }
             return $konten;
         });
-        return Inertia::render('Pak Telang/Konten/allKonten', compact('kontens'));
+
+        return Inertia::render('Pak Telang/Konten/allKonten', [
+            'kontens' => $kontens
+        ]);
     }
 
     public function show($konten)
@@ -169,7 +183,7 @@ class kontenController extends Controller
     public function destroy($konten)
     {
         konten::destroy($konten);
-        return redirect()->route('admin.konten' )->with('success', 'Berhasil Menghapus Konten');
+        return redirect()->route('admin.konten')->with('success', 'Berhasil Menghapus Konten');
     }
 
     public function create()

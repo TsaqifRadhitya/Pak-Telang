@@ -11,13 +11,15 @@ import { dateFormaterUtils } from '@/utils/dateFormater';
 import { stockChecker } from '@/utils/stockChecker';
 import { Deferred, router, usePage } from '@inertiajs/react';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { props } from '../..';
 
 export default function PesananMasukComponent({ role }: { role: 'admin' | 'mitra' }) {
     const { pesananMasuk, stock, providerAddress } = usePage<props>().props;
     const [selectedTransaction, setSelectedTransaction] = useState<transactionType>();
     const [isOpen, setOpen] = useState<boolean>();
+
+    const pesanaMasukFilteredByStocks = useMemo(() => pesananMasuk && stockChecker(pesananMasuk?.data, stock), [pesananMasuk]);
 
     const handleSubmit = async () => {
         const ongkir = await distaceCalculationService({ from: selectedTransaction?.address as addressType, to: providerAddress });
@@ -43,7 +45,7 @@ export default function PesananMasukComponent({ role }: { role: 'admin' | 'mitra
         <>
             {isOpen && selectedTransaction && (
                 <section id="alertDelete" className="fixed top-0 left-0 z-[999] h-full w-full bg-black/50">
-                    <article className="absolute top-1/2 left-1/2 flex w-full max-w-sm lg:max-w-xl -translate-1/2 flex-col items-center gap-y-5 rounded-2xl border border-[#8A7300] bg-[#FFFDF1] p-5 pb-10">
+                    <article className="absolute top-1/2 left-1/2 flex w-full max-w-sm -translate-1/2 flex-col items-center gap-y-5 rounded-2xl border border-[#8A7300] bg-[#FFFDF1] p-5 pb-10 lg:max-w-xl">
                         <div className="flex w-full flex-1/2 items-center gap-x-4">
                             <img
                                 src="https://ybcvbaxalqwrvgemxdzc.supabase.co/storage/v1/object/public/paktelang/Asset/Icon/warningIcon.svg"
@@ -62,7 +64,7 @@ export default function PesananMasukComponent({ role }: { role: 'admin' | 'mitra
                             className="text-md line mx-auto text-center leading-5 font-medium text-[#8A7300]"
                         />
 
-                        <div className="flex w-2/3 lg:w-1/2 justify-center gap-x-2.5">
+                        <div className="flex w-2/3 justify-center gap-x-2.5 lg:w-1/2">
                             <Button
                                 className="w-1/2 cursor-pointer bg-[#FFFDF1] font-semibold text-[#8A7300] ring ring-[#8A7300] hover:bg-[#8A7300] hover:text-white"
                                 onClick={handleCancel}
@@ -91,9 +93,9 @@ export default function PesananMasukComponent({ role }: { role: 'admin' | 'mitra
                     </tr>
                 </thead>
                 <Deferred data={['pesananDiterima', 'providerAddress', 'stock']} fallback={<Loading />}>
-                    {pesananMasuk?.length > 0 ? (
+                    {pesanaMasukFilteredByStocks && pesanaMasukFilteredByStocks?.length > 0 ? (
                         <tbody className="block max-h-[70vh] overflow-y-auto">
-                            {stockChecker(pesananMasuk, stock)?.map((item) => (
+                            {pesanaMasukFilteredByStocks.map((item) => (
                                 <tr
                                     key={item.displayId}
                                     className="grid w-full grid-cols-6 items-center border-t-[1.8px] border-[#D9D9D9] px-5 py-5 text-center text-sm"
