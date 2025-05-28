@@ -62,7 +62,7 @@ export default function Form() {
     };
 
     const handleSubmit = () => {
-        clearErrors()
+        clearErrors();
         const validate = inputValidation.safeParse(data);
         if (!validate.success) {
             const err = validate.error.format();
@@ -92,9 +92,9 @@ export default function Form() {
         );
     };
     return (
-        <div className="flex w-full flex-col justify-center space-y-5 rounded-xl bg-white p-10 shadow-sm">
+        <div id='donasiForm' className="flex w-full flex-col justify-center space-y-5 rounded-xl bg-white p-10 shadow-sm">
             <div className="mx-auto max-w-xs">
-                <Heading title="Form Donasi" className="self-center px-5 text-center text-3xl font-black" />
+                <Heading title="Form Donasi" className="self-center px-5 text-center lg:text-3xl font-black" />
                 <div className="mt-1 h-1.5 rounded-full bg-[#B9BDFF]"></div>
             </div>
             <div className="w-full space-y-5">

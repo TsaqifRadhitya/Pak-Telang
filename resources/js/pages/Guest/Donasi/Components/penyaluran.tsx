@@ -5,14 +5,13 @@ import { ArrowRightIcon } from 'lucide-react';
 import Heading from '../../../../components/heading';
 export default function Penyaluran() {
     const { kontenDonasi } = usePage<{ kontenDonasi: kontenType[] }>().props;
-    console.log(kontenDonasi);
     return (
         <section className="flex min-h-screen flex-col bg-[#EBEFFF] px-5 pb-10 text-[#3B387E] lg:px-20">
-            <Heading title="Penyaluran Donasi" className="text-4xl text-center" />
-            <p className="mt-5 text-xl text-center">Pilihan minuman berkualitas untuk hari-harimu yang lebih sehat</p>
-            <div className="w-fu flex-1 grid-cols-2 lg:grid xl:grid-cols-3 mt-10">
+            <Heading title="Penyaluran Donasi" className="text-center text-3xl lg:text-4xl" />
+            <p className="mt-5 text-left lg:text-center lg:text-xl">Pilihan minuman berkualitas untuk hari-harimu yang lebih sehat</p>
+            <div className="w-fu mt-10 flex-1 grid-cols-2 lg:grid xl:grid-cols-3">
                 {kontenDonasi.map((konten: kontenType) => (
-                    <div className="flex w-full flex-col gap-1.5 aspect-3/4 rounded-xl bg-white p-10 shadow">
+                    <div className="flex aspect-3/4 w-full flex-col gap-1.5 rounded-xl bg-white p-10 shadow">
                         <div className="relative flex w-full overflow-hidden rounded-xl">
                             <img src={konten.imageCover} alt="" className="z-0 aspect-3/3 object-cover object-center" />
                             <div className="absolute top-0 z-10 h-full w-full flex-1 bg-black/30 p-5 py-3">

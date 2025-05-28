@@ -27,13 +27,14 @@ class donasiController extends Controller
                 $totalDonasi = $donasiMasuk->sum('nominal') - $danaTersalur;
                 return Inertia::render('Pak Telang/Donasi/index', compact('donasiMasuk', 'Disalurkan', 'danaTersalur', 'totalDonasi'));
             } else {
-                $kontenDonasi = konten::where('category', 'Penyaluran Donasi')->orderBy('created_at', 'desc')->limit(3)->get();
-                return Inertia::render('Guest/Donasi/Donasi', compact('kontenDonasi'));
+                $donasi = donasi::where('status', 'paid')->orderBy('created_at', 'desc')->limit(5)->get()->toArray();
+                $kontenDonasi = konten::orderBy('created_at', 'desc')->limit(3)->get();
+                return Inertia::render('Guest/Donasi/Donasi', compact('kontenDonasi', 'donasi'));
             }
         }
+        $donasi = donasi::where('status', 'paid')->orderBy('created_at', 'desc')->limit(5)->get()->toArray();
         $kontenDonasi = konten::where('category', 'Penyaluran Donasi')->orderBy('created_at', 'desc')->limit(3)->get();
-
-        return Inertia::render('Guest/Donasi/Donasi', compact('kontenDonasi'));
+        return Inertia::render('Guest/Donasi/Donasi', compact('kontenDonasi', 'donasi'));
     }
 
     public function store(Request $request)
@@ -89,11 +90,15 @@ class donasiController extends Controller
     public function show($id)
     {
         $donasi = donasi::find($id);
-        $kontenDonasi = konten::where('category', 'Penyaluran Donasi')->orderBy('created_at', 'desc')->limit(3)->get();
-        if ($donasi->status === 'paid') {
-            return Inertia::render('Guest/Donasi/Donasi', compact('kontenDonasi'));
+        if ($donasi) {
+            $donasiMessage = donasi::where('status', 'paid')->orderBy('created_at', 'desc')->limit(5)->get()->toArray();
+            $kontenDonasi = konten::where('category', 'Penyaluran Donasi')->orderBy('created_at', 'desc')->limit(3)->get();
+            if ($donasi->status === 'paid') {
+                return Inertia::render('Guest/Donasi/Donasi', compact('kontenDonasi'));
+            }
+            return Inertia::render('Guest/Donasi/Donasi', ['snapToken' => $donasi->snapToken, 'kontenDonasi' => $kontenDonasi, 'donasi' => $donasiMessage]);
         }
-        return Inertia::render('Guest/Donasi/Donasi', ['snapToken' => $donasi->snapToken, 'kontenDonasi' => $kontenDonasi]);
+        abort(404);
     }
 
     public function penyaluranDonasi(Request $request)

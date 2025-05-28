@@ -119,6 +119,21 @@
     --sidebar-ring: oklch(0.87 0 0);
 }
 
+.animation-scroll {
+    animation: scroll 20s linear infinite
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(0%);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+
 .dark {
     --background: oklch(0.145 0 0);
     --foreground: oklch(0.985 0 0);
