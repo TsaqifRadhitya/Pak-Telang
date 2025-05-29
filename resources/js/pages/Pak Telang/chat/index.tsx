@@ -96,7 +96,7 @@ export default function Index({ messages }: { messages: chatType[] }) {
                                 disabled={processing}
                                 className="mb-2.5 min-h-0 min-w-20 cursor-pointer rounded-xl bg-[#5961BE] text-xs text-white ring ring-[#5961BE] hover:bg-transparent hover:font-semibold hover:text-[#5961BE] lg:min-w-32"
                             >
-                                Simpan
+                                Kirim
                             </Button>
                         </article>
                     </div>

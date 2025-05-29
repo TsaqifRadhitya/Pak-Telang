@@ -13,7 +13,7 @@ export default function Penyaluran() {
                 {kontenDonasi.map((konten: kontenType) => (
                     <div className="flex aspect-3/4 w-full flex-col gap-1.5 rounded-xl bg-white p-10 shadow">
                         <div className="relative flex w-full overflow-hidden rounded-xl">
-                            <img src={konten.imageCover} alt="" className="z-0 aspect-3/3 object-cover object-center" />
+                            <img src={konten.imageCover} alt="" className="z-0 aspect-3/2 w-full object-cover object-center" />
                             <div className="absolute top-0 z-10 h-full w-full flex-1 bg-black/30 p-5 py-3">
                                 <h1 className="z-10 text-xl font-semibold text-white">{konten.category}</h1>
                             </div>

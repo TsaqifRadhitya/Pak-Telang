@@ -1,11 +1,12 @@
 import { cn } from '@/lib/utils';
 import { messageType } from '@/pages/chat/roomChat';
 import { chatServices } from '@/services/roomChat';
-import { User } from '@/types';
-import { router } from '@inertiajs/react';
+import { SharedData, User } from '@/types';
+import { router, usePage } from '@inertiajs/react';
 import { useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import Heading from '../heading';
+import SweetAlert from '../sweatAlert';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
@@ -16,6 +17,11 @@ import IsTypingComponent from './isTypingAnimation';
 export const chatService = new chatServices();
 
 export default function RoomChat({ user, target, messages }: { user: User; target: User; messages: messageType[] }) {
+    const {
+        auth: {
+            user: { role },
+        },
+    } = usePage<SharedData>().props;
     const [messagesState, setMessages] = useState<messageType[]>(messages);
     const [images, setImages] = useState<File[]>();
     const [connected, setConnected] = useState<boolean>(false);
@@ -23,7 +29,9 @@ export default function RoomChat({ user, target, messages }: { user: User; targe
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const [isTyping, setTyping] = useState<boolean>(false);
     const inputArea = useRef<HTMLTextAreaElement>(null);
+    const firstinputArea = useRef<HTMLTextAreaElement>(null);
     const [inputMessage, setInputMessage] = useState<string>();
+    const [isDeleted, setDeleted] = useState<boolean>();
 
     const handleChangeInputImage = (param: FileList | null) => {
         if (param?.length && param.length > 0) {
@@ -73,19 +81,15 @@ export default function RoomChat({ user, target, messages }: { user: User; targe
                 created_at: new Date().toISOString(),
             };
             inputArea.current?.blur();
+            firstinputArea.current?.blur();
+            setInputMessage('');
             if (user.role === 'Pak Telang') {
                 router.post(route('admin.chat.store', { id: target.id }), payloadData, {
-                    onFinish: () => {
-                        setInputMessage('');
-                    },
                     async: true,
                 });
                 setMessages((prev) => [...prev]);
             } else {
                 router.post(route('mitra.chat.store', { id: target.id }), payloadData, {
-                    onFinish: () => {
-                        setInputMessage('');
-                    },
                     async: true,
                 });
             }
@@ -94,14 +98,27 @@ export default function RoomChat({ user, target, messages }: { user: User; targe
     };
 
     const removeMessage = (id: string) => {
+        if (messagesState.find((m) => m.id === id)) {
+            setDeleted(true);
+        }
         setMessages((prev) => [...prev].filter((mes) => mes.id != id));
     };
 
+    useEffect(() => {
+        if (isDeleted) {
+            const timeOut = setTimeout(() => {
+                setDeleted(false);
+            }, 2000);
+            return () => clearTimeout(timeOut);
+        }
+    }, [isDeleted]);
+
     return (
         <section className={cn('relative flex flex-1 flex-col p-10 pb-5', images && 'pb-0')}>
+            {isDeleted && <SweetAlert message="Pesan berhasil dihapus" type="Success" />}
             <div className="flex items-center gap-5 border-b-2 border-[#D9D9D9] px-2 pb-2.5">
                 <img src={target.profile_picture} className="aspect-square w-12 rounded-full object-cover object-center" alt="" />
-                <Heading title={target.name} />
+                <Heading title={role === 'Mitra' ? 'Pak Telang' : target.name} />
                 <Input
                     type="file"
                     className="hidden"
@@ -143,7 +160,7 @@ export default function RoomChat({ user, target, messages }: { user: User; targe
                                         newMessage();
                                     }
                                 }}
-                                ref={inputArea}
+                                ref={firstinputArea}
                                 onFocus={() => chatService.sendSignal(user.id.toString(), target.id, 'typing')}
                                 onBlur={() => chatService.sendSignal(user.id.toString(), target.id, 'leave')}
                                 className="max-h-20 min-h-10 flex-1 border-0 py-2.5 pr-10 text-[#3B387E] ring ring-[#3B387E] placeholder:text-[#3B387E] focus-visible:ring-3 focus-visible:ring-[#3B387E]"

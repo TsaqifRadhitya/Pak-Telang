@@ -23,7 +23,7 @@ export default function AdminPageLayout({ children, page }: Props) {
             {flash.error && <SweetAlert type="Error" message={flash.error} />}
             {flash.info && <SweetAlert type="Info" message={flash.info} />}
             {flash.warning && <SweetAlert type="Warning" message={flash.warning} />}
-            <Head title={page ?? "E-Wallet"} />
+            <Head title={page ?? 'E-Wallet'} />
             {/* Mobile Sidebar Overlay */}
             {hamburgerMenu && (
                 <div className="fixed inset-0 z-50 bg-black/50 lg:hidden" onClick={() => setHamburgerMenu(false)}>
@@ -65,21 +65,25 @@ export default function AdminPageLayout({ children, page }: Props) {
                 {/* Sidebar */}
                 <aside className="hidden flex-col gap-y-7 rounded-t-xl border border-b-0 border-[#AFB3FF] bg-white pt-5 pl-5 shadow-lg lg:flex lg:w-72">
                     <div className="mr-5 flex items-center gap-x-3">
-                        <img src={auth.user.profile_picture || window.location.origin + '/Asset/Icon/Profile.svg'} alt="Profile" className="aspect-square w-1/5 rounded-full shadow" />
+                        <img
+                            src={auth.user.profile_picture || window.location.origin + '/Asset/Icon/Profile.svg'}
+                            alt="Profile"
+                            className="aspect-square w-1/5 rounded-full shadow"
+                        />
                         <div>
                             <h2 className="text-md font-semibold">{auth.user.name}</h2>
                             <p className="text-xs">{auth.user.email}</p>
                         </div>
                     </div>
                     <ul className="flex flex-col gap-y-5">
-                    {['Dashboard', 'Transaksi', 'Produk', 'Mitra', 'Konten', 'Donasi', 'Chat', 'Profile'].map((item) => (
+                        {['Dashboard', 'Transaksi', 'Produk', 'Mitra', 'Konten', 'Donasi', 'Chat', 'Profile'].map((item) => (
                             <li
                                 key={item}
                                 className={cn(
                                     'flex cursor-pointer items-center gap-x-1.5 rounded-l-2xl border border-r-0 border-[#AFB3FF] py-1.5 pl-4',
                                     page === item ? 'bg-[#B9BDFF]' : 'hover:bg-[#B9BDFF]/25',
                                 )}
-                                onClick={() => page !== item && router.get(route(`admin.${item.toLowerCase()}`))}
+                                onClick={() => (page !== item || page === 'Chat') && router.get(route(`admin.${item.toLowerCase()}`))}
                             >
                                 <img
                                     src={`https://ybcvbaxalqwrvgemxdzc.supabase.co/storage/v1/object/public/paktelang/Asset/Icon/${item}.svg`}

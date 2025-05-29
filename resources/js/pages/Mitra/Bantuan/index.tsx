@@ -17,59 +17,46 @@ export default function BantuanPages({ lastChat }: { lastChat: chatType }) {
                         <Heading title="Chat" className="mb-5 text-xl" />
                         <ChatDisplayComponent lastChat={lastChat} type="Mitra" />
                     </div>
-                    <div className="flex-1 rounded-t-2xl p-5 ring ring-[#3B387E]">
+                    <div className="flex-1 rounded-t-2xl p-5 ring ring-[#3B387E] flex flex-col justify-center">
                         <Heading title="FAQ (Frequently Asked Questions)" className="text-center text-2xl" />
                         <HeadingSmall title="Pertanyaan seputar kemitraan Pak Telang" className="text-center text-sm" />
                         <div className="mt-5 h-[2.5px] bg-[#D9D9D9]"></div>
                         <div className="mt-5 flex flex-col gap-5 md:max-h-[40vh] md:overflow-y-auto md:p-1">
-                            <FAQComponent header="Lorem Ipsum is simply dummy text of the printing and typesetting industry.">
+                            <FAQComponent header="Bagaimana Cara Mendapatkan Notifikasi Pesanan ?">
                                 <p className="text-justify">
-                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
-                                    standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a
-                                    type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
-                                    remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing
-                                    Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions
-                                    of Lorem Ipsum.
+                                    Notifikasi pesanan biasanya terkirim otomatis ke alamat email akun Anda. Namun, jika tidak muncul di kotak masuk,
+                                    kemungkinan besar masuk ke folder spam atau promosi. Solusi yang bisa anda lakukan adalah periksa folder spam pada
+                                    email Anda lalu tandai email dari kami sebagai "bukan spam". Jika hal tersebut sudah dilakukan, maka secara
+                                    otomatis anda akan mendapatkan notifikasi melalui email apabila mendapatkan pesanan.
                                 </p>
                             </FAQComponent>
-                            <FAQComponent header="Lorem Ipsum is simply dummy text of the printing and typesetting industry.">
+                            <FAQComponent header="Bagaimana Cara Mencairkan Pendapatan Saya ?">
                                 <p className="text-justify">
-                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
-                                    standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a
-                                    type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
-                                    remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing
-                                    Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions
-                                    of Lorem Ipsum.
+                                    Pencairan pendapatan dapat dilakukan apabila anda telah menyelesaikan transaksi. Anda dapat mencairkannya melalui
+                                    halaman dashboard, lalu klik lihat e-wallet. Apabila anda memiliki saldo e-wallet, maka anda dapat mengklik tarik
+                                    saldo dan memilih metode pencairannya. Pencairan ini akan ditindak lanjuti apabila telah mendapat persetujuan dari
+                                    admin. Anda dapat memantaunya secara berkala melalui fitur e-wallet pada dashboard.
                                 </p>
                             </FAQComponent>
-                            <FAQComponent header="Lorem Ipsum is simply dummy text of the printing and typesetting industry.">
+                            <FAQComponent header="Apakah saya harus memesan bahan baku secara berkala ?">
                                 <p className="text-justify">
-                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
-                                    standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a
-                                    type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
-                                    remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing
-                                    Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions
-                                    of Lorem Ipsum.
+                                    Anda tidak perlu memesan bahan baku secara berkala. Silahkan memesan bahan baku apabila stok bahan baku anda
+                                    menipis atau anda memerlukan lebih banyak bahan baku. Namun tetap pastikan anda mematuhi aturan yang telah
+                                    tertulis pada MoU.
                                 </p>
-                            </FAQComponent>{' '}
-                            <FAQComponent header="Lorem Ipsum is simply dummy text of the printing and typesetting industry.">
+                            </FAQComponent>
+                            <FAQComponent header="Apakah ada ketentuan metode pengiriman pesanan ke pembeli ?">
                                 <p className="text-justify">
-                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
-                                    standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a
-                                    type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
-                                    remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing
-                                    Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions
-                                    of Lorem Ipsum.
+                                    Tidak ada. Anda bebas menentukan metode pengiriman yang digunakan. Diperkenankan untuk mengantar produk secara
+                                    langsung kepada pembeli atau bisa juga menggunakan jasa ojek. Pastikan anda mengantar produk hingga ke tangan
+                                    pembeli dengan baik.
                                 </p>
-                            </FAQComponent>{' '}
-                            <FAQComponent header="Lorem Ipsum is simply dummy text of the printing and typesetting industry.">
+                            </FAQComponent>
+                            <FAQComponent header="Apakah saya bisa menerima pesanan di luar kota saya tinggal ?">
                                 <p className="text-justify">
-                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
-                                    standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a
-                                    type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
-                                    remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing
-                                    Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions
-                                    of Lorem Ipsum.
+                                    Tidak bisa. Tim Pak Telang ingin memastikan bahwa produk yang diterima pembeli dalam kondisi terbaik dan sehat
+                                    untuk dikonsumsi. Kami khawatir produk dapat mengalami kerusalann apabila didistribusikan di luar kota tempat anda
+                                    tinggal.
                                 </p>
                             </FAQComponent>
                         </div>

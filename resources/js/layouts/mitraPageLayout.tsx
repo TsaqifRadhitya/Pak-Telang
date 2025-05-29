@@ -80,7 +80,7 @@ export default function MitraPageLayout({ children, page }: Props) {
                                     'flex cursor-pointer items-center gap-x-1.5 rounded-l-2xl border border-r-0 border-[#AFB3FF] py-1.5 pl-4',
                                     page === item ? 'bg-[#B9BDFF]' : 'hover:bg-[#B9BDFF]/25',
                                 )}
-                                onClick={() => page !== item && router.get(route(`mitra.${item.toLowerCase()}`))}
+                                onClick={() => page !== item  && router.get(route(`mitra.${item.toLowerCase()}`))}
                             >
                                 <img
                                     src={`https://ybcvbaxalqwrvgemxdzc.supabase.co/storage/v1/object/public/paktelang/Asset/Icon/${item}.svg`}

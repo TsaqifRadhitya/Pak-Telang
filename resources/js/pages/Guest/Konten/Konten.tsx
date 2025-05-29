@@ -59,7 +59,7 @@ export default function KontenPage() {
                 <Heading title="Konten Kami" className="text-2xl font-bold" />
                 <HeadingSmall
                     className="text-lg font-semibold"
-                    title="Lorem Ipsum is simply dummy text of the printing and typesetting industry also the leap into electronic"
+                    title="Di sini Anda dapat menemukan informasi mengenai produk Pak Telang, berbagai kegiatan yang kami lakukan, serta laporan penyaluran donasi secara transparan dan berkala"
                 />
                 <form
                     onSubmit={(e) => {
@@ -93,7 +93,7 @@ export default function KontenPage() {
                             kontens.data.map((konten: kontenType) => (
                                 <div className="flex w-full flex-col gap-1.5 rounded-xl bg-white p-10 shadow">
                                     <div className="relative flex w-full overflow-hidden rounded-xl">
-                                        <img src={konten.imageCover} alt="" className="z-0 aspect-3/3 object-cover object-center" />
+                                        <img src={konten.imageCover} alt="" className="z-0 w-full aspect-3/2 object-cover object-center" />
                                         <div className="absolute top-0 z-10 h-full w-full flex-1 bg-black/30 p-5 py-3">
                                             <h1 className="z-10 text-xl font-semibold text-white">{konten.category}</h1>
                                         </div>
@@ -109,7 +109,7 @@ export default function KontenPage() {
                                     <pre className="lg:text-md line-clamp-5 font-sans text-xs break-words whitespace-pre-wrap text-black md:text-sm">
                                         {konten.content}
                                     </pre>
-                                    <div className="mt-5 flex gap-2">
+                                    <div className="mt-auto flex gap-2">
                                         <Link className="cursor-pointer font-semibold" href={route('konten.show', { id: konten.id })}>
                                             ReadMore
                                         </Link>
@@ -124,7 +124,7 @@ export default function KontenPage() {
                         <Heading title="Loading...." className="mx-auto w-fit" />
                     )}
                 </article>
-                <SinglePaginate data={kontens} className='mt-5' value="kontens"/>
+                <SinglePaginate data={kontens} className="mt-5" value="kontens" />
             </section>
         </LandingPageLayout>
     );

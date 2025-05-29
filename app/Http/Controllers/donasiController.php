@@ -107,6 +107,6 @@ class donasiController extends Controller
             'jumlahProduk' => $request->jumlahProduk,
             'nominal' => $request->nominal
         ]);
-        return back()->with('success', 'Berhasil Menyalurkan Donasi dengan Nominal ' . Number::format($request->nominal) . ".");
+        return back()->with('success', 'Donasi berhasil disalurkan Anda dapat membuat konten dari penyaluran ini');
     }
 }

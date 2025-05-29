@@ -62,7 +62,7 @@ export default function BubbleChat({ message, removeMessage }: { message: messag
                     {message.image!.length > 1 && (
                         <div className="mt-auto mb-2.5 flex items-center justify-center gap-2.5">
                             <Button
-                                className="h-10 min-h-0 cursor-pointer rounded-full px-4 ring ring-[#3B387E] hover:bg-[#3B387E] hover:text-white disabled:cursor-default disabled:opacity-50"
+                                className="h-10 min-h-0 cursor-pointer rounded-full px-4 ring ring-[#3B387E] hover:bg-[#3B387E] hover:text-white disabled:cursor-default disabled:opacity-50 lg:hidden"
                                 onClick={() => setIndexPhoto((prev) => prev - 1)}
                                 disabled={indexPhoto === 1}
                             >
@@ -82,7 +82,7 @@ export default function BubbleChat({ message, removeMessage }: { message: messag
                                 </div>
                             ))}
                             <Button
-                                className="h-10 min-h-0 cursor-pointer rounded-full px-4 ring ring-[#3B387E] hover:bg-[#3B387E] hover:text-white disabled:cursor-default disabled:opacity-50"
+                                className="h-10 min-h-0 cursor-pointer rounded-full px-4 ring ring-[#3B387E] hover:bg-[#3B387E] hover:text-white disabled:cursor-default disabled:opacity-50 lg:hidden"
                                 onClick={() => setIndexPhoto((prev) => prev + 1)}
                                 disabled={indexPhoto === message.image!.length}
                             >
@@ -154,7 +154,7 @@ export default function BubbleChat({ message, removeMessage }: { message: messag
                             message.from === user.id && 'border-[#048730]/33',
                         )}
                     >
-                        <img src={message.image[0]} className="w-full max-h-96 mx-auto" />
+                        <img src={message.image[0]} className="mx-auto max-h-96 w-full" />
                         {message.image.length > 1 && (
                             <h1
                                 className={cn(

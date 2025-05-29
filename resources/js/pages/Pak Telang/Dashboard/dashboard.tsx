@@ -77,7 +77,7 @@ export default function DashboardAdminPage({
                     <h1 className="text-xl font-semibold">Dashboard</h1>
                 </div>
                 <div className="relative flex-1 space-y-5 p-5 lg:max-h-[80vh] lg:overflow-y-auto lg:p-10 lg:pt-5 lg:pb-1">
-                    <div className="flex flex-col justify-between gap-10 lg:flex-row">
+                    <div className="flex flex-col justify-between gap-5 lg:gap-10 lg:flex-row">
                         <EWallet type="Admin" saldo={saldo} className="flex h-auto w-full flex-col justify-center" />
                         <section className="w-full space-y-1 rounded-lg p-5 text-[#3B387E] ring ring-[#3B387E]">
                             <Heading className="text-md font-semibold" title="Produk Terjual" />

@@ -126,9 +126,10 @@ class messageController extends Controller
         Message::destroy($id);
     }
 
-    public function broadcast(Request $request){
+    public function broadcast(Request $request)
+    {
         $mitra = User::whereHas('mitra')->get('email')->map(fn($mitra) => $mitra->email)->toArray();
-        Mail::bcc($mitra)->send(new broadcastMail($request->title,$request->pesan));
-        return back()->with('success','Berhasil Mengirimkan Pesan Broadcast');
+        Mail::bcc($mitra)->send(new broadcastMail($request->title, $request->pesan));
+        return back()->with('success', 'Berhasil Mengirimkan Pesan Broadcast');
     }
 }
