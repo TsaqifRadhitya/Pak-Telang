@@ -52,7 +52,7 @@ export default function Index({
     useEffect(() => {
         clearErrors();
         reset();
-    }, [modal, clearErrors, errors,reset]);
+    }, [modal, clearErrors, errors, reset]);
 
     const { lg } = useCurrentMediaQuerry();
 
@@ -123,7 +123,7 @@ export default function Index({
                 <div className="flex items-center border-b-[1px] border-[#AFB3FF] p-5 md:px-10 md:py-5">
                     <h1 className="text-xl font-semibold">Donasi</h1>
                 </div>
-                <div className="flex flex-1 grid-rows-8 flex-col gap-x-5 gap-y-7.5 p-10 lg:grid lg:grid-cols-2 lg:grid-rows-4 lg:pb-0">
+                <div className="flex flex-1 grid-rows-8 flex-col gap-x-5 gap-y-7.5 p-5 lg:grid lg:grid-cols-2 lg:grid-rows-4 lg:p-10 lg:pb-0">
                     <div className="flex items-center justify-between rounded-lg p-5 py-3 ring ring-[#3B387E]">
                         <div className="flex w-full flex-col justify-between gap-2.5 lg:w-fit">
                             <Heading title="Total Donasi" className="text-sm lg:text-lg" />
