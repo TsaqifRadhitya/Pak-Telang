@@ -3,7 +3,7 @@ import { messageType } from '@/pages/chat/roomChat';
 import { chatServices } from '@/services/roomChat';
 import { SharedData, User } from '@/types';
 import { router, usePage } from '@inertiajs/react';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import Heading from '../heading';
 import SweetAlert from '../sweatAlert';
@@ -59,18 +59,6 @@ export default function RoomChat({ user, target, messages }: { user: User; targe
             setTyping(false);
         }
     };
-
-    useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, [messagesState]);
-
-    useEffect(() => {
-        if (!connected) {
-            chatService.activeRoomChat(user.id, target.id, removeMessage, handleNewChat, handelSignal);
-            setConnected(true);
-        }
-    }, [user, target]);
-
     const newMessage = () => {
         if (inputMessage) {
             const payloadData: messageType = {
@@ -97,12 +85,15 @@ export default function RoomChat({ user, target, messages }: { user: User; targe
         }
     };
 
-    const removeMessage = (id: string) => {
-        if (messagesState.find((m) => m.id === id)) {
-            setDeleted(true);
-        }
-        setMessages((prev) => [...prev].filter((mes) => mes.id != id));
-    };
+    const removeMessage = useCallback(
+        (id: string) => {
+            if (messagesState.find((m) => m.id === id)) {
+                setDeleted(true);
+            }
+            setMessages((prev) => [...prev].filter((mes) => mes.id != id));
+        },
+        [messagesState],
+    );
 
     useEffect(() => {
         if (isDeleted) {
@@ -111,7 +102,18 @@ export default function RoomChat({ user, target, messages }: { user: User; targe
             }, 2000);
             return () => clearTimeout(timeOut);
         }
-    }, [isDeleted]);
+    }, [isDeleted, connected, removeMessage]);
+
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [messagesState]);
+
+    useEffect(() => {
+        if (!connected) {
+            chatService.activeRoomChat(user.id, target.id, removeMessage, handleNewChat, handelSignal);
+            setConnected(true);
+        }
+    }, [user, target, connected, removeMessage]);
 
     return (
         <section className={cn('relative flex flex-1 flex-col p-10 pb-5', images && 'pb-0')}>

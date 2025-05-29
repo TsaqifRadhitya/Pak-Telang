@@ -65,7 +65,7 @@ export default function DashboardMitraPage({
                 profit: thisMonthIncome >= lastMonthIncome,
             },
         };
-    }, [chart]);
+    }, [lastMonthIncome, thisMonthIncome]);
 
     const pengeluaran = useMemo(() => {
         return {

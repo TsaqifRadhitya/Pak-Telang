@@ -52,7 +52,7 @@ export default function Index({
     useEffect(() => {
         clearErrors();
         reset();
-    }, [modal]);
+    }, [modal, clearErrors, errors,reset]);
 
     const { lg } = useCurrentMediaQuerry();
 
@@ -156,7 +156,7 @@ export default function Index({
                         <div className="max-h-[55vh] overflow-y-auto lg:max-h-[45vh]">
                             {donasiMasuk.map((i) => (
                                 <div key={i.id}>
-                                    <div className="flex flex-col items-center gap-1 lg:gap-0 justify-between px-3 py-4 lg:flex-row">
+                                    <div className="flex flex-col items-center justify-between gap-1 px-3 py-4 lg:flex-row lg:gap-0">
                                         <div className="flex w-full flex-col gap-1 lg:w-fit lg:gap-2.5">
                                             <h1 className="text-sm font-semibold lg:text-base">{i.name ?? 'Anonim'}</h1>
                                             <p className="text-[0.5rem] lg:text-sm">{i.email} Produk</p>

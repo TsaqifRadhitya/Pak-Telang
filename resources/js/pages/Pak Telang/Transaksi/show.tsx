@@ -34,7 +34,7 @@ export default function TransactionShow({
         if (!!resi?.length && err) {
             setErr(undefined);
         }
-    }, [resi]);
+    }, [resi, err]);
     const handleSubmit = async () => {
         const routeName = 'admin.transaksi.update';
         if (transaction.type === 'Bahan Baku') {

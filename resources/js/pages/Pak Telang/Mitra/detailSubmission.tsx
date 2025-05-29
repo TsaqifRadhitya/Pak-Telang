@@ -7,24 +7,23 @@ import { mouEditor } from '@/utils/mouEditor';
 import { router, usePage } from '@inertiajs/react';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { renderAsync } from 'docx-preview';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Heading from '../../../components/heading';
 import HeadingSmall from '../../../components/heading-small';
 
 export default function DetailSubmission() {
-
     const { mitra } = usePage<{ mitra: mitra }>().props;
 
-    const loadMou = () => {
+    const loadMou = useCallback(() => {
         document.querySelector('body')?.classList.add('overflow-y-hidden');
         if (mitra.mou) return;
         mouEditor.replacer(mitra).then((ress) => {
             renderAsync(ress, document.getElementById('docpreview') as HTMLElement);
         });
-    };
+    }, [mitra]);
     useEffect(() => {
         loadMou();
-    }, []);
+    }, [loadMou]);
 
     const [modal, setModal] = useState<boolean>(false);
     const inputText = useRef<HTMLTextAreaElement>(null);

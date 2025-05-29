@@ -10,8 +10,8 @@ import Heading from '../../../components/heading';
 
 export type chartType = {
     bulan: string;
-    "Produk Jadi": number;
-    "Bahan Baku": number;
+    'Produk Jadi': number;
+    'Bahan Baku': number;
 };
 
 export type periodicType = {
@@ -47,7 +47,7 @@ export default function DashboardAdminPage({
                 profit: thisMonthIncome >= lastMonthIncome,
             },
         };
-    }, [chart]);
+    }, [lastMonthIncome, thisMonthIncome]);
 
     const productSoldAmount = useMemo(() => {
         return {
@@ -77,7 +77,7 @@ export default function DashboardAdminPage({
                     <h1 className="text-xl font-semibold">Dashboard</h1>
                 </div>
                 <div className="relative flex-1 space-y-5 p-5 lg:max-h-[80vh] lg:overflow-y-auto lg:p-10 lg:pt-5 lg:pb-1">
-                    <div className="flex flex-col justify-between gap-5 lg:gap-10 lg:flex-row">
+                    <div className="flex flex-col justify-between gap-5 lg:flex-row lg:gap-10">
                         <EWallet type="Admin" saldo={saldo} className="flex h-auto w-full flex-col justify-center" />
                         <section className="w-full space-y-1 rounded-lg p-5 text-[#3B387E] ring ring-[#3B387E]">
                             <Heading className="text-md font-semibold" title="Produk Terjual" />
@@ -114,7 +114,7 @@ export default function DashboardAdminPage({
                                 <Line type="monotone" dataKey="Bahan Baku" stroke="#82ca9d" />
                             </LineChart>
                         </ResponsiveContainer>
-                        <section className="mt-2.5 ml-2.5 flex gap-x-5 w-full text-black">
+                        <section className="mt-2.5 ml-2.5 flex w-full gap-x-5 text-black">
                             <div className="flex items-center gap-x-2.5 text-[#8784D2]">
                                 <div className="h-1.5 w-6 bg-[#8784D2]"></div>
                                 <h4>Produk Jadi</h4>

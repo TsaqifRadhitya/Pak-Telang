@@ -79,9 +79,8 @@ export default function Saldo() {
     };
 
     useEffect(() => {
-        // reset('ownerName', 'number', 'provider');
         clearErrors('ownerName', 'number', 'provider');
-    }, [data.type]);
+    }, [data.type, clearErrors]);
     return (
         <div className="space-y-1 rounded-lg border border-[#3B387E] p-5 py-2.5">
             {konfirmasi && (

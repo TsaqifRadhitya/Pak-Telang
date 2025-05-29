@@ -10,7 +10,7 @@ export default function LandingPage({ reset }: { reset: boolean }) {
         if (reset) {
             window.localStorage.removeItem('transactionItem');
         }
-    }, []);
+    }, [reset]);
     return (
         <Layout page="Home">
             <Welcome />
