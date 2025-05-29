@@ -13,7 +13,7 @@ export default function MoUWaitingApprovement() {
         fetch(mitra.mou).then((ress) => {
             renderAsync(ress.arrayBuffer(), document.getElementById('docpreview') as HTMLElement);
         });
-    }, [mitra.mou]);
+    }, []);
 
     return (
         <CustomerPageLayout page="Pengajuan Mitra">

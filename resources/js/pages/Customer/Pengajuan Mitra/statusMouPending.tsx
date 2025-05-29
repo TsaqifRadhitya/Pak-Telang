@@ -24,7 +24,7 @@ export default function MouPending() {
         mouEditor.replacer(mitra).then((ress) => {
             renderAsync(ress, document.getElementById('docpreview') as HTMLElement);
         });
-    }, [mitra]);
+    }, []);
 
     const handleOpen = () => {
         inputFile.current?.click();

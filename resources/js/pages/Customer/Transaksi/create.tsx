@@ -8,7 +8,7 @@ import { detailTransactionType } from '@/types/detailTransaction';
 import { productType } from '@/types/product';
 import { currencyConverter } from '@/utils/currencyConverter';
 import { router, usePage } from '@inertiajs/react';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Heading from '../../../components/heading';
 import HeadingSmall from '../../../components/heading-small';
 
@@ -39,54 +39,51 @@ export default function TransactionCreate() {
         }
     };
 
-    const handleChangeAmount = useCallback(
-        (params: 'Increment' | 'decrement', id: string) => {
-            setData((prev) => {
-                const existing = prev?.find((item) => item.productId === id);
-                const product = products.find((p) => p.id === id);
-                if (!product) return prev;
-                if (!existing && product.productStock > 0) {
-                    return [
-                        ...(prev ?? []),
-                        {
-                            productId: product.id,
-                            productName: product.productName,
-                            amount: 1,
-                            subTotal: product.productPrice,
-                        },
-                    ];
+    const handleChangeAmount = (params: 'Increment' | 'decrement', id: string) => {
+        setData((prev) => {
+            const existing = prev?.find((item) => item.productId === id);
+            const product = products.find((p) => p.id === id);
+            if (!product) return prev;
+            if (!existing && product.productStock > 0) {
+                return [
+                    ...(prev ?? []),
+                    {
+                        productId: product.id,
+                        productName: product.productName,
+                        amount: 1,
+                        subTotal: product.productPrice,
+                    },
+                ];
+            }
+
+            return prev?.map((item) => {
+                if (item.productId !== id) return item;
+
+                const currentAmount = item.amount;
+                const pricePerUnit = item.subTotal / currentAmount;
+
+                if (params === 'Increment' && currentAmount < product.productStock) {
+                    const newAmount = currentAmount + 1;
+                    return {
+                        ...item,
+                        amount: newAmount,
+                        subTotal: pricePerUnit * newAmount,
+                    };
                 }
 
-                return prev?.map((item) => {
-                    if (item.productId !== id) return item;
+                if (params === 'decrement' && currentAmount > 1) {
+                    const newAmount = currentAmount - 1;
+                    return {
+                        ...item,
+                        amount: newAmount,
+                        subTotal: pricePerUnit * newAmount,
+                    };
+                }
 
-                    const currentAmount = item.amount;
-                    const pricePerUnit = item.subTotal / currentAmount;
-
-                    if (params === 'Increment' && currentAmount < product.productStock) {
-                        const newAmount = currentAmount + 1;
-                        return {
-                            ...item,
-                            amount: newAmount,
-                            subTotal: pricePerUnit * newAmount,
-                        };
-                    }
-
-                    if (params === 'decrement' && currentAmount > 1) {
-                        const newAmount = currentAmount - 1;
-                        return {
-                            ...item,
-                            amount: newAmount,
-                            subTotal: pricePerUnit * newAmount,
-                        };
-                    }
-
-                    return item;
-                });
+                return item;
             });
-        },
-        [products],
-    );
+        });
+    };
 
     useEffect(() => {
         if (data?.length && data.length > 0) {
@@ -136,12 +133,12 @@ export default function TransactionCreate() {
                 setErr(true);
             }
         }
-    }, [handleChangeAmount, products, reset, selectedProduct]);
+    }, []);
     return (
         <LandingPageLayout>
             <section className="flex flex-col bg-[#EBEFFF] p-5 pt-20 text-[#3B387E] md:px-10 lg:min-h-screen">
                 <Heading title="Transaksi" disableMb className="text-2xl lg:text-3xl" />
-                <div className="mt-5 flex flex-1 flex-col-reverse gap-5 px-5 lg:flex-row lg:gap-16">
+                <div className="mt-5 flex flex-1 flex-col-reverse gap-5 lg:gap-16 px-5 lg:flex-row">
                     {err && (
                         <SweetAlert
                             message={`Stock Product ${products.find((item) => item.id === selectedProduct)?.productName} Tidak Tersedia`}
@@ -150,7 +147,7 @@ export default function TransactionCreate() {
                     )}
                     <section
                         className={cn(
-                            'fixed bottom-0 left-1/2 z-[999] flex w-[95%] -translate-x-1/2 flex-col justify-between rounded-t-2xl border-2 border-b-0 border-[#5961BE] bg-white p-5 shadow lg:hidden',
+                            'fixed bottom-0 shadow left-1/2 z-[999] flex w-[95%] -translate-x-1/2 flex-col justify-between rounded-t-2xl border-2 border-b-0 border-[#5961BE] bg-white p-5 lg:hidden',
                             open && 'h-2/3',
                         )}
                     >
@@ -317,7 +314,7 @@ export default function TransactionCreate() {
                     <div className="flex h-fit flex-3/5 flex-col gap-7 lg:min-h-[80vh]">
                         <div className="flex flex-col gap-1.5 rounded-xl bg-white p-5 shadow-sm">
                             <div className="flex justify-between">
-                                <HeadingSmall title="Alamat Tujuan" className="font-semibold lg:text-2xl" />
+                                <HeadingSmall title="Alamat Tujuan" className="lg:text-2xl font-semibold" />
                                 <svg
                                     onClick={() => router.get(route('customer.profile.edit'), { fts: true })}
                                     className="cursor-pointer"
@@ -352,8 +349,8 @@ export default function TransactionCreate() {
                                     />
                                 </svg>
                             </div>
-                            <h1 className="text-xs lg:text-base">{`${address.address}, ${address.districtName}, ${address.cityName} ${address.province}, ${address.postalCode}`}</h1>
-                            <p className="text-sm text-[#FFA114] lg:text-base">Note: Alamat dapat diubah melalui profil anda</p>
+                            <h1 className='text-xs lg:text-base'>{`${address.address}, ${address.districtName}, ${address.cityName} ${address.province}, ${address.postalCode}`}</h1>
+                            <p className="text-[#FFA114] text-sm lg:text-base">Note: Alamat dapat diubah melalui profil anda</p>
                         </div>
                         <div className="hidden h-fit flex-6/7 flex-col rounded-xl bg-white p-5 text-lg lg:flex">
                             <table className="w-full">

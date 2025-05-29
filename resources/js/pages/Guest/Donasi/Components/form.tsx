@@ -6,7 +6,7 @@ import { SharedData } from '@/types';
 import { donasiType } from '@/types/donasi';
 import { currencyConverter } from '@/utils/currencyConverter';
 import { router, useForm, usePage } from '@inertiajs/react';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { z } from 'zod';
 
 const inputValidation = z.object({
@@ -23,7 +23,24 @@ export default function Form() {
     const { data, errors, setData, setError, clearErrors } = useForm<donasiType>();
     const [isAnonym, setAnonym] = useState<boolean>(false);
 
-    const handlePayment = useCallback(() => {
+    useEffect(() => {
+        if (auth.user) {
+            const userData = auth.user;
+            setData({
+                name: userData.name,
+                email: userData.email,
+                nominal: undefined,
+            });
+        }
+    }, [auth.user]);
+
+    useEffect(() => {
+        if (snapToken) {
+            handlePayment();
+        }
+    }, [snapToken]);
+
+    const handlePayment = () => {
         const script = document.createElement('script');
         const snapSrcUrl = 'https://app.sandbox.midtrans.com/snap/snap.js';
         script.src = snapSrcUrl;
@@ -42,7 +59,7 @@ export default function Form() {
         };
 
         document.body.appendChild(script);
-    }, [snapToken]);
+    };
 
     const handleSubmit = () => {
         clearErrors();
@@ -74,27 +91,10 @@ export default function Form() {
             { preserveScroll: true },
         );
     };
-
-    useEffect(() => {
-        if (auth.user) {
-            const userData = auth.user;
-            setData({
-                name: userData.name,
-                email: userData.email,
-                nominal: undefined,
-            });
-        }
-    }, [auth.user, setData]);
-
-    useEffect(() => {
-        if (snapToken) {
-            handlePayment();
-        }
-    }, [snapToken, handlePayment]);
     return (
-        <div id="donasiForm" className="flex w-full flex-col justify-center space-y-5 rounded-xl bg-white p-10 shadow-sm">
+        <div id='donasiForm' className="flex w-full flex-col justify-center space-y-5 rounded-xl bg-white p-10 shadow-sm">
             <div className="mx-auto max-w-xs">
-                <Heading title="Form Donasi" className="self-center px-5 text-center font-black lg:text-3xl" />
+                <Heading title="Form Donasi" className="self-center px-5 text-center lg:text-3xl font-black" />
                 <div className="mt-1 h-1.5 rounded-full bg-[#B9BDFF]"></div>
             </div>
             <div className="w-full space-y-5">

@@ -9,11 +9,11 @@ import { useEffect, useRef, useState } from 'react';
 export type messageType = {
     id?: string;
     from: string;
-    to: string;
+to: string;
     message: string;
     isReaded?: boolean;
     image?: string[];
-    isSending?: boolean;
+    isSending? : boolean
     created_at?: string;
 };
 
@@ -42,13 +42,13 @@ export default function ChatRoom() {
             chatService.activeRoomChat(auth.user.id, target.id, handleDelete, handleNewChat, handelSignal);
             setOnetime(true);
         }
-    }, [auth.user.id, target.id, onetime]);
+    }, [auth.user.id, target.id]);
 
     useEffect(() => {
         return () => {
             chatService.sendSignal(auth.user.id.toString(), target.id, 'typing');
         };
-    }, [auth.user.id, target.id]);
+    }, []);
 
     const handelSignal = (type: 'typing' | 'leave') => {
         if (type === 'typing') {
