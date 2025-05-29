@@ -12,7 +12,7 @@ import { currencyConverter } from '@/utils/currencyConverter';
 import { weightConverter } from '@/utils/weightConverter';
 import { router } from '@inertiajs/react';
 import axios from 'axios';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { detailTransactionType } from '../../../types/detailTransaction';
 
 export default function OrderBahanCreate({
@@ -31,8 +31,39 @@ export default function OrderBahanCreate({
     const [err, setErr] = useState<boolean>();
     const [selectedKurir, setSelectedKurir] = useState<rajaOngkirType>();
     const [ongkirProvider, setOngkirProvider] = useState<rajaOngkirType[]>();
+    useEffect(() => {
+        const transactionItemSaved = window.localStorage.getItem('transactionItem');
+        if (transactionItemSaved && selectedProduct) {
+            setTransactionItem(JSON.parse(transactionItemSaved));
+            handleChangeAmount('Increment', selectedProduct);
+            return;
+        }
 
-    const handleFetchKurir = useCallback(async () => {
+        if (selectedProduct) {
+            handleChangeAmount('Increment', selectedProduct);
+            handleFetchKurir();
+            return;
+        }
+
+        if (transactionItemSaved) {
+            setTransactionItem(JSON.parse(transactionItemSaved));
+            return;
+        }
+    }, []);
+
+    useEffect(() => {
+        if (selectedKurir && err) {
+            setErr(false);
+        }
+    }, [selectedKurir]);
+
+    useEffect(() => {
+        if (transactionItem?.length) {
+            window.localStorage.setItem('transactionItem', JSON.stringify(transactionItem));
+        }
+    }, [transactionItem]);
+
+    const handleFetchKurir = async () => {
         if (transactionItem && outDated && !isFetching) {
             setFetching(true);
             const rawWeight: weightType[] = transactionItem.map((item) => {
@@ -54,7 +85,7 @@ export default function OrderBahanCreate({
             setFetching(false);
             setOutDated(false);
         }
-    }, [isFetching, outDated, products, transactionItem]);
+    };
 
     const handleDeleteTransactionItem = (params: string) => {
         setOutDated(true);
@@ -82,89 +113,54 @@ export default function OrderBahanCreate({
         setErr(true);
     };
 
-    const handleChangeAmount = useCallback(
-        (params: 'Increment' | 'decrement', id: string) => {
-            setOutDated(true);
-            setOngkirProvider(undefined);
-            setSelectedKurir(undefined);
-            setTransactionItem((prev) => {
-                const existing = prev?.find((item) => item.productId === id);
-                const product = products.find((p) => p.id === id);
-                if (!product) return prev;
-                if (!existing) {
-                    return [
-                        ...(prev ?? []),
-                        {
-                            productId: product.id,
-                            productName: product.productName,
-                            amount: 1,
-                            subTotal: product.productPrice,
-                        },
-                    ];
+    const handleChangeAmount = (params: 'Increment' | 'decrement', id: string) => {
+        setOutDated(true);
+        setOngkirProvider(undefined);
+        setSelectedKurir(undefined);
+        setTransactionItem((prev) => {
+            const existing = prev?.find((item) => item.productId === id);
+            const product = products.find((p) => p.id === id);
+            if (!product) return prev;
+            if (!existing) {
+                return [
+                    ...(prev ?? []),
+                    {
+                        productId: product.id,
+                        productName: product.productName,
+                        amount: 1,
+                        subTotal: product.productPrice,
+                    },
+                ];
+            }
+
+            return prev?.map((item) => {
+                if (item.productId !== id) return item;
+
+                const currentAmount = item.amount;
+                const pricePerUnit = item.subTotal / currentAmount;
+
+                if (params === 'Increment' && currentAmount < product.productStock) {
+                    const newAmount = currentAmount + 1;
+                    return {
+                        ...item,
+                        amount: newAmount,
+                        subTotal: pricePerUnit * newAmount,
+                    };
                 }
 
-                return prev?.map((item) => {
-                    if (item.productId !== id) return item;
+                if (params === 'decrement' && currentAmount > 1) {
+                    const newAmount = currentAmount - 1;
+                    return {
+                        ...item,
+                        amount: newAmount,
+                        subTotal: pricePerUnit * newAmount,
+                    };
+                }
 
-                    const currentAmount = item.amount;
-                    const pricePerUnit = item.subTotal / currentAmount;
-
-                    if (params === 'Increment' && currentAmount < product.productStock) {
-                        const newAmount = currentAmount + 1;
-                        return {
-                            ...item,
-                            amount: newAmount,
-                            subTotal: pricePerUnit * newAmount,
-                        };
-                    }
-
-                    if (params === 'decrement' && currentAmount > 1) {
-                        const newAmount = currentAmount - 1;
-                        return {
-                            ...item,
-                            amount: newAmount,
-                            subTotal: pricePerUnit * newAmount,
-                        };
-                    }
-
-                    return item;
-                });
+                return item;
             });
-        },
-        [products],
-    );
-
-    useEffect(() => {
-        const transactionItemSaved = window.localStorage.getItem('transactionItem');
-        if (transactionItemSaved && selectedProduct) {
-            setTransactionItem(JSON.parse(transactionItemSaved));
-            handleChangeAmount('Increment', selectedProduct);
-            return;
-        }
-
-        if (selectedProduct) {
-            handleChangeAmount('Increment', selectedProduct);
-            handleFetchKurir();
-            return;
-        }
-
-        if (transactionItemSaved) {
-            setTransactionItem(JSON.parse(transactionItemSaved));
-            return;
-        }
-    }, [handleChangeAmount, handleFetchKurir, selectedProduct]);
-
-    useEffect(() => {
-        if (selectedKurir && err) {
-            setErr(false);
-        }
-    }, [selectedKurir, err]);
-
-    useEffect(() => {
-        if (transactionItem?.length) {
-            window.localStorage.setItem('transactionItem', JSON.stringify(transactionItem));
-        }
-    }, [transactionItem]);
+        });
+    };
 
     return (
         <MitraPageLayout page="Order Bahan">
@@ -317,7 +313,7 @@ export default function OrderBahanCreate({
                                                 <p className="rounded px-2 py-1 text-center text-xs lg:text-base">{item.productName}</p>
                                             </td>
                                             <td className="col-span-3 text-center">
-                                                <div className="mx-auto flex items-center justify-between overflow-hidden rounded-full px-5 ring ring-[#3B387E] lg:w-2/3">
+                                                <div className="mx-auto flex lg:w-2/3 items-center justify-between overflow-hidden rounded-full px-5 ring ring-[#3B387E]">
                                                     <Button
                                                         className="cursor-pointer bg-transparent px-0 py-0 font-semibold disabled:cursor-default"
                                                         onClick={() => handleChangeAmount('decrement', item.productId)}

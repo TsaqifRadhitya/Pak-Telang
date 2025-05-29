@@ -19,7 +19,7 @@ export default function PesananMasukComponent({ role }: { role: 'admin' | 'mitra
     const [selectedTransaction, setSelectedTransaction] = useState<transactionType>();
     const [isOpen, setOpen] = useState<boolean>();
 
-    const pesanaMasukFilteredByStocks = useMemo(() => pesananMasuk && stockChecker(pesananMasuk?.data, stock), [pesananMasuk, stock]);
+    const pesanaMasukFilteredByStocks = useMemo(() => pesananMasuk && stockChecker(pesananMasuk?.data, stock), [pesananMasuk]);
 
     const handleSubmit = async () => {
         const ongkir = await distaceCalculationService({ from: selectedTransaction?.address as addressType, to: providerAddress });

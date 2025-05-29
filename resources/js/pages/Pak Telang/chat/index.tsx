@@ -51,7 +51,7 @@ export default function Index({ messages }: { messages: chatType[] }) {
 
     useEffect(() => {
         reset();
-    }, [isOpen, reset]);
+    }, [isOpen]);
     return (
         <AdminPageLayout page="Chat">
             {isOpen && (

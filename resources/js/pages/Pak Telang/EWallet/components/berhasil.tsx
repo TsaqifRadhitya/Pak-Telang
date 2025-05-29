@@ -9,7 +9,7 @@ import { props } from '..';
 export default function Berhasil() {
     const { mutations } = usePage<props>().props;
     const [buktiTransfer, setButktiTransfer] = useState<string>();
-    const finished = useMemo(() => mutations.filter((filter) => filter.finished), [mutations]);
+    const finished = useMemo(() => mutations.filter((filter) => filter.finished), []);
 
     return (
         <>
