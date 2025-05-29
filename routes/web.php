@@ -40,9 +40,9 @@ Route::prefix('donasi')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/chat', [messageController::class, 'allPerson'])->name('chat.index');
-    Route::get('/chat/{id}', [messageController::class, 'getChatRoom'])->name('chat.create');
-    Route::post('/chat/{id}', [messageController::class, 'pustChat'])->name('chat.store');
+    // Route::get('/chat', [messageController::class, 'allPerson'])->name('chat.index');
+    // Route::get('/chat/{id}', [messageController::class, 'getChatRoom'])->name('chat.create');
+    // Route::post('/chat/{id}', [messageController::class, 'pustChat'])->name('chat.store');
     Route::get('dashboard', [dashboardController::class, 'index'])->name('dashboard');
     Route::get('/rajaongkir', [rajaOngkirController::class, 'index'])->name('rajaongkir');
 });

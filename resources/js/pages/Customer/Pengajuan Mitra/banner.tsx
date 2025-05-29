@@ -11,6 +11,6 @@ export default function Banner({type} : {type : "Baru" | "Sudah Ada"}){
             onClick={() => router.get(route(type === "Baru" ? "customer.pengajuanmitra.create" : "customer.pengajuanmitra.status"))}
             className="bg-[#5961BE] w-full lg:w-fit hover:bg-[#4e55a1] cursor-pointer text-[#EBEFFF]">{type === "Baru" ? "Ajukan Mitra Sekarang" : "Lihat Pengajuan"} <ArrowRight/></Button>
         </div>
-        <img src="https://ybcvbaxalqwrvgemxdzc.supabase.co/storage/v1/object/public/paktelang/Asset/Image/Group%2037276.webp" className="w-2/3 lg:w-1/3" alt="" />
+        <img src="/Asset/Image/BannerMitra.webp" className="w-2/3 lg:w-1/3" alt="" />
     </section>
 }

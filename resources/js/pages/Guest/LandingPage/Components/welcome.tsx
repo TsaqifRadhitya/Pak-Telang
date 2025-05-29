@@ -11,7 +11,7 @@ export default function Welcome() {
             <div className="relative z-40 mx-auto flex max-w-5xl flex-col items-center gap-x-10 gap-y-10 text-center md:flex-row md:text-left">
                 {/* Gambar */}
                 <motion.img
-                    src="Asset/Image/bungaTelangWelcome.png"
+                    src="Asset/Image/Desain.webp"
                     alt=""
                     className="w-1/4 max-w-xs md:max-w-md lg:max-w-lg"
                     initial={{ scale: 0.5 }}
