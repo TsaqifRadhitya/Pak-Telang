@@ -9,7 +9,7 @@ export default function Penyaluran() {
         <section className="flex min-h-screen flex-col bg-[#EBEFFF] px-5 pb-10 text-[#3B387E] lg:px-20">
             <Heading title="Penyaluran Donasi" className="text-center text-3xl lg:text-4xl" />
             <p className="mt-5 text-left lg:text-center lg:text-xl">Pilihan minuman berkualitas untuk hari-harimu yang lebih sehat</p>
-            <div className="w-full gap-2.5 mt-10 flex-1 grid-cols-2 lg:grid xl:grid-cols-3">
+            <div className="w-full gap-10 mt-10 flex-1 grid-cols-2 lg:grid xl:grid-cols-3">
                 {kontenDonasi.map((konten: kontenType) => (
                     <div className="flex aspect-3/4 w-full flex-col gap-1.5 rounded-xl bg-white p-10 shadow">
                         <div className="relative flex w-full overflow-hidden rounded-xl">
