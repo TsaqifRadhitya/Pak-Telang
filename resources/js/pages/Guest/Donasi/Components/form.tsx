@@ -14,15 +14,17 @@ const inputValidation = z.object({
 });
 
 interface props extends SharedData {
-    snapToken?: string;
+    donationData?: donasiType;
 }
 
 export default function Form() {
-    const { auth } = usePage<props>().props;
+    const { auth, donationData } = usePage<props>().props;
     const { data, errors, setData, setError, clearErrors } = useForm<donasiType>();
     const [isAnonym, setAnonym] = useState<boolean>(false);
 
     const inputNominalRef = useRef<HTMLInputElement>(null);
+
+    console.log();
 
     useEffect(() => {
         if (auth.user) {
@@ -30,15 +32,18 @@ export default function Form() {
             setData({
                 name: userData.name,
                 email: userData.email,
-                nominal: undefined,
+                nominal: inputNominalRef.current?.value ? parseInt(inputNominalRef.current?.value) : undefined,
             });
-        }
-
-        if (inputNominalRef.current?.value) {
-            setData('nominal', parseInt(inputNominalRef.current.defaultValue));
+        } else {
+            setData('nominal', inputNominalRef.current?.value ? parseInt(inputNominalRef.current?.value) : undefined);
         }
     }, [auth.user]);
 
+    useEffect(() => {
+        if (donationData) {
+            setData(donationData);
+        }
+    }, [donationData]);
     useEffect(() => {
         clearErrors('name');
     }, [isAnonym]);

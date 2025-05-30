@@ -5,6 +5,7 @@ export type donasiType = {
     email : string,
     pesan? : string,
     status? : donasiStatusType
+    snapToken? : string
     created_at? : Date
     updated_at? : string
 }
