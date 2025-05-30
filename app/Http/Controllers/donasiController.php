@@ -71,7 +71,7 @@ class donasiController extends Controller
 
         return redirect()->route('donasi.show', [
             'id' => $data->id
-        ])->with('info', 'Silahkan Mengirimkan Nominal Donasi');
+        ]);
     }
 
     public function penyaluran(Request $request)
@@ -92,7 +92,7 @@ class donasiController extends Controller
         $donasi = donasi::find($id);
         if ($donasi) {
             if ($donasi->status === 'paid') {
-                return redirect()->route('donasi');
+                return redirect()->route('donasi')->with('success','Donasi berhasil dikirimkan');
             }
             $donasiMessage = donasi::where('status', 'paid')->orderBy('created_at', 'desc')->limit(5)->get()->toArray();
             $kontenDonasi = konten::where('category', 'Penyaluran Donasi')->orderBy('created_at', 'desc')->limit(3)->get();

@@ -17,13 +17,10 @@ export default function dashboardCustomerPage({ latestContent, popularProduct }:
                 </div>
                 <div className="flex w-full flex-col-reverse items-center gap-y-10 rounded-3xl border border-[#AFB3FF] bg-[#FFFFFF] p-5 px-10 shadow md:gap-x-10 lg:flex-row lg:px-16 xl:gap-x-48">
                     <article className="space-y-5 text-justify">
-                        <Heading
-                            title="Buka Peluang Baru: Ajukan Kemitraan dan Jadilah Bagian dari Perjalanan Kami!"
-                            className="font-black md:text-2xl lg:text-3xl xl:text-4xl"
-                        />
+                        <Heading title="Rasakan Kebaikan Pak Telang" className="font-black md:text-2xl lg:text-3xl xl:text-4xl" />
                         <p className="md:text-xl">
-                            Pilihan minuman berkualitas untuk hari-harimu yang lebih sehat. Pilihan minuman berkualitas untuk hari-harimu yang lebih
-                            sehat. Pilihan minuman berkualitas untuk hari-harimu yang lebih sehat
+                            Dari kebun hingga ke cangkir, setiap produk Pak Telang dibuat dengan telang pilihan yang dirawat secara alami. Rasakan
+                            manfaatnya untuk tubuh, pikiran, dan keseharianmu.
                         </p>
                     </article>
                     <img src="Asset/Image/imageDashboardCustomer.webp" className="mt-10 max-w-52 md:mt-0 md:max-w-max" alt="" />
