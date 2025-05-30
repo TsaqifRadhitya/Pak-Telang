@@ -10,7 +10,7 @@ import { z } from 'zod';
 
 const inputValidation = z.object({
     nominal: z.number({ message: 'Harap mengisi nominal' }).min(10000, `Minimum donasi adalah 10.000`),
-    email: z.string({ message: 'Harap mengisi email' }).email('Harap masukkan email yang valid'),
+    email: z.string({ message: 'Harap mengisi email' }).min(1, 'Harap mengisi email').email('Harap masukkan email yang valid'),
 });
 
 interface props extends SharedData {
