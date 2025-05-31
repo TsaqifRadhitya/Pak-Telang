@@ -290,7 +290,6 @@ class transaksiCustomerController extends Controller
         Mutasi::create([
             'finished' => true,
             'nominal' => $total,
-            'transaksiId' => $id->id,
             'type' => 'Pemasukan',
             'userId' => $id->providerId,
         ]);

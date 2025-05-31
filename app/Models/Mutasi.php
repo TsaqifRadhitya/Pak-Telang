@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Mutasi extends Model
 {
     use HasUlids;
-    protected $fillable = ['nominal', 'bukti', 'finished', 'userId', 'paymentId', 'type', 'transaksiId'];
+    protected $fillable = ['nominal', 'bukti', 'finished', 'userId', 'paymentId', 'type'];
 
     public function payment()
     {
