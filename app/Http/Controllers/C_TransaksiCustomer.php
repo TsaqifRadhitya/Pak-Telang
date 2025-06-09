@@ -55,11 +55,12 @@ class C_TransaksiCustomer extends Controller
 
     public function create(Request $request)
     {
-        if (Auth::user()->role !== 'Customer') {
+        $user = Auth::user();
+        if ($user->role !== 'Customer') {
             return back()->with('info', 'Pemesanan product hanya tersedia untuk customer');
         }
 
-        if (!Auth::user()->address) {
+        if (!$user->address || !$user->postalCode || !$user->districtId) {
             return redirect(route('customer.profile.edit', ['fts' => true]))
                 ->with('error', 'Harap melengkapi alamat sebelum melakuakan pemesanan');
         }
