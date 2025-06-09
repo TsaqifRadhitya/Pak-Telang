@@ -68,7 +68,7 @@ class C_Profil extends Controller
         }
         if ($role === 'Customer') {
             if ($request->fts) {
-                if ($request->input('cityName') !== $user->district->city->cityName) {
+                if ($request->input('cityName') !== $user?->district?->city?->cityName) {
                     Session::put('reset', true);
                 }
                 return redirect()->route('customer.transaksi.create')->with('success', 'Berhasil mengubah alamat');
