@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 use Laravel\Socialite\Facades\Socialite;
 
-class authController extends Controller
+class C_GoogleAuth extends Controller
 {
     public function loginOauth()
     {

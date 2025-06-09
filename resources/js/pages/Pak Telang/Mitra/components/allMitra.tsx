@@ -1,7 +1,7 @@
 import HeadingSmall from '@/components/heading-small';
 import { cn } from '@/lib/utils';
 import { usePage } from '@inertiajs/react';
-import { prop } from './mitra';
+import { prop } from '../V_HalMitra';
 
 export default function AllMitra() {
     const { mitra } = usePage<prop>().props;

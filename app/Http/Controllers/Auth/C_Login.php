@@ -11,14 +11,14 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class AuthenticatedSessionController extends Controller
+class C_Login extends Controller
 {
     /**
      * Show the login page.
      */
     public function create(Request $request): Response
     {
-        return Inertia::render('auth/loginPage', [
+        return Inertia::render('auth/V_HalLogin', [
             'canResetPassword' => Route::has('password.request'),
             'status' => $request->session()->get('status'),
         ]);

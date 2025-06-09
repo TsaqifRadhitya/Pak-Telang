@@ -8,7 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
-class ewalletController extends Controller
+class C_Ewallet extends Controller
 {
     public function index()
     {
@@ -16,10 +16,10 @@ class ewalletController extends Controller
         if ($User->role === "Pak Telang") {
             $saldo = User::sum('saldo');
             $mutations = Mutasi::with(['user', 'payment'])->where('type', 'Penarikan')->orderBy('created_at','desc')->get();
-            return Inertia::render('Pak Telang/EWallet/index', compact('saldo', 'mutations'));
+            return Inertia::render('Pak Telang/EWallet/V_HalEwalletAdmin', compact('saldo', 'mutations'));
         } else {
             $mutations = Mutasi::where('userId', $User->id)->orderBy('created_at','desc')->get();
-            return Inertia::render('Mitra/Ewallet/index', compact('mutations'));
+            return Inertia::render('Mitra/Ewallet/V_HalEwalletMitra', compact('mutations'));
         }
     }
 

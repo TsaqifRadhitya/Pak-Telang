@@ -14,14 +14,14 @@ use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class RegisteredUserController extends Controller
+class C_RegisterManual extends Controller
 {
     /**
      * Show the registration page.
      */
     public function create(): Response
     {
-        return Inertia::render('auth/RegiterPage');
+        return Inertia::render('auth/V_HalRegister');
     }
 
     /**
@@ -48,7 +48,6 @@ class RegisteredUserController extends Controller
                     'email' => 'Email telah terdaftar',
                 ]);
             }
-            return back();
         }
         $user = User::create([
             'name' => $request->name,

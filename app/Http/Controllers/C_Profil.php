@@ -14,19 +14,19 @@ use Inertia\Inertia;
 use Symfony\Component\Uid\Ulid;
 use Illuminate\Support\Str;
 
-class profileController extends Controller
+class C_Profil extends Controller
 {
     public function index()
     {
         $role = Auth::user()->role;
         $address = $this->getFullAdress();
         if ($role === 'Customer') {
-            return Inertia::render('Customer/Profile/profile', compact('address'));
+            return Inertia::render('Customer/Profile/V_HalProfil', compact('address'));
         }
         if ($role === 'Pak Telang') {
-            return Inertia::render('Pak Telang/Profile/profile', compact('address'));
+            return Inertia::render('Pak Telang/Profile/V_HalProfil', compact('address'));
         } else {
-            return Inertia::render('Mitra/Profile/profile', compact('address'));
+            return Inertia::render('Mitra/Profile/V_HalProfil', compact('address'));
         }
     }
 
@@ -36,11 +36,11 @@ class profileController extends Controller
         $role = Auth::user()->role;
         $address = $this->getFullAdress();
         if ($role === 'Pak Telang') {
-            return Inertia::render('Pak Telang/Profile/editProfile', compact('address'));
+            return Inertia::render('Pak Telang/Profile/V_HalFormUbahProfil', compact('address'));
         } else if ($role === 'Customer') {
-            return Inertia::render('Customer/Profile/editProfile', compact('address', 'fts'));
+            return Inertia::render('Customer/Profile/V_HalFormUbahProfil', compact('address', 'fts'));
         } else {
-            return Inertia::render('Mitra/Profile/editProfile', compact('address', 'fts'));
+            return Inertia::render('Mitra/Profile/V_HalFormUbahProfil', compact('address', 'fts'));
         }
     }
 
@@ -60,13 +60,13 @@ class profileController extends Controller
             ]
         );
         $this->updateAdress($request);
-        if (Auth::user()->role === 'Mitra') {
+        if ($role === 'Mitra') {
             if ($request->fts) {
                 return redirect()->route('mitra.order bahan.create')->with('success', 'Berhasil mengubah alamat');
             }
             return redirect(route('mitra.profile'))->with('success', 'Profile Berhasil Diperbarui !');
         }
-        if (Auth::user()->role === 'Customer') {
+        if ($role === 'Customer') {
             if ($request->fts) {
                 if ($request->input('cityName') !== $user->district->city->cityName) {
                     Session::put('reset', true);

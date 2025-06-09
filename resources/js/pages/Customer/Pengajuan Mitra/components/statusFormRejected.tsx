@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import CustomerPageLayout from '@/layouts/customerPagetLayout';
 import { router, usePage } from '@inertiajs/react';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
-import Heading from '../../../components/heading';
+import Heading from '@/components/heading';
 import mitra from '@/types/mitra';
 
 export default function FormRejected() {

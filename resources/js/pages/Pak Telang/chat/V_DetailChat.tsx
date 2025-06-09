@@ -1,6 +1,6 @@
 import RoomChat from '@/components/chat/roomChat';
 import AdminPageLayout from '@/layouts/adminPageLayout';
-import { props } from '@/pages/Mitra/Chat/create';
+import { props } from '@/pages/Mitra/Chat/V_DetailChat';
 import { usePage } from '@inertiajs/react';
 
 export default function ShowChatPage() {

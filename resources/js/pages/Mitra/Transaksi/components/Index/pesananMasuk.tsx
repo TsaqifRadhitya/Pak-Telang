@@ -12,7 +12,7 @@ import { stockChecker } from '@/utils/stockChecker';
 import { Deferred, router, usePage } from '@inertiajs/react';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { useMemo, useState } from 'react';
-import { props } from '../..';
+import { props } from '../../V_HalPesanan';
 
 export default function PesananMasukComponent({ role }: { role: 'admin' | 'mitra' }) {
     const { pesananMasuk, stock, providerAddress } = usePage<props>().props;

@@ -1,32 +1,31 @@
 <?php
 
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\C_Login;
+use App\Http\Controllers\Auth\C_RegisterManual;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
-use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
-use App\Http\Controllers\authController;
+use App\Http\Controllers\C_GoogleAuth;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::middleware('guest')->group(function () {
 
-    Route::get('oauth/login',[authController::class,'loginOauth'])->name('oauth.login');
+    Route::get('oauth/login', [C_GoogleAuth::class, 'loginOauth'])->name('oauth.login');
 
-    Route::get('oauth/callback',[authController::class,'callbackOauth'])->name('oauth.callback');
+    Route::get('oauth/callback', [C_GoogleAuth::class, 'callbackOauth'])->name('oauth.callback');
 
-    Route::get('register', [RegisteredUserController::class, 'create'])
+    Route::get('register', [C_RegisterManual::class, 'create'])
         ->name('register');
 
-    Route::post('register', [RegisteredUserController::class, 'store']);
+    Route::post('register', [C_RegisterManual::class, 'store']);
 
-    Route::get('login', [AuthenticatedSessionController::class, 'create'])
+    Route::get('login', [C_Login::class, 'create'])
         ->name('login');
 
-    Route::post('login', [AuthenticatedSessionController::class, 'store']);
+    Route::post('login', [C_Login::class, 'store']);
 
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
         ->name('password.request');
@@ -58,6 +57,6 @@ Route::middleware('auth')->group(function () {
 
     Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
 
-    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
+    Route::post('logout', [C_Login::class, 'destroy'])
         ->name('logout');
 });

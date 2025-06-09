@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use phpDocumentor\Reflection\Types\Boolean;
 
-class mitraController extends Controller
+class C_Mitra extends Controller
 {
     public function index(Request $request)
     {
@@ -38,7 +38,7 @@ class mitraController extends Controller
             ];
         });
 
-        return Inertia::render('Pak Telang/Mitra/mitra', compact('mitra', 'search', 'category'));
+        return Inertia::render('Pak Telang/Mitra/V_HalMitra', compact('mitra', 'search', 'category'));
     }
 
 

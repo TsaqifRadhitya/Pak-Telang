@@ -7,7 +7,7 @@ import { addressType } from '@/types/address';
 import { addressFormater } from '@/utils/addressFormater';
 import { currencyConverter } from '@/utils/currencyConverter';
 import { Deferred, router, usePage } from '@inertiajs/react';
-import { props } from '../..';
+import { props } from '../../V_HalPesanan';
 
 export default function PesananDiterimaComponent({ role }: { role: 'admin' | 'mitra' }) {
     const { pesananDiterima } = usePage<props>().props;

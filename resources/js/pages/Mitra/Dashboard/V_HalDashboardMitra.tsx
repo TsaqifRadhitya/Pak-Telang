@@ -3,7 +3,7 @@ import HeadingSmall from '@/components/heading-small';
 import { Button } from '@/components/ui/button';
 import MitraPageLayout from '@/layouts/mitraPageLayout';
 import { cn } from '@/lib/utils';
-import { chartType, periodicType } from '@/pages/Pak Telang/Dashboard/dashboard';
+import { chartType, periodicType } from '@/pages/Pak Telang/Dashboard/V_HalDashboardAdmin';
 import { SharedData } from '@/types';
 import { currencyConverter } from '@/utils/currencyConverter';
 import { percentageCalculation } from '@/utils/persentageUtils';

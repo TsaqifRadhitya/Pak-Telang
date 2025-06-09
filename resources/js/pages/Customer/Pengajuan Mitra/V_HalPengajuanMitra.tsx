@@ -1,7 +1,7 @@
 import CustomerPageLayout from '@/layouts/customerPagetLayout';
-import Banner from './banner';
-import Benefit from './benefit';
-import GaleryMitra from './galery';
+import Banner from './components/banner';
+import Benefit from './components/benefit';
+import GaleryMitra from './components/galery';
 
 export default function Index({type} : {type : "Baru" | "Sudah Ada"}) {
     return (

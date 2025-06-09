@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
-class dashboardController extends Controller
+class C_Dashboard extends Controller
 {
     public function index()
     {
@@ -30,7 +30,7 @@ class dashboardController extends Controller
             if ($popularProduct) {
                 $popularProduct->productPhoto = json_decode($popularProduct->productPhoto);
             }
-            return Inertia::render('Customer/Dashboard/dashboard', compact('latestContent', 'popularProduct'));
+            return Inertia::render('Customer/Dashboard/V_HalDashboardPembeli', compact('latestContent', 'popularProduct'));
         } else if ($role === 'Mitra') {
             return redirect(route('mitra.dashboard'));
         } else {
@@ -76,12 +76,12 @@ class dashboardController extends Controller
 
         $mitra = [
             'thisMonth' => count(array_unique(mitra::whereRaw("TO_CHAR(mitras.created_at, 'MM') = ?", [$thisMonth])->get()->map(fn($m) =>
-            $m->district->city->cityName)->toArray())),
+                $m->district->city->cityName)->toArray())),
             'lastMonth' => count(array_unique(mitra::whereRaw("TO_CHAR(mitras.created_at, 'MM') = ?", [$lastMonth])->get()->map(fn($m) =>
-            $m->district->city->cityName)->toArray()))
+                $m->district->city->cityName)->toArray()))
         ];
 
-        return Inertia::render('Pak Telang/Dashboard/dashboard', compact('saldo', 'chart', 'productSold', 'mitra'));
+        return Inertia::render('Pak Telang/Dashboard/V_HalDashboardAdmin', compact('saldo', 'chart', 'productSold', 'mitra'));
     }
 
     public function mitraDashboard()
@@ -112,6 +112,6 @@ class dashboardController extends Controller
             'lastMonth' => Transaksi::with('detailTransaksis')->where('status', 'Selesai')->where('customerId', Auth::user()->id)->whereRaw("TO_CHAR(transaksis.created_at, 'MM') = ?", [$lastMonth])->get()->flatMap->detailTransaksis->sum('subTotal')
         ];
 
-        return Inertia::render('Mitra/Dashboard/dashboard', compact('statusToko', 'chart', 'productBought'));
+        return Inertia::render('Mitra/Dashboard/V_HalDashboardMitra', compact('statusToko', 'chart', 'productBought'));
     }
 }

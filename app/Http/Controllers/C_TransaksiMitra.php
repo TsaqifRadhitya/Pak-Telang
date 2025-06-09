@@ -5,23 +5,25 @@ namespace App\Http\Controllers;
 use App\Models\DetailTransaksi;
 use App\Models\productDetail;
 use App\Models\Transaksi;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 use Inertia\Inertia;
 use Midtrans\Config;
 use Midtrans\Snap;
 
-class transaksiAdminController extends Controller
+class C_TransaksiMitra extends Controller
 {
     public function index(Request $request)
     {
-
         $section = $request->q;
-
-        return Inertia::render('Pak Telang/Transaksi/index', [
+        return Inertia::render('Mitra/Transaksi/V_HalPesanan', [
             'section' => $section,
             'pesananDiterima' => Inertia::defer(fn() => $this->loadIndexPesananDiterima(), 'pesananDiterima'),
+            'Dipesan' => Inertia::defer(fn() => $this->loadIndexDipesan(), 'Dipesan'),
             'Riwayat' => Inertia::defer(fn() => $this->loadIndexRiwayat(), 'Riwayat'),
             'providerAddress' => $this->getFullAdressProvider(),
             'stock' => Auth::user()->productStocks,
@@ -29,21 +31,12 @@ class transaksiAdminController extends Controller
         ]);
     }
 
-    private function getFullAdressProvider()
-    {
-        $district = Auth::user()->district()->first();
-        $city = $district->city()->first();
-        $province = $city->province()->first();
-        return [
-            'address' => Auth::user()->address,
-            'postalCode' =>  Auth::user()->postalCode,
-            'districtName' => $district?->districtName,
-            'cityName' => $city->cityName,
-            'province' => $province->province,
-        ];
-    }
     private function loadIndexPesananMasuk()
     {
+        if (!Auth::user()->mitra->isOpen) {
+            return null;
+        }
+
         return Transaksi::with(['detailTransaksis.product', 'user.district.city'])
             ->whereNull('providerId')
             ->orderBy('created_at', 'desc')
@@ -57,7 +50,7 @@ class transaksiAdminController extends Controller
     private function loadIndexPesananDiterima()
     {
         return Transaksi::with('detailTransaksis.product')
-            ->whereNotIn('status', ['Selesai', 'Pembayaran Gagal'])
+            ->whereIn('status', ['Menunggu Konfirmasi', 'Menunggu Pembayaran'])
             ->where('providerId', Auth::user()->id)
             ->orderBy('created_at', 'desc')
             ->simplePaginate(5)
@@ -66,11 +59,30 @@ class transaksiAdminController extends Controller
             });
     }
 
-    private function loadIndexRiwayat()
+    private function loadIndexDipesan()
     {
         return Transaksi::with('detailTransaksis.product')
-            ->where('providerId', Auth::user()->id)
-            ->where('status', 'Selesai')
+            ->whereIn('status', ['Menunggu Pembayaran', 'Sedang Diproses', 'Sedang Dikirim'])
+            ->where('customerId', Auth::user()->id)
+            ->orderBy('created_at', 'desc')
+            ->simplePaginate(5)
+            ->through(function ($item) {
+                return [...$item->toArray(), 'Total' => DetailTransaksi::where('transaksiId', $item->id)->sum('subTotal')];
+            });
+    }
+
+    private function loadIndexRiwayat()
+    {
+        $user = Auth::user()->id;
+
+        return Transaksi::with('detailTransaksis.product')
+            ->where(function ($e) use ($user) {
+                $e->where('status', 'Pembayaran Gagal')->where('customerId', $user);
+            })
+            ->orWhere(function ($t) use ($user) {
+                $t->where('status', 'Selesai')
+                    ->where('providerId', $user);
+            })
             ->orderBy('created_at', 'desc')
             ->simplePaginate(5)
             ->through(function ($item) {
@@ -79,12 +91,27 @@ class transaksiAdminController extends Controller
     }
 
 
+    private function getFullAdressProvider()
+    {
+        $district = Auth::user()->mitra->district;
+        $city = $district->city;
+        $province = $city->province;
+        return [
+            'address' => Auth::user()->address,
+            'postalCode' =>  Auth::user()->postalCode,
+            'districtName' => $district?->districtName,
+            'cityName' => $city->cityName,
+            'province' => $province->province,
+        ];
+    }
+
 
     private function getFullAdress(Transaksi $transaksi)
     {
-        $district = $transaksi->district()->first();
-        $city = $district->city()->first();
-        $province = $city->province()->first();
+
+        $district = $transaksi->district;
+        $city = $district->city;
+        $province = $city->province;
         return [
             'address' => $transaksi->address,
             'postalCode' =>  $transaksi->postalCode,
@@ -97,13 +124,24 @@ class transaksiAdminController extends Controller
     public function show($id)
     {
         $transaction = Transaksi::with(['detailTransaksis.product', 'user'])->where('id', $id)->first();
-        if ($transaction) {
-            if (!$transaction->providerId || $transaction->providerId != Auth::user()->id) {
+        $role = Auth::user()->role;
+        if ($role === "Pak Telang") {
+            return redirect()->route('admin.transaksi.show', ['id' => $id]);
+        }
+        if ($role === "Customer") {
+            abort(403);
+        }
+        if ($transaction?->status === "Menunggu Pembayaran" && $transaction?->type === "Bahan Baku") {
+            return redirect(route('mitra.order bahan.payment', ["id" => $id]));
+        } else if ($transaction) {
+            if (!$transaction->providerId || $transaction->providerId != Auth::user()->id && $transaction->customerId != Auth::user()->id) {
                 $section = "Pesanan Masuk";
             } else if ($transaction->status === "Gagal menemukan provider") {
-                return redirect()->route('admin.transaksi')->with('error', 'transaksi sudah tidak tersedia');
-            } else if ($transaction->status !== "Selesai" && $transaction->status !==  "Pembayaran Gagal") {
+                return redirect()->route('mitra.transaksi')->with('error', 'transaksi sudah tidak tersedia');
+            } else if ($transaction->providerId === Auth::user()->id && $transaction->status !== "Selesai" && $transaction->status !==  "Pembayaran Gagal") {
                 $section = "Pesanan Diterima";
+            } else if ($transaction?->type === "Bahan Baku" && $transaction->status !== "Pembayaran Gagal") {
+                $section = "Dipesan";
             } else {
                 $section = "Riwayat";
             }
@@ -115,11 +153,11 @@ class transaksiAdminController extends Controller
             ];
 
             $providerAddress = $this->getFullAdressProvider();
-            return Inertia::render('Pak Telang/Transaksi/show', compact('section', 'transaction', 'providerAddress'));
+
+            return Inertia::render('Mitra/Transaksi/V_HalDetailPesanan', compact('section', 'transaction', 'providerAddress'));
         }
         abort(404);
     }
-
 
     public function update(Transaksi $id, Request $request)
     {
@@ -145,14 +183,8 @@ class transaksiAdminController extends Controller
                 }
 
                 // Set providerId ke user saat ini
-                $id->update([
-                    'providerId' => Auth::user()->id,
-                    'status' => 'Menunggu Pembayaran',
-                    'ongkir' => $request->ongkir
-                ]);
 
                 DB::commit();
-
                 Config::$serverKey = env("VITE_MIDTRANS_SERVER_KEY");
                 Config::$isProduction = false;
                 $time = now();
@@ -187,8 +219,7 @@ class transaksiAdminController extends Controller
 
         if ($id->status == "Sedang Diproses" && $id->providerId === Auth::user()->id) {
             $id->update([
-                'status' => 'Sedang Dikirim',
-                'resi' => $request->resi
+                'status' => 'Sedang Dikirim'
             ]);
             return back()->with('success', 'Status pengiriman berhasil diperbarui');
         }

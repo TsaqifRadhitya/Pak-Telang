@@ -4,7 +4,7 @@ import { currencyConverter } from '@/utils/currencyConverter';
 import { dateFormaterUtils } from '@/utils/dateFormater';
 import { usePage } from '@inertiajs/react';
 import { useMemo, useState } from 'react';
-import { props } from '..';
+import { props } from '../V_HalEwalletAdmin';
 
 export default function Berhasil() {
     const { mutations } = usePage<props>().props;

@@ -1,50 +1,48 @@
 <?php
 
-use App\Http\Controllers\dashboardController;
-use App\Http\Controllers\donasiController;
-use App\Http\Controllers\kontenController;
-use App\Http\Controllers\messageController;
-use App\Http\Controllers\midtransController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\rajaOngkirController;
-use App\Models\konten;
+use App\Http\Controllers\C_Dashboard;
+use App\Http\Controllers\C_Donasi;
+use App\Http\Controllers\C_Konten;
+use App\Http\Controllers\C_Midtrans;
+use App\Http\Controllers\C_Product;
+use App\Http\Controllers\C_RajaOngkir;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::post('/midtrans/callback', [midtransController::class, 'callback'])->name('midtrans.callback');
+Route::post('/midtrans/callback', [C_Midtrans::class, 'callback'])->name('midtrans.callback');
 
 Route::get('/', function () {
     $product = Product::where('productType', '=', 'Barang jadi')->where('isdeleted', false)->get()->each(function ($e) {
         $e->productPhoto = json_decode($e->productPhoto);
     });
     $reset = !Auth::check();
-    return Inertia::render('Guest/LandingPage/landingPage', compact('product', 'reset'));
+    return Inertia::render('Guest/LandingPage/V_HalLandingPage', compact('product', 'reset'));
 })->name('home');
 
 Route::prefix('konten')->group(function () {
-    Route::get('/', [kontenController::class, 'viewIndex'])->name('konten');
-    Route::get('{id}', [kontenController::class, 'viewShow'])->name('konten.show');
+    Route::get('/', [C_Konten::class, 'viewIndex'])->name('konten');
+    Route::get('{id}', [C_Konten::class, 'viewShow'])->name('konten.show');
 });
 
-Route::prefix('produk')->group(function () {
-    Route::get('/', [ProductController::class, 'landingPageProduct'])->name('produk');
-    Route::get('{id}', [ProductController::class, 'customerProductDetail'])->name('produk.detail');
+Route::prefix('produk')->group(function (): void {
+    Route::get('/', [C_Product::class, 'landingPageProduct'])->name('produk');
+    Route::get('{id}', [C_Product::class, 'customerProductDetail'])->name('produk.detail');
 });
 
 Route::prefix('donasi')->group(function () {
-    Route::get('/', [donasiController::class, 'index'])->name('donasi');
-    Route::post('/', [donasiController::class, 'store'])->name('donasi.store');
-    Route::get('{id}', [donasiController::class, 'show'])->name('donasi.show');
+    Route::get('/', [C_Donasi::class, 'index'])->name('donasi');
+    Route::post('/', [C_Donasi::class, 'store'])->name('donasi.store');
+    Route::get('{id}', [C_Donasi::class, 'show'])->name('donasi.show');
 });
 
 Route::middleware('auth')->group(function () {
     // Route::get('/chat', [messageController::class, 'allPerson'])->name('chat.index');
     // Route::get('/chat/{id}', [messageController::class, 'getChatRoom'])->name('chat.create');
     // Route::post('/chat/{id}', [messageController::class, 'pustChat'])->name('chat.store');
-    Route::get('dashboard', [dashboardController::class, 'index'])->name('dashboard');
-    Route::get('/rajaongkir', [rajaOngkirController::class, 'index'])->name('rajaongkir');
+    Route::get('dashboard', [C_Dashboard::class, 'index'])->name('dashboard');
+    Route::get('/rajaongkir', [C_RajaOngkir::class, 'index'])->name('rajaongkir');
 });
 
 require __DIR__ . '/settings.php';

@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { router, usePage } from '@inertiajs/react';
 import Heading from '../../../../components/heading';
 import HeadingSmall from '../../../../components/heading-small';
-import { props } from '../produkDetail';
+import { props } from '../V_HalDetailProduk';
 
 export default function ProductLainnyaSection() {
     const { products } = usePage<props>().props;

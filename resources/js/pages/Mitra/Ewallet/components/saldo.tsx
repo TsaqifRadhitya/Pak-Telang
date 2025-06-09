@@ -9,7 +9,7 @@ import { useForm, usePage } from '@inertiajs/react';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { useEffect, useState } from 'react';
 import z from 'zod';
-import { props } from '..';
+import { props } from '../V_HalEwalletMitra';
 import InputError from '../../../../components/input-error';
 import ModalItemBank, { SetData } from './modalItemBank';
 import ModalItemEwallet from './modalItemEwallet';

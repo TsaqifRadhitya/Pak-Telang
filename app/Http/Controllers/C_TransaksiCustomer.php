@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Midtrans\Snap;
 
-class transaksiCustomerController extends Controller
+class C_TransaksiCustomer extends Controller
 {
     public function index()
     {
@@ -35,7 +35,7 @@ class transaksiCustomerController extends Controller
             $itemArray['Total'] = $item->detailTransaksis->sum('subTotal');
             return $itemArray;
         });
-        return Inertia::render('Customer/Transaksi/index', compact('transactions'));
+        return Inertia::render('Customer/Transaksi/V_HalRiwayatPesananPembeli', compact('transactions'));
     }
 
     private function getFullAdress()
@@ -179,7 +179,7 @@ class transaksiCustomerController extends Controller
             });
             $reset = Session::get('reset');
             Session::remove('reset');
-            return Inertia::render('Customer/Transaksi/create', compact('products', 'address', 'selectedProduct', 'reset'));
+            return Inertia::render('Customer/Transaksi/V_HalPesananPembeli', compact('products', 'address', 'selectedProduct', 'reset'));
         }
 
         return back()->with('info', 'Saat ini pemasaran product belum tersedia di daerah anda');
@@ -201,10 +201,10 @@ class transaksiCustomerController extends Controller
                 'province' => $province->province,
             ], 'Total' => DetailTransaksi::where('transaksiId', $transactions->id)->sum('subTotal')];
             if ($transactions['status'] === 'Selesai') {
-                return Inertia::render('Customer/Transaksi/riwayat', compact('transactions'));
+                return Inertia::render('Customer/Transaksi/V_HalDetailPesananSelesai', compact('transactions'));
             };
 
-            return Inertia::render('Customer/Transaksi/show', compact('transactions'));
+            return Inertia::render('Customer/Transaksi/V_HalDetailPesananPembeli', compact('transactions'));
         };
         abort(404);
     }

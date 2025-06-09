@@ -5,16 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\donasi;
 use App\Models\konten;
 use App\Models\penyaluranDonasi;
-use Carbon\Carbon;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Number;
 use Midtrans\Config;
 use Midtrans\Snap;
-use Symfony\Component\Uid\Ulid;
 
-class donasiController extends Controller
+class C_Donasi extends Controller
 {
     public function index()
     {
@@ -25,16 +22,16 @@ class donasiController extends Controller
                 $Disalurkan = penyaluranDonasi::orderBy('created_at', 'desc')->get();
                 $danaTersalur = $Disalurkan->sum('nominal');
                 $totalDonasi = $donasiMasuk->sum('nominal') - $danaTersalur;
-                return Inertia::render('Pak Telang/Donasi/index', compact('donasiMasuk', 'Disalurkan', 'danaTersalur', 'totalDonasi'));
+                return Inertia::render('Pak Telang/Donasi/V_HalDonasiAdmin', compact('donasiMasuk', 'Disalurkan', 'danaTersalur', 'totalDonasi'));
             } else {
                 $donasi = donasi::where('status', 'paid')->orderBy('created_at', 'desc')->limit(5)->get()->toArray();
                 $kontenDonasi = konten::orderBy('created_at', 'desc')->limit(3)->get();
-                return Inertia::render('Guest/Donasi/Donasi', compact('kontenDonasi', 'donasi'));
+                return Inertia::render('Guest/Donasi/V_HalDonasi', compact('kontenDonasi', 'donasi'));
             }
         }
         $donasi = donasi::where('status', 'paid')->orderBy('created_at', 'desc')->limit(5)->get()->toArray();
         $kontenDonasi = konten::where('category', 'Penyaluran Donasi')->orderBy('created_at', 'desc')->limit(3)->get();
-        return Inertia::render('Guest/Donasi/Donasi', compact('kontenDonasi', 'donasi'));
+        return Inertia::render('Guest/Donasi/V_HalDonasi', compact('kontenDonasi', 'donasi'));
     }
 
     public function store(Request $request)
@@ -58,7 +55,7 @@ class donasiController extends Controller
                 "error" => route('donasi.show', ["id" => $data->id])
 
             ],
-            "expiry" =>  [
+            "expiry" => [
                 "start_time" => $time->format('Y-m-d H:i:s O'),
                 "unit" => "hour",
                 "duration" => 12
@@ -96,17 +93,8 @@ class donasiController extends Controller
             }
             $donasiMessage = donasi::where('status', 'paid')->orderBy('created_at', 'desc')->limit(5)->get()->toArray();
             $kontenDonasi = konten::where('category', 'Penyaluran Donasi')->orderBy('created_at', 'desc')->limit(3)->get();
-            return Inertia::render('Guest/Donasi/Donasi', ['donationData' => $donasi, 'kontenDonasi' => $kontenDonasi, 'donasi' => $donasiMessage]);
+            return Inertia::render('Guest/Donasi/V_HalDonasi', ['donationData' => $donasi, 'kontenDonasi' => $kontenDonasi, 'donasi' => $donasiMessage]);
         }
         abort(404);
-    }
-
-    public function penyaluranDonasi(Request $request)
-    {
-        penyaluranDonasi::create([
-            'jumlahProduk' => $request->jumlahProduk,
-            'nominal' => $request->nominal
-        ]);
-        return back()->with('success', 'Donasi berhasil disalurkan Anda dapat membuat konten dari penyaluran ini');
     }
 }

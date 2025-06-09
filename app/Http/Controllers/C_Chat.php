@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 
-class messageController extends Controller
+class C_Chat extends Controller
 {
     public function getChatRoom($id)
     {
@@ -35,7 +35,7 @@ class messageController extends Controller
         Message::where('from', $id)->where('to', $currentUser->id)->update(
             ['isReaded' => true]
         );
-        return Inertia::render('Pak Telang/chat/show', compact('messages', 'receiver'));
+        return Inertia::render('Pak Telang/chat/V_DetailChat', compact('messages', 'receiver'));
     }
 
     public function allPerson()
@@ -76,7 +76,7 @@ class messageController extends Controller
                 'unreaded' => Message::where('from', $user->id)->where('isReaded', false)->count()
             ];
         })->sortByDesc('created_at')->values();
-        return Inertia::render('Pak Telang/chat/index', compact('messages'));
+        return Inertia::render('Pak Telang/chat/V_Chat', compact('messages'));
     }
 
     public function swr()
@@ -118,7 +118,7 @@ class messageController extends Controller
             }
             return $msg;
         });
-        return Inertia::render('Mitra/Chat/create', compact('messages', 'receiver'));
+        return Inertia::render('Mitra/Chat/V_DetailChat', compact('messages', 'receiver'));
     }
 
     public function destroy($id)

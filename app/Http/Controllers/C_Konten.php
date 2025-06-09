@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 
-class kontenController extends Controller
+class C_Konten extends Controller
 {
     public function viewIndex(Request $request)
     {
@@ -35,7 +35,7 @@ class kontenController extends Controller
             return $data;
         });
 
-        return Inertia::render('Guest/Konten/Konten', [
+        return Inertia::render('Guest/Konten/V_HalKonten', [
             'kontens' => $kontens,
             'category' => $category,
             'search' => $search,
@@ -44,12 +44,13 @@ class kontenController extends Controller
 
     public function viewShow($id)
     {
-        $konten =  konten::whereId($id)->first();
-        if ($konten === null) return abort(404);
+        $konten = konten::whereId($id)->first();
+        if ($konten === null)
+            return abort(404);
         if ($konten->imageContent !== null) {
             $konten->imageContent = json_decode($konten->imageContent);
         }
-        return Inertia::render('Guest/Konten/detailKontent', compact('konten'));
+        return Inertia::render('Guest/Konten/V_HalDetailKonten', compact('konten'));
     }
 
     public function index()
@@ -64,7 +65,7 @@ class kontenController extends Controller
             return $konten;
         });
 
-        return Inertia::render('Pak Telang/Konten/allKonten', [
+        return Inertia::render('Pak Telang/Konten/V_HalKonten', [
             'kontens' => $kontens
         ]);
     }
@@ -76,7 +77,7 @@ class kontenController extends Controller
             $konten->imageContent = json_decode($konten->imageContent);
         }
         $editAble = true;
-        return Inertia::render('Guest/Konten/detailKontent', compact('konten', 'editAble'));
+        return Inertia::render('Guest/Konten/V_HalDetailKonten', compact('konten', 'editAble'));
     }
 
     public function store(Request $request)
@@ -85,8 +86,8 @@ class kontenController extends Controller
             throw ValidationException::withMessages([
                 'slug' => 'Judul konten sudah tersedia'
             ]);
-            return back();
-        };
+        }
+        ;
 
         if ($request->video && $request->imageContent) {
             konten::create([
@@ -177,7 +178,7 @@ class kontenController extends Controller
         if ($konten->imageContent) {
             $konten->imageContent = json_decode($konten->imageContent);
         }
-        return Inertia::render('Pak Telang/Konten/EditKonten', compact('konten'));
+        return Inertia::render('Pak Telang/Konten/V_HalFormUbahKonten', compact('konten'));
     }
 
     public function destroy($konten)
@@ -188,6 +189,6 @@ class kontenController extends Controller
 
     public function create()
     {
-        return Inertia::render('Pak Telang/Konten/createKonten');
+        return Inertia::render('Pak Telang/Konten/V_HalFormTambahKonten');
     }
 }

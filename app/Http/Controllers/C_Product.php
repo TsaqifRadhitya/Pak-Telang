@@ -10,7 +10,7 @@ use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Nette\Utils\Arrays;
 
-class ProductController extends Controller
+class C_Product extends Controller
 {
 
     public function landingPageProduct()
@@ -19,7 +19,7 @@ class ProductController extends Controller
             $e->productPhoto = json_decode($e->productPhoto);
         });
 
-        return Inertia::render('Guest/Produk/Produk', compact('product'));
+        return Inertia::render('Guest/Produk/V_HalProduk', compact('product'));
     }
 
     public function index()
@@ -29,13 +29,13 @@ class ProductController extends Controller
                 $item->productPhoto = json_decode($item->productPhoto);
                 return [...$item->attributesToArray(), 'productStock' => $item->productStocks()->where('userId', '=', Auth::user()->id)->first()?->stock ?? 0];
             });
-            return Inertia::render('Mitra/Produk/produk', compact('products'));
+            return Inertia::render('Mitra/Produk/V_HalProduk', compact('products'));
         } else {
             $products = Product::whereisdeleted(false)->get()->map(function ($item) {
                 $item->productPhoto = json_decode($item->productPhoto);
                 return [...$item->attributesToArray(), 'productStock' => $item->productStocks()->where('userId', '=', Auth::user()->id)->first()?->stock ?? 0];
             });
-            return Inertia::render('Pak Telang/Produk/produk', compact('products'));
+            return Inertia::render('Pak Telang/Produk/V_HalProduk', compact('products'));
         }
     }
 
@@ -46,7 +46,7 @@ class ProductController extends Controller
         });;
         $productDetail = Product::whereId($id)->first();
         $productDetail->productPhoto = json_decode($productDetail->productPhoto);
-        return Inertia::render('Guest/Produk/produkDetail', compact('products', 'productDetail'));
+        return Inertia::render('Guest/Produk/V_HalDetailProduk', compact('products', 'productDetail'));
     }
 
     public function store(Request $request)

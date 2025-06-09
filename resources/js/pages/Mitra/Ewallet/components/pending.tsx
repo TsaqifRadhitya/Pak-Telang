@@ -2,7 +2,7 @@ import { currencyConverter } from '@/utils/currencyConverter';
 import { dateFormaterUtils } from '@/utils/dateFormater';
 import { usePage } from '@inertiajs/react';
 import { useMemo } from 'react';
-import { props } from '..';
+import { props } from '../V_HalEwalletMitra';
 import Heading from '../../../../components/heading';
 import { cn } from '@/lib/utils';
 

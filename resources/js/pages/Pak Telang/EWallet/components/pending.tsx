@@ -6,7 +6,7 @@ import { currencyConverter } from '@/utils/currencyConverter';
 import { dateFormaterUtils } from '@/utils/dateFormater';
 import { router, usePage } from '@inertiajs/react';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { props } from '..';
+import { props } from '../V_HalEwalletAdmin';
 import InputError from '../../../../components/input-error';
 
 export default function Pending() {

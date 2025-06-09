@@ -4,8 +4,8 @@ import { usePage } from '@inertiajs/react';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { renderAsync } from 'docx-preview';
 import { useEffect } from 'react';
-import Heading from '../../../components/heading';
-import HeadingSmall from '../../../components/heading-small';
+import Heading from '../../../../components/heading';
+import HeadingSmall from '../../../../components/heading-small';
 
 export default function MoUWaitingApprovement() {
     const { mitra } = usePage<{ mitra: mitra }>().props;

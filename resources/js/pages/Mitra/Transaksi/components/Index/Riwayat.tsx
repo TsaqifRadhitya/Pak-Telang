@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 import { currencyConverter } from '@/utils/currencyConverter';
 import { dateFormaterUtils } from '@/utils/dateFormater';
 import { Deferred, router, usePage } from '@inertiajs/react';
-import { props } from '../..';
+import { props } from '../../V_HalPesanan';
 
 export default function RiwayatComponent({ role }: { role: 'admin' | 'mitra' }) {
     const { Riwayat } = usePage<props>().props;

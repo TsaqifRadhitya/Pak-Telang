@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
-class bantuaController extends Controller
+class C_Bantuan extends Controller
 {
     public function index()
     {
@@ -27,6 +27,6 @@ class bantuaController extends Controller
         } else {
             $lastChat = ['senderProfile' => $Admin];
         }
-        return Inertia::render('Mitra/Bantuan/index', compact('lastChat'));
+        return Inertia::render('Mitra/Bantuan/V_Bantuan', compact('lastChat'));
     }
 }

@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import CustomerPageLayout from '@/layouts/customerPagetLayout';
-import { AddressApiType } from '@/pages/Mitra/Profile/editProfile';
+import { AddressApiType } from '@/pages/Mitra/Profile/V_HalFormUbahProfil';
 import { supabaseImage } from '@/services/imageStorage';
 import { gender, SharedData, User } from '@/types';
 import { addressType } from '@/types/address';

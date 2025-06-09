@@ -8,7 +8,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { props } from '../produkDetail';
+import { props } from '../V_HalDetailProduk';
 
 export default function ProductDetailSection() {
     const { productDetail } = usePage<props>().props;

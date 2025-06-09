@@ -12,12 +12,12 @@ use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Illuminate\Validation\ValidationException;
 
-class pengajuanMitraController extends Controller
+class C_PengajuanMitra extends Controller
 {
     public function index(Request $request)
     {
         $type = mitra::where('userId', '=', $request->user()->id)->count() > 0 ? "Sudah Ada" : 'Baru';
-        return Inertia::render('Customer/Pengajuan Mitra/index', compact('type'));
+        return Inertia::render('Customer/Pengajuan Mitra/V_HalPengajuanMitra', compact('type'));
     }
 
     public function create(Request $request)
@@ -26,7 +26,7 @@ class pengajuanMitraController extends Controller
         $mitra = mitra::where('userId', '=', Auth::user()->id)->first();
         if ($mitra === null || $mitra->statusPengajuan === 'Formulir ditolak') {
             $address = $this->getFullAdress();
-            return Inertia::render('Customer/Pengajuan Mitra/create', compact('address'));
+            return Inertia::render('Customer/Pengajuan Mitra/V_HalFormPengajuan', compact('address'));
         }
 
         return redirect(route('customer.pengajuanmitra.status'));
@@ -36,13 +36,14 @@ class pengajuanMitraController extends Controller
     {
         if (!Auth::user()->address || !Auth::user()->districtId || !Auth::user()->postalCode) {
             return null;
-        };
+        }
+        ;
         $district = Auth::user()->district()->first();
         $city = $district->city()->first();
         $province = $city->province()->first();
         return [
             'address' => Auth::user()->address,
-            'postalCode' =>  Auth::user()->postalCode,
+            'postalCode' => Auth::user()->postalCode,
             'districtName' => $district?->districtName,
             'cityName' => $city->cityName,
             'province' => $province->province,
@@ -51,30 +52,22 @@ class pengajuanMitraController extends Controller
 
     public function mou()
     {
-        $mitra = mitra::with('user')->where ('userId', '=', Auth::user()->id)->whereIn('statusPengajuan', ['Formulir disetujui', 'MOU ditolak'])->first();
-        if (!$mitra) return redirect(route('customer.pengajuanmitra.status'));
+        $mitra = mitra::with('user')->where('userId', '=', Auth::user()->id)->whereIn('statusPengajuan', ['Formulir disetujui', 'MOU ditolak'])->first();
+        if (!$mitra)
+            return redirect(route('customer.pengajuanmitra.status'));
         $mitra = [...$mitra->toArray(), 'address' => $this->getMitraAddress($mitra), 'fotoDapur' => json_decode($mitra->fotoDapur)];
-        return Inertia::render('Customer/Pengajuan Mitra/statusMouPending', compact('mitra'));
+        return Inertia::render('Customer/Pengajuan Mitra/V_HalDokumenMoU', compact('mitra'));
     }
 
     public function statusCheck(Request $request)
     {
         $mitra = $request->user()->mitra;
-        if ($mitra === null) return redirect(route('customer.pengajuanmitra.create'));
+        if ($mitra === null)
+            return redirect(route('customer.pengajuanmitra.create'));
         $mitra = [...$mitra->toArray(), 'address' => $this->getMitraAddress($mitra), 'fotoDapur' => json_decode($mitra->fotoDapur)];
-        switch ($mitra['statusPengajuan']) {
-            case "Menunggu Persetujuan Formulir":
-                return Inertia::render('Customer/Pengajuan Mitra/statusFormPending', compact('mitra'));
-            case 'Formulir disetujui':
-                return Inertia::render('Customer/Pengajuan Mitra/statusFormApprove', compact('mitra'));
-            case 'Formulir ditolak':
-                return Inertia::render('Customer/Pengajuan Mitra/statusFormRejected', compact('mitra'));
-            case 'Menunggu Persetujuan MOU':
-                return Inertia::render('Customer/Pengajuan Mitra/statusMoUWaitingApprovement', compact('mitra'));
-            case 'MOU ditolak':
-                return Inertia::render('Customer/Pengajuan Mitra/statusMouRejected', compact('mitra'));
-        }
+        return Inertia::render('Customer/Pengajuan Mitra/V_HalStatusPengajuan', compact('mitra'));
     }
+
 
     public function statusUpdate(Request $request, $id, $status)
     {
@@ -102,7 +95,7 @@ class pengajuanMitraController extends Controller
                 ['statusPengajuan' => $updateStatus, 'pesanPersetujuan' => $request->input('pesanPersetujuan') ?? "",]
             );
             $alertTyple = $status === "accept" ? 'menyetujui' : 'menolak';
-            return back()->with('success', 'Anda berhasil ' . $alertTyple . ' pengajuan ' . $mitra->user->name.'.');
+            return back()->with('success', 'Anda berhasil ' . $alertTyple . ' pengajuan ' . $mitra->user->name . '.');
         }
         abort(404);
     }
@@ -111,11 +104,9 @@ class pengajuanMitraController extends Controller
     {
 
         $mitra = mitra::with('user')->whereId($id)->first();
-
-
         if ($mitra) {
             $mitra = [...$mitra->toArray(), 'address' => $this->getMitraAddress($mitra), 'fotoDapur' => json_decode($mitra->fotoDapur)];
-            return Inertia::render('Pak Telang/Mitra/detailSubmission', compact('mitra'));
+            return Inertia::render('Pak Telang/Mitra/V_HalDetailMitra', compact('mitra'));
         }
     }
 
@@ -126,7 +117,7 @@ class pengajuanMitraController extends Controller
         $province = $city->province()->first();
         return [
             'address' => $mitra->address,
-            'postalCode' =>  $mitra->postalCode,
+            'postalCode' => $mitra->postalCode,
             'districtName' => $district?->districtName,
             'cityName' => $city->cityName,
             'province' => $province->province,
@@ -148,7 +139,6 @@ class pengajuanMitraController extends Controller
 
         if (mitra::where('userId', '!=', Auth::user()->id)->where('namaUsaha', '=', $request->namaUsaha)->count() > 0) {
             throw ValidationException::withMessages(['namaUsaha' => 'Nama Usaha Sudah Terdaftar']);
-            return back();
         }
 
         User::whereId($request->user()->id)->update(
@@ -162,13 +152,13 @@ class pengajuanMitraController extends Controller
 
         $resBody = $request->all();
         $resBody['fotoDapur'] = json_encode($resBody['fotoDapur']);
-        $province = Province::firstOrNew(['province' =>  $request->input('province')]);
+        $province = Province::firstOrNew(['province' => $request->input('province')]);
         $province->save(); // Pastikan tersimpan
 
-        $city = City::firstOrNew(['cityName' =>  $request->input('cityName'), 'provinceId' => $province->id]);
+        $city = City::firstOrNew(['cityName' => $request->input('cityName'), 'provinceId' => $province->id]);
         $city->save(); // Pastikan tersimpan
 
-        $district = District::firstOrNew(['districtName' =>  $request->input('districtName'), 'cityId' => $city->id]);
+        $district = District::firstOrNew(['districtName' => $request->input('districtName'), 'cityId' => $city->id]);
         $district->save(); // Pastikan tersimpan
 
         $dataMitra = mitra::where('userId', '=', Auth::user()->id)->first();

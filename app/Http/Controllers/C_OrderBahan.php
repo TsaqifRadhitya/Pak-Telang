@@ -17,7 +17,7 @@ use Inertia\Inertia;
 use Midtrans\Config;
 use Midtrans\Snap;
 
-class bahanBakuController extends Controller
+class C_OrderBahan extends Controller
 {
     public function index()
     {
@@ -25,7 +25,7 @@ class bahanBakuController extends Controller
             $product->productPhoto = json_decode($product->productPhoto);
             return $product;
         });
-        return Inertia::render('Mitra/Order Bahan/index', compact('products'));
+        return Inertia::render('Mitra/Order Bahan/V_HalOrderBahan', compact('products'));
     }
 
     public function create(Request $request)
@@ -37,7 +37,7 @@ class bahanBakuController extends Controller
         $selectedProduct = $request->id;
         $address = $this->getFullAdress(Auth::user());
         $addressProvider = $this->getFullAdress(User::where('role', 'Pak Telang')->first());
-        return Inertia::render('Mitra/Order Bahan/create', compact('products', 'selectedProduct', 'address', 'addressProvider'));
+        return Inertia::render('Mitra/Order Bahan/V_HalDetailOrder', compact('products', 'selectedProduct', 'address', 'addressProvider'));
     }
 
     public function payment($id)
@@ -73,7 +73,7 @@ class bahanBakuController extends Controller
                 Transaksi::whereId($id)->update(['snapToken' => $ress->token, 'updated_at' => $time]);
                 $transaction = [...$transaction, 'snapToken' => $ress->token];
             }
-            return Inertia::render('Mitra/Order Bahan/payment', compact('transaction'));
+            return Inertia::render('Mitra/Order Bahan/V_HalPembayaranOrder', compact('transaction'));
         } else if ($transaction) {
             return redirect()->route('mitra.order bahan.show', ['id' => $id]);
         }
