@@ -24,12 +24,12 @@ class C_Donasi extends Controller
                 $totalDonasi = $donasiMasuk->sum('nominal') - $danaTersalur;
                 return Inertia::render('Pak Telang/Donasi/V_HalDonasiAdmin', compact('donasiMasuk', 'Disalurkan', 'danaTersalur', 'totalDonasi'));
             } else {
-                $donasi = donasi::where('status', 'paid')->orderBy('created_at', 'desc')->limit(5)->get()->toArray();
+                $donasi = donasi::where('status', 'paid')->whereNot('pesan',null)->orderBy('created_at', 'desc')->limit(5)->get()->toArray();
                 $kontenDonasi = konten::orderBy('created_at', 'desc')->limit(3)->get();
                 return Inertia::render('Guest/Donasi/V_HalDonasi', compact('kontenDonasi', 'donasi'));
             }
         }
-        $donasi = donasi::where('status', 'paid')->orderBy('created_at', 'desc')->limit(5)->get()->toArray();
+        $donasi = donasi::where('status', 'paid')->whereNot('pesan',null)->orderBy('created_at', 'desc')->limit(5)->get()->toArray();
         $kontenDonasi = konten::where('category', 'Penyaluran Donasi')->orderBy('created_at', 'desc')->limit(3)->get();
         return Inertia::render('Guest/Donasi/V_HalDonasi', compact('kontenDonasi', 'donasi'));
     }
