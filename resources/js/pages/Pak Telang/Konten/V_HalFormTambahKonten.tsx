@@ -11,7 +11,7 @@ import { useEffect, useRef, useState } from 'react';
 import z from 'zod';
 import { supabaseImage } from '../../../services/imageStorage';
 
-const youtubeUrlRegex = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/watch\?v=)([a-zA-Z0-9_-]{11})(?:[&?][^#\s]*)?$/;
+const youtubeUrlRegex = /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?(?:.*&)?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})(?:[^\s]*)?$/;
 
 const inputValidation = z.object({
     slug: z.string({ message: 'Harap mengisi judul' }).min(1, 'Harap mengisi judul'),
