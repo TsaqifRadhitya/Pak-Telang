@@ -106,7 +106,7 @@ export default function Index({ messages }: { messages: chatType[] }) {
                 <div className="flex items-center border-b-[1px] border-[#AFB3FF] p-5 md:px-10 md:py-5">
                     <h1 className="text-xl font-semibold">Chat</h1>
                 </div>
-                <div className="flex flex-col gap-2.5 px-10 pt-5 lg:max-h-[80vh] lg:overflow-y-auto">
+                <div className="flex flex-col gap-2.5 px-5 md:px-10 pt-5 lg:max-h-[80vh] lg:overflow-y-auto">
                     {(data as chatType[])?.map((message, index) => (
                         <div>
                             <ChatDisplayComponent key={index} className="mx-2.5 my-2.5" lastChat={message} type="Admin" />

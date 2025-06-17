@@ -41,7 +41,7 @@ export default function AdminPageLayout({ children, page }: Props) {
                                 <li
                                     key={item}
                                     className="flex cursor-pointer items-center gap-x-1.5 text-xl"
-                                    onClick={() => page !== item && router.get(route(`admin.${item.toLowerCase()}`))}
+                                    onClick={() =>(page !== item || page === 'Chat') && router.get(route(`admin.${item.toLowerCase()}`))}
                                 >
                                     <img
                                         src={`https://ybcvbaxalqwrvgemxdzc.supabase.co/storage/v1/object/public/paktelang/Asset/Icon/${item}.svg`}

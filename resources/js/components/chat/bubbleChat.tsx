@@ -130,7 +130,7 @@ export default function BubbleChat({ message, removeMessage }: { message: messag
                     </article>
                 </section>
             )}
-            <div className={cn('flex w-fit max-w-1/2 flex-col', message.from === user.id ? 'items-end' : 'items-start')}>
+            <div className={cn('flex w-fit lg:max-w-1/2 flex-col', message.from === user.id ? 'items-end' : 'items-start')}>
                 {message.from === user.id && (
                     <Button
                         disabled={message.isSending}
@@ -151,7 +151,7 @@ export default function BubbleChat({ message, removeMessage }: { message: messag
                         onClick={() => setIndexPhoto(1)}
                         className={cn(
                             'relative mt-2.5 w-full cursor-pointer rounded-t-lg border border-[#AFB3FF] p-2.5',
-                            message.from === user.id && 'border-[#048730]/33',
+                            message.from === user.id && 'border-[#048730]/33',!message.message && "rounded-b-lg"
                         )}
                     >
                         <img src={message.image[0]} className="mx-auto max-h-96 w-full" />
@@ -167,7 +167,7 @@ export default function BubbleChat({ message, removeMessage }: { message: messag
                         )}
                     </div>
                 )}
-                <pre
+                {message.message && <pre
                     className={cn(
                         'lg:text-md w-full rounded-2xl border border-[#AFB3FF] bg-[#AFB3FF]/24 px-5 py-4 font-sans text-xs break-words whitespace-pre-wrap md:text-sm',
                         message.from === user.id && 'mt-2.5 border-[#048730]/33 bg-[#A0D9A0]/37',
@@ -175,7 +175,7 @@ export default function BubbleChat({ message, removeMessage }: { message: messag
                     )}
                 >
                     {message.message}
-                </pre>
+                </pre>}
                 <svg
                     className={cn('-translate-x-3 -translate-y-1', message.from === user.id && 'translate-x-3 -rotate-120')}
                     width="13"

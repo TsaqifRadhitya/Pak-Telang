@@ -114,7 +114,7 @@ export default function RoomChat({ user, target, messages }: { user: User; targe
     }, [isDeleted]);
 
     return (
-        <section className={cn('relative flex flex-1 flex-col p-10 pb-5', images && 'pb-0')}>
+        <section className={cn('relative flex flex-1 flex-col p-5 lg:p-10 pb-5', images && 'pb-0')}>
             {isDeleted && <SweetAlert message="Pesan berhasil dihapus" type="Success" />}
             <div className="flex items-center gap-5 border-b-2 border-[#D9D9D9] px-2 pb-2.5">
                 <img src={target.profile_picture} className="aspect-square w-12 rounded-full object-cover object-center" alt="" />
