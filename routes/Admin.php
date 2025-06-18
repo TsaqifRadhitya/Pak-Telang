@@ -13,9 +13,11 @@ use App\Http\Controllers\C_TransaksiAdmin;
 use App\Http\Controllers\transaksiAdminController;
 use App\Http\Middleware\adminMidleware;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 Route::middleware(['auth', adminMidleware::class])->group(function () {
     Route::prefix('admin')->group(function () {
+        Route::get('callback', fn() => Inertia::render('Pak Telang/CallbackManual/index'))->name('admin.callback.manual');
         Route::get('dashboard', [C_Dashboard::class, 'adminDashboard'])->name('admin.dashboard');
 
         Route::prefix('mitra')->group(function () {

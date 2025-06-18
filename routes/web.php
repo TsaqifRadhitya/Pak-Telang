@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::post('/midtrans/callback', [C_Midtrans::class, 'callback'])->name('midtrans.callback');
+Route::post('/midtrans/manual', [C_Midtrans::class, 'manualCallback'])->name('midtrans.callback.manual');
 
 Route::get('/', function () {
     $product = Product::where('productType', '=', 'Barang jadi')->where('isdeleted', false)->get()->each(function ($e) {

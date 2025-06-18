@@ -30,7 +30,7 @@ class C_Midtrans extends Controller
                 Mail::to(User::find($transaksi->providerId)->email)->send(new newTransaction(route('admin.transaksi.show', ['id' => $transaksi->id])));
             }
 
-            $donasiData =  donasi::find($request->order_id);
+            $donasiData = donasi::find($request->order_id);
 
             if ($donasiData) {
                 $donasiData->update(
@@ -46,5 +46,33 @@ class C_Midtrans extends Controller
             );
         }
         return response()->json(['message' => 'Callback received successfully']);
+    }
+
+
+    public function manualCallback(Request $request)
+    {
+        $request->validate(['id' => ['required']]);
+        $donasi = donasi::find($request->id);
+        $transaksi = Transaksi::find($request->id);
+        if (!$donasi && !$transaksi) {
+        return response()->json(['message' => 'invalid id'], 400);
+        }
+
+        if ($transaksi) {
+            $transaksi = Transaksi::where('id', $request->id)->where('status', 'Menunggu Pembayaran')->update(
+                ['status' => 'Sedang Diproses']
+            );
+            $transaksi = Transaksi::where('id', $request->id)->first();
+            if ($transaksi?->type === "Bahan Baku") {
+                Mail::to(User::find($transaksi->providerId)->email)->send(new newTransaction(route('admin.transaksi.show', ['id' => $transaksi->id])));
+            }
+        } else {
+            $donasi->update(
+                ['status' => 'paid']
+            );
+            Mail::to($donasi->email)->send(new donasiMail());
+        }
+
+        return response()->json($donasi ?? $transaksi, 200);
     }
 }

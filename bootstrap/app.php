@@ -17,7 +17,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->encryptCookies(except: ['appearance']);
         $middleware->validateCsrfTokens(
             except: [
-                '/midtrans/callback'
+                '/midtrans/callback',
+                '/midtrans/manual'
             ]
         );
         $middleware->web(append: [
